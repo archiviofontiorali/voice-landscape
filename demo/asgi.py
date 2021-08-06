@@ -7,6 +7,9 @@ from starlette.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from starlette.routing import Route
 from wordcloud import WordCloud
 
+import folium
+import folium.features
+
 nlp = spacy.load("it_core_news_sm")
 # nlp = spacy.load("en_core_web_sm")
 
@@ -16,7 +19,7 @@ class Frequencies:
 
     def __init__(self):
         self._nlp = spacy.load("it_core_news_sm")
-        self._places = [(0.0, 0.0), (1.0, 1.0)]
+        self._places = [(44.6543412, 10.9011459)]
         self._frequencies = {coord: dict() for coord in self._places}
 
     def _find_nearest_place(self, coord: tuple):
@@ -80,11 +83,28 @@ async def fetch_text(request):
 
 
 async def generate_map(request):
-    html = "<html><body>"
+    html = "<html>"
+    html += "<head>"
+    html += "<style>svg {width: 30vw; height: auto;}</style>"
+    html += "</head><body>"
+
+    afor = [44.6543412, 10.9011459]
+    map = folium.Map(location=afor, zoom_start=14, tiles="Stamen Toner Background")
+
     for address in frequencies.valid_addresses:
         svg = frequencies.create_word_cloud(address)
-        html += svg
-    html += "</body></html>"
+        map.add_child(
+            folium.Marker(
+                address,
+                icon=folium.features.DivIcon(
+                    html=svg,
+                ),
+            )
+        )
+
+    html += map.get_root().render()
+    html += "</body>"
+    html += "</html>"
     return HTMLResponse(html)
 
 
