@@ -72,17 +72,19 @@ async def ping(request):
 
 
 async def fetch_text(request):
-    data = await request.json()
+    data = await request.form()
 
-    gps = data.get("gps", None)
+    loc_x, loc_y = data.get("loc-x", None), data.get("loc-y", None)
+    loc_x, loc_y = map(float, (loc_x, loc_y))
     text = data.get("text", None)
-    if text is None or gps is None:
+
+    if text is None or loc_x is None or loc_y is None:
         return JSONResponse("Not valid")
     else:
-        logger.debug(f"[{gps[0]}, {gps[1]}] {text}")
+        logger.debug(f"[{loc_x}, {loc_y}] {text}")
 
-    place = frequencies.load_text(text, gps)
-    return JSONResponse(f"updated {place}")
+    place = frequencies.load_text(text, (loc_x, loc_y))
+    logger.debug(f"updated {place}")
 
 
 async def generate_map(request):
@@ -112,9 +114,15 @@ async def homepage(request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+async def sharepage(request):
+    if request.method == "POST":
+        await fetch_text(request)
+    return templates.TemplateResponse("share.html", {"request": request})
+
+
 routes = [
     Route("/", endpoint=homepage),
-    Route("/send", endpoint=fetch_text, methods=["POST"]),
+    Route("/share", endpoint=sharepage, methods=["GET", "POST"]),
     Route("/map", endpoint=generate_map),
     Route("/ping", endpoint=ping),
 ]

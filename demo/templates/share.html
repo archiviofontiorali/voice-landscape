@@ -1,0 +1,40 @@
+{% extends "_base.html" %}
+
+{% block contents %}
+  <form action="" method="post" class="">
+    <div class="">
+      <label for="text">Enter your voice</label>
+      <input type="text" name="text" id="text" required>
+    </div>
+    <div>
+      <label id="location-x" for="loc-x">GPS x-coordinate: </label>
+      <input id="loc-x" type=number name=loc-x required readonly>
+    </div>
+    <div>
+      <label id="location-y" for="loc-y">GPS y-coordinate: </label>
+      <input id="loc-y" type=number name=loc-y required readonly>
+    </div>
+    <div>
+      <button id="location-button" type="button" onclick="read_location()">
+        Get Your Position
+      </button>
+    </div>
+    <div class="form-example">
+      <input id="button-submit" type="submit" value="Share!" disabled>
+    </div>
+  </form>
+
+{% endblock %}
+
+
+{% block scripts %}
+  {% include "_scripts.html" %}
+  <script>
+    function read_location() {
+      let x = 44.50, y = 45.15;
+      document.getElementById("loc-x").value = x;
+      document.getElementById("loc-y").value = y;
+      document.getElementById("button-submit").removeAttribute("disabled");
+    } 
+  </script>
+{% endblock %}
