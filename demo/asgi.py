@@ -1,15 +1,19 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import spacy
 from loguru import logger
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse, PlainTextResponse
+from starlette.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from starlette.routing import Route
+from wordcloud import WordCloud
 
 nlp = spacy.load("it_core_news_sm")
 # nlp = spacy.load("en_core_web_sm")
 
 
 class Frequencies:
+    # NOTE: with bisect module and custom structure it's possible to improve performance
+
     def __init__(self):
         self._nlp = spacy.load("it_core_news_sm")
         self._places = [(0.0, 0.0), (1.0, 1.0)]
@@ -37,10 +41,15 @@ class Frequencies:
 
         return near
 
-    def get_top_token(self, addr, k=5):
-        freq = self._frequencies[addr]
+    def get_top_token(self, address, k=5):
+        freq = self._frequencies[address]
         top = sorted(freq.items(), key=lambda d: d[1], reverse=True)
-        return top[:5]
+        return top[:k]
+
+    def create_word_cloud(self, address) -> str:
+        cloud = WordCloud(background_color=None, mode="RGBA")
+        cloud.generate_from_frequencies(frequencies._frequencies[address])
+        return cloud.to_svg()
 
     @property
     def valid_addresses(self):
@@ -71,11 +80,12 @@ async def fetch_text(request):
 
 
 async def generate_map(request):
-    result = []
+    html = "<html><body>"
     for address in frequencies.valid_addresses:
-        words = frequencies.get_top_token(address)
-        result.append(dict(address=address, words=words))
-    return JSONResponse(result)
+        svg = frequencies.create_word_cloud(address)
+        html += svg
+    html += "</body></html>"
+    return HTMLResponse(html)
 
 
 routes = [
