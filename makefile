@@ -41,4 +41,4 @@ run:
 
 .PHONY: serve
 serve:
-	$(VENV)/bin/uvicorn $(PACKAGE).asgi:app --reload
+	$(VENV)/bin/uvicorn $(PACKAGE).asgi:app --reload --host 0.0.0.0
