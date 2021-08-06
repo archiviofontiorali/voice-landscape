@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+  
+  <title>{{ title | default('AFOr | Paesaggio di Voci', True) }}</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+<!--   <link rel="stylesheet" href="/main.css"> -->
+</head>
+<body class="flex flex-column min-vh-100 code pa1">
+  
+  {% block header %}
+    <header class="w-100 mw9 outline ma1 center">{% include "_header.html" %}</header>
+  {% endblock %}
+
+  {% block main %}
+    <main class="w-100 mw9 outline ma1 pa1 center flex-grow">
+      {% block contents %}{% endblock %}
+    </main>  
+  {% endblock %}
+
+  {% block footer %}
+    <footer class="w-100 mw9 outline ma1 center">{% include "_footer.html" %}</footer>
+  {% endblock %}
+
+  {% block scripts %}
+    {% include "_scripts.html" %}
+  {% endblock %}
+
+</body>
+</html>
