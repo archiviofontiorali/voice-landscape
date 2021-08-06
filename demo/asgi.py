@@ -6,12 +6,15 @@ from starlette.applications import Starlette
 from starlette.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from starlette.routing import Route
 from wordcloud import WordCloud
+from starlette.templating import Jinja2Templates
 
 import folium
 import folium.features
 
 nlp = spacy.load("it_core_news_sm")
 # nlp = spacy.load("en_core_web_sm")
+
+templates = Jinja2Templates(directory="demo/templates")
 
 
 class Frequencies:
@@ -78,16 +81,11 @@ async def fetch_text(request):
     else:
         logger.debug(f"[{gps[0]}, {gps[1]}] {text}")
 
-    place = frequencies.load_text(text, gps)  # doc = nlp(text)
+    place = frequencies.load_text(text, gps)
     return JSONResponse(f"updated {place}")
 
 
 async def generate_map(request):
-    html = "<html>"
-    html += "<head>"
-    html += "<style>svg {width: 30vw; height: auto;}</style>"
-    html += "</head><body>"
-
     afor = [44.6543412, 10.9011459]
     map = folium.Map(location=afor, zoom_start=14, tiles="Stamen Toner Background")
 
@@ -102,16 +100,23 @@ async def generate_map(request):
             )
         )
 
-    html += map.get_root().render()
-    html += "</body>"
-    html += "</html>"
-    return HTMLResponse(html)
+    context = {
+        "map": map._repr_html_(),  # or map.get_root().render()
+        "request": request,
+    }
+
+    return templates.TemplateResponse("map.html", context)
+
+
+async def homepage(request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 routes = [
-    Route("/ping", endpoint=ping),
+    Route("/", endpoint=homepage),
     Route("/send", endpoint=fetch_text, methods=["POST"]),
     Route("/map", endpoint=generate_map),
+    Route("/ping", endpoint=ping),
 ]
 
 app = Starlette(debug=True, routes=routes)
