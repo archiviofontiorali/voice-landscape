@@ -1,3 +1,3 @@
-from . import hello
+from loguru import logger
 
-hello()
+logger.info("Hello World!")

@@ -38,3 +38,7 @@ develop:
 .PHONY: run
 run:
 	@python -m demo
+
+.PHONY: serve
+serve:
+	$(VENV)/bin/uvicorn $(PACKAGE).asgi:app --reload
