@@ -17,13 +17,13 @@ class App:
         self._cases = Container(
             home=HomePage(),
             map=MapPage(self._repos.frequencies),
-            # share=SharePage(self._repos.frequencies),
+            share=SharePage(self._repos.frequencies),
             ping=Ping(),
         )
         self._handlers = Container(
             home=PageHandler(self._cases.home),
             map=PageHandler(self._cases.map),
-            # share=ShareHandler(self._cases.share),
+            share=ShareHandler(self._cases.share),
             ping=PageHandler(self._cases.ping),
         )
 
@@ -31,7 +31,7 @@ class App:
         self._routes = [
             Route("/", endpoint=h.home.__call__),
             Route("/map", endpoint=h.map.__call__),
-            # Route("/share", endpoint=h.share.__call__, methods=["GET", "POST"]),
+            Route("/share", endpoint=h.share.__call__, methods=["GET", "POST"]),
             Route("/ping", endpoint=h.ping.__call__),
         ]
 
