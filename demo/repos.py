@@ -16,8 +16,8 @@ class FrequencyRepo:
     def places(self) -> List[Coordinates]:
         return self._places
 
-    def find_nearest_place(self, coord: Coordinates):
-        return find_nearest_place(coord, self._places)
+    def find_nearest_place(self, coord: Coordinates) -> Coordinates:
+        return find_nearest_place(coord, self._places)[0]
 
     def update_frequency(self, place: Coordinates, key: str):
         frequency_table = self._frequencies[place]
