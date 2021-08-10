@@ -4,6 +4,7 @@ from starlette.routing import Route
 from .cases import HomePage, MapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
 from .repos import FrequencyRepo
+from .services import FrequencyDict
 
 
 class Container:
@@ -13,13 +14,18 @@ class Container:
 
 class App:
     def __init__(self):
-        self._repos = Container(frequencies=FrequencyRepo())
+        self._services = Container(frequency_dict=FrequencyDict())
+
+        s = self._services
+        self._repos = Container(frequencies=FrequencyRepo(s.frequency_dict))
+
         self._cases = Container(
             home=HomePage(),
             map=MapPage(self._repos.frequencies),
             share=SharePage(self._repos.frequencies),
             ping=Ping(),
         )
+
         self._handlers = Container(
             home=PageHandler(self._cases.home),
             map=PageHandler(self._cases.map),
