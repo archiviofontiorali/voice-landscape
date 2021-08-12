@@ -3,8 +3,10 @@ from loguru import logger
 from starlette.responses import PlainTextResponse
 from starlette.templating import Jinja2Templates
 
-from .geo import Coordinates
+from .constants import AFOR_COORDINATES, MAP_PROVIDER_ATTRIBUTION, MAP_PROVIDER_URL
+from .geo import Coordinates, prepare_marker
 from .repos import FoliumMapRepo, FrequencyRepo
+from .models import MapOptions
 
 # TODO: create presenters
 templates = Jinja2Templates(directory="demo/templates")
@@ -26,6 +28,28 @@ class FoliumMapPage:
         self._map_repo.update_map(self._frequency_repo)
         context = {
             "map": self._map_repo.map,
+            "request": request,
+        }
+        return templates.TemplateResponse("legacy_map.html", context)
+
+
+class LeafletMapPage:
+    def __init__(self, frequency_repo: FrequencyRepo):
+        self._frequency_repo = frequency_repo
+        self._map_config = MapOptions(
+            center=list(AFOR_COORDINATES),
+            provider_url=MAP_PROVIDER_URL,
+            provider_attribution=MAP_PROVIDER_ATTRIBUTION,
+        )
+
+    async def execute(self, request):
+        markers = [
+            prepare_marker(place, self._frequency_repo)
+            for place in self._frequency_repo.places
+        ]
+        context = {
+            "map_config": self._map_config,
+            "markers": markers,
             "request": request,
         }
         return templates.TemplateResponse("map.html", context)

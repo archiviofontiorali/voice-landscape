@@ -1,5 +1,26 @@
 {% extends "_base.html" %}
 
 {% block contents %}
-  {{ map | safe }}
+  <div id="map" style="height: 85vh"></div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+          integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+          crossorigin=""></script>
+  <script>
+    const map_center = {{ map_config.center }};
+    const provider = "{{ map_config.provider_url }}";
+    const tileLayerOptions = { 
+      attribution: `{{ map_config.provider_attribution | safe }}`, minZoom: 14, maxZoom: 18
+    };
+  
+    const map = L.map('map').setView(map_center, 15);
+    const tile = L.tileLayer(provider, tileLayerOptions).addTo(map);
+
+    {% for (place, svg) in markers %}
+      let icon = L.divIcon({ html: `{{ svg | safe }}`, className: "" });
+      let marker = L.marker({{ place }}, { icon: icon }).addTo(map);      
+    {% endfor %}
+  </script>
 {% endblock %}
