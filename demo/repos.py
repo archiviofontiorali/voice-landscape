@@ -3,13 +3,8 @@ from typing import List
 import folium
 from wordcloud import WordCloud
 
-from .constants import (
-    AFOR_COORDINATES,
-    FOLIUM_MAP_CONFIG,
-    MAP_PROVIDER_ATTRIBUTION,
-    MAP_PROVIDER_URL,
-)
-from .geo import Coordinates, find_nearest_place
+from .constants import FOLIUM_MAP_CONFIG
+from .geo import Coordinates, find_nearest_place, prepare_marker
 from .services import FrequencyDict
 
 
@@ -47,12 +42,7 @@ class FoliumMapRepo:
     def update_map(self, frequency_repo):
         self._map = folium.Map(**self._config)
         for place in frequency_repo.places:
-            frequencies = frequency_repo.fetch_frequency_table(place)
-
-            cloud = WordCloud(background_color=None, mode="RGBA")
-            cloud.generate_from_frequencies(frequencies)
-
-            svg = cloud.to_svg()
+            _, svg = prepare_marker(place, frequency_repo)
             icon = folium.features.DivIcon(html=svg)
             marker = folium.Marker(place, icon=icon)
 
