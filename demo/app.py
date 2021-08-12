@@ -1,7 +1,7 @@
 from starlette.applications import Starlette
 from starlette.routing import Route
 
-from .cases import HomePage, MapPage, Ping, SharePage
+from .cases import HomePage, FoliumMapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
 from .repos import FrequencyRepo, FoliumMapRepo
 from .services import FrequencyDict
@@ -25,7 +25,7 @@ class App:
         r = self._repos
         self._cases = Container(
             home=HomePage(),
-            map=MapPage(r.frequencies, r.map),
+            map=FoliumMapPage(r.frequencies, r.map),
             share=SharePage(r.frequencies),
             ping=Ping(),
         )

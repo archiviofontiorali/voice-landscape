@@ -17,7 +17,7 @@ class HomePage:
         return templates.TemplateResponse("index.html", context)
 
 
-class MapPage:
+class FoliumMapPage:
     def __init__(self, frequency_repo: FrequencyRepo, map_repo: FoliumMapRepo):
         self._frequency_repo = frequency_repo
         self._map_repo = map_repo
