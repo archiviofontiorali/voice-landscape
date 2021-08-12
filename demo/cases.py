@@ -1,15 +1,10 @@
-import folium
 import spacy
 from loguru import logger
 from starlette.responses import PlainTextResponse
 from starlette.templating import Jinja2Templates
-from wordcloud import WordCloud
 
 from .geo import Coordinates
-from .repos import FrequencyRepo
-
-# TODO: move to "constant" module
-AFOR_COORDINATES = (44.6543412, 10.9011459)
+from .repos import FoliumMapRepo, FrequencyRepo
 
 # TODO: create presenters
 templates = Jinja2Templates(directory="demo/templates")
@@ -23,32 +18,14 @@ class HomePage:
 
 
 class MapPage:
-    def __init__(self, frequencies: FrequencyRepo):
-        self._frequencies = frequencies
-
-        # TODO: move this configuration to an external file
-        self._map_config = {
-            "location": AFOR_COORDINATES,
-            "zoom_start": 14,
-            "tiles": "Stamen Toner Background",
-        }
+    def __init__(self, frequency_repo: FrequencyRepo, map_repo: FoliumMapRepo):
+        self._frequency_repo = frequency_repo
+        self._map_repo = map_repo
 
     async def execute(self, request):
-        _map = folium.Map(**self._map_config)
-        for place in self._frequencies.places:
-            frequencies = self._frequencies.fetch_frequency_table(place)
-
-            cloud = WordCloud(background_color=None, mode="RGBA")
-            cloud.generate_from_frequencies(frequencies)
-
-            svg = cloud.to_svg()
-            icon = folium.features.DivIcon(html=svg)
-            marker = folium.Marker(place, icon=icon)
-
-            marker.add_to(_map)
-
+        _map = self._map_repo.generate_map(self._frequency_repo)
         context = {
-            "map": _map._repr_html_(),  # or map.get_root().render()
+            "map": _map,
             "request": request,
         }
         return templates.TemplateResponse("map.html", context)
