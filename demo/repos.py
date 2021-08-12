@@ -3,7 +3,12 @@ from typing import List
 import folium
 from wordcloud import WordCloud
 
-from .constants import AFOR_COORDINATES
+from .constants import (
+    AFOR_COORDINATES,
+    FOLIUM_MAP_CONFIG,
+    MAP_PROVIDER_ATTRIBUTION,
+    MAP_PROVIDER_URL,
+)
 from .geo import Coordinates, find_nearest_place
 from .services import FrequencyDict
 
@@ -36,11 +41,7 @@ class FoliumMapRepo:
     _map: folium.Map
 
     def __init__(self):
-        self._config = {
-            "location": AFOR_COORDINATES,
-            "zoom_start": 14,
-            "tiles": "Stamen Toner Background",
-        }
+        self._config = FOLIUM_MAP_CONFIG
         self._map = folium.Map(**self._config)
 
     def update_map(self, frequency_repo):
