@@ -1,10 +1,11 @@
 from typing import List
+
 import folium
 from wordcloud import WordCloud
 
+from .constants import AFOR_COORDINATES
 from .geo import Coordinates, find_nearest_place
 from .services import FrequencyDict
-from .constants import AFOR_COORDINATES
 
 
 class FrequencyRepo:
@@ -32,15 +33,18 @@ class FrequencyRepo:
 
 
 class FoliumMapRepo:
+    _map: folium.Map
+
     def __init__(self):
         self._config = {
             "location": AFOR_COORDINATES,
             "zoom_start": 14,
             "tiles": "Stamen Toner Background",
         }
+        self._map = folium.Map(**self._config)
 
-    def generate_map(self, frequency_repo):
-        _map = folium.Map(**self._config)
+    def update_map(self, frequency_repo):
+        self._map = folium.Map(**self._config)
         for place in frequency_repo.places:
             frequencies = frequency_repo.fetch_frequency_table(place)
 
@@ -51,6 +55,9 @@ class FoliumMapRepo:
             icon = folium.features.DivIcon(html=svg)
             marker = folium.Marker(place, icon=icon)
 
-            marker.add_to(_map)
+            marker.add_to(self._map)
 
-        return _map._repr_html_()  # or map.get_root().render()
+    @property
+    def map(self):
+        # return self._map.get_root().render()
+        return self._map._repr_html_()

@@ -23,9 +23,9 @@ class MapPage:
         self._map_repo = map_repo
 
     async def execute(self, request):
-        _map = self._map_repo.generate_map(self._frequency_repo)
+        self._map_repo.update_map(self._frequency_repo)
         context = {
-            "map": _map,
+            "map": self._map_repo.map,
             "request": request,
         }
         return templates.TemplateResponse("map.html", context)
