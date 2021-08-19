@@ -1,14 +1,31 @@
 import math
-from typing import List, Tuple
+from typing import List, Tuple, Iterable
 
 import geopy.distance
 from wordcloud import WordCloud
 
+from demo.system.structures import FrequencyDict
+
 Coordinates = Tuple[float, float]
 
 
+class PlacesDict(dict):
+    def __init__(self, places: List[Coordinates]):
+        super().__init__()
+
+        for place in places:
+            self.setdefault(place, FrequencyDict())
+
+    def increment(self, place: Coordinates, key):
+        self[place].increment(key)
+
+    def increment_nearest_place(self, target: Coordinates, key):
+        nearest, _distance = find_nearest_place(target, self.keys())
+        self.increment(nearest, key)
+
+
 def find_nearest_place(
-    target: Coordinates, places: List[Coordinates]
+    target: Coordinates, places: Iterable[Coordinates]
 ) -> Tuple[Coordinates, float]:
     near, distance = None, math.inf
     for place in places:
