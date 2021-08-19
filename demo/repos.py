@@ -1,32 +1,32 @@
-from typing import List
+from typing import Iterable
 
 import folium
 
 from .constants import FOLIUM_MAP_CONFIG
-from .geo import Coordinates, find_nearest_place, prepare_marker
-from .services import FrequencyDict
+from .geo import Coordinates, prepare_marker
+from .geo import PlacesDict
 
 # TODO: with bisect module and custom structure it's possible to improve performance
 # TODO: frequencies should be saved in an external database
 
 
 class FrequencyDictRepo:
-    def __init__(self, service: FrequencyDict):
-        self._service = service
-        self._service.init_addresses([(44.6543412, 10.9011459)])
+    def __init__(self):
+        self._coordinates = [(44.6543412, 10.9011459)]
+        self._data = PlacesDict(self._coordinates)
 
     @property
-    def places(self) -> List[Coordinates]:
-        return self._service.addresses
+    def places(self) -> Iterable[Coordinates]:
+        return self._data.keys()
 
-    def find_nearest_place(self, coord: Coordinates) -> Coordinates:
-        return find_nearest_place(coord, self._service.addresses)[0]
+    def update_frequency(self, place: Coordinates, key):
+        self._data.increment(place, key)
 
-    def update_frequency(self, place: Coordinates, key: str):
-        self._service.increment(place, key)
+    def update_nearest_place(self, target: Coordinates, key):
+        self._data.increment_nearest_place(target, key)
 
-    def fetch_frequency_table(self, place: Coordinates):
-        return self._service.fetch_address(place)
+    def fetch_frequency_table(self, place: Coordinates) -> dict:
+        return self._data.get(place)
 
 
 class FoliumMapRepo:

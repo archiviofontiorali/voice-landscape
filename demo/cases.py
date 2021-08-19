@@ -63,7 +63,7 @@ class SharePage:
     async def execute(self, target: Coordinates, text: str, request):
         if request.method == "POST":
             logger.debug(f"Receiving text from {target}: {text}")
-            nearest_place = self._frequencies.find_nearest_place(target)
+            nearest_place, _ = find_nearest_place(target, self._frequency_repo.places)
 
             doc = self._nlp(text)
             for token in doc:
