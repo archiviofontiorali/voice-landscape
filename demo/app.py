@@ -3,26 +3,28 @@ from starlette.routing import Route
 
 from .cases import FoliumMapPage, HomePage, LeafletMapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
-from .repos import FoliumMapRepo, FrequencyDictRepo
+from .repos import FoliumMapRepo, FrequencyDictRepo, FrequencySQLRepo
+from .services import SQLite
 from .system.structures import Container
 
 
 class App:
     def __init__(self):
-        self._services = Container()
+        self._services = Container(sqlite=SQLite("db/db.sqlite"))
 
         s = self._services
         self._repos = Container(
             frequencies=FrequencyDictRepo(),
+            frequencies_db=FrequencySQLRepo(s.sqlite),
             map=FoliumMapRepo(),
         )
 
         r = self._repos
         self._cases = Container(
             home=HomePage(),
-            map=LeafletMapPage(r.frequencies),
-            legacy_map=FoliumMapPage(r.frequencies, r.map),
-            share=SharePage(r.frequencies),
+            map=LeafletMapPage(r.frequencies_db),
+            legacy_map=FoliumMapPage(r.frequencies_db, r.map),
+            share=SharePage(r.frequencies_db),
             ping=Ping(),
         )
 
