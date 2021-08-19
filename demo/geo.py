@@ -39,7 +39,10 @@ def prepare_marker(place, frequency_repo) -> Tuple[List[float], str]:
     frequencies = frequency_repo.fetch_frequency_table(place)
 
     cloud = WordCloud(background_color=None, mode="RGBA")
-    cloud.generate_from_frequencies(frequencies)
+    if frequencies:
+        cloud.generate_from_frequencies(frequencies)
+    else:
+        cloud.generate("voce")
 
     svg = cloud.to_svg()
     return list(place), svg
