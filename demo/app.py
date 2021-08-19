@@ -1,15 +1,11 @@
 from starlette.applications import Starlette
 from starlette.routing import Route
 
-from .cases import HomePage, FoliumMapPage, Ping, SharePage, LeafletMapPage
+from .cases import FoliumMapPage, HomePage, LeafletMapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
 from .repos import FrequencyRepo, FoliumMapRepo
 from .services import FrequencyDict
-
-
-class Container:
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+from .system.structures import Container
 
 
 class App:
