@@ -1,19 +1,16 @@
 from typing import List
 
 import folium
-from wordcloud import WordCloud
 
 from .constants import FOLIUM_MAP_CONFIG
 from .geo import Coordinates, find_nearest_place, prepare_marker
 from .services import FrequencyDict
 
+# TODO: with bisect module and custom structure it's possible to improve performance
+# TODO: frequencies should be saved in an external database
 
-class FrequencyRepo:
-    # TODO: places should be initialized by a method executed during app initialization
-    # TODO: with bisect module and custom structure it's possible to improve performance
-    # TODO: frequencies should be saved in an external database
-    # TODO: FrequencyDict could be an utility structure rather than a service
 
+class FrequencyDictRepo:
     def __init__(self, service: FrequencyDict):
         self._service = service
         self._service.init_addresses([(44.6543412, 10.9011459)])

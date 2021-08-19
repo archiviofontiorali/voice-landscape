@@ -3,7 +3,7 @@ from starlette.routing import Route
 
 from .cases import FoliumMapPage, HomePage, LeafletMapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
-from .repos import FrequencyRepo, FoliumMapRepo
+from .repos import FoliumMapRepo, FrequencyDictRepo
 from .services import FrequencyDict
 from .system.structures import Container
 
@@ -14,7 +14,7 @@ class App:
 
         s = self._services
         self._repos = Container(
-            frequencies=FrequencyRepo(s.frequency_dict),
+            frequencies=FrequencyDictRepo(s.frequency_dict),
             map=FoliumMapRepo(),
         )
 
