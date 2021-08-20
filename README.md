@@ -27,3 +27,8 @@ $ .venv/bin/pip3 install --upgrade pip setuptools
 $ .venv/bin/pip3 install -e .
 $ .venv/bin/python3 -m spacy download it_core_news_sm
 ```
+
+To run server
+```shell
+$ .venv/bin/uvicorn demo.asgi:app 
+```
