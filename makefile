@@ -34,11 +34,6 @@ develop:
 	$(VENV)/bin/python -m spacy download en_core_web_sm
 	$(VENV)/bin/python -m spacy download it_core_news_sm
 
-
-.PHONY: run
-run:
-	@python -m demo
-
 .PHONY: serve
 serve:
 	$(VENV)/bin/uvicorn $(PACKAGE).asgi:app --reload --host 0.0.0.0
