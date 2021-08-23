@@ -1,1 +1,9 @@
 /* Custom CSS */
+
+.alert { outline: 1px solid; }
+.alert:hover { outline-width: 2px; }
+
+.alert-error { outline-color: DarkRed; }
+.alert-warning { outline-color: Orange; }
+.alert-info { }
+.alert-debug { outline-color: Blue; }
