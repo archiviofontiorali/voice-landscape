@@ -8,10 +8,3 @@ MAP_PROVIDER_ATTRIBUTION = (
     "&mdash; Map data &copy; "
     '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 )
-
-
-FOLIUM_MAP_CONFIG = {
-    "location": list(AFOR_COORDINATES),
-    "zoom_start": 14,
-    "tiles": "Stamen Toner Background",
-}

@@ -1,11 +1,10 @@
 from typing import Iterable
 
-import folium
+from .geo import Coordinates, PlacesDict
+from .services import SQLite
+
 # from loguru import logger
 
-from .constants import FOLIUM_MAP_CONFIG
-from .geo import Coordinates, PlacesDict, prepare_marker
-from .services import SQLite
 
 # TODO: with bisect module and custom structure it's possible to improve performance
 
@@ -63,25 +62,3 @@ class FrequencySQLRepo:
         )
         result = self._db.execute(query, latitude=place[0], longitude=place[1])
         return dict(result.fetchall())
-
-
-class FoliumMapRepo:
-    _map: folium.Map
-
-    def __init__(self):
-        self._config = FOLIUM_MAP_CONFIG
-        self._map = folium.Map(**self._config)
-
-    def update_map(self, frequency_repo):
-        self._map = folium.Map(**self._config)
-        for place in frequency_repo.places:
-            _, svg = prepare_marker(place, frequency_repo)
-            icon = folium.features.DivIcon(html=svg)
-            marker = folium.Marker(place, icon=icon)
-
-            marker.add_to(self._map)
-
-    @property
-    def map(self):
-        # return self._map.get_root().render()
-        return self._map._repr_html_()

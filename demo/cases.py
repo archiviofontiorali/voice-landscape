@@ -5,7 +5,7 @@ from starlette.templating import Jinja2Templates
 
 from .constants import AFOR_COORDINATES, MAP_PROVIDER_ATTRIBUTION, MAP_PROVIDER_URL
 from .geo import Coordinates, prepare_marker, find_nearest_place
-from .repos import FoliumMapRepo, FrequencyDictRepo
+from .repos import FrequencyDictRepo
 from .models import MapOptions
 
 # TODO: create presenters
@@ -17,20 +17,6 @@ class HomePage:
     async def execute(request):
         context = {"request": request}
         return templates.TemplateResponse("index.html", context)
-
-
-class FoliumMapPage:
-    def __init__(self, frequency_repo: FrequencyDictRepo, map_repo: FoliumMapRepo):
-        self._frequency_repo = frequency_repo
-        self._map_repo = map_repo
-
-    async def execute(self, request):
-        self._map_repo.update_map(self._frequency_repo)
-        context = {
-            "map": self._map_repo.map,
-            "request": request,
-        }
-        return templates.TemplateResponse("legacy_map.html", context)
 
 
 class LeafletMapPage:
