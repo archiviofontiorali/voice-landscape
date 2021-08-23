@@ -15,7 +15,7 @@
       <input id="loc-y" type=number name=loc-y required readonly>
     </div>
     <div>
-      <button id="location-button" type="button" onclick="read_location()">
+      <button id="location-button" type="button" onclick="readCurrentPosition()">
         Get Your Position
       </button>
     </div>
@@ -29,11 +29,19 @@
 
 {% block scripts %}
   <script>
-    function read_location() {
-      let x = 44.50, y = 45.15;
-      document.getElementById("loc-x").value = x;
-      document.getElementById("loc-y").value = y;
-      document.getElementById("button-submit").removeAttribute("disabled");
+    function readCurrentPosition() {
+      if (!navigator.geolocation) { 
+        showErrorAlert("Geolocation is not supported by this browser."); return;
+      }
+      
+      navigator.geolocation.getCurrentPosition(
+          position => {
+            $("input#loc-x").val(position.coords.latitude);
+            $("input#loc-y").val(position.coords.longitude);
+            $("input#button-submit").removeAttr("disabled");
+          }, 
+          error => showErrorAlert(error.message)
+      );
     } 
   </script>
 {% endblock %}
