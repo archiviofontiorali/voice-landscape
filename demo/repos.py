@@ -39,7 +39,10 @@ class FrequencySQLRepo:
             ]
         )
 
-        self._coordinates = [(44.6543412, 10.9011459)]
+        self._coordinates = [
+            (44.6543412, 10.9011459),
+            (44.654110667970976, 10.898906959317424),
+        ]
 
         self._db.create_table(self._table, self._keys)
 
