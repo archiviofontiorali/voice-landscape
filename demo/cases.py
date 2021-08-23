@@ -9,7 +9,7 @@ from .repos import FoliumMapRepo, FrequencyDictRepo
 from .models import MapOptions
 
 # TODO: create presenters
-templates = Jinja2Templates(directory="demo/templates")
+templates = Jinja2Templates(directory="templates")
 
 
 class HomePage:
