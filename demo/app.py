@@ -1,5 +1,6 @@
 from starlette.applications import Starlette
-from starlette.routing import Route
+from starlette.routing import Mount, Route
+from starlette.staticfiles import StaticFiles
 
 from .cases import FoliumMapPage, HomePage, LeafletMapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
@@ -43,6 +44,7 @@ class App:
             Route("/legacy_map", endpoint=h.legacy_map.__call__),
             Route("/share", endpoint=h.share.__call__, methods=["GET", "POST"]),
             Route("/ping", endpoint=h.ping.__call__),
+            Mount("/", app=StaticFiles(directory="www"), name="static"),
         ]
 
     def app(self):
