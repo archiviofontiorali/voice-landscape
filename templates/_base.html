@@ -15,19 +15,19 @@
 <body class="flex flex-column min-vh-100 helvetica pa1">
   
   {% block header %}
-    <header class="w-100 mw9 outline ma1 center">{% include "_header.html" %}</header>
+    <header class="w-100 mw9 outline center mv1">{% include "_header.html" %}</header>
   {% endblock %}
   
-  <header id="alert-box"></header>
+  <header id="alert-box" class="w-100 mw9 center mv1"></header>
 
   {% block main %}
-    <main class="w-100 mw9 outline ma1 pa1 center flex-grow">
+    <main class="w-100 mw9 outline mv1 pa1 center flex-grow">
       {% block contents %}{% endblock %}
     </main>  
   {% endblock %}
 
   {% block footer %}
-    <footer class="dn w-100 mw9 outline ma1 center">{% include "_footer.html" %}</footer>
+    <footer class="dn w-100 mw9 outline mv1 center">{% include "_footer.html" %}</footer>
   {% endblock %}
 
   {% include "_scripts.html" %}
