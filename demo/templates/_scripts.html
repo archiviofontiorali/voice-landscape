@@ -1,0 +1,15 @@
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+  function showAlert(message, kind="info") {
+    $("#alert-box").append(`<div class="alert alert-${kind}">${message}</div>`);
+  }
+  
+  function showErrorAlert(message) { showAlert(message, "error") }
+  function showWarningAlert(message) { showAlert(message, "warning") }
+  function showInfoAlert(message) { showAlert(message, "info") }
+  function showDebugAlert(message) { showAlert(message, "debug") }
+</script>
