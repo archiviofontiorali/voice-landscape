@@ -7,3 +7,19 @@
 .alert-warning { outline-color: Orange; }
 .alert-info { }
 .alert-debug { outline-color: Blue; }
+
+
+svg {
+    font-family: monospace;
+}
+
+.word-cloud svg {
+    /*outline: 1px solid;*/
+    margin-left: -200px;
+    margin-top: -100px;
+    /*padding: 50px;*/
+    /*border-radius: 50px;*/
+}
+.word-cloud svg text {
+    font-family: Consolas, monaco, monospace;
+}
