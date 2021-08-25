@@ -5,7 +5,7 @@ from starlette.templating import Jinja2Templates
 
 from .constants import AFOR_COORDINATES, MAP_PROVIDER_ATTRIBUTION, MAP_PROVIDER_URL
 from .geo import Coordinates, prepare_marker, find_nearest_place
-from .repos import FrequencyDictRepo
+from .repos import FrequencyRepo
 from .models import MapOptions
 
 # TODO: create presenters
@@ -20,7 +20,7 @@ class HomePage:
 
 
 class LeafletMapPage:
-    def __init__(self, frequency_repo: FrequencyDictRepo):
+    def __init__(self, frequency_repo: FrequencyRepo):
         self._frequency_repo = frequency_repo
         self._map_config = MapOptions(
             center=list(AFOR_COORDINATES),
@@ -42,7 +42,7 @@ class LeafletMapPage:
 
 
 class SharePage:
-    def __init__(self, frequency_repo: FrequencyDictRepo):
+    def __init__(self, frequency_repo: FrequencyRepo):
         self._frequency_repo = frequency_repo
         self._nlp = spacy.load("it_core_news_sm")
 

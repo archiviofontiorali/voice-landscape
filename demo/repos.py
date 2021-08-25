@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Iterable
 
 from .geo import Coordinates, PlacesDict
@@ -9,7 +10,17 @@ from .services import SQLite
 # TODO: with bisect module and custom structure it's possible to improve performance
 
 
-class FrequencyDictRepo:
+class FrequencyRepo(ABC):
+    places: Iterable[Coordinates]
+
+    def update_frequency(self, place: Coordinates, key: str):
+        pass
+
+    def fetch_frequency_table(self, place: Coordinates) -> dict:
+        pass
+
+
+class FrequencyDictRepo(FrequencyRepo):
     def __init__(self):
         self._coordinates = [(44.6543412, 10.9011459)]
         self._data = PlacesDict(self._coordinates)
@@ -25,7 +36,7 @@ class FrequencyDictRepo:
         return self._data.get(place)
 
 
-class FrequencySQLRepo:
+class FrequencySQLRepo(FrequencyRepo):
     def __init__(self, sql_db: SQLite):
         self._db = sql_db
         self._table = "frequencies"
