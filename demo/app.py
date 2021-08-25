@@ -15,15 +15,14 @@ class App:
 
         s = self._services
         self._repos = Container(
-            frequencies=FrequencyDictRepo(),
-            frequencies_db=FrequencySQLRepo(s.sqlite),
+            frequencies=FrequencySQLRepo(s.sqlite),
         )
 
         r = self._repos
         self._cases = Container(
             home=HomePage(),
-            map=LeafletMapPage(r.frequencies_db),
-            share=SharePage(r.frequencies_db),
+            map=LeafletMapPage(r.frequencies),
+            share=SharePage(r.frequencies),
             ping=Ping(),
         )
 
