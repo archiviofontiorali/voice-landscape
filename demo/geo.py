@@ -35,16 +35,14 @@ def find_nearest_place(
     return near, distance
 
 
+# TODO: DEPRECATED, remove WordCloud after disposal
 def prepare_marker(place, frequency_repo) -> Tuple[List[float], str]:
     frequencies = frequency_repo.fetch_frequency_table(place)
 
     cloud = WordCloud(
         background_color=None,
-        # background_color="rgba(255, 255, 255, .75)",
         mode="RGBA",
-        # colormap="gray",
         color_func=lambda *args, **kwargs: "rgba(0,0,0,.7)",
-        # color_func=lambda *args, **kwargs: "black"
         max_words=10,
     )
     if frequencies:

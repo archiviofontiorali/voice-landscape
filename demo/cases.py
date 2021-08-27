@@ -4,9 +4,9 @@ from starlette.responses import PlainTextResponse
 from starlette.templating import Jinja2Templates
 
 from .constants import AFOR_COORDINATES, MAP_PROVIDER_ATTRIBUTION, MAP_PROVIDER_URL
-from .geo import Coordinates, prepare_marker, find_nearest_place
-from .repos import FrequencyRepo
+from .geo import Coordinates, find_nearest_place
 from .models import MapOptions
+from .repos import FrequencyRepo
 
 # TODO: create presenters
 templates = Jinja2Templates(directory="templates")
@@ -28,14 +28,19 @@ class LeafletMapPage:
             provider_attribution=MAP_PROVIDER_ATTRIBUTION,
         )
 
+    def _prepare_frequencies(self, place):
+        _table = self._frequency_repo.fetch_frequency_table(place)
+        _max_freq = max(_table.values())
+        return [[w, f / _max_freq] for w, f in _table.items()]
+
     async def execute(self, request):
-        markers = [
-            prepare_marker(place, self._frequency_repo)
+        frequencies = [
+            (list(place), self._prepare_frequencies(place))
             for place in self._frequency_repo.places
         ]
         context = {
             "map_config": self._map_config,
-            "markers": markers,
+            "frequencies": frequencies,
             "request": request,
         }
         return templates.TemplateResponse("map.html", context)

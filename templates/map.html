@@ -9,22 +9,59 @@
           integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
           crossorigin=""></script>
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.2/wordcloud2.min.js" 
+          integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
   <script>
     const provider = "{{ map_config.provider_url }}";
     const tileLayerOptions = { 
       attribution: `{{ map_config.provider_attribution | safe }}`, 
       minZoom: 15, maxZoom: 19
     };
-  
-    const map = L.map('map').setView({{ map_config.center }}, 16);
+    const initialZoom = 16;
+    
+    const map = L.map('map').setView({{ map_config.center }}, initialZoom);
     const tile = L.tileLayer(provider, tileLayerOptions).addTo(map);
-
-    {% for (place, svg) in markers %}
-      L.marker(
-          {{ place }}, 
-          { icon: L.divIcon({ html: `{{ svg | safe }}`, className: "word-cloud" })}
-      ).addTo(map);
-      {#L.marker({{ place }}).addTo(map)#}
+    
+    const minWidth = 120, maxWidth = 500;
+    const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
+    
+    function setMarkersWidth() {
+      let width = minWidth + zoomRatio * (map.getZoom() - tileLayerOptions.minZoom);
+      let height = width / 2;
+      $("#map .word-cloud canvas").css({
+        width: `${width}px`, height: `${height}px`,
+        "margin-left": `-${width / 2}px`, "margin-top": `-${height / 2}px`
+      });
+    }
+    
+    let marker, icon, list;
+    const options = { 
+      backgroundColor: "rgba(255, 255, 255, 0)", 
+      shrinkToFit: true,
+      fontFamily: "Consolas, monaco, monospace",
+      color: "rgba(0, 0, 0, .7)",
+    };
+    
+    {% for (place, freq) in frequencies %}      
+      icon = L.divIcon({ 
+        html: '<canvas></canvas>', 
+        className: "word-cloud word-cloud-{{ loop.index }}", 
+        iconSize: null 
+      });
+      L.marker({{ place | safe }}, { icon: icon }).addTo(map);
+      
+      
+      list = {{ freq | safe }};
+      list = list.map(([w, f]) => [w, f * 64]);
+      console.debug(list)
+      canvas = $("#map .word-cloud.word-cloud-{{ loop.index }} canvas");
+      WordCloud(canvas[0], { list: list, ...options });
     {% endfor %}
+    
+    setMarkersWidth()
+    map.on('zoomend', () => setMarkersWidth());
+    
   </script>
 {% endblock %}
