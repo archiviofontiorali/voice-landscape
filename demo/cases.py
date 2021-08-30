@@ -1,4 +1,5 @@
 import spacy
+import spacy.symbols
 from loguru import logger
 from starlette.responses import PlainTextResponse
 from starlette.templating import Jinja2Templates
@@ -58,7 +59,12 @@ class SharePage:
 
             doc = self._nlp(text)
             for token in doc:
-                if token.tag_ in ("V", "S"):
+                if token.pos in (
+                    spacy.symbols.ADV,
+                    spacy.symbols.NOUN,
+                    spacy.symbols.VERB,
+                    spacy.symbols.ADJ,
+                ):
                     self._frequency_repo.update_frequency(nearest_place, token.lemma_)
 
         context = {"request": request}
