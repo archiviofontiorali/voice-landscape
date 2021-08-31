@@ -1,7 +1,7 @@
 import spacy
 import spacy.symbols
 from loguru import logger
-from starlette.responses import PlainTextResponse
+from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.templating import Jinja2Templates
 
 from .constants import AFOR_COORDINATES, MAP_PROVIDER_ATTRIBUTION, MAP_PROVIDER_URL
@@ -69,6 +69,15 @@ class SharePage:
 
         context = {"request": request}
         return templates.TemplateResponse("share.html", context)
+
+
+class SpeechToText:
+    def __init__(self):
+        pass
+
+    async def execute(self, request, audio):
+        logger.debug(audio)
+        return JSONResponse("")
 
 
 class Ping:
