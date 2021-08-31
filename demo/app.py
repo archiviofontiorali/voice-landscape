@@ -4,7 +4,7 @@ from starlette.staticfiles import StaticFiles
 
 from .cases import HomePage, LeafletMapPage, Ping, SharePage
 from .handlers import PageHandler, ShareHandler
-from .repos import FrequencyDictRepo, FrequencySQLRepo
+from .repos import FrequencySQLRepo
 from .services import SQLite
 from .system.structures import Container
 
