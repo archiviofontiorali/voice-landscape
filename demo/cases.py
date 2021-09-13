@@ -6,6 +6,7 @@ from starlette.templating import Jinja2Templates
 
 from .geo import Coordinates, find_nearest_place, prepare_map_frequencies
 from .repos import FrequencyRepo
+from .constants import SHOWCASE_RELOAD_TIME
 
 # TODO: create presenters
 templates = Jinja2Templates(directory="templates")
@@ -38,6 +39,7 @@ class ShowcasePage:
     async def execute(self, request):
         places = prepare_map_frequencies(self._frequency_repo)
         context = {
+            "reload": SHOWCASE_RELOAD_TIME,
             "places": places,
             "request": request,
         }

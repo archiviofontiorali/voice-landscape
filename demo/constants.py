@@ -8,3 +8,5 @@ MAP_PROVIDER_ATTRIBUTION = (
     "&mdash; Map data &copy; "
     '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 )
+
+SHOWCASE_RELOAD_TIME = 5

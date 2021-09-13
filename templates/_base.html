@@ -5,6 +5,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
   
+  {% block custom_meta %}{% endblock %}
+  
   <title>{{ title | default('AFOr | Paesaggio di Voci', True) }}</title>
   
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>

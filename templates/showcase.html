@@ -1,5 +1,9 @@
 {% extends "_base.html" %}
 
+{% block custom_meta %}
+  <meta http-equiv="refresh" content="{{ reload }}" />
+{% endblock %}
+
 {% block contents %}
   <div id="map" style="height: 85vh"></div>
 {% endblock %}
