@@ -7,14 +7,14 @@
 {% block scripts %}
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
           integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-          crossorigin=""></script>
+          crossorigin="" defer></script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.2/wordcloud2.min.js" 
           integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" 
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+          crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
   
-  <script src="/js/map.js"></script>
-  <script>
-    initMap({{ places | safe }})
+  <script src="/js/map.js" defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => initMap({{ places | safe }}));
   </script>
 {% endblock %}
