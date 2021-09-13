@@ -1,5 +1,7 @@
 /* Custom CSS */
 
+.flex-grow { flex-grow: 1; }
+
 .alert { outline: 1px solid; }
 .alert:hover { outline-width: 2px; }
 
