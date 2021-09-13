@@ -6,7 +6,7 @@ from wordcloud import WordCloud
 
 from demo.system.structures import FrequencyDict
 
-Coordinates = Tuple[float, float]
+from .models import Coordinates, Place
 
 
 class PlacesDict(dict):
