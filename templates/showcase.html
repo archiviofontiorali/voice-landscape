@@ -4,8 +4,22 @@
   <meta http-equiv="refresh" content="{{ reload }}" />
 {% endblock %}
 
-{% block contents %}
-  <div id="map" style="height: 85vh"></div>
+
+{% block header %}{% endblock %}
+{% block alert %}{% endblock %}
+{% block footer %}{% endblock %}
+
+
+{% block main %}
+  <main id="showcase" class="flex flex-row">
+    <section id="full-map" class="outline w-70 mr1 pa1">
+      <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
+    </section>
+    
+    <section id="statistics" class="outline w-30 ml1 pa1">
+      <h1>Statistiche</h1>
+    </section>
+  </main>
 {% endblock %}
 
 {% block scripts %}
