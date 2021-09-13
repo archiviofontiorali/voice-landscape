@@ -24,18 +24,10 @@ class LeafletMapPage:
     def __init__(self, frequency_repo: FrequencyRepo):
         self._frequency_repo = frequency_repo
 
-    def _prepare_frequencies(self):
-        result = []
-        for place in self._frequency_repo.places:
-            table = self._frequency_repo.fetch_frequency_table(place)
-            max_freq = max(table.values())
-            result.append((list(place), [[w, f / max_freq] for w, f in table.items()]))
-        return result
-
     async def execute(self, request):
-        frequencies = self._prepare_frequencies()
+        places = prepare_map_frequencies(self._frequency_repo)
         context = {
-            "frequencies": frequencies,
+            "places": places,
             "request": request,
         }
         return templates.TemplateResponse("map.html", context)

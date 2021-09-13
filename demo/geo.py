@@ -1,5 +1,5 @@
 import math
-from typing import List, Tuple, Iterable
+from typing import Iterable, List, Tuple
 
 import geopy.distance
 from wordcloud import WordCloud
@@ -52,3 +52,15 @@ def prepare_marker(place, frequency_repo) -> Tuple[List[float], str]:
 
     svg = cloud.to_svg()
     return list(place), svg
+
+
+def prepare_map_frequencies(frequency_repo) -> list:
+    result = []
+    for place in frequency_repo.places:
+        frequencies = frequency_repo.fetch_frequency_table(place)
+        max_frequency = max(frequencies.values())
+        for key in frequencies:
+            frequencies[key] /= max_frequency
+        obj = Place(coordinates=place, frequencies=frequencies).to_dict()
+        result.append(obj)
+    return result

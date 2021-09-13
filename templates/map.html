@@ -13,55 +13,8 @@
           integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" 
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
+  <script src="/js/map.js"></script>
   <script>
-    const provider = "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.png";
-    const tileLayerOptions = { 
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      minZoom: 15, maxZoom: 19
-    };
-    const initialZoom = 16;
-    
-    const map = L.map('map').setView([44.6543412, 10.9011459], initialZoom);
-    const tile = L.tileLayer(provider, tileLayerOptions).addTo(map);
-    
-    const minWidth = 120, maxWidth = 500;
-    const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
-    
-    function setMarkersWidth() {
-      let width = minWidth + zoomRatio * (map.getZoom() - tileLayerOptions.minZoom);
-      let height = width / 2;
-      $("#map .word-cloud canvas").css({
-        width: `${width}px`, height: `${height}px`,
-        "margin-left": `-${width / 2}px`, "margin-top": `-${height / 2}px`
-      });
-    }
-    
-    let marker, icon, list;
-    const options = { 
-      backgroundColor: "rgba(255, 255, 255, 0)", 
-      shrinkToFit: true,
-      fontFamily: "Consolas, monaco, monospace",
-      color: "rgba(0, 0, 0, .7)",
-    };
-    
-    {% for (place, freq) in frequencies %}      
-      icon = L.divIcon({ 
-        html: '<canvas></canvas>', 
-        className: "word-cloud word-cloud-{{ loop.index }}", 
-        iconSize: null 
-      });
-      L.marker({{ place | safe }}, { icon: icon }).addTo(map);
-      
-      
-      list = {{ freq | safe }};
-      list = list.map(([w, f]) => [w, f * 64]);
-      console.debug(list)
-      canvas = $("#map .word-cloud.word-cloud-{{ loop.index }} canvas");
-      WordCloud(canvas[0], { list: list, ...options });
-    {% endfor %}
-    
-    setMarkersWidth()
-    map.on('zoomend', () => setMarkersWidth());
-    
+    initMap({{ places | safe }})
   </script>
 {% endblock %}
