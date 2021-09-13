@@ -14,14 +14,14 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
   <script>
-    const provider = "{{ map_config.provider_url }}";
+    const provider = "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.png";
     const tileLayerOptions = { 
-      attribution: `{{ map_config.provider_attribution | safe }}`, 
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       minZoom: 15, maxZoom: 19
     };
     const initialZoom = 16;
     
-    const map = L.map('map').setView({{ map_config.center }}, initialZoom);
+    const map = L.map('map').setView([44.6543412, 10.9011459], initialZoom);
     const tile = L.tileLayer(provider, tileLayerOptions).addTo(map);
     
     const minWidth = 120, maxWidth = 500;

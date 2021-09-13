@@ -23,24 +23,18 @@ class HomePage:
 class LeafletMapPage:
     def __init__(self, frequency_repo: FrequencyRepo):
         self._frequency_repo = frequency_repo
-        self._map_config = MapOptions(
-            center=list(AFOR_COORDINATES),
-            provider_url=MAP_PROVIDER_URL,
-            provider_attribution=MAP_PROVIDER_ATTRIBUTION,
-        )
 
-    def _prepare_frequencies(self, place):
-        _table = self._frequency_repo.fetch_frequency_table(place)
-        _max_freq = max(_table.values())
-        return [[w, f / _max_freq] for w, f in _table.items()]
+    def _prepare_frequencies(self):
+        result = []
+        for place in self._frequency_repo.places:
+            table = self._frequency_repo.fetch_frequency_table(place)
+            max_freq = max(table.values())
+            result.append((list(place), [[w, f / max_freq] for w, f in table.items()]))
+        return result
 
     async def execute(self, request):
-        frequencies = [
-            (list(place), self._prepare_frequencies(place))
-            for place in self._frequency_repo.places
-        ]
+        frequencies = self._prepare_frequencies()
         context = {
-            "map_config": self._map_config,
             "frequencies": frequencies,
             "request": request,
         }
