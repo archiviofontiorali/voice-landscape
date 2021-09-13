@@ -2,7 +2,7 @@ from starlette.applications import Starlette
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from .cases import HomePage, LeafletMapPage, Ping, SharePage, SpeechToText
+from .cases import HomePage, LeafletMapPage, Ping, SharePage, ShowcasePage, SpeechToText
 from .handlers import PageHandler, ShareHandler, STTHandler
 from .repos import FrequencySQLRepo
 from .services import SQLite
@@ -22,6 +22,7 @@ class App:
         self._cases = Container(
             home=HomePage(),
             map=LeafletMapPage(r.frequencies),
+            showcase=ShowcasePage(r.frequencies),
             share=SharePage(r.frequencies),
             stt=SpeechToText(),
             ping=Ping(),
@@ -31,6 +32,7 @@ class App:
         self._handlers = Container(
             home=PageHandler(c.home),
             map=PageHandler(c.map),
+            showcase=PageHandler(c.showcase),
             share=ShareHandler(c.share),
             stt=STTHandler(c.stt),
             ping=PageHandler(c.ping),
@@ -40,6 +42,7 @@ class App:
         self._routes = [
             Route("/", endpoint=h.home.__call__),
             Route("/map", endpoint=h.map.__call__),
+            Route("/showcase", endpoint=h.showcase.__call__),
             Route("/share", endpoint=h.share.__call__, methods=["GET", "POST"]),
             Route("/api/stt", endpoint=h.stt.__call__, methods=["POST"]),
             Route("/ping", endpoint=h.ping.__call__),

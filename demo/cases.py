@@ -4,9 +4,7 @@ from loguru import logger
 from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.templating import Jinja2Templates
 
-from .constants import AFOR_COORDINATES, MAP_PROVIDER_ATTRIBUTION, MAP_PROVIDER_URL
-from .geo import Coordinates, find_nearest_place
-from .models import MapOptions
+from .geo import Coordinates, find_nearest_place, prepare_map_frequencies
 from .repos import FrequencyRepo
 
 # TODO: create presenters
@@ -31,6 +29,19 @@ class LeafletMapPage:
             "request": request,
         }
         return templates.TemplateResponse("map.html", context)
+
+
+class ShowcasePage:
+    def __init__(self, frequency_repo: FrequencyRepo):
+        self._frequency_repo = frequency_repo
+
+    async def execute(self, request):
+        places = prepare_map_frequencies(self._frequency_repo)
+        context = {
+            "places": places,
+            "request": request,
+        }
+        return templates.TemplateResponse("showcase.html", context)
 
 
 class SharePage:
