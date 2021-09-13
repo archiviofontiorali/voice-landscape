@@ -31,7 +31,6 @@ develop:
 	$(PIP) install --upgrade .[develop]
 	$(PIP) install --upgrade .[testing]
 	$(PIP) install -e .
-	$(VENV)/bin/python -m spacy download en_core_web_sm
 	$(VENV)/bin/python -m spacy download it_core_news_sm
 
 .PHONY: serve
