@@ -22,7 +22,7 @@ clean:
 .PHONY: venv
 venv: clean
 	@echo -e '$(bold)Create virtualenv$(clr)'
-	virtualenv -p /usr/bin/python$(PYTHON_VERSION) $(VENV)
+	/usr/bin/python$(PYTHON_VERSION) -m venv $(VENV)
 	$(PIP) install --upgrade pip setuptools
 
 .PHONY: develop
