@@ -65,19 +65,21 @@ class FrequencySQLRepo(FrequencyRepo):
         return self._coordinates
 
     async def update_frequency(self, place: Coordinates, key: str):
+        values = dict(latitude=place[0], longitude=place[1], word=key)
         query = (
             f"INSERT INTO {self._table} (latitude, longitude, word) "
             "VALUES (:latitude, :longitude, :word) "
             "ON CONFLICT(latitude, longitude, word) DO UPDATE SET frequency=frequency+1"
         )
-        await self._db.execute(query, latitude=place[0], longitude=place[1], word=key)
+        await self._db.execute(query, **values)
 
     async def fetch_frequency_table(self, place: Coordinates) -> List[tuple]:
+        values = dict(latitude=place[0], longitude=place[1])
         query = (
             f"SELECT word, frequency FROM {self._table} "
             "WHERE latitude=:latitude AND longitude=:longitude"
         )
-        return await self._db.fetch_all(query, latitude=place[0], longitude=place[1])
+        return await self._db.fetch_all(query, **values)
 
     async def prepare_map_frequencies(self):
         result = []

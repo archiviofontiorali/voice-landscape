@@ -3,16 +3,18 @@ const tileLayerOptions = {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   minZoom: 15, maxZoom: 19
 };
-const initialZoom = 16;
+
+const initialZoom = 17;
+const minWidth = 240, maxWidth = 480;
+const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
+
 const options = { 
   backgroundColor: "rgba(255, 255, 255, 0)", 
   shrinkToFit: true,
   fontFamily: "Consolas, monaco, monospace",
-  color: "rgba(0, 0, 0, .7)",
+  color: "rgba(0, 0, 0, .8)",
 };
 
-const minWidth = 120, maxWidth = 500;
-const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
 
 
 function initMap(places) {
