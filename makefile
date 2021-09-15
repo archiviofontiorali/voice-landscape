@@ -36,3 +36,9 @@ develop:
 .PHONY: serve
 serve:
 	$(VENV)/bin/uvicorn $(PACKAGE).asgi:app --reload --host 0.0.0.0
+
+
+
+.PHONY: test
+test:
+	$(VENV)/bin/pytest 
