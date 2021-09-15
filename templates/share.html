@@ -54,50 +54,9 @@
       );
     }
   </script>
-
-  <script>
-    let stream = null, recorder = null;
-    const constrains = { audio: true, video: false };
-    
-    const recordButton = $('#record-button');
-    const stopButton = $('#stop-button');
-    
-    function animateControls() {
-      recordButton.toggleClass('dn');
-      stopButton.toggleClass('dn');
-    }
-    
-    function onDataAvailable(data) {
-      let formData = new FormData();
-      let recording = new Blob([data], { type: "audio/ogg; codecs=opus" });
-      formData.append("audio", recording);
-      
-      axios.post(
-          "/api/stt", 
-          formData, 
-          {headers: {'Content-Type': 'multipart/form-data'}}
-      ).then(response => $('input#text').val(response.data));
-    }
-    
-    recordButton.click(() => {
-      if(!navigator.mediaDevices) 
-        showErrorAlert("Audio recording is not supported by this browser.");
-      else 
-        navigator.mediaDevices.getUserMedia(constrains)
-          .then(_stream => {
-            stream = _stream;
-            recorder = new MediaRecorder(stream);
-            recorder.ondataavailable = e => onDataAvailable(e.data);
-            recorder.start();
-            animateControls();
-          })
-          .catch(error => showErrorAlert(error));
-    });
-    
-    stopButton.click(() => {
-      if (recorder && recorder.state === "recording") recorder.stop();
-      for(let track of stream.getTracks()) track.stop();
-      animateControls();
-    });
-  </script>
+  
+  <!-- recommended -->
+  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+  <script src="/js/record.js"></script>
+  
 {% endblock %}
