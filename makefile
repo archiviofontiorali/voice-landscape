@@ -25,6 +25,13 @@ venv: clean
 	/usr/bin/python$(PYTHON_VERSION) -m venv $(VENV)
 	$(PIP) install --upgrade pip setuptools
 
+.PHONY: production
+production:
+	@echo -e '$(bold)Install and update requirements$(clr)'
+	$(PIP) install --upgrade .[production]
+	$(PIP) install -e .
+	$(VENV)/bin/python -m spacy download it_core_news_sm
+
 .PHONY: develop
 develop:
 	@echo -e '$(bold)Install and update requirements$(clr)'
