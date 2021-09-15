@@ -2,8 +2,7 @@ from starlette.applications import Starlette
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from . import services
-from .cases import HomePage, LeafletMapPage, Ping, SharePage, ShowcasePage, SpeechToText
+from . import cases, services
 from .config import DEBUG
 from .handlers import PageHandler, ShareHandler, STTHandler
 from .repos import FrequencySQLRepo
@@ -19,18 +18,20 @@ class App:
 
         r = self._repos
         self._cases = Container(
-            home=HomePage(),
-            map=LeafletMapPage(r.frequencies),
-            showcase=ShowcasePage(r.frequencies),
-            share=SharePage(r.frequencies),
-            stt=SpeechToText(),
-            ping=Ping(),
+            home=cases.HomePage(),
+            map=cases.LeafletMapPage(r.frequencies),
+            privacy=cases.PrivacyPage(),
+            showcase=cases.ShowcasePage(r.frequencies),
+            share=cases.SharePage(r.frequencies),
+            stt=cases.SpeechToText(),
+            ping=cases.Ping(),
         )
 
         c = self._cases
         self._handlers = Container(
             home=PageHandler(c.home),
             map=PageHandler(c.map),
+            privacy=PageHandler(c.privacy),
             showcase=PageHandler(c.showcase),
             share=ShareHandler(c.share),
             stt=STTHandler(c.stt),
@@ -43,6 +44,7 @@ class App:
             Route("/map", endpoint=h.map.__call__),
             Route("/showcase", endpoint=h.showcase.__call__),
             Route("/share", endpoint=h.share.__call__, methods=["GET", "POST"]),
+            Route("/privacy", endpoint=h.privacy.__call__),
             Route("/api/stt", endpoint=h.stt.__call__, methods=["POST"]),
             Route("/ping", endpoint=h.ping.__call__),
             Mount("/", app=StaticFiles(directory="www"), name="static"),
