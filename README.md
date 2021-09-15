@@ -41,3 +41,21 @@ To enable `nginx` and `gunicorn`, create a systemd unit file and apply HTTPS via
 certbot, follow this 
 [tutorial](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04)
 (ubuntu 20.04) 
+
+
+Example:
+```ini
+[Unit]
+Description=Gunicorn instance to run Paesaggio di Voci
+After=network.target
+
+[Service]
+User=<YOUR USER>
+Group=www-data
+WorkingDirectory=/home/<YOUR USER>/git/afor-paesaggio-di-voci
+Environment="PATH=/usr/bin:/home/<YOUR USER>/git/afor-paesaggio-di-voci/.venv/bin"
+ExecStart=/home/<YOUR USER>/git/afor-paesaggio-di-voci/.venv/bin/gunicorn -w 4 --bind unix:voci.afor.dev.sock -k uvicorn.workers.UvicornWorker -m 007 demo.asgi:app
+
+[Install]
+WantedBy=multi-user.target
+```
