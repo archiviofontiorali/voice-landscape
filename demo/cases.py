@@ -1,12 +1,16 @@
+import tempfile
+
+import pydub
 import spacy
 import spacy.symbols
+import speech_recognition
 from loguru import logger
 from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.templating import Jinja2Templates
 
+from .constants import SHOWCASE_RELOAD_TIME
 from .geo import Coordinates, find_nearest_place, prepare_map_frequencies
 from .repos import FrequencyRepo
-from .constants import SHOWCASE_RELOAD_TIME
 
 # TODO: create presenters
 templates = Jinja2Templates(directory="templates")
@@ -72,11 +76,17 @@ class SharePage:
 
 class SpeechToText:
     def __init__(self):
-        pass
+        self._recognizer = speech_recognition.Recognizer()
 
-    async def execute(self, request, audio):
-        logger.debug(audio)
-        return JSONResponse("")
+    async def execute(self, request, audio: tempfile.SpooledTemporaryFile):
+        sound = pydub.AudioSegment.from_file(audio)
+        raw = tempfile.NamedTemporaryFile(suffix=".wav")
+        sound.export(raw, format="wav")
+
+        with speech_recognition.AudioFile(raw.name) as source:
+            data = self._recognizer.record(source)
+            text = self._recognizer.recognize_google(data, language="it-IT")
+        return JSONResponse(text)
 
 
 class Ping:
