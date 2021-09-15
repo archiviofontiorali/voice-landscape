@@ -41,10 +41,12 @@ class ShowcasePage:
         self._frequency_repo = frequency_repo
 
     async def execute(self, request):
-        places = self._frequency_repo.prepare_map_frequencies()
+        places = await self._frequency_repo.prepare_map_frequencies()
+        stats = await self._frequency_repo.statistics()
         context = {
             "reload": SHOWCASE_RELOAD_TIME,
             "places": places,
+            "stats": stats,
             "request": request,
         }
         return templates.TemplateResponse("showcase.html", context)

@@ -21,6 +21,9 @@ class FrequencyRepo(ABC):
     async def prepare_map_frequencies(self):
         pass
 
+    async def statistics(self):
+        pass
+
 
 class FrequencyDictRepo(FrequencyRepo):
     def __init__(self):
@@ -96,3 +99,12 @@ class FrequencySQLRepo(FrequencyRepo):
             obj = Place(coordinates=place, frequencies=frequencies).to_dict()
             result.append(obj)
         return result
+
+    async def statistics(self):
+        query = (
+            f"SELECT word, sum(frequency) AS frequency FROM {self._table} "
+            "GROUP BY word ORDER BY frequency DESC LIMIT :top"
+        )
+        top_words = await self._db.fetch_all(query, top=5)
+        logger.debug(top_words)
+        return {"top_words": [(row[0], row[1]) for row in top_words]}

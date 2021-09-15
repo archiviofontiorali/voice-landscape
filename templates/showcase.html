@@ -12,12 +12,23 @@
 
 {% block main %}
   <main id="showcase" class="flex flex-row">
-    <section id="full-map" class="outline w-70 mr1 pa1">
+    <section id="full-map" class="outline w-80 mr1 pa1">
       <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
     </section>
     
-    <section id="statistics" class="outline w-30 ml1 pa1">
+    <section id="statistics" class="outline w-20 ml1 pa1">
       <h1>Statistiche</h1>
+    
+      <h2>Top 5 words</h2>
+      <table class="tc w-100">
+      {% for word, freq in stats.top_words %}
+        <tr class="striped--light-gray">
+          <td class="pa2">{{ word | title }}</td>
+          <td>{{ freq }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+      
     </section>
   </main>
 {% endblock %}
