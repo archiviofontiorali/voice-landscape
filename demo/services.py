@@ -1,6 +1,7 @@
 import sqlite3
 
 import databases
+from loguru import logger
 
 from . import config
 from .models import Path
@@ -8,7 +9,9 @@ from .models import Path
 
 class Database:
     def __init__(self):
-        self._db = databases.Database(config.DATABASE_URL)
+        self._url = config.DATABASE_URL
+        self._db = databases.Database(self._url)
+        logger.info(f"Using db url: {self._url}")
 
     async def connect(self):
         await self._db.connect()

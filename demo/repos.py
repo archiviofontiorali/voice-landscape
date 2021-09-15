@@ -67,9 +67,10 @@ class FrequencySQLRepo(FrequencyRepo):
     async def update_frequency(self, place: Coordinates, key: str):
         values = dict(latitude=place[0], longitude=place[1], word=key)
         query = (
-            f"INSERT INTO {self._table} (latitude, longitude, word) "
+            f"INSERT INTO {self._table}(latitude, longitude, word) "
             "VALUES (:latitude, :longitude, :word) "
-            "ON CONFLICT(latitude, longitude, word) DO UPDATE SET frequency=frequency+1"
+            "ON CONFLICT (latitude, longitude, word) "
+            "DO UPDATE SET frequency = frequencies.frequency + 1"
         )
         await self._db.execute(query, **values)
 
@@ -87,8 +88,8 @@ class FrequencySQLRepo(FrequencyRepo):
             frequencies = await self.fetch_frequency_table(place)
 
             if frequencies:
-                max_frequency = max(f for _, f in frequencies)
-                frequencies = {k: (f / max_frequency) for k, f in frequencies}
+                max_frequency = max(row[1] for row in frequencies)
+                frequencies = {row[0]: (row[1] / max_frequency) for row in frequencies}
             else:
                 frequencies = {}
 
