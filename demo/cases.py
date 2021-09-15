@@ -9,7 +9,7 @@ from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.templating import Jinja2Templates
 
 from .constants import SHOWCASE_RELOAD_TIME
-from .geo import Coordinates, find_nearest_place, prepare_map_frequencies
+from .geo import Coordinates, find_nearest_place
 from .repos import FrequencyRepo
 
 # TODO: create presenters
@@ -28,7 +28,7 @@ class LeafletMapPage:
         self._frequency_repo = frequency_repo
 
     async def execute(self, request):
-        places = prepare_map_frequencies(self._frequency_repo)
+        places = await self._frequency_repo.prepare_map_frequencies()
         context = {
             "places": places,
             "request": request,
@@ -41,7 +41,7 @@ class ShowcasePage:
         self._frequency_repo = frequency_repo
 
     async def execute(self, request):
-        places = prepare_map_frequencies(self._frequency_repo)
+        places = self._frequency_repo.prepare_map_frequencies()
         context = {
             "reload": SHOWCASE_RELOAD_TIME,
             "places": places,
@@ -58,7 +58,7 @@ class SharePage:
     async def execute(self, target: Coordinates, text: str, request):
         if request.method == "POST":
             logger.debug(f"Receiving text from {target}: {text}")
-            nearest_place, _ = find_nearest_place(target, self._frequency_repo.places)
+            nearest, _ = find_nearest_place(target, self._frequency_repo.places)
 
             doc = self._nlp(text)
             for token in doc:
@@ -68,7 +68,7 @@ class SharePage:
                     spacy.symbols.VERB,
                     spacy.symbols.ADJ,
                 ):
-                    self._frequency_repo.update_frequency(nearest_place, token.lemma_)
+                    await self._frequency_repo.update_frequency(nearest, token.lemma_)
 
         context = {"request": request}
         return templates.TemplateResponse("share.html", context)

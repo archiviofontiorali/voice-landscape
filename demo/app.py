@@ -2,21 +2,20 @@ from starlette.applications import Starlette
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
+from . import services
 from .cases import HomePage, LeafletMapPage, Ping, SharePage, ShowcasePage, SpeechToText
+from .config import DEBUG
 from .handlers import PageHandler, ShareHandler, STTHandler
 from .repos import FrequencySQLRepo
-from .services import SQLite
 from .system.structures import Container
 
 
 class App:
     def __init__(self):
-        self._services = Container(sqlite=SQLite("db/db.sqlite"))
+        self._services = Container(db=services.Database())
 
         s = self._services
-        self._repos = Container(
-            frequencies=FrequencySQLRepo(s.sqlite),
-        )
+        self._repos = Container(frequencies=FrequencySQLRepo(s.db))
 
         r = self._repos
         self._cases = Container(
@@ -50,4 +49,9 @@ class App:
         ]
 
     def app(self):
-        return Starlette(debug=True, routes=self._routes)
+        return Starlette(
+            debug=DEBUG,
+            routes=self._routes,
+            on_startup=[self._services.db.connect, self._repos.frequencies.init_db],
+            on_shutdown=[self._services.db.disconnect],
+        )

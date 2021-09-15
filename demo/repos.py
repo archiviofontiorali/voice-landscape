@@ -1,11 +1,10 @@
 from abc import ABC
-from typing import Iterable
+from typing import Iterable, List
 
-from .geo import Coordinates, PlacesDict
-from .services import SQLite
+from loguru import logger
 
-# from loguru import logger
-
+from .geo import PlacesDict
+from .models import Coordinates, Place
 
 # TODO: with bisect module and custom structure it's possible to improve performance
 
@@ -17,6 +16,9 @@ class FrequencyRepo(ABC):
         pass
 
     def fetch_frequency_table(self, place: Coordinates) -> dict:
+        pass
+
+    async def prepare_map_frequencies(self):
         pass
 
 
@@ -37,8 +39,8 @@ class FrequencyDictRepo(FrequencyRepo):
 
 
 class FrequencySQLRepo(FrequencyRepo):
-    def __init__(self, sql_db: SQLite):
-        self._db = sql_db
+    def __init__(self, db):
+        self._db = db
         self._table = "frequencies"
         self._keys = ", ".join(
             [
@@ -55,24 +57,39 @@ class FrequencySQLRepo(FrequencyRepo):
             (44.654110667970976, 10.898906959317424),
         ]
 
-        self._db.create_table(self._table, self._keys)
+    async def init_db(self):
+        await self._db.create_table(self._table, self._keys)
 
     @property
     def places(self) -> Iterable[Coordinates]:
         return self._coordinates
 
-    def update_frequency(self, place: Coordinates, key: str):
+    async def update_frequency(self, place: Coordinates, key: str):
         query = (
             f"INSERT INTO {self._table} (latitude, longitude, word) "
             "VALUES (:latitude, :longitude, :word) "
             "ON CONFLICT(latitude, longitude, word) DO UPDATE SET frequency=frequency+1"
         )
-        self._db.execute(query, latitude=place[0], longitude=place[1], word=key)
+        await self._db.execute(query, latitude=place[0], longitude=place[1], word=key)
 
-    def fetch_frequency_table(self, place: Coordinates) -> dict:
+    async def fetch_frequency_table(self, place: Coordinates) -> List[tuple]:
         query = (
             f"SELECT word, frequency FROM {self._table} "
             "WHERE latitude=:latitude AND longitude=:longitude"
         )
-        result = self._db.execute(query, latitude=place[0], longitude=place[1])
-        return dict(result.fetchall())
+        return await self._db.fetch_all(query, latitude=place[0], longitude=place[1])
+
+    async def prepare_map_frequencies(self):
+        result = []
+        for place in self.places:
+            frequencies = await self.fetch_frequency_table(place)
+
+            if frequencies:
+                max_frequency = max(f for _, f in frequencies)
+                frequencies = {k: (f / max_frequency) for k, f in frequencies}
+            else:
+                frequencies = {}
+
+            obj = Place(coordinates=place, frequencies=frequencies).to_dict()
+            result.append(obj)
+        return result
