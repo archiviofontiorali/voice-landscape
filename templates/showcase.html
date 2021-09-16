@@ -16,10 +16,8 @@
       <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
     </section>
     
-    <section id="statistics" class="outline w-20 ml1 pa1">
-      <h1>Statistiche</h1>
-    
-      <h2>Top 5 words</h2>
+    <section id="statistics" class="outline w-20 ml1 pa2">
+      <h2 class="black">Top 5 words</h2>
       <table class="tc w-100">
       {% for word, freq in stats.top_words %}
         <tr class="striped--light-gray">
@@ -28,7 +26,6 @@
         </tr>
       {% endfor %}
       </table>
-      
     </section>
   </main>
 {% endblock %}
