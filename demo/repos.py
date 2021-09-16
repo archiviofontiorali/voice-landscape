@@ -106,5 +106,4 @@ class FrequencySQLRepo(FrequencyRepo):
             "GROUP BY word ORDER BY frequency DESC LIMIT :top"
         )
         top_words = await self._db.fetch_all(query, top=5)
-        logger.debug(top_words)
         return {"top_words": [(row[0], row[1]) for row in top_words]}
