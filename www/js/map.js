@@ -4,8 +4,9 @@ const tileLayerOptions = {
   minZoom: 15, maxZoom: 19
 };
 
-const initialZoom = 17;
-const minWidth = 240, maxWidth = 480;
+const initialZoom = 16;
+const centerCoordinates = [44.64686795312118, 10.925334855944921]
+const minWidth = 60, maxWidth = 360;
 const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
 
 const options = { 
@@ -17,9 +18,8 @@ const options = {
 };
 
 
-
 function initMap(places) {
-  const map = L.map('map').setView([44.6543412, 10.9011459], initialZoom);
+  const map = L.map('map').setView(centerCoordinates, initialZoom);
   L.tileLayer(provider, tileLayerOptions).addTo(map);  
     
   let canvas, icon;
