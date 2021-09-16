@@ -3,6 +3,7 @@ from typing import Iterable, List
 
 from loguru import logger
 
+from .constants import PLACES
 from .geo import PlacesDict
 from .models import Coordinates, Place
 
@@ -47,18 +48,15 @@ class FrequencySQLRepo(FrequencyRepo):
         self._table = "frequencies"
         self._keys = ", ".join(
             [
-                "latitude REAL NOT NULL",
-                "longitude REAL NOT NULL",
+                "latitude FLOAT8 NOT NULL",
+                "longitude FLOAT8 NOT NULL",
                 "word TEXT NOT NULL",
                 "frequency INT DEFAULT 1",
                 "PRIMARY KEY(latitude, longitude, word)",
             ]
         )
 
-        self._coordinates = [
-            (44.6543412, 10.9011459),
-            (44.654110667970976, 10.898906959317424),
-        ]
+        self._coordinates = list(PLACES.keys())
 
     async def init_db(self):
         await self._db.create_table(self._table, self._keys)
@@ -94,6 +92,8 @@ class FrequencySQLRepo(FrequencyRepo):
                 max_frequency = max(row[1] for row in frequencies)
                 frequencies = {row[0]: (row[1] / max_frequency) for row in frequencies}
             else:
+                # words = set(PLACES[place].split())
+                # frequencies = {w.lower(): 0.8 for w in words}
                 frequencies = {}
 
             obj = Place(coordinates=place, frequencies=frequencies).to_dict()
