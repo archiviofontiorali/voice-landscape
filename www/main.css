@@ -9,3 +9,16 @@
 .alert-warning { outline-color: Orange; }
 .alert-info { }
 .alert-debug { outline-color: Blue; }
+
+.raleway { font-family: 'Raleway', sans-serif; }
+.montserrat { font-family: 'Montserrat', sans-serif; }
+
+
+h1, h2, h3, h4, h5, h6, b, strong { 
+    color: red;
+    font-weight: normal;
+    font-family: 'Montserrat', sans-serif; 
+}
+h1, h2, h3, b {  }
+
+a { color: red; }
