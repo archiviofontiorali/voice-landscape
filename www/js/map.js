@@ -8,14 +8,15 @@ const centerCoordinates = [44.64686795312118, 10.925334855944921]
 const options = { 
   backgroundColor: "rgba(255, 255, 255, 0)", 
   shrinkToFit: true,
+  minSize: '1rem',
+  weightFactor: 15,
+  fontWeight: 'bold',
   fontFamily: "Consolas, monaco, monospace",
-  // color: "rgba(0, 0, 0, .8)",
-  color: "red",
+  color: "rgba(255, 0, 0, .75)",
 };
 
 
 function initMap(places, initialZoom = 16) {
-  // const initialZoom = 16;
   const minWidth = 100, maxWidth = 400;
   const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
   
@@ -25,15 +26,15 @@ function initMap(places, initialZoom = 16) {
   let canvas, icon;
   
   for(const [index, {coordinates, frequencies}] of places.entries()) {
+    if ($.isEmptyObject(frequencies)) continue
     icon = L.divIcon({ 
       html: '<canvas></canvas>', 
       className: `word-cloud word-cloud-${index}`, 
       iconSize: null 
     });
     L.marker(coordinates, { icon: icon }).addTo(map);
-    let _frequencies = Object.entries(frequencies).map(([w, f]) => [w, f * 64]);
     canvas = $(`#map .word-cloud.word-cloud-${index} canvas`);
-    WordCloud(canvas[0], { list: _frequencies, ...options });
+    WordCloud(canvas[0], { list: Object.entries(frequencies), ...options });
   }
   
   function setMarkersWidth() {
