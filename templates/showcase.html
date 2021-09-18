@@ -41,6 +41,9 @@
 
   <script src="/js/map.js" defer></script>
   <script defer>
-    document.addEventListener('DOMContentLoaded', () => initMap({{ places | safe }}));
+    document.addEventListener(
+        'DOMContentLoaded', 
+        () => initMap({{ places | safe }}, 17)
+    );
   </script>
 {% endblock %}

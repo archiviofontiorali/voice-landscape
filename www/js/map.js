@@ -3,11 +3,7 @@ const tileLayerOptions = {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   minZoom: 15, maxZoom: 19
 };
-
-const initialZoom = 16;
 const centerCoordinates = [44.64686795312118, 10.925334855944921]
-const minWidth = 60, maxWidth = 360;
-const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
 
 const options = { 
   backgroundColor: "rgba(255, 255, 255, 0)", 
@@ -18,7 +14,11 @@ const options = {
 };
 
 
-function initMap(places) {
+function initMap(places, initialZoom = 16) {
+  // const initialZoom = 16;
+  const minWidth = 100, maxWidth = 400;
+  const zoomRatio = (maxWidth - minWidth) / (tileLayerOptions.maxZoom - tileLayerOptions.minZoom);
+  
   const map = L.map('map').setView(centerCoordinates, initialZoom);
   L.tileLayer(provider, tileLayerOptions).addTo(map);  
     
