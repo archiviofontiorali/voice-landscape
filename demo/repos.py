@@ -90,7 +90,9 @@ class FrequencySQLRepo(FrequencyRepo):
 
             if frequencies:
                 max_frequency = max(row[1] for row in frequencies)
-                frequencies = {row[0]: (row[1] / max_frequency) for row in frequencies}
+                frequencies = {
+                    row[0].upper(): (row[1] / max_frequency) for row in frequencies
+                }
             else:
                 # words = set(PLACES[place].split())
                 # frequencies = {w.lower(): 0.8 for w in words}
