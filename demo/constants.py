@@ -10,7 +10,7 @@ MAP_PROVIDER_ATTRIBUTION = (
     '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 )
 
-SHOWCASE_RELOAD_TIME = 5
+SHOWCASE_RELOAD_TIME = 5 * 60  # Time in seconds for refreshing
 
 
 PLACES = {
