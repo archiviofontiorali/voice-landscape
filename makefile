@@ -18,7 +18,7 @@ bootstrap: venv develop
 .PHONY: clean
 clean:
 	@echo -e $(bold)Clean up old virtualenv and cache$(sgr0)
-	rm -rf $(VENV) $(PACKAGE).egg-info .pytest_cache
+	rm -rf $(VENV) .pytest_cache
 
 .PHONY: venv
 venv: clean
@@ -38,7 +38,7 @@ production:
 
 .PHONY: develop
 develop: production
-	$(pip) install --upgrade isort black
+	$(pip) install --upgrade isort black pytest
 
 .PHONY: scss
 scss:
