@@ -21,7 +21,7 @@ class HomePage:
     async def execute(request):
         context = {"request": request}
         return templates.TemplateResponse("index.html", context)
-    
+
 
 class PrivacyPage:
     @staticmethod
