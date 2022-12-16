@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 # Custom
-.idea
 db/*.sqlite
+www/css

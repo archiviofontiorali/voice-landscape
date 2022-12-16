@@ -40,9 +40,12 @@ production:
 develop: production
 	$(pip) install --upgrade isort black
 
+.PHONY: scss
+scss:
+	$(python) scripts/compile_scss.py
 
 .PHONY: serve
-serve:
+serve: scss
 	$(VENV)/bin/uvicorn demo.asgi:app --reload --host $(HOST) --port $(PORT)
 
 .PHONY: test
