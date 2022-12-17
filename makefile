@@ -51,3 +51,9 @@ serve: scss
 .PHONY: test
 test:
 	$(VENV)/bin/pytest 
+	
+
+.PHONY: backup
+backup:
+	sqlite3 db/db.sqlite .dump | tar czvf > db/$(shell date +"%Y-%m-%dT%H:%M:%S%z").tar.gz 
+	
