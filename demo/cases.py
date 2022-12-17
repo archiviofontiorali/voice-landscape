@@ -52,6 +52,7 @@ class ShowcasePage:
         places = await self._frequency_repo.prepare_map_frequencies()
         stats = await self._frequency_repo.statistics()
         context = {
+            "center": CENTER_COORDINATES,
             "reload": SHOWCASE_RELOAD_TIME,
             "places": places,
             "stats": stats,

@@ -43,7 +43,7 @@
   <script defer>
     document.addEventListener(
         'DOMContentLoaded', 
-        () => initMap({{ places | safe }}, 17)
+        () => initMap({{ places | safe }}, {{ center | list }}, 17)
     );
   </script>
 {% endblock %}
