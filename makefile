@@ -52,8 +52,10 @@ serve: scss
 test:
 	$(VENV)/bin/pytest 
 	
-
 .PHONY: backup
 backup:
-	sqlite3 db/db.sqlite .dump > db/$(shell date +"%Y-%m-%dT%H:%M:%S%z").dump 
-	
+	pg_dump voci > voci."$(date --iso-8601=seconds)".backup 
+
+.PHONY: restore
+restore:
+	psql voci < $(shell ls db/voci.* | head -1) 
