@@ -8,7 +8,7 @@ from loguru import logger
 from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.templating import Jinja2Templates
 
-from .constants import SHOWCASE_RELOAD_TIME
+from .constants import SHOWCASE_RELOAD_TIME, CENTER_COORDINATES
 from .geo import Coordinates, find_nearest_place
 from .repos import FrequencyRepo
 
@@ -37,6 +37,7 @@ class LeafletMapPage:
     async def execute(self, request):
         places = await self._frequency_repo.prepare_map_frequencies()
         context = {
+            "center": CENTER_COORDINATES,
             "places": places,
             "request": request,
         }
