@@ -1,37 +1,39 @@
 {% extends "_base.html" %}
 
-{% block contents %}
-  <form action="" method="post" class="flex flex-column mw7 center">
-    <div class="flex flex-row flex-wrap ma2">
-      <label for="text" class="w-100">Esprimi la tua voce</label>
-      <input id="text" class="w-90" type="text" name="text" required>
-      
-      <button type="button" id="record-button" class="red w-10">🎤</button>
-      <button type="button" id="stop-button" class="dn black w-10">⏹</button>
-    </div>
-    
-    <fieldset class="flex flex-wrap mv2">
-      <legend>Coordinate GPS</legend>
-      <div class="pa1 w-50-ns">
-        <label id="location-x" for="loc-x">Latitudine </label>
-        <input id="loc-x" class="w-100" type=number name=loc-x step="any" required readonly>
-      </div>
-      <div class="pa1 w-50-ns">
-        <label id="location-y" for="loc-y">Longitudine </label>
-        <input id="loc-y" class="w-100" type=number name=loc-y step="any" required readonly>
+{% block main %}
+  <main class="w-100 mw9 outline mb0 ma1 pa1 center flex-grow flex flex-column justify-center">
+    <form action="" method="post" class="flex flex-column mw7 center">
+      <div class="flex flex-row flex-wrap mh2 mv4">
+        <label for="text" class="w-100">Esprimi la tua voce</label>
+        <input id="text" class="w-90" type="text" name="text" required>
+        
+        <button type="button" id="record-button" class="f4 black w-10">🎙</button>
+        <button type="button" id="stop-button" class="dn f4 black w-10">⏹</button>
       </div>
       
-      <div class="w-100 pa1 tc">
-        <button id="location-button" type="button" onclick="readCurrentPosition()">
-          Inserisci posizione
-        </button>  
+      <fieldset class="flex flex-wrap mv4">
+        <legend>Coordinate GPS</legend>
+        <div class="pa1 w-50-ns">
+          <label id="location-x" for="loc-x">Latitudine </label>
+          <input id="loc-x" class="w-100" type=number name=loc-x step="any" required readonly>
+        </div>
+        <div class="pa1 w-50-ns">
+          <label id="location-y" for="loc-y">Longitudine </label>
+          <input id="loc-y" class="w-100" type=number name=loc-y step="any" required readonly>
+        </div>
+        
+        <div class="w-100 pa1 tc">
+          <button id="location-button" type="button" onclick="readCurrentPosition()">
+            Inserisci posizione
+          </button>  
+        </div>
+      </fieldset>
+      
+      <div class="center pa2">
+        <input id="button-submit" type="submit" value="Partecipa!" disabled>
       </div>
-    </fieldset>
-    
-    <div class="center pa2">
-      <input id="button-submit" type="submit" value="Partecipa!" disabled>
-    </div>
-  </form>
+    </form>
+  </main>
 {% endblock %}
 
 
