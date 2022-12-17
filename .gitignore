@@ -130,5 +130,5 @@ dmypy.json
 
 # Custom
 db/*.sqlite
-db/*.tar.gz
+db/*.dump
 www/css

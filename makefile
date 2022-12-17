@@ -55,5 +55,5 @@ test:
 
 .PHONY: backup
 backup:
-	sqlite3 db/db.sqlite .dump | tar czvf > db/$(shell date +"%Y-%m-%dT%H:%M:%S%z").tar.gz 
+	sqlite3 db/db.sqlite .dump > db/$(shell date +"%Y-%m-%dT%H:%M:%S%z").dump 
 	
