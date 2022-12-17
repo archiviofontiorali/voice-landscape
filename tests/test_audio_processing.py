@@ -21,4 +21,4 @@ def test_speech_recognition(wav_sample, tmp_path):
         data = recognizer.record(source)
         text = recognizer.recognize_google(data, language="it-IT")
 
-    assert False, text
+    assert text == "prova prova prova"

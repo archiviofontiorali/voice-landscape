@@ -12,7 +12,7 @@ const options = {
   weightFactor: 15,
   fontWeight: 'bold',
   fontFamily: "Consolas, monaco, monospace",
-  color: "rgba(255, 0, 0, .75)",
+  color: "black",
 };
 
 
@@ -27,6 +27,7 @@ function initMap(places, initialZoom = 16) {
   
   for(const [index, {coordinates, frequencies}] of places.entries()) {
     if ($.isEmptyObject(frequencies)) continue
+    // L.marker(coordinates).addTo(map);
     icon = L.divIcon({ 
       html: '<canvas></canvas>', 
       className: `word-cloud word-cloud-${index}`, 
