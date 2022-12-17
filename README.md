@@ -52,9 +52,9 @@ After=network.target
 [Service]
 User=<YOUR USER>
 Group=www-data
-WorkingDirectory=/home/<YOUR USER>/git/afor-paesaggio-di-voci
-Environment="PATH=/usr/bin:/home/<YOUR USER>/git/afor-paesaggio-di-voci/.venv/bin"
-ExecStart=/home/<YOUR USER>/git/afor-paesaggio-di-voci/.venv/bin/gunicorn -w 4 --bind unix:voci.afor.dev.sock -k uvicorn.workers.UvicornWorker -m 007 demo.asgi:app
+WorkingDirectory=/home/<YOUR USER>/git/afor-paesaggi-di-voci
+Environment="PATH=/usr/bin:/home/<YOUR USER>/git/afor-paesaggi-di-voci/.venv/bin"
+ExecStart=/home/<YOUR USER>/git/afor-paesaggi-di-voci/.venv/bin/gunicorn -w 4 --bind unix:voci.afor.dev.sock -k uvicorn.workers.UvicornWorker -m 007 demo.asgi:app
 
 [Install]
 WantedBy=multi-user.target
