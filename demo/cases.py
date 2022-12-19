@@ -5,50 +5,42 @@ import spacy
 import spacy.symbols
 import speech_recognition
 from loguru import logger
-from starlette.responses import JSONResponse, PlainTextResponse
-from starlette.templating import Jinja2Templates
 
-from .constants import SHOWCASE_RELOAD_TIME, CENTER_COORDINATES
-from .geo import Coordinates, find_nearest_place
+from .constants import CENTER_COORDINATES, SHOWCASE_RELOAD_TIME
+from .geo import find_nearest_place
 from .repos import FrequencyRepo
-
-# TODO: create presenters
-templates = Jinja2Templates(directory="templates")
+from .system.types import Case
 
 
-class HomePage:
-    @staticmethod
-    async def execute(request):
-        context = {"request": request}
-        return templates.TemplateResponse("index.html", context)
+class TemplatePage(Case):
+    def __init__(self, template: str):
+        self.template = template
+
+    async def execute(self, request, presenter):
+        return presenter.render(self.template, {"request": request})
 
 
-class PrivacyPage:
-    @staticmethod
-    async def execute(request):
-        context = {"request": request}
-        return templates.TemplateResponse("privacy.html", context)
-
-
-class LeafletMapPage:
-    def __init__(self, frequency_repo: FrequencyRepo):
+class LeafletMapPage(Case):
+    def __init__(self, template: str, frequency_repo: FrequencyRepo):
+        self.template = template
         self._frequency_repo = frequency_repo
 
-    async def execute(self, request):
+    async def execute(self, request, presenter):
         places = await self._frequency_repo.prepare_map_frequencies()
         context = {
             "center": CENTER_COORDINATES,
             "places": places,
             "request": request,
         }
-        return templates.TemplateResponse("map.html", context)
+        return presenter.render(self.template, context)
 
 
-class ShowcasePage:
-    def __init__(self, frequency_repo: FrequencyRepo):
+class ShowcasePage(Case):
+    def __init__(self, template: str, frequency_repo: FrequencyRepo):
+        self.template = template
         self._frequency_repo = frequency_repo
 
-    async def execute(self, request):
+    async def execute(self, request, presenter):
         places = await self._frequency_repo.prepare_map_frequencies()
         stats = await self._frequency_repo.statistics()
         context = {
@@ -58,18 +50,27 @@ class ShowcasePage:
             "stats": stats,
             "request": request,
         }
-        return templates.TemplateResponse("showcase.html", context)
+        return presenter.render(self.template, context)
 
 
-class SharePage:
-    def __init__(self, frequency_repo: FrequencyRepo):
+class SharePage(Case):
+    def __init__(self, template: str, frequency_repo: FrequencyRepo):
+        self.template = template
         self._frequency_repo = frequency_repo
         self._nlp = spacy.load("it_core_news_sm")
 
-    async def execute(self, target: Coordinates, text: str, request):
+    async def execute(self, request, presenter):
         if request.method == "POST":
-            logger.debug(f"Receiving text from {target}: {text}")
-            nearest, _ = find_nearest_place(target, self._frequency_repo.places)
+            data = await request.form()
+
+            coordinates = (
+                float(data.get("loc-x", None)),
+                float(data.get("loc-y", None)),
+            )
+            text = data.get("text", None)
+
+            logger.debug(f"Receiving text from {coordinates}: {text}")
+            nearest, _ = find_nearest_place(coordinates, self._frequency_repo.places)
 
             doc = self._nlp(text)
             for token in doc:
@@ -82,28 +83,30 @@ class SharePage:
                     await self._frequency_repo.update_frequency(nearest, token.lemma_)
 
         context = {"request": request}
-        return templates.TemplateResponse("share.html", context)
+        return presenter.render(self.template, context)
 
 
-class SpeechToText:
+class SpeechToText(Case):
     def __init__(self):
         self._recognizer = speech_recognition.Recognizer()
 
-    async def execute(self, request, audio: tempfile.SpooledTemporaryFile):
-        sound = pydub.AudioSegment.from_file(audio)
+    async def execute(self, request, presenter):
+        # TODO: check data.content-type
+        audio = (await request.form()).get("audio", None)
+        sound = pydub.AudioSegment.from_file(audio.file if audio else None)
         raw = tempfile.NamedTemporaryFile(suffix=".wav")
         sound.export(raw, format="wav")
 
         with speech_recognition.AudioFile(raw.name) as source:
             data = self._recognizer.record(source)
             text = self._recognizer.recognize_google(data, language="it-IT")
-        return JSONResponse(text)
+        return presenter.json(text)
 
 
-class Ping:
+class Ping(Case):
     def __init__(self):
         self._response = "Pong!"
 
-    async def execute(self, request):
+    async def execute(self, request, presenter):
         logger.debug(self._response)
-        return PlainTextResponse(self._response)
+        return presenter.text(self._response)

@@ -2,51 +2,50 @@ from starlette.applications import Starlette
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from . import cases, services
+from . import cases, presenters, services
 from .config import DEBUG
-from .handlers import PageHandler, ShareHandler, STTHandler
+from .handlers import APIHandler, PageHandler
 from .repos import FrequencySQLRepo
 from .system.structures import Container
+from .system.web import get, post
 
 
 class App:
     def __init__(self):
-        self._services = Container(db=services.Database())
-
-        s = self._services
-        self._repos = Container(frequencies=FrequencySQLRepo(s.db))
-
-        r = self._repos
-        self._cases = Container(
-            home=cases.HomePage(),
-            map=cases.LeafletMapPage(r.frequencies),
-            privacy=cases.PrivacyPage(),
-            showcase=cases.ShowcasePage(r.frequencies),
-            share=cases.SharePage(r.frequencies),
+        s = self._services = Container(db=services.Database())
+        r = self._repos = Container(frequencies=FrequencySQLRepo(s.db))
+        p = self._presenters = Container(
+            template=presenters.Template(),
+            json=presenters.JSON(),
+            text=presenters.Text(),
+        )
+        c = self._cases = Container(
+            home=cases.TemplatePage("index.html"),
+            map=cases.LeafletMapPage("map.html", r.frequencies),
+            showcase=cases.ShowcasePage("showcase.html", r.frequencies),
+            share=cases.SharePage("share.html", r.frequencies),
             stt=cases.SpeechToText(),
+            privacy=cases.TemplatePage("privacy.html"),
             ping=cases.Ping(),
         )
-
-        c = self._cases
-        self._handlers = Container(
-            home=PageHandler(c.home),
-            map=PageHandler(c.map),
-            privacy=PageHandler(c.privacy),
-            showcase=PageHandler(c.showcase),
-            share=ShareHandler(c.share),
-            stt=STTHandler(c.stt),
-            ping=PageHandler(c.ping),
+        h = self._handlers = Container(
+            home=PageHandler(c.home, p.template),
+            map=PageHandler(c.map, p.template),
+            showcase=PageHandler(c.showcase, p.template),
+            share=PageHandler(c.share, p.template),
+            stt=APIHandler(c.stt, p.json),
+            privacy=PageHandler(c.privacy, p.template),
+            ping=PageHandler(c.ping, p.text),
         )
-
-        h = self._handlers
         self._routes = [
-            Route("/", endpoint=h.home.__call__),
-            Route("/map", endpoint=h.map.__call__),
-            Route("/showcase", endpoint=h.showcase.__call__),
-            Route("/share", endpoint=h.share.__call__, methods=["GET", "POST"]),
-            Route("/privacy", endpoint=h.privacy.__call__),
-            Route("/api/stt", endpoint=h.stt.__call__, methods=["POST"]),
-            Route("/ping", endpoint=h.ping.__call__),
+            get("/", h.home),
+            get("/map", endpoint=h.map),
+            get("/showcase", endpoint=h.showcase),
+            get("/share", endpoint=h.share),
+            post("/share", endpoint=h.share),
+            get("/privacy", endpoint=h.privacy),
+            post("/api/stt", endpoint=h.stt),
+            get("/ping", endpoint=h.ping),
             Mount("/", app=StaticFiles(directory="www"), name="static"),
         ]
 
