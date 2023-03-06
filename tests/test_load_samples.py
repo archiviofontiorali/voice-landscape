@@ -1,10 +1,10 @@
 import numpy as np
 from starlette.testclient import TestClient
 
-import demo.app
-import demo.constants as c
+import voices.app
+import voices.constants as c
 
-app = demo.app.App().app()
+app = voices.app.App().app()
 client = TestClient(app)
 
 

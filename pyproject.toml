@@ -2,7 +2,7 @@
 requires = ["setuptools", "wheel"]
 
 [tool.setuptools.packages.find]
-include = ["demo"]
+include = ["voices"]
 
 [project]
 name = "landscape-of-voices"

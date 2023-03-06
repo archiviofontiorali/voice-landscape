@@ -3,7 +3,7 @@ from typing import Iterable, List, Tuple
 
 import geopy.distance
 
-from demo.system.structures import FrequencyDict
+from voices.system.structures import FrequencyDict
 
 from .models import Coordinates, Place
 
