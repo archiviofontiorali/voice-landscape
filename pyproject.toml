@@ -23,7 +23,6 @@ dependencies = [
     "starlette",
     "uvicorn",
     "libsass",
-    "httpx",
 ]
 
 [project.optional-dependencies]
