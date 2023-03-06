@@ -1,6 +1,5 @@
-import os
-import sass
-import pathlib
+import sass  # noqa
+import pathlib 
 
 BASE_DIR = pathlib.Path(".")
 STATICFILES_DIRS = BASE_DIR / "www"
