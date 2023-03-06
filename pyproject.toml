@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.setuptools.packages.find]
+include = ["demo"]
+
+[project]
+name = "landscape-of-voices"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "databases",
+    "databases[sqlite]",
+    "databases[postgresql]",
+    "dataclasses-json",
+    "geopy",
+    "jinja2",
+    "loguru",
+    "pydub",
+    "python-multipart",
+    "spacy",
+    "SpeechRecognition",
+    "starlette",
+    "uvicorn",
+    "libsass",
+    "httpx",
+]
+
+[project.optional-dependencies]
+prod = ["gunicorn"]
+dev = ["black", "isort"]
+test = ["pytest"]
+
+[tool.isort]
+profile = "black"

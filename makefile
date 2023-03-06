@@ -11,14 +11,11 @@ sgr0 := '\033[0m'
 HOST:=127.0.0.1
 PORT:=8001
 
-.PHONY: bootstrap
-bootstrap: venv develop
-
 
 .PHONY: clean
 clean:
 	@echo -e $(bold)Clean up old virtualenv and cache$(sgr0)
-	rm -rf $(VENV) .pytest_cache
+	rm -rf $(VENV) *.egg-info .pytest_cache
 
 .PHONY: venv
 venv: clean
@@ -28,19 +25,21 @@ venv: clean
 
 .PHONY: freeze
 freeze:
-	$(VENV)/bin/pip-compile
+	$(python) -m piptools compile --upgrade --resolver backtracking --extra prod -o requirements.txt pyproject.toml
+	$(python) -m piptools compile --upgrade --resolver backtracking --extra test --extra prod -o requirements.dev.txt pyproject.toml
 
-.PHONY: production
-production:
+
+# Development Environment
+.PHONY: bootstrap develop scss
+
+bootstrap: venv develop
+
+develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	$(pip) install -r requirements.txt
+	$(python) -m pip install -r requirements.dev.txt
+	$(python) -m pip install --editable .
 	$(VENV)/bin/python -m spacy download it_core_news_sm
 
-.PHONY: develop
-develop: production
-	$(pip) install --upgrade isort black pytest
-
-.PHONY: scss
 scss:
 	$(python) scripts/compile_scss.py
 
@@ -51,11 +50,23 @@ serve: scss
 .PHONY: test
 test:
 	$(VENV)/bin/pytest 
-	
-.PHONY: backup
+
+
+# Production Environment
+.PHONY: production
+
+production:
+	@echo -e $(bold)Install and update requirements$(sgr0)
+	$(python) -m pip install -r requirements.txt
+	$(python) -m pip install --editable .
+	$(VENV)/bin/python -m spacy download it_core_news_sm
+
+
+# Database Management
+.PHONY: backup restore
+
 backup:
 	pg_dump voci > voci."$(date --iso-8601=seconds)".backup 
 
-.PHONY: restore
 restore:
 	psql voci < $(shell ls db/voci.* | head -1) 

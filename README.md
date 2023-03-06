@@ -33,6 +33,7 @@ To run server
 ```shell
 # Development 
 $ .venv/bin/uvicorn demo.asgi:app --reload
+
 # Production 
 $ .venv/bin/gunicorn -k uvicorn.workers.UvicornWorker -w 4 demo.asgi:app
 ```
