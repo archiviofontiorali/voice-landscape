@@ -37,8 +37,8 @@ bootstrap: venv develop
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	$(python) -m pip install -r requirements.dev.txt
+	$(python) -m spacy download it_core_news_sm
 	$(python) -m pip install --editable .
-	$(VENV)/bin/python -m spacy download it_core_news_sm
 
 scss:
 	$(python) scripts/compile_scss.py
@@ -47,19 +47,21 @@ scss:
 serve: scss
 	$(VENV)/bin/uvicorn demo.asgi:app --reload --host $(HOST) --port $(PORT)
 
+
 .PHONY: test
 test:
-	$(VENV)/bin/pytest 
+	$(python) -m pytest 
 
 
 # Production Environment
 .PHONY: production
 
-production:
+production: clean
 	@echo -e $(bold)Install and update requirements$(sgr0)
+	python3.10 -m venv $(VENV)
 	$(python) -m pip install -r requirements.txt
+	$(python) -m spacy download it_core_news_sm
 	$(python) -m pip install --editable .
-	$(VENV)/bin/python -m spacy download it_core_news_sm
 
 
 # Database Management
