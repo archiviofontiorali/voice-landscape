@@ -1,18 +1,18 @@
-# Landscape of Voices | Paesaggio di Voci
-A project by [AFOr, Archivio delle Fonti Orali](https://afor.dev)
+# Paesaggio di Voci (Voice Landscape)
+Un progetto sviluppato da [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
-> 🇮🇹 Per leggere le istruzioni in italiano vai in [README-IT.md](/README-it.md) 🇮🇹 
+> For International English language instructions go to [README.md](/README.md) 
 
 
-## Production environment instructions
-Require at least `python>=3.10`, `pip` and `venv` to work. 
-To simplify installation `make` is suggested
+## Instruzioni installazione (produzione)
+Richiede `python>=3.10`, `pip` e `venv`. 
+`make` è consigliato per semplificare l'installazione
 
 ```shell
-# Automatic installation
+# Installazione guidata
 $ make production
 
-# Or if you prefer installing manually
+# Installazione manuale
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
@@ -21,7 +21,7 @@ $ source .venv/bin/activate
 (venv)$ python -m spacy download it_core_news_sm
 ```
 
-### Dependencies installation on linux
+### Installazione dipendenze su linux
 ```shell
 # Ubuntu/debian
 $ sudo apt update
@@ -31,20 +31,23 @@ $ sudo apt install python3 python3-pip python3-venv make
 $ sudo pacman -S python python-pip python-virtualenv make
 ```
 
-### Make it work
+### Come usarlo
 ```shell
 $ source .venv/bin/activate
 (venv)$ gunicorn -k uvicorn.workers.UvicornWorker -w 4 demo.asgi:app
 ```
 
-To enable `nginx` and `gunicorn`, create a systemd unit file and apply HTTPS via 
-certbot, follow this 
+Per abilitare `nginx` e `gunicorn` all'avvio, crea un `systemd unit file` e usa 
+`certbot` per l'HTTPS 
 [tutorial](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04)
 (ubuntu 20.04) 
 
-An example systemd service file is located in [voice-landscape.service](/system/voice-landscape.service)
-It assumes you clone this repository inside your user folder inside a `git` folder
-Remember to change `<YOUR USER>` with your effective user
+Un file service systemd lo potete trovare in 
+[voice-landscape.service](/system/voice-landscape.service)
+
+Il service assume che il progetto sia stato clonato all'interno di una cartella `git` 
+all'interno della `home` dell'utente
+Ricorda di cambiare `<YOUR USER>` con il nome del tuo utente
 
 ```shell
 $ cd ~ && mkdir -p git 
@@ -53,8 +56,8 @@ $ git clone https://github.com/archiviofontiorali/voice-landscape ~/git/
 
 
 ## Development instructions
-Require at least `python>=3.10`, `pip` and `venv` to work. 
-To simplify installation `make` is suggested
+Richiede `python>=3.10`, `pip` e `venv`. 
+`make` è consigliato per semplificare l'installazione
 
 ```shell
 $ make bootstrap
