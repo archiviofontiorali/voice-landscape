@@ -28,7 +28,7 @@ dependencies = [
 [project.optional-dependencies]
 prod = ["gunicorn"]
 dev = ["black", "isort"]
-test = ["pytest"]
+test = ["pytest", "httpx"]
 
 [tool.isort]
 profile = "black"
