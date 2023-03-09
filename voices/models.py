@@ -1,15 +1,11 @@
 import pathlib
-from dataclasses import dataclass
-from typing import Dict, Tuple, Union
 
-from dataclasses_json import dataclass_json
+from pydantic import BaseModel
 
-Path = Union[str, pathlib.Path]
-Coordinates = Tuple[float, float]
+Path = pathlib.Path | str
+Coordinates = tuple[float, float]
 
 
-@dataclass_json
-@dataclass
-class Place:
+class Place(BaseModel):
     coordinates: Coordinates
-    frequencies: Dict[str, float]
+    frequencies: dict[str, float]

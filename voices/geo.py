@@ -41,6 +41,6 @@ def prepare_map_frequencies(frequency_repo) -> list:
         max_frequency = max(frequencies.values())
         for key in frequencies:
             frequencies[key] /= max_frequency
-        obj = Place(coordinates=place, frequencies=frequencies).to_dict()
+        obj = Place(coordinates=place, frequencies=frequencies).dict()
         result.append(obj)
     return result

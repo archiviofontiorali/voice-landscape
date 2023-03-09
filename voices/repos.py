@@ -98,7 +98,7 @@ class FrequencySQLRepo(FrequencyRepo):
                 # frequencies = {w.lower(): 0.8 for w in words}
                 frequencies = {}
 
-            obj = Place(coordinates=place, frequencies=frequencies).to_dict()
+            obj = Place(coordinates=place, frequencies=frequencies).dict()
             result.append(obj)
         return result
 

@@ -12,7 +12,7 @@ dependencies = [
     "databases",
     "databases[sqlite]",
     "databases[postgresql]",
-    "dataclasses-json",
+    "pydantic",
     "geopy",
     "jinja2",
     "loguru",
