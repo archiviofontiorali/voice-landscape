@@ -45,7 +45,7 @@ scss:
 
 .PHONY: serve
 serve: scss
-	$(VENV)/bin/uvicorn demo.asgi:app --reload --host $(HOST) --port $(PORT)
+	$(VENV)/bin/uvicorn voices.asgi:app --reload --host $(HOST) --port $(PORT)
 
 
 .PHONY: test
