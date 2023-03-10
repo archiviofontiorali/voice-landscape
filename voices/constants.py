@@ -1,4 +1,8 @@
+import pathlib
+
 import numpy as np
+
+STATIC_PATH = pathlib.Path("www/")
 
 AFOR_COORDINATES = (44.65461615128406, 10.901229167243947)
 # CENTER_COORDINATES = (44.64686795312118, 10.925334855944921)
@@ -21,10 +25,10 @@ c = np.array([44.65583248401956, 10.903694945558476])
 v1, v2 = b - a, c - a
 
 N = 6
-points = np.empty(((N+1)*(N+2)//2, 2))
+points = np.empty(((N + 1) * (N + 2) // 2, 2))
 count = 0
-for i in range(N+1):
-    for j in range(N-i+1):
+for i in range(N + 1):
+    for j in range(N - i + 1):
         points[count, :] = a + (i / N) * v1 + (j / N) * v2
         count += 1
 
