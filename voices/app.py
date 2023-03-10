@@ -3,13 +3,16 @@ import sqlmodel
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
-from . import cases, presenters, services
-from .config import DATABASE_URL, DEBUG
+from . import cases, presenters, services, settings
 from .db import admin as db_admin
+from .db import engines
 from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
 from .system.structures import Container
 from .system.web import get, post
+
+#
+# app = Starlette()
 
 
 class App:
@@ -59,7 +62,7 @@ class App:
 
     @staticmethod
     def add_admin(app: Starlette):
-        engine = sqlmodel.create_engine(str(DATABASE_URL), echo=True)
+        engine = sqlmodel.create_engine(str(settings.DATABASE_URL), echo=True)
         sqlmodel.SQLModel.metadata.create_all(engine)
 
         admin = sqladmin.Admin(app, engine, templates_dir="templates_admin")
@@ -67,7 +70,7 @@ class App:
 
     def app(self):
         app = Starlette(
-            debug=DEBUG,
+            debug=settings.DEBUG,
             routes=self._routes,
             on_startup=[self._services.db.connect, self._repos.frequencies.init_db],
             on_shutdown=[self._services.db.disconnect],

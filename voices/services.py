@@ -3,13 +3,13 @@ import sqlite3
 import databases
 from loguru import logger
 
-from . import config
+from . import settings
 from .models import Path
 
 
 class Database:
     def __init__(self):
-        self._url = config.DATABASE_URL
+        self._url = settings.DATABASE_URL
         self._db = databases.Database(self._url)
         logger.info(f"Using db url: {self._url}")
 
