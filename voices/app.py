@@ -1,3 +1,5 @@
+import sqladmin
+import sqlmodel
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
@@ -54,6 +56,15 @@ class App:
         app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
         app.add_route("/favicon.ico", Static("favicon.ico").__call__, name="favicon")
 
+    @staticmethod
+    def add_admin(app: Starlette):
+        engine = sqlmodel.create_engine(str(DATABASE_URL), echo=True)
+        sqlmodel.SQLModel.metadata.create_all(engine)
+
+        admin = sqladmin.Admin(app, engine, templates_dir="templates_admin", debug=True)
+
+        admin.add_view(db_admin.VoiceAdmin)
+
     def app(self):
         app = Starlette(
             debug=DEBUG,
@@ -62,7 +73,7 @@ class App:
             on_shutdown=[self._services.db.disconnect],
         )
 
-        # self.add_admin(app)
+        self.add_admin(app)
         self.add_static(app)
 
         return app
