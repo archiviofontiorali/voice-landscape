@@ -1,10 +1,10 @@
 from starlette.applications import Starlette
-from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
 from . import cases, presenters, services
-from .config import DEBUG
-from .handlers import APIHandler, PageHandler
+from .config import DATABASE_URL, DEBUG
+from .db import admin as db_admin
+from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
 from .system.structures import Container
 from .system.web import get, post
@@ -46,13 +46,23 @@ class App:
             get("/privacy", endpoint=h.privacy),
             post("/api/stt", endpoint=h.stt),
             get("/ping", endpoint=h.ping),
-            Mount("/", app=StaticFiles(directory="www"), name="static"),
         ]
 
+    @staticmethod
+    def add_static(app: Starlette):
+        app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
+        app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
+        app.add_route("/favicon.ico", Static("favicon.ico").__call__, name="favicon")
+
     def app(self):
-        return Starlette(
+        app = Starlette(
             debug=DEBUG,
             routes=self._routes,
             on_startup=[self._services.db.connect, self._repos.frequencies.init_db],
             on_shutdown=[self._services.db.disconnect],
         )
+
+        # self.add_admin(app)
+        self.add_static(app)
+
+        return app

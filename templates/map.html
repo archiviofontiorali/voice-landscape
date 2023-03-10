@@ -13,7 +13,7 @@
           integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" 
           crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
   
-  <script src="/js/map.js" defer></script>
+  <script src="{{ url_for('js', path='/map.js') }}" defer></script>
   <script defer>
     document.addEventListener('DOMContentLoaded', () => initMap({{ places | safe }}, {{ center | list }}));
   </script>
