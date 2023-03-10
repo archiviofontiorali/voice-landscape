@@ -11,3 +11,5 @@ DATABASE_URL = config(
     cast=str,
     default=f"sqlite://",
 )
+
+TEMPLATES = config("TEMPLATES", default="templates")
