@@ -135,7 +135,7 @@ spacy-loggers==1.0.4
     # via spacy
 speechrecognition==3.9.0
     # via voice-landscape (pyproject.toml)
-sqladmin==0.9.0
+sqladmin==0.7.0
     # via voice-landscape (pyproject.toml)
 sqlalchemy==1.4.46
     # via
