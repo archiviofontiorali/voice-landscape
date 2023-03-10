@@ -129,7 +129,4 @@ dmypy.json
 .pyre/
 
 # Custom
-db/*.sqlite
-db/*.sql
-db/*.backup
 www/css
