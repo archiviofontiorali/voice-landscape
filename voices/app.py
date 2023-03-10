@@ -1,15 +1,46 @@
 import sqladmin
 import sqlmodel
+from loguru import logger
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
 from . import cases, presenters, settings
-from .db import admin as db_admin
-from .db import engines
+from .db import admin, database, engines
 from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
 from .system.structures import Container
 from .system.web import get, post
+
+
+class _App:
+    db: database.Database
+    sql_admin: sqladmin.Admin
+
+    admin_views = [admin.VoiceAdmin]
+    views = []
+
+    def __init__(self, debug: bool = settings.DEBUG):
+        self.debug = debug
+
+        logger.info(f"DEBUG: {self.debug}")
+        logger.info(f"Database URL: {settings.DATABASE_URL}")
+
+        self.app = Starlette(debug=self.debug)
+
+        self.init_database()
+        self.init_admin()
+
+    def init_database(self):
+        self.db = database.Database()
+        self.db.create_tables()
+
+    def init_admin(self):
+        self.sql_admin = sqladmin.Admin(
+            self.app, self.db.engine, templates_dir="templates/admin", debug=self.debug
+        )
+
+        for view in self.admin_views:
+            self.sql_admin.add_view(view)
 
 
 class App:
@@ -62,8 +93,8 @@ class App:
         engine = sqlmodel.create_engine(str(settings.DATABASE_URL), echo=True)
         sqlmodel.SQLModel.metadata.create_all(engine)
 
-        admin = sqladmin.Admin(app, engine, templates_dir="templates_admin")
-        admin.add_view(db_admin.VoiceAdmin)
+        sql_admin = sqladmin.Admin(app, engine, templates_dir="templates_admin")
+        sql_admin.add_view(admin.VoiceAdmin)
 
     def app(self):
         app = Starlette(
