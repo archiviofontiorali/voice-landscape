@@ -4,7 +4,7 @@ from loguru import logger
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
-from . import cases, presenters, settings
+from . import cases, presenters, settings, views
 from .db import admin, database, engines
 from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
@@ -17,7 +17,7 @@ class _App:
     sql_admin: sqladmin.Admin
 
     admin_views = [admin.VoiceAdmin]
-    views = []
+    views = [views.HomePage]
 
     def __init__(self, debug: bool = settings.DEBUG):
         self.debug = debug
@@ -29,6 +29,8 @@ class _App:
 
         self.init_database()
         self.init_admin()
+        self.init_routes()
+        self.init_static()
 
     def init_database(self):
         self.db = database.Database()
@@ -41,6 +43,18 @@ class _App:
 
         for view in self.admin_views:
             self.sql_admin.add_view(view)
+
+    def init_routes(self):
+        for view in self.views:
+            self.app.add_route("/", view().render)
+
+    def init_static(self):
+        self.app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
+        self.app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
+        # favicon from: https://www.favicon.cc/?action=icon&file_id=990605
+        self.app.add_route(
+            "/favicon.ico", Static("favicon.ico").__call__, name="favicon"
+        )
 
 
 class App:
