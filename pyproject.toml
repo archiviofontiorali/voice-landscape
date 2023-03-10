@@ -20,6 +20,8 @@ dependencies = [
     "python-multipart",
     "spacy",
     "SpeechRecognition",
+    "sqladmin",
+    "sqlmodel",
     "starlette",
     "uvicorn",
     "libsass",
