@@ -62,8 +62,7 @@ class App:
         engine = sqlmodel.create_engine(str(DATABASE_URL), echo=True)
         sqlmodel.SQLModel.metadata.create_all(engine)
 
-        admin = sqladmin.Admin(app, engine, templates_dir="templates_admin", debug=True)
-
+        admin = sqladmin.Admin(app, engine, templates_dir="templates_admin")
         admin.add_view(db_admin.VoiceAdmin)
 
     def app(self):
