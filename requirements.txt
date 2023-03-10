@@ -127,7 +127,7 @@ sniffio==1.3.0
     #   anyio
     #   httpcore
     #   httpx
-spacy==3.5.0
+spacy==3.5.1
     # via voice-landscape (pyproject.toml)
 spacy-legacy==3.0.12
     # via spacy
@@ -151,7 +151,7 @@ srsly==2.4.6
     #   confection
     #   spacy
     #   thinc
-starlette[full]==0.25.0
+starlette[full]==0.26.0.post1
     # via
     #   sqladmin
     #   voice-landscape (pyproject.toml)
@@ -169,7 +169,7 @@ typing-extensions==4.5.0
     #   sqlalchemy2-stubs
 urllib3==1.26.14
     # via requests
-uvicorn==0.20.0
+uvicorn==0.21.0
     # via voice-landscape (pyproject.toml)
 wasabi==1.1.1
     # via
