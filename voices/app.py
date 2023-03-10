@@ -11,9 +11,6 @@ from .repos import FrequencySQLRepo
 from .system.structures import Container
 from .system.web import get, post
 
-#
-# app = Starlette()
-
 
 class App:
     def __init__(self):
