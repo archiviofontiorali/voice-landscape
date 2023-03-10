@@ -3,7 +3,7 @@ import sqlmodel
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
-from . import cases, presenters, services, settings
+from . import cases, presenters, settings
 from .db import admin as db_admin
 from .db import engines
 from .handlers import APIHandler, PageHandler, Static
@@ -17,7 +17,7 @@ from .system.web import get, post
 
 class App:
     def __init__(self):
-        s = self._services = Container(db=services.Database())
+        s = self._services = Container(db=engines.Database(settings.DATABASE_URL))
         r = self._repos = Container(frequencies=FrequencySQLRepo(s.db))
         p = self._presenters = Container(
             template=presenters.Template(),
