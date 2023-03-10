@@ -54,6 +54,7 @@ class App:
     def add_static(app: Starlette):
         app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
         app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
+        # favicon from: https://www.favicon.cc/?action=icon&file_id=990605
         app.add_route("/favicon.ico", Static("favicon.ico").__call__, name="favicon")
 
     @staticmethod
