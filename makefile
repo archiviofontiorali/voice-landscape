@@ -26,7 +26,7 @@ venv: clean
 .PHONY: freeze
 freeze:
 	$(python) -m piptools compile --upgrade --resolver backtracking --extra prod -o requirements.txt pyproject.toml
-	$(python) -m piptools compile --upgrade --resolver backtracking --extra test --extra prod -o requirements.dev.txt pyproject.toml
+	$(python) -m piptools compile --upgrade --resolver backtracking --extra dev --extra test -o requirements.dev.txt pyproject.toml
 
 
 # Development Environment
