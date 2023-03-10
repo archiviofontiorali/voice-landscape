@@ -6,16 +6,10 @@ import databases
 class Database:
     database: databases.Database
 
-    def __init__(self, database: databases.Database | databases.DatabaseURL | str):
-        match database:
-            case databases.Database():
-                self.database = database
-            case str() | databases.DatabaseURL():
-                self.database = databases.Database(database)
-            case _:
-                raise AttributeError(
-                    "database should be a valid DB url or a Database object"
-                )
+    def __init__(self, database: databases.DatabaseURL | str):
+        if isinstance(database, str):
+            database = databases.DatabaseURL(database)
+        self.database = databases.Database(database)
 
     @contextlib.asynccontextmanager
     async def lifespan(self):
