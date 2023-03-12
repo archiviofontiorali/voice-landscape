@@ -70,10 +70,9 @@ class _App:
     def init_static(self):
         self.app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
         self.app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
+
         # favicon from: https://www.favicon.cc/?action=icon&file_id=990605
-        self.app.add_route(
-            "/favicon.ico", Static("favicon.ico").__call__, name="favicon"
-        )
+        self.app.add_route("/favicon.ico", views.Favicon().get, name="favicon")
 
 
 class App:

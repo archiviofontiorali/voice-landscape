@@ -1,5 +1,6 @@
 from abc import ABC
 
+from starlette.responses import FileResponse
 from starlette.templating import Jinja2Templates
 
 from . import settings
@@ -12,6 +13,17 @@ class Template(ABC):
 
     async def get(self, request: dict):
         return template_engine.TemplateResponse(self.template, {"request": request})
+
+
+class Static(ABC):
+    filename: str
+
+    async def get(self, request):
+        return FileResponse(settings.STATIC_PATH / self.filename)
+
+
+class Favicon(Static):
+    filename = "favicon.ico"
 
 
 class HomePage(Template):
