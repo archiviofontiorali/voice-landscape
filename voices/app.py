@@ -1,3 +1,5 @@
+from typing import Literal
+
 import sqladmin
 import sqlmodel
 from loguru import logger
@@ -32,6 +34,20 @@ class _App:
         self.init_routes()
         self.init_static()
 
+    def add_route(
+        self,
+        path: str,
+        endpoint: views.Template,
+        name: str = None,
+        methods: list[Literal["GET", "POST"]] = None,
+    ):
+        if methods is None:
+            methods = ["GET"]
+
+        for method in methods:
+            if hasattr(endpoint, method.lower()):
+                self.app.add_route(path, getattr(endpoint, method.lower()), name=name)
+
     def init_database(self):
         self.db = database.Database()
         self.db.create_tables()
@@ -45,8 +61,11 @@ class _App:
             self.sql_admin.add_view(view)
 
     def init_routes(self):
-        for view in self.views:
-            self.app.add_route("/", view().render)
+        self.add_route("/", views.HomePage(), name="homepage")
+        self.add_route("/map", views.Map(), name="map")
+        self.add_route("/showcase", views.Showcase(), name="showcase")
+        self.add_route("/share", views.Share(), name="share")
+        self.add_route("/privacy", views.Privacy(), name="privacy")
 
     def init_static(self):
         self.app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
