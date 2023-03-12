@@ -18,8 +18,7 @@ class _App:
     db: database.Database
     sql_admin: sqladmin.Admin
 
-    admin_views = [admin.VoiceAdmin]
-    views = [views.HomePage]
+    admin_views: list[type[sqladmin.ModelView]] = [admin.VoiceAdmin]
 
     def __init__(self, debug: bool = settings.DEBUG):
         self.debug = debug
