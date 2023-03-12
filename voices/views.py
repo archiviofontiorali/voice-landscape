@@ -3,7 +3,7 @@ from abc import ABC
 from starlette.responses import FileResponse
 from starlette.templating import Jinja2Templates
 
-from . import settings
+from . import constants, settings
 
 template_engine = Jinja2Templates(directory=settings.TEMPLATES)
 
@@ -11,8 +11,13 @@ template_engine = Jinja2Templates(directory=settings.TEMPLATES)
 class Template(ABC):
     template: str
 
+    def get_context(self):  # noqa
+        return {}
+
     async def get(self, request: dict):
-        return template_engine.TemplateResponse(self.template, {"request": request})
+        context = self.get_context()
+        context.setdefault("request", request)
+        return template_engine.TemplateResponse(self.template, context)
 
 
 class Static(ABC):
@@ -36,6 +41,12 @@ class Privacy(Template):
 
 class Map(Template):
     template = "map.html"
+
+    def get_context(self):
+        return {
+            "center": [0, 0],  # TODO: move to db
+            "places": [],
+        }
 
 
 class Showcase(Template):
