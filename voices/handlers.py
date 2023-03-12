@@ -3,8 +3,8 @@ import pathlib
 from starlette.responses import FileResponse
 from starlette.templating import Jinja2Templates
 
-from . import constants, presenters
-from .system.types import Case, GenericHandler, Handler
+from . import settings
+from .system.types import GenericHandler, Handler
 
 templates = Jinja2Templates(directory="templates")
 
@@ -21,7 +21,7 @@ class APIHandler(Handler):
 
 class Static(GenericHandler):
     def __init__(
-        self, file_name: str, static_path: pathlib.Path | str = constants.STATIC_PATH
+        self, file_name: str, static_path: pathlib.Path | str = settings.STATIC_PATH
     ):
         self._name = file_name
         self._path = pathlib.Path(static_path)

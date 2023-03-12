@@ -1,6 +1,5 @@
-import os.path
+import pathlib
 
-import databases
 from starlette.config import Config
 
 config = Config(".env")
@@ -13,3 +12,5 @@ DATABASE_URL = config(
 )
 
 TEMPLATES = config("TEMPLATES", default="templates")
+
+STATIC_PATH = pathlib.Path("www/")
