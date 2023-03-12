@@ -21,3 +21,11 @@ class Database:
 
     def create_tables(self):
         models.SQLModel.metadata.create_all(self.engine)
+
+    def fetchall(self, query):
+        with sqlmodel.Session(self.engine) as session:
+            return session.exec(query).fetchall()
+
+    def fetch(self, query):
+        with sqlmodel.Session(self.engine) as session:
+            return session.exec(query).first()

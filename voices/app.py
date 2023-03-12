@@ -7,7 +7,7 @@ from loguru import logger
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
-from . import cases, presenters, settings, views
+from . import api, cases, presenters, settings, views
 from .db import admin, database, engines
 from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
@@ -32,6 +32,7 @@ class _App:
         self.init_database()
         self.init_admin()
         self.init_routes()
+        self.init_api()
         self.init_static()
 
     def add_route(
@@ -59,6 +60,12 @@ class _App:
 
         for view in self.admin_views:
             self.sql_admin.add_view(view)
+
+    def init_api(self):
+        router = fastapi.APIRouter()
+        # api.add_route("/stt", endpoint=api.SpeechToText(), name="stt", methods=["POST"])
+        router.add_api_route("/voice", api.VoiceAPI(self.db).get)
+        self.app.mount("/api", router, name="api")
 
     def init_routes(self):
         self.add_route("/", views.HomePage(), name="homepage")
