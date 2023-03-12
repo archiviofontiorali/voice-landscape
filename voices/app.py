@@ -1,5 +1,6 @@
 from typing import Literal
 
+import fastapi
 import sqladmin
 import sqlmodel
 from loguru import logger
