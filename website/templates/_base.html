@@ -1,3 +1,4 @@
+{% load static %}
 {% load sass_tags %}
 
 <!DOCTYPE html>
@@ -15,6 +16,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
   <link rel="stylesheet" href="{% sass_src 'website/css/main.scss' %}">
+
+  <link rel="icon" type="image/x-icon" href="{% static 'website/favicon.ico' %}">
 </head>
 <body class="flex flex-column min-vh-100 open-sans pa2">
   
