@@ -10,6 +10,8 @@ anyio==3.6.2
     # via
     #   httpcore
     #   starlette
+asgiref==3.6.0
+    # via django
 asyncpg==0.27.0
     # via databases
 blis==0.7.9
@@ -38,6 +40,12 @@ cymem==2.0.7
     #   spacy
     #   thinc
 databases[postgresql,sqlite]==0.7.0
+    # via voice-landscape (pyproject.toml)
+django==4.1.7
+    # via
+    #   django-jazzmin
+    #   voice-landscape (pyproject.toml)
+django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
 fastapi==0.94.0
     # via voice-landscape (pyproject.toml)
@@ -109,6 +117,8 @@ pydantic==1.10.6
     #   voice-landscape (pyproject.toml)
 pydub==0.25.1
     # via voice-landscape (pyproject.toml)
+python-decouple==3.8
+    # via voice-landscape (pyproject.toml)
 python-multipart==0.0.6
     # via
     #   starlette
@@ -149,6 +159,8 @@ sqlalchemy2-stubs==0.0.2a32
     # via sqlmodel
 sqlmodel==0.0.6
     # via voice-landscape (pyproject.toml)
+sqlparse==0.4.3
+    # via django
 srsly==2.4.6
     # via
     #   confection

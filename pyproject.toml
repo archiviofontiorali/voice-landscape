@@ -9,18 +9,23 @@ name = "voice-landscape"
 version = "0.1.1"
 requires-python = ">=3.10"
 dependencies = [
+    "django>=4",
+    "django-jazzmin",
+    "loguru",
+    "python-decouple",
+    
+    "geopy",
+    "pydub",
+    "spacy",
+    "SpeechRecognition",
+    
     "databases",
     "databases[sqlite]",
     "databases[postgresql]",
     "fastapi",
-    "geopy",
     "jinja2",
-    "loguru",
     "pydantic",
-    "pydub",
     "python-multipart",
-    "spacy",
-    "SpeechRecognition",
     "sqladmin==0.7.0",
     "sqlmodel",
     "starlette",
