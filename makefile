@@ -3,6 +3,7 @@ SHELL=/bin/bash
 
 python=$(VENV)/bin/python3
 pip=$(VENV)/bin/pip3
+django=$(python) manage.py
 
 # Utility scripts to prettify echo outputs
 bold := '\033[1m'
@@ -74,4 +75,14 @@ backup:
 	pg_dump voci > voci."$(date --iso-8601=seconds)".backup 
 
 restore:
-	psql voci < $(shell ls db/voci.* | head -1) 
+	psql voci < $(shell ls db/voci.* | head -1)
+	
+
+# Django commands
+.PHONY: run migrate
+
+run:
+	$(django) runserver $(HOST):$(PORT)
+	
+migrate:
+	$(django) migrate
