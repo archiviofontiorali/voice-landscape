@@ -1,5 +1,14 @@
 # Roadmap
 
+## Django
+- [ ] Enable jazzmin
+- [ ] Create superuser
+- [ ] use name resolution for links
+- [ ] Delete old templates folder
+- [ ] Delete old www static folder
+- [ ] Delete old scripts folder
+
+## Various
 - [ ] Compact handlers, using decorators
 - [ ] Privacy and cookies page
 
