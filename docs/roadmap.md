@@ -6,7 +6,7 @@
 - [ ] use name resolution for links
 - [ ] Delete old templates folder
 - [ ] Delete old www static folder
-- [ ] Delete old scripts folder
+- [x] Delete old scripts folder
 
 ## Various
 - [ ] Compact handlers, using decorators
