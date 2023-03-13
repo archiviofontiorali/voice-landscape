@@ -48,9 +48,16 @@ databases[postgresql,sqlite]==0.7.0
     # via voice-landscape (pyproject.toml)
 django==4.1.7
     # via
+    #   django-appconf
     #   django-jazzmin
     #   voice-landscape (pyproject.toml)
+django-appconf==1.0.5
+    # via django-compressor
+django-compressor==4.3.1
+    # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
+    # via voice-landscape (pyproject.toml)
+django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
 exceptiongroup==1.1.1
     # via pytest
@@ -150,12 +157,16 @@ python-multipart==0.0.6
     #   voice-landscape (pyproject.toml)
 pyyaml==6.0
     # via starlette
+rcssmin==1.1.1
+    # via django-compressor
 requests==2.28.2
     # via
     #   spacy
     #   speechrecognition
 rfc3986[idna2008]==1.5.0
     # via httpx
+rjsmin==1.2.1
+    # via django-compressor
 smart-open==6.3.0
     # via
     #   pathy
@@ -171,7 +182,7 @@ spacy-legacy==3.0.12
     # via spacy
 spacy-loggers==1.0.4
     # via spacy
-speechrecognition==3.9.0
+speechrecognition==3.10.0
     # via voice-landscape (pyproject.toml)
 sqladmin==0.7.0
     # via voice-landscape (pyproject.toml)
