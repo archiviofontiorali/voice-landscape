@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev"]
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "website.apps.WebsiteConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -135,3 +136,8 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "sass_processor.finders.CssFinder",
 ]
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    # "dark_mode_theme": "darkly",  # Not working at the moment
+}

@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Django
-- [ ] Enable jazzmin
+- [x] Enable jazzmin
 - [ ] Create superuser
 - [ ] use name resolution for links
 - [ ] Delete old templates folder
