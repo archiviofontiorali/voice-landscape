@@ -132,5 +132,4 @@ dmypy.json
 .static
 .media
 
-db.sqlite
 www/css
