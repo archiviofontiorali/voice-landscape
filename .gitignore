@@ -129,5 +129,8 @@ dmypy.json
 .pyre/
 
 # Custom
+.static
+.media
+
 db.sqlite
 www/css
