@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-7pl+bmw@2qfaurownmy%4^@8k9_9!ye7(qp*sq#ag+t_9c^8(x"
+SECRET_KEY = config(
+    "SECRET_KEY", "django-insecure-7pl+bmw@2qfaurownmy%4^@8k9_9!ye7(qp*sq#ag+t_9c^8(x"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev"]
 
 
 # Application definition
@@ -105,9 +109,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = config("LANGUAGE_CODE", "it")
 
-TIME_ZONE = "UTC"
+TIME_ZONE = config("TIME_ZONE", "Europe/Rome")
 
 USE_I18N = True
 
