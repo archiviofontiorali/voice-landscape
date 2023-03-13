@@ -79,7 +79,13 @@ restore:
 	
 
 # Django commands
-.PHONY: run migrate
+.PHONY: run migrate bootstrap-django
+
+bootstrap-django: migrate
+	@echo -e $(bold)Initialize django development environment$(sgr0)
+	rm -rf db.sqlite3 .media .static
+	$(django) migrate
+	$(django) createsuperuser --username=admin --email=voci@afor.dev
 
 run:
 	$(django) runserver $(HOST):$(PORT)
