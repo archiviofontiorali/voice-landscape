@@ -1,3 +1,12 @@
-from django.db import models
+from django.contrib.gis.db import models
 
-# Create your models here.
+
+class Share(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    location = models.PointField()
+    message = models.TextField(max_length=500)
+
+
+class Landscape(models.Model):
+    slug = models.SlugField()
+    center = models.PointField()
