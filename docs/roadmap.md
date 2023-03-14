@@ -1,13 +1,18 @@
 # Roadmap
 
 ## Django
-- [ ] Create Models
-  - [ ] Share
-  - [ ] Frequency
-  - [ ] Place
-- [ ] Move convertion logics inside django
-- [ ] Install PostGIS, SpatiaLite and GeoDjango 
+- [x] Enable jazzmin
+- [x] Create superuser command
+- [x] Delete old scripts folder
+- [x] Create Models
+  - [x] Share
+  - [x] Frequency
+  - [x] Place
+- [x] Install SpatiaLite and GeoDjango 
   [tutorial](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/), [installation](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/)
+
+- [ ] Add support to PostgreSQL and PostGIS
+- [ ] Move convertion logics inside django
 - [ ] use name resolution for links
 - [ ] Delete old templates folder
 - [ ] Delete old www static folder
@@ -15,9 +20,6 @@
 - [ ] Unistall starlette, SQLModel, Pydantic, FastAPI, ...
 - [ ] Privacy and cookies page
 
-- [x] Enable jazzmin
-- [x] Create superuser command
-- [x] Delete old scripts folder
 
 ## Bugs
 - [ ] Fix: make error "AxiosError: Request failed with status code 500" more clear
