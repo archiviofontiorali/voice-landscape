@@ -8,5 +8,6 @@ class Share(models.Model):
 
 
 class Landscape(models.Model):
-    slug = models.SlugField()
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
     center = models.PointField()
