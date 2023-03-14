@@ -1,6 +1,6 @@
 from django.views import generic
 
-from . import models
+from . import voices
 
 
 class HomePage(generic.TemplateView):
@@ -17,11 +17,8 @@ class MapPage(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
-        landscape = models.Landscape.objects.first()
-        coords = [landscape.center.y, landscape.center.x] if landscape else [0, 0]
-        context["center"] = coords
-
-        context.setdefault("places", [])
+        context.setdefault("places", voices.extrapolate_place_word_frequencies())
+        context.setdefault("center", voices.calculate_places_centroid())
 
         return context
 
@@ -31,5 +28,8 @@ class ShowcasePage(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context.setdefault("places", [])
+
+        context.setdefault("places", voices.extrapolate_place_word_frequencies())
+        context.setdefault("center", voices.calculate_places_centroid())
+
         return context
