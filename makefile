@@ -79,16 +79,22 @@ restore:
 	
 
 # Django commands
-.PHONY: run migrate bootstrap-django
+.PHONY: run migrate bootstrap-django clean-django superuser
 
-bootstrap-django: migrate
-	@echo -e $(bold)Initialize django development environment$(sgr0)
+bootstrap-django: clean-django migrate superuser 
+	
+clean-django:
 	rm -rf db.sqlite3 .media .static
-	$(django) migrate
+	
+superuser:
 	$(django) createsuperuser --username=admin --email=voci@afor.dev
+
+migrate:
+	# Temporary solution for https://code.djangoproject.com/ticket/32935 
+	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
+	$(django) migrate
 
 run:
 	$(django) runserver $(HOST):$(PORT)
+
 	
-migrate:
-	$(django) migrate
