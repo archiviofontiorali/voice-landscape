@@ -1,5 +1,7 @@
 from django.views import generic
 
+from . import models
+
 
 class HomePage(generic.TemplateView):
     template_name = "home.html"
@@ -14,7 +16,13 @@ class MapPage(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+
+        landscape = models.Landscape.objects.first()
+        coords = [landscape.center.y, landscape.center.x] if landscape else [0, 0]
+        context["center"] = coords
+
         context.setdefault("places", [])
+
         return context
 
 
