@@ -5,9 +5,29 @@ A project by [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
 
 ## Production environment instructions
-Require at least `python>=3.10`, `pip` and `venv` to work. 
+Require at least `python>=3.10`, `pip` and `venv` to work.
 To simplify installation `make` is suggested
 
+This package uses [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) 
+to handle spatial features like coordinates. Some additional package are required to use database
+- [GDAL](https://gdal.org/) 
+- [spatiallite](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/spatialite/) if using sqlite db
+- [PostGIS](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/) if using PostgreSQL
+
+To install it:
+```shell
+# On ubuntu
+$ sudo apt install gdal-bin
+$ sudo apt install libsqlite3-mod-spatialite
+$ sudo apt install postgresql-<x>-postgis-3  # Where <x> is the postgres version
+
+# On archlinux
+$ sudo pacman -S gdal
+$ sudo pacman -S libspatialite
+$ sudo pacman -S postgis
+```
+
+To install repository
 ```shell
 # Automatic installation
 $ make production
