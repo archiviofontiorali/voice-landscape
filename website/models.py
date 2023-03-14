@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 
 
 class Share(models.Model):
@@ -6,11 +7,9 @@ class Share(models.Model):
     location = models.PointField()
     message = models.TextField(max_length=500)
 
-
-class Landscape(models.Model):
-    title = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    center = models.PointField()
+    @property
+    def coordinates(self) -> tuple[float, float]:
+        return [self.location.y, self.location.x]  # noqa
 
 
 class Place(models.Model):
@@ -19,12 +18,18 @@ class Place(models.Model):
     description = models.TextField(max_length=500, blank=True)
     location = models.PointField()
 
+    @property
+    def coordinates(self) -> tuple[float, float]:
+        return [self.location.y, self.location.x]  # noqa
+
     def __str__(self):
         if self.title:
             return self.title
         if self.slug:
             return self.slug
-        return f"({self.location.y:.6f}, {self.location.x:.6f})"
+        if isinstance(self.location, Point):
+            return f"({self.location.y:.6f}, {self.location.x:.6f})"
+        return super().__str__()
 
 
 class WordFrequency(models.Model):
@@ -34,3 +39,8 @@ class WordFrequency(models.Model):
 
     class Meta:
         verbose_name_plural = "Word Frequencies"
+        constraints = [
+            models.UniqueConstraint(
+                fields=("word", "place"), name="WordFrequency uniqueness"
+            )
+        ]
