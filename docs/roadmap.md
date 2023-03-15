@@ -16,10 +16,10 @@
 - [x] remove starlette commands
 - [x] Uninstall SQLModel and fastapi
 - [x] Remove api, db amd settings module
+- [x] use name resolution for links
 
 - [ ] Add support to PostgreSQL and PostGIS
 - [ ] Move convertion logics inside django
-- [ ] use name resolution for links
 - [ ] Remove old app/repos/handlers/cases structure
 - [ ] Unistall starlette, Pydantic, ...
 
