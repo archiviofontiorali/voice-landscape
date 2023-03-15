@@ -1,4 +1,4 @@
-from starlette.responses import JSONResponse, PlainTextResponse
+from starlette.responses import JSONResponse
 from starlette.templating import Jinja2Templates
 
 
@@ -6,12 +6,6 @@ class JSON:
     @staticmethod
     def json(data):
         return JSONResponse(data)
-
-
-class Text:
-    @staticmethod
-    def text(message: str):
-        return PlainTextResponse(message)
 
 
 class Template:

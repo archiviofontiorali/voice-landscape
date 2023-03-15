@@ -47,7 +47,6 @@ class App:
         p = self._presenters = Container(
             template=presenters.Template(),
             json=presenters.JSON(),
-            text=presenters.Text(),
         )
         c = self._cases = Container(
             home=cases.TemplatePage("index.html"),
@@ -56,7 +55,6 @@ class App:
             share=cases.SharePage("share.html", r.frequencies),
             stt=cases.SpeechToText(),
             privacy=cases.TemplatePage("privacy.html"),
-            ping=cases.Ping(),
         )
         h = self._handlers = Container(
             home=PageHandler(c.home, p.template),
@@ -65,7 +63,6 @@ class App:
             share=PageHandler(c.share, p.template),
             stt=APIHandler(c.stt, p.json),
             privacy=PageHandler(c.privacy, p.template),
-            ping=PageHandler(c.ping, p.text),
         )
         self._routes = [
             get("/", h.home),
@@ -75,7 +72,6 @@ class App:
             post("/share", endpoint=h.share),
             get("/privacy", endpoint=h.privacy),
             post("/api/stt", endpoint=h.stt),
-            get("/ping", endpoint=h.ping),
         ]
 
     def app(self):

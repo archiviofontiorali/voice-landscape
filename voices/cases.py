@@ -101,12 +101,3 @@ class SpeechToText(Case):
             data = self._recognizer.record(source)
             text = self._recognizer.recognize_google(data, language="it-IT")
         return presenter.json(text)
-
-
-class Ping(Case):
-    def __init__(self):
-        self._response = "Pong!"
-
-    async def execute(self, request, presenter):
-        logger.debug(self._response)
-        return presenter.text(self._response)
