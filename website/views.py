@@ -49,3 +49,7 @@ class MapPage(MapContextMixin, generic.TemplateView):
 
 class ShowcasePage(MapContextMixin, generic.TemplateView):
     template_name = "showcase.html"
+
+
+class PrivacyPage(generic.TemplateView):
+    template_name = "privacy.html"
