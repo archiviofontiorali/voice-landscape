@@ -13,7 +13,7 @@ class Share(models.Model):
 
 
 class Place(models.Model):
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(max_length=500, blank=True)
     location = models.PointField()
