@@ -1,26 +1,9 @@
 import math
-from typing import Iterable, List, Tuple
+from typing import Iterable, Tuple
 
 import geopy.distance
 
-from voices.system.structures import FrequencyDict
-
 from .models import Coordinates, Place
-
-
-class PlacesDict(dict):
-    def __init__(self, places: List[Coordinates]):
-        super().__init__()
-
-        for place in places:
-            self.setdefault(place, FrequencyDict())
-
-    def increment(self, place: Coordinates, key):
-        self[place].increment(key)
-
-    def increment_nearest_place(self, target: Coordinates, key):
-        nearest, _distance = find_nearest_place(target, self.keys())
-        self.increment(nearest, key)
 
 
 def find_nearest_place(

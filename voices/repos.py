@@ -1,13 +1,10 @@
 from abc import ABC
-from collections import Counter
 from typing import Iterable, List
 
 import spacy
 import spacy.symbols
-from loguru import logger
 
 from .constants import PLACES
-from .geo import PlacesDict
 from .models import Coordinates, Place
 
 # TODO: with bisect module and custom structure it's possible to improve performance
@@ -27,22 +24,6 @@ class FrequencyRepo(ABC):
 
     async def statistics(self):
         pass
-
-
-class FrequencyDictRepo(FrequencyRepo):
-    def __init__(self):
-        self._coordinates = [(44.6543412, 10.9011459)]
-        self._data = PlacesDict(self._coordinates)
-
-    @property
-    def places(self) -> Iterable[Coordinates]:
-        return self._data.keys()
-
-    def update_frequency(self, place: Coordinates, key: str):
-        self._data.increment(place, key)
-
-    def fetch_frequency_table(self, place: Coordinates) -> dict:
-        return self._data.get(place)
 
 
 class FrequencySQLRepo(FrequencyRepo):
