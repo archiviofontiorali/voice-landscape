@@ -10,14 +10,14 @@
   - [x] Place
 - [x] Install SpatiaLite and GeoDjango 
   [tutorial](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/), [installation](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/)
+- [x] Delete old templates folder
+- [x] Delete old www static folder
+- [x] Uninstall sqladmin
 
 - [ ] Add support to PostgreSQL and PostGIS
 - [ ] Move convertion logics inside django
 - [ ] use name resolution for links
-- [ ] Delete old templates folder
-- [ ] Delete old www static folder
 - [ ] Remove old app/repos/handlers/cases structure
-- [x] Remove sqladmin
 - [ ] Unistall starlette, SQLModel, Pydantic, FastAPI, ...
 - [ ] Privacy and cookies page
 
