@@ -1,4 +1,7 @@
-const CENTER_COORDINATES = [44.64686795312118, 10.925334855944921]
+const defaultOptions = {
+  zoom: { initial: 15, min: 14, max: 20 },
+  map: { provider: "Stamen.TonerBackground" }
+}
 
 const wordCloudOptions = { 
   backgroundColor: "rgba(255, 255, 255, 0)", 
@@ -11,20 +14,20 @@ const wordCloudOptions = {
 };
 
 
-function initMap(
-    places, 
-    centerCoordinates = CENTER_COORDINATES, 
-    initialZoom = 16,
-    minZoom = 15,
-    maxZoom = 19
-) {
+function initMap(places, centerCoordinates = [0., 0.], options) {
+  options = {
+    zoom: {...defaultOptions.zoom, ...options.zoom },
+    map: {...defaultOptions.map, ...options.map }
+  }
+  console.log(options)
+  
   const minWidth = 100, maxWidth = 400;
-  const zoomRatio = (maxWidth - minWidth) / (maxZoom - minZoom);
+  const zoomRatio = (maxWidth - minWidth) / (options.zoom.max - options.zoom.min);
   
-  const map = L.map('map').setView(centerCoordinates, initialZoom);
+  const map = L.map('map').setView(centerCoordinates, options.zoom.initial);
   
-  const bgOptions = {minZoom: minZoom, maxZoom: maxZoom}
-  L.tileLayer.provider('Stamen.TonerBackground', bgOptions).addTo(map);
+  const bgOptions = {minZoom: options.zoom.min, maxZoom: options.zoom.max}
+  L.tileLayer.provider(options.map.provider, bgOptions).addTo(map);
     
   let canvas, icon;
   
@@ -42,7 +45,7 @@ function initMap(
   }
   
   function setMarkersWidth() {
-    let width = minWidth + zoomRatio * (map.getZoom() - minZoom);
+    let width = minWidth + zoomRatio * (map.getZoom() - options.zoom.min);
     let height = width / 2;
     $("#map .word-cloud canvas").css({
       width: `${width}px`, height: `${height}px`,
