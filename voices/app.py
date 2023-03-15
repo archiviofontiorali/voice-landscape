@@ -3,7 +3,7 @@ from loguru import logger
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
-from . import api, cases, presenters, settings, views
+from . import api, cases, presenters, settings
 from .db import database, engines
 from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
@@ -23,55 +23,16 @@ class _App:
         self.app = Starlette(debug=self.debug)
 
         self.init_database()
-        self.init_routes()
         self.init_api()
-        self.init_static()
-
-    def add_route(
-        self,
-        path: str,
-        endpoint: views.Template,
-        name: str = None,
-        methods: list[Literal["GET", "POST"]] = None,
-    ):
-        if methods is None:
-            methods = ["GET"]
-
-        for method in methods:
-            if hasattr(endpoint, method.lower()):
-                self.app.add_route(path, getattr(endpoint, method.lower()), name=name)
 
     def init_database(self):
         self.db = database.Database()
         self.db.create_tables()
 
-    def init_admin(self):
-        self.sql_admin = sqladmin.Admin(
-            self.app, self.db.engine, templates_dir="templates/admin", debug=self.debug
-        )
-
-        for view in self.admin_views:
-            self.sql_admin.add_view(view)
-
     def init_api(self):
         router = fastapi.APIRouter()
-        # api.add_route("/stt", endpoint=api.SpeechToText(), name="stt", methods=["POST"])
         router.add_api_route("/voice", api.VoiceAPI(self.db).get)
         self.app.mount("/api", router, name="api")
-
-    def init_routes(self):
-        self.add_route("/", views.HomePage(), name="homepage")
-        self.add_route("/map", views.Map(), name="map")
-        self.add_route("/showcase", views.Showcase(), name="showcase")
-        self.add_route("/share", views.Share(), name="share")
-        self.add_route("/privacy", views.Privacy(), name="privacy")
-
-    def init_static(self):
-        self.app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
-        self.app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
-
-        # favicon from: https://www.favicon.cc/?action=icon&file_id=990605
-        self.app.add_route("/favicon.ico", views.Favicon().get, name="favicon")
 
 
 class App:
