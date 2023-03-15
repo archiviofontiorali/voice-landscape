@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.gis",
     "sass_processor",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [

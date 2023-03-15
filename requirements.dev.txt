@@ -49,11 +49,14 @@ databases[postgresql,sqlite]==0.7.0
 django==4.1.7
     # via
     #   django-appconf
+    #   django-extensions
     #   django-jazzmin
     #   voice-landscape (pyproject.toml)
 django-appconf==1.0.5
     # via django-compressor
 django-compressor==4.3.1
+    # via voice-landscape (pyproject.toml)
+django-extensions==3.2.1
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
