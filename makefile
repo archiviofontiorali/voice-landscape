@@ -92,4 +92,10 @@ migrate:
 migrations:
 	$(django) makemigrations
 
+
+# Demo commands
+.PHONY: bootstrap-demo
+ 
+bootstrap-demo:
+	$(django) runscript init_demo
 	
