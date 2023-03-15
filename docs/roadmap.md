@@ -17,6 +17,7 @@
 - [ ] Delete old templates folder
 - [ ] Delete old www static folder
 - [ ] Remove old app/repos/handlers/cases structure
+- [x] Remove sqladmin
 - [ ] Unistall starlette, SQLModel, Pydantic, FastAPI, ...
 - [ ] Privacy and cookies page
 

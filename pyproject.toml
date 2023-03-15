@@ -29,7 +29,6 @@ dependencies = [
     "jinja2",
     "pydantic",
     "python-multipart",
-    "sqladmin==0.7.0",
     "sqlmodel",
     "starlette",
     "uvicorn",

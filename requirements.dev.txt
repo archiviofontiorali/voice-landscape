@@ -61,7 +61,7 @@ django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
 exceptiongroup==1.1.1
     # via pytest
-fastapi==0.94.0
+fastapi==0.94.1
     # via voice-landscape (pyproject.toml)
 geographiclib==2.0
     # via geopy
@@ -78,9 +78,7 @@ h11==0.14.0
 httpcore==0.16.3
     # via httpx
 httpx==0.23.3
-    # via
-    #   starlette
-    #   voice-landscape (pyproject.toml)
+    # via voice-landscape (pyproject.toml)
 idna==3.4
     # via
     #   anyio
@@ -90,12 +88,9 @@ iniconfig==2.0.0
     # via pytest
 isort==5.12.0
     # via voice-landscape (pyproject.toml)
-itsdangerous==2.1.2
-    # via starlette
 jinja2==3.1.2
     # via
     #   spacy
-    #   starlette
     #   voice-landscape (pyproject.toml)
 langcodes==3.3.0
     # via spacy
@@ -104,9 +99,7 @@ libsass==0.22.0
 loguru==0.6.0
     # via voice-landscape (pyproject.toml)
 markupsafe==2.1.2
-    # via
-    #   jinja2
-    #   wtforms
+    # via jinja2
 murmurhash==1.0.9
     # via
     #   preshed
@@ -125,7 +118,7 @@ packaging==23.0
     #   pytest
     #   spacy
     #   thinc
-pathspec==0.11.0
+pathspec==0.11.1
     # via black
 pathy==0.10.1
     # via spacy
@@ -152,11 +145,7 @@ pytest==7.2.2
 python-decouple==3.8
     # via voice-landscape (pyproject.toml)
 python-multipart==0.0.6
-    # via
-    #   starlette
-    #   voice-landscape (pyproject.toml)
-pyyaml==6.0
-    # via starlette
+    # via voice-landscape (pyproject.toml)
 rcssmin==1.1.1
     # via django-compressor
 requests==2.28.2
@@ -184,12 +173,9 @@ spacy-loggers==1.0.4
     # via spacy
 speechrecognition==3.10.0
     # via voice-landscape (pyproject.toml)
-sqladmin==0.7.0
-    # via voice-landscape (pyproject.toml)
 sqlalchemy==1.4.46
     # via
     #   databases
-    #   sqladmin
     #   sqlmodel
 sqlalchemy2-stubs==0.0.2a32
     # via sqlmodel
@@ -202,10 +188,9 @@ srsly==2.4.6
     #   confection
     #   spacy
     #   thinc
-starlette[full]==0.26.0.post1
+starlette==0.26.1
     # via
     #   fastapi
-    #   sqladmin
     #   voice-landscape (pyproject.toml)
 thinc==8.1.9
     # via spacy
@@ -231,8 +216,6 @@ wasabi==1.1.1
     # via
     #   spacy
     #   thinc
-wtforms==3.0.1
-    # via sqladmin
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

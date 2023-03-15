@@ -1,14 +1,10 @@
-from typing import Literal
-
 import fastapi
-import sqladmin
-import sqlmodel
 from loguru import logger
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
 
 from . import api, cases, presenters, settings, views
-from .db import admin, database, engines
+from .db import database, engines
 from .handlers import APIHandler, PageHandler, Static
 from .repos import FrequencySQLRepo
 from .system.structures import Container
@@ -17,13 +13,6 @@ from .system.web import get, post
 
 class _App:
     db: database.Database
-    sql_admin: sqladmin.Admin
-
-    admin_views: list[type[sqladmin.ModelView]] = [
-        admin.VoiceAdmin,
-        admin.PlaceAdmin,
-        admin.LandscapeAdmin,
-    ]
 
     def __init__(self, debug: bool = settings.DEBUG):
         self.debug = debug
@@ -34,7 +23,6 @@ class _App:
         self.app = Starlette(debug=self.debug)
 
         self.init_database()
-        self.init_admin()
         self.init_routes()
         self.init_api()
         self.init_static()
@@ -131,14 +119,6 @@ class App:
         # favicon from: https://www.favicon.cc/?action=icon&file_id=990605
         app.add_route("/favicon.ico", Static("favicon.ico").__call__, name="favicon")
 
-    @staticmethod
-    def add_admin(app: Starlette):
-        engine = sqlmodel.create_engine(str(settings.DATABASE_URL), echo=True)
-        sqlmodel.SQLModel.metadata.create_all(engine)
-
-        sql_admin = sqladmin.Admin(app, engine, templates_dir="templates_admin")
-        sql_admin.add_view(admin.VoiceAdmin)
-
     def app(self):
         app = Starlette(
             debug=settings.DEBUG,
@@ -147,7 +127,6 @@ class App:
             on_shutdown=[self._services.db.disconnect],
         )
 
-        self.add_admin(app)
         self.add_static(app)
 
         return app
