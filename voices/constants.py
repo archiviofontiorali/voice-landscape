@@ -1,4 +1,21 @@
+import pathlib
+
 import numpy as np
+from starlette.config import Config
+
+config = Config(".env")
+
+DEBUG = config("DEBUG", cast=bool, default=False)
+DATABASE_URL = config(
+    "DATABASE_URL",
+    cast=str,
+    default=f"sqlite://",
+)
+
+TEMPLATES = config("TEMPLATES", default="templates")
+
+STATIC_PATH = pathlib.Path("www/")
+
 
 AFOR_COORDINATES = (44.65461615128406, 10.901229167243947)
 # CENTER_COORDINATES = (44.64686795312118, 10.925334855944921)

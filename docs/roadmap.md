@@ -14,12 +14,15 @@
 - [x] Delete old www static folder
 - [x] Uninstall sqladmin
 - [x] remove starlette commands
+- [x] Uninstall SQLModel and fastapi
+- [x] Remove api, db amd settings module
 
 - [ ] Add support to PostgreSQL and PostGIS
 - [ ] Move convertion logics inside django
 - [ ] use name resolution for links
 - [ ] Remove old app/repos/handlers/cases structure
-- [ ] Unistall starlette, SQLModel, Pydantic, FastAPI, ...
+- [ ] Unistall starlette, Pydantic, ...
+
 - [ ] Privacy and cookies page
 - [ ] Move test to django 
 

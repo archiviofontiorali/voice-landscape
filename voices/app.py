@@ -1,42 +1,48 @@
-import fastapi
-from loguru import logger
+import contextlib
+
+import databases
 from starlette.applications import Starlette
 
-from . import api, cases, presenters, settings
-from .db import database, engines
+from . import cases, constants, presenters
 from .handlers import APIHandler, PageHandler
 from .repos import FrequencySQLRepo
 from .system.structures import Container
 from .system.web import get, post
 
 
-class _App:
-    db: database.Database
+class Database:
+    database: databases.Database
 
-    def __init__(self, debug: bool = settings.DEBUG):
-        self.debug = debug
+    def __init__(self, database: databases.DatabaseURL | str):
+        if isinstance(database, str):
+            database = databases.DatabaseURL(database)
+        self.database = databases.Database(database)
 
-        logger.info(f"DEBUG: {self.debug}")
-        logger.info(f"Database URL: {settings.DATABASE_URL}")
+    @contextlib.asynccontextmanager
+    async def lifespan(self):
+        await self.database.connect()
+        yield
+        await self.database.disconnect()
 
-        self.app = Starlette(debug=self.debug)
+    async def connect(self):
+        await self.database.connect()
 
-        self.init_database()
-        self.init_api()
+    async def disconnect(self):
+        await self.database.disconnect()
 
-    def init_database(self):
-        self.db = database.Database()
-        self.db.create_tables()
+    async def execute(self, query: str, **values) -> int:
+        return await self.database.execute(query=query, values=values)
 
-    def init_api(self):
-        router = fastapi.APIRouter()
-        router.add_api_route("/voice", api.VoiceAPI(self.db).get)
-        self.app.mount("/api", router, name="api")
+    async def fetch_all(self, query: str, **values):
+        return await self.database.fetch_all(query=query, values=values)
+
+    async def create_table(self, table: str, keys: str):
+        await self.execute(f"CREATE TABLE IF NOT EXISTS {table} ({keys})")
 
 
 class App:
     def __init__(self):
-        s = self._services = Container(db=engines.Database(settings.DATABASE_URL))
+        s = self._services = Container(db=Database(constants.DATABASE_URL))
         r = self._repos = Container(frequencies=FrequencySQLRepo(s.db))
         p = self._presenters = Container(
             template=presenters.Template(),
@@ -74,7 +80,7 @@ class App:
 
     def app(self):
         return Starlette(
-            debug=settings.DEBUG,
+            debug=constants.DEBUG,
             routes=self._routes,
             on_startup=[self._services.db.connect, self._repos.frequencies.init_db],
             on_shutdown=[self._services.db.disconnect],

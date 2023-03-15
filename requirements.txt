@@ -49,8 +49,6 @@ django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
 django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
-fastapi==0.94.1
-    # via voice-landscape (pyproject.toml)
 geographiclib==2.0
     # via geopy
 geopy==2.3.0
@@ -100,9 +98,7 @@ preshed==3.0.8
 pydantic==1.10.6
     # via
     #   confection
-    #   fastapi
     #   spacy
-    #   sqlmodel
     #   thinc
     #   voice-landscape (pyproject.toml)
 pydub==0.25.1
@@ -134,13 +130,7 @@ spacy-loggers==1.0.4
 speechrecognition==3.10.0
     # via voice-landscape (pyproject.toml)
 sqlalchemy==1.4.46
-    # via
-    #   databases
-    #   sqlmodel
-sqlalchemy2-stubs==0.0.2a32
-    # via sqlmodel
-sqlmodel==0.0.6
-    # via voice-landscape (pyproject.toml)
+    # via databases
 sqlparse==0.4.3
     # via django
 srsly==2.4.6
@@ -149,9 +139,7 @@ srsly==2.4.6
     #   spacy
     #   thinc
 starlette==0.26.1
-    # via
-    #   fastapi
-    #   voice-landscape (pyproject.toml)
+    # via voice-landscape (pyproject.toml)
 thinc==8.1.9
     # via spacy
 tqdm==4.65.0
@@ -161,9 +149,7 @@ typer==0.7.0
     #   pathy
     #   spacy
 typing-extensions==4.5.0
-    # via
-    #   pydantic
-    #   sqlalchemy2-stubs
+    # via pydantic
 urllib3==1.26.15
     # via requests
 uvicorn==0.21.0
