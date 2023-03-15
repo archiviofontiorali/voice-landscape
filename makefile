@@ -74,7 +74,7 @@ restore:
 	
 
 # Django commands
-.PHONY: migrate bootstrap-django clean-django superuser
+.PHONY: migrate migrations bootstrap-django clean-django superuser
 
 bootstrap-django: clean-django migrate superuser 
 	
@@ -89,5 +89,7 @@ migrate:
 	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 	$(django) migrate
 
+migrations:
+	$(django) makemigrations
 
 	
