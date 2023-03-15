@@ -13,6 +13,7 @@
 - [x] Delete old templates folder
 - [x] Delete old www static folder
 - [x] Uninstall sqladmin
+- [x] remove starlette commands
 
 - [ ] Add support to PostgreSQL and PostGIS
 - [ ] Move convertion logics inside django
@@ -20,6 +21,7 @@
 - [ ] Remove old app/repos/handlers/cases structure
 - [ ] Unistall starlette, SQLModel, Pydantic, FastAPI, ...
 - [ ] Privacy and cookies page
+- [ ] Move test to django 
 
 
 ## Bugs

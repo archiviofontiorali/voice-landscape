@@ -34,7 +34,7 @@ freeze:
 
 
 # Development Environment
-.PHONY: bootstrap develop scss
+.PHONY: serve bootstrap develop test
 
 bootstrap: venv develop
 
@@ -44,17 +44,12 @@ develop:
 	$(python) -m spacy download it_core_news_sm
 	$(python) -m pip install --editable .
 
-scss:
-	$(python) scripts/compile_scss.py
+serve:
+	$(django) runserver $(HOST):$(PORT)
 
-.PHONY: serve
-serve: scss
-	$(VENV)/bin/uvicorn voices.asgi:app --reload --host $(HOST) --port $(PORT)
-
-
-.PHONY: test
 test:
 	$(python) -m pytest 
+
 
 
 # Production Environment
@@ -79,7 +74,7 @@ restore:
 	
 
 # Django commands
-.PHONY: run migrate bootstrap-django clean-django superuser
+.PHONY: migrate bootstrap-django clean-django superuser
 
 bootstrap-django: clean-django migrate superuser 
 	
@@ -94,7 +89,5 @@ migrate:
 	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 	$(django) migrate
 
-run:
-	$(django) runserver $(HOST):$(PORT)
 
 	
