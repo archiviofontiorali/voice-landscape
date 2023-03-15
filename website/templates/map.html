@@ -6,10 +6,9 @@
   <div id="map" style="height: calc(100vh - 4rem - 2.5rem)"></div>
 {% endblock %}
 
-{% block scripts %}
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-          integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-          crossorigin="" defer></script>
+{% block scripts %}  
+  <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js" defer></script>
+  <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js" defer></script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.2/wordcloud2.min.js" 
           integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" 
