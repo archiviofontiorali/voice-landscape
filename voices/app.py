@@ -6,8 +6,15 @@ from starlette.applications import Starlette
 from . import cases, constants, presenters
 from .handlers import APIHandler, PageHandler
 from .repos import FrequencySQLRepo
-from .system.structures import Container
 from .system.web import get, post
+
+
+class Container(dict):
+    def __getattr__(self, item):
+        try:
+            return self.__getitem__(item)
+        except KeyError:
+            raise AttributeError(f"'Container' object has no attribute '{item}'")
 
 
 class Database:
