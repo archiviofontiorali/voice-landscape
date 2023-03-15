@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 
@@ -44,3 +46,15 @@ class WordFrequency(models.Model):
                 fields=("word", "place"), name="WordFrequency uniqueness"
             )
         ]
+
+    @classmethod
+    def create_random(cls):
+        sample = cls(
+            word=f"WORD{random.randint(0, 20):02d}",
+            place=random.choice(Place.objects.all()),
+            frequency=random.randint(0, 10),
+        )
+        if obj := cls.objects.filter(word=sample.word, place=sample.place).first():
+            obj.frequency += sample.frequency
+        else:
+            sample.save()

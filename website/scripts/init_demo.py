@@ -4,7 +4,7 @@ import django.db.utils
 import django.utils.text
 from django.contrib.gis.geos import Point
 
-from website.models import Place
+from website import models
 
 places = [
     (44.65461615128406, 10.901229167243947, "AFOr | Archivio delle Fonti Orali"),
@@ -40,11 +40,14 @@ places = [
 def run():
     for lat, lon, title in places:
         slug = django.utils.text.slugify(title)
-        place = Place(slug=slug, title=title, location=Point(x=lon, y=lat))
+        place = models.Place(slug=slug, title=title, location=Point(x=lon, y=lat))
 
-        if Place.objects.filter(slug=slug).exists():
+        if models.Place.objects.filter(slug=slug).exists():
             print(f"Place with slug {slug} already exists")
             continue
 
         place.save()
         print(f"Added place {place}")
+
+    for i in range(30 * len(places)):
+        models.WordFrequency.create_random()
