@@ -25,7 +25,7 @@ class MapContextMixin:
         return obj
 
     def get_context_data(self):
-        context = {
+        context: dict = {
             "center": self._calculate_centroid(),
             "places": [
                 self._fetch_place_frequencies(place)
@@ -39,6 +39,7 @@ class HomePage(generic.TemplateView):
     template_name = "home.html"
 
 
+# TODO: add form logic from SharePage in voices/cases
 class SharePage(generic.TemplateView):
     template_name = "share.html"
 
@@ -50,6 +51,15 @@ class MapPage(MapContextMixin, generic.TemplateView):
 class ShowcasePage(MapContextMixin, generic.TemplateView):
     template_name = "showcase.html"
 
+    def get_context_data(self):
+        context = super().get_context_data()
+        context.setdefault("reload", 5 * 60)
+        # context.setdefault("stats", None)  # TODO: frequency_repo.statistics()
+        return context
+
 
 class PrivacyPage(generic.TemplateView):
     template_name = "privacy.html"
+
+
+# TODO: Add SpeechToText API call from voices/cases/SpeechToText
