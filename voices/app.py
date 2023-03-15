@@ -1,11 +1,10 @@
 import fastapi
 from loguru import logger
 from starlette.applications import Starlette
-from starlette.staticfiles import StaticFiles
 
 from . import api, cases, presenters, settings
 from .db import database, engines
-from .handlers import APIHandler, PageHandler, Static
+from .handlers import APIHandler, PageHandler
 from .repos import FrequencySQLRepo
 from .system.structures import Container
 from .system.web import get, post
@@ -73,21 +72,10 @@ class App:
             get("/ping", endpoint=h.ping),
         ]
 
-    @staticmethod
-    def add_static(app: Starlette):
-        app.mount("/css", app=StaticFiles(directory="www/css"), name="css")
-        app.mount("/js", app=StaticFiles(directory="www/js"), name="js")
-        # favicon from: https://www.favicon.cc/?action=icon&file_id=990605
-        app.add_route("/favicon.ico", Static("favicon.ico").__call__, name="favicon")
-
     def app(self):
-        app = Starlette(
+        return Starlette(
             debug=settings.DEBUG,
             routes=self._routes,
             on_startup=[self._services.db.connect, self._repos.frequencies.init_db],
             on_shutdown=[self._services.db.disconnect],
         )
-
-        self.add_static(app)
-
-        return app
