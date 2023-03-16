@@ -7,7 +7,6 @@ import speech_recognition
 from loguru import logger
 
 from .constants import CENTER_COORDINATES, SHOWCASE_RELOAD_TIME
-from .geo import find_nearest_place
 from .repos import FrequencyRepo
 from .system.types import Case
 
@@ -59,6 +58,17 @@ class SharePage(Case):
         self._frequency_repo = frequency_repo
         self._nlp = spacy.load("it_core_news_sm")
 
+    @staticmethod
+    def find_nearest_place(
+        target: Coordinates, places: Iterable[Coordinates]
+    ) -> Tuple[Coordinates, float]:
+        near, distance = None, math.inf
+        for place in places:
+            new_distance = geopy.distance.geodesic(target, place).m
+            if new_distance < distance:
+                near, distance = place, new_distance
+        return near, distance
+
     async def execute(self, request, presenter):
         if request.method == "POST":
             data = await request.form()
@@ -70,7 +80,9 @@ class SharePage(Case):
             text = data.get("text", None)
 
             logger.debug(f"Receiving text from {coordinates}: {text}")
-            nearest, _ = find_nearest_place(coordinates, self._frequency_repo.places)
+            nearest, _ = self.find_nearest_place(
+                coordinates, self._frequency_repo.places
+            )
 
             doc = self._nlp(text)
             for token in doc:

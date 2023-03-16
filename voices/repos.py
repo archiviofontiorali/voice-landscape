@@ -19,8 +19,8 @@ class FrequencyRepo(ABC):
     def fetch_frequency_table(self, place: Coordinates) -> dict:
         pass
 
-    async def prepare_map_frequencies(self):
-        pass
+    # async def prepare_map_frequencies(self):
+    #     pass
 
     async def statistics(self):
         pass
@@ -66,22 +66,6 @@ class FrequencySQLRepo(FrequencyRepo):
             "WHERE latitude=:latitude AND longitude=:longitude"
         )
         return await self._db.fetch_all(query, **values)
-
-    async def prepare_map_frequencies(self):
-        result = []
-        for place in self.places:
-            frequencies = await self.fetch_frequency_table(place)
-
-            if frequencies:
-                frequencies = {row[0].upper(): row[1] for row in frequencies}
-            else:
-                # words = set(PLACES[place].split())
-                # frequencies = {w.lower(): 0.8 for w in words}
-                frequencies = {}
-
-            obj = Place(coordinates=place, frequencies=frequencies).dict()
-            result.append(obj)
-        return result
 
     async def statistics(self):
         query = (
