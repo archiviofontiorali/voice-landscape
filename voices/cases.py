@@ -1,12 +1,14 @@
+import math
 import tempfile
+from typing import Iterable, Tuple
 
+import geopy.distance
 import pydub
 import spacy
 import spacy.symbols
 import speech_recognition
 from loguru import logger
 
-from .constants import CENTER_COORDINATES, SHOWCASE_RELOAD_TIME
 from .repos import FrequencyRepo
 from .system.types import Case
 
@@ -21,33 +23,18 @@ class TemplatePage(Case):
         return presenter.render(self.template, {"request": request})
 
 
-class LeafletMapPage(Case):
-    def __init__(self, template: str, frequency_repo: FrequencyRepo):
-        self.template = template
-        self._frequency_repo = frequency_repo
-
-    async def execute(self, request, presenter):
-        places = await self._frequency_repo.prepare_map_frequencies()
-        context = {
-            "center": CENTER_COORDINATES,
-            "places": places,
-            "request": request,
-        }
-        return presenter.render(self.template, context)
-
-
 class ShowcasePage(Case):
     def __init__(self, template: str, frequency_repo: FrequencyRepo):
         self.template = template
         self._frequency_repo = frequency_repo
 
     async def execute(self, request, presenter):
-        places = await self._frequency_repo.prepare_map_frequencies()
+        # places = await self._frequency_repo.prepare_map_frequencies()
         stats = await self._frequency_repo.statistics()
         context = {
-            "center": CENTER_COORDINATES,
-            "reload": SHOWCASE_RELOAD_TIME,
-            "places": places,
+            # "center": CENTER_COORDINATES,
+            # "reload": SHOWCASE_RELOAD_TIME,
+            # "places": places,
             "stats": stats,
             "request": request,
         }
