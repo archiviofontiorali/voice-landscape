@@ -9,7 +9,7 @@ import spacy.symbols
 import speech_recognition
 from loguru import logger
 
-from .repos import FrequencyRepo
+from .repos import FrequencySQLRepo
 from .system.types import Case
 
 Coordinates = tuple[float, float]
@@ -24,7 +24,7 @@ class TemplatePage(Case):
 
 
 class ShowcasePage(Case):
-    def __init__(self, template: str, frequency_repo: FrequencyRepo):
+    def __init__(self, template: str, frequency_repo: FrequencySQLRepo):
         self.template = template
         self._frequency_repo = frequency_repo
 
@@ -42,7 +42,14 @@ class ShowcasePage(Case):
 
 
 class SharePage(Case):
-    def __init__(self, template: str, frequency_repo: FrequencyRepo):
+    VALID_TOKENS = (
+        spacy.symbols.ADV,
+        spacy.symbols.NOUN,
+        spacy.symbols.VERB,
+        spacy.symbols.ADJ,
+    )
+
+    def __init__(self, template: str, frequency_repo: FrequencySQLRepo):
         self.template = template
         self._frequency_repo = frequency_repo
         self._nlp = spacy.load("it_core_news_sm")
@@ -73,15 +80,10 @@ class SharePage(Case):
                 coordinates, self._frequency_repo.places
             )
 
-            doc = self._nlp(text)
-            for token in doc:
-                if token.pos in (
-                    spacy.symbols.ADV,
-                    spacy.symbols.NOUN,
-                    spacy.symbols.VERB,
-                    spacy.symbols.ADJ,
-                ):
-                    await self._frequency_repo.update_frequency(nearest, token.lemma_)
+            for token in self._nlp(text):
+                if token.pos not in self.VALID_TOKENS:
+                    continue
+                await self._frequency_repo.update_frequency(nearest, token.lemma_)
 
         context = {"request": request}
         return presenter.render(self.template, context)

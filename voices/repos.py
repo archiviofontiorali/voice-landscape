@@ -1,33 +1,13 @@
-from abc import ABC
 from typing import Iterable, List
-
-import spacy
-import spacy.symbols
 
 from .constants import PLACES
 
 Coordinates = tuple[float, float]
 
-# TODO: with bisect module and custom structure it's possible to improve performance
 
-
-class FrequencyRepo(ABC):
+class FrequencySQLRepo:
     places: Iterable[Coordinates]
 
-    def update_frequency(self, place: Coordinates, key: str):
-        pass
-
-    def fetch_frequency_table(self, place: Coordinates) -> dict:
-        pass
-
-    # async def prepare_map_frequencies(self):
-    #     pass
-
-    async def statistics(self):
-        pass
-
-
-class FrequencySQLRepo(FrequencyRepo):
     def __init__(self, db):
         self._db = db
         self._table = "frequencies"
@@ -75,24 +55,3 @@ class FrequencySQLRepo(FrequencyRepo):
         )
         top_words = await self._db.fetch_all(query, top=10)
         return {"top_words": [(row[0], row[1]) for row in top_words]}
-
-
-class NLP:
-    VALID_TOKENS = (
-        spacy.symbols.ADV,
-        spacy.symbols.NOUN,
-        spacy.symbols.VERB,
-        spacy.symbols.ADJ,
-    )
-
-    def __init__(self):
-        self._nlp = spacy.load("it_core_news_sm")
-
-    def preprocess(self, message: str):
-        # TODO: sanitize content for example with `bleach`
-        tokens = (
-            token.lemma_
-            for token in self._nlp(message)
-            if token.pos in self.VALID_TOKENS
-        )
-        return list(tokens)
