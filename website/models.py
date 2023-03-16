@@ -2,6 +2,7 @@ import random
 
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
+from django.db.models import Sum
 
 
 class Share(models.Model):
@@ -46,6 +47,12 @@ class WordFrequency(models.Model):
                 fields=("word", "place"), name="WordFrequency uniqueness"
             )
         ]
+
+    @classmethod
+    def top_words(cls) -> list[tuple[str, int]]:
+        query = cls.objects.values("word").annotate(total=Sum("frequency"))
+        query = query.order_by("-total")[:10]
+        return [(obj["word"], obj["total"]) for obj in query]
 
     @classmethod
     def create_random(cls):
