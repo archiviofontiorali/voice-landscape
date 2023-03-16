@@ -56,17 +56,14 @@ class App:
             json=presenters.JSON(),
         )
         c = self._cases = Container(
-            showcase=cases.ShowcasePage("showcase.html", r.frequencies),
             share=cases.SharePage("share.html", r.frequencies),
             stt=cases.SpeechToText(),
         )
         h = self._handlers = Container(
-            showcase=PageHandler(c.showcase, p.template),
             share=PageHandler(c.share, p.template),
             stt=APIHandler(c.stt, p.json),
         )
         self._routes = [
-            get("/showcase", endpoint=h.showcase),
             get("/share", endpoint=h.share),
             post("/share", endpoint=h.share),
             post("/api/stt", endpoint=h.stt),

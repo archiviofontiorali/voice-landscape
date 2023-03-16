@@ -23,24 +23,6 @@ class TemplatePage(Case):
         return presenter.render(self.template, {"request": request})
 
 
-class ShowcasePage(Case):
-    def __init__(self, template: str, frequency_repo: FrequencySQLRepo):
-        self.template = template
-        self._frequency_repo = frequency_repo
-
-    async def execute(self, request, presenter):
-        # places = await self._frequency_repo.prepare_map_frequencies()
-        stats = await self._frequency_repo.statistics()
-        context = {
-            # "center": CENTER_COORDINATES,
-            # "reload": SHOWCASE_RELOAD_TIME,
-            # "places": places,
-            "stats": stats,
-            "request": request,
-        }
-        return presenter.render(self.template, context)
-
-
 class SharePage(Case):
     VALID_TOKENS = (
         spacy.symbols.ADV,

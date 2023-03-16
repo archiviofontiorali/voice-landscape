@@ -47,11 +47,3 @@ class FrequencySQLRepo:
             "WHERE latitude=:latitude AND longitude=:longitude"
         )
         return await self._db.fetch_all(query, **values)
-
-    async def statistics(self):
-        query = (
-            f"SELECT word, sum(frequency) AS frequency FROM {self._table} "
-            "GROUP BY word ORDER BY frequency DESC LIMIT :top"
-        )
-        top_words = await self._db.fetch_all(query, top=10)
-        return {"top_words": [(row[0], row[1]) for row in top_words]}
