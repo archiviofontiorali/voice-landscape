@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev"]
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     "jazzmin",
     "website.apps.WebsiteConfig",
     "django.contrib.admin",
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -147,3 +149,10 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     # "dark_mode_theme": "darkly",  # Not working at the moment
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "https://voci.afor.dev",
+    "http://localhost:8001",
+    "http://127.0.0.1:8001",
+]

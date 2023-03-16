@@ -33,12 +33,15 @@ cymem==2.0.7
 django==4.1.7
     # via
     #   django-appconf
+    #   django-cors-headers
     #   django-extensions
     #   django-jazzmin
     #   voice-landscape (pyproject.toml)
 django-appconf==1.0.5
     # via django-compressor
 django-compressor==4.3.1
+    # via voice-landscape (pyproject.toml)
+django-cors-headers==3.14.0
     # via voice-landscape (pyproject.toml)
 django-extensions==3.2.1
     # via voice-landscape (pyproject.toml)
@@ -144,7 +147,7 @@ typing-extensions==4.5.0
     # via pydantic
 urllib3==1.26.15
     # via requests
-uvicorn==0.21.0
+uvicorn==0.21.1
     # via voice-landscape (pyproject.toml)
 wasabi==1.1.1
     # via
