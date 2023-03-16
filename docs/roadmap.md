@@ -17,15 +17,13 @@
 - [x] Uninstall SQLModel and fastapi
 - [x] Remove api, db amd settings module
 - [x] use name resolution for links
+- [x] Uninstall pydantic
+- [x] Remove repos, handlers, cases (merged in apps)
+- [x] Move SpeechToText to django
 
+- [ ] Move Share POST logic to django
+- [ ] Move test to django
 - [ ] Add support to PostgreSQL and PostGIS
-- [ ] Move convertion logics inside django
-- [ ] Remove old app/repos/handlers/cases structure
 - [ ] Unistall starlette, Pydantic, ...
-
 - [ ] Privacy and cookies page
-- [ ] Move test to django 
-
-
-## Bugs
-- [ ] Fix: make error "AxiosError: Request failed with status code 500" more clear
+- [ ] Improve how axios show messages in SharePage
