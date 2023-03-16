@@ -1,18 +1,14 @@
 import math
-import tempfile
 from abc import ABC, abstractmethod
 from typing import Any, Iterable, Literal, Tuple
 
 import geopy.distance
 import numpy as np
-import pydub
 import spacy
 import spacy.symbols
-import speech_recognition
 from loguru import logger
 from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 from starlette.routing import Route
 from starlette.templating import Jinja2Templates
 
@@ -52,12 +48,6 @@ class Container(dict):
 
 
 # Presenters
-
-
-class JSON:
-    @staticmethod
-    def json(data):
-        return JSONResponse(data)
 
 
 class Template:
@@ -161,23 +151,6 @@ class SharePage(Case):
         return presenter.render(self.template, context)
 
 
-class SpeechToText(Case):
-    def __init__(self):
-        self._recognizer = speech_recognition.Recognizer()
-
-    async def execute(self, request, presenter):
-        # TODO: check data.content-type
-        audio = (await request.form()).get("audio", None)
-        sound = pydub.AudioSegment.from_file(audio.file if audio else None)
-        raw = tempfile.NamedTemporaryFile(suffix=".wav")
-        sound.export(raw, format="wav")
-
-        with speech_recognition.AudioFile(raw.name) as source:
-            data = self._recognizer.record(source)
-            text = self._recognizer.recognize_google(data, language="it-IT")
-        return presenter.json(text)
-
-
 # Handler
 
 
@@ -198,11 +171,6 @@ templates = Jinja2Templates(directory="templates")
 
 
 class PageHandler(Handler):
-    async def __call__(self, request):
-        return await self.case.execute(request, self.presenter)
-
-
-class APIHandler(Handler):
     async def __call__(self, request):
         return await self.case.execute(request, self.presenter)
 
@@ -231,19 +199,16 @@ def post(path: str, endpoint: Handler, **kwargs):
 class App:
     def __init__(self):
         r = self._repos = Container(frequencies=FrequencySQLRepo(db=None))
-        p = self._presenters = Container(template=Template(), json=JSON())
+        p = self._presenters = Container(template=Template())
         c = self._cases = Container(
             share=SharePage("share.html", r.frequencies),
-            stt=SpeechToText(),
         )
         h = self._handlers = Container(
             share=PageHandler(c.share, p.template),
-            stt=APIHandler(c.stt, p.json),
         )
         self._routes = [
             get("/share", endpoint=h.share),
             post("/share", endpoint=h.share),
-            post("/api/stt", endpoint=h.stt),
         ]
 
     def app(self):

@@ -23,6 +23,7 @@ dependencies = [
     "pydub",
     "spacy",
     "SpeechRecognition",
+    "pocketsphinx",
     
     "jinja2",
     "python-multipart",

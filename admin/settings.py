@@ -37,6 +37,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev"]
 INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
+    "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
     "django.contrib.admin",
     "django.contrib.auth",

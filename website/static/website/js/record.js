@@ -2,6 +2,9 @@ const config = { type: "audio", mimeType: "audio/wav" };
 const constrains = { audio: true, video: false };
 let recorder;
 
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+
 const recordButton = $('#record-button');
 const stopButton = $('#stop-button');
 
@@ -14,8 +17,8 @@ function onDataAvailable(blob) {
   let formData = new FormData();
   formData.append("audio", blob, "audio.wav")
   
-  axios.post("/api/stt", formData, {headers: {'Content-Type': 'multipart/form-data'}})
-      .then(response => $('input#text').val(response.data))
+  axios.post("/api/speech/stt", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then(response => $('input#text').val(response.data.text))
       .catch(error => showErrorAlert(error));
 }
 

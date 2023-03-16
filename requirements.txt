@@ -17,6 +17,8 @@ catalogue==2.0.8
     #   thinc
 certifi==2022.12.7
     # via requests
+cffi==1.15.1
+    # via sounddevice
 charset-normalizer==3.1.0
     # via requests
 click==8.1.3
@@ -89,10 +91,14 @@ packaging==23.0
     #   thinc
 pathy==0.10.1
     # via spacy
+pocketsphinx==5.0.0
+    # via voice-landscape (pyproject.toml)
 preshed==3.0.8
     # via
     #   spacy
     #   thinc
+pycparser==2.21
+    # via cffi
 pydantic==1.10.6
     # via
     #   confection
@@ -118,6 +124,8 @@ smart-open==6.3.0
     #   spacy
 sniffio==1.3.0
     # via anyio
+sounddevice==0.4.6
+    # via pocketsphinx
 spacy==3.5.1
     # via voice-landscape (pyproject.toml)
 spacy-legacy==3.0.12
