@@ -4,16 +4,12 @@
 #
 #    pip-compile --extra=dev --extra=prod --extra=test --output-file=requirements.dev.txt --resolver=backtracking pyproject.toml
 #
-aiosqlite==0.18.0
-    # via databases
 anyio==3.6.2
     # via
     #   httpcore
     #   starlette
 asgiref==3.6.0
     # via django
-asyncpg==0.27.0
-    # via databases
 attrs==22.2.0
     # via pytest
 black==23.1.0
@@ -44,8 +40,6 @@ cymem==2.0.7
     #   preshed
     #   spacy
     #   thinc
-databases[postgresql,sqlite]==0.7.0
-    # via voice-landscape (pyproject.toml)
 django==4.1.7
     # via
     #   django-appconf
@@ -68,8 +62,6 @@ geographiclib==2.0
     # via geopy
 geopy==2.3.0
     # via voice-landscape (pyproject.toml)
-greenlet==2.0.2
-    # via sqlalchemy
 gunicorn==20.1.0
     # via voice-landscape (pyproject.toml)
 h11==0.14.0
@@ -171,8 +163,6 @@ spacy-loggers==1.0.4
     # via spacy
 speechrecognition==3.10.0
     # via voice-landscape (pyproject.toml)
-sqlalchemy==1.4.46
-    # via databases
 sqlparse==0.4.3
     # via django
 srsly==2.4.6

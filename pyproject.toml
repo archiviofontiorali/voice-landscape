@@ -23,9 +23,6 @@ dependencies = [
     "spacy",
     "SpeechRecognition",
     
-    "databases",
-    "databases[sqlite]",
-    "databases[postgresql]",
     "jinja2",
     "python-multipart",
     "starlette",
