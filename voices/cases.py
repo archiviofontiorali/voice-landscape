@@ -10,6 +10,8 @@ from .constants import CENTER_COORDINATES, SHOWCASE_RELOAD_TIME
 from .repos import FrequencyRepo
 from .system.types import Case
 
+Coordinates = tuple[float, float]
+
 
 class TemplatePage(Case):
     def __init__(self, template: str):

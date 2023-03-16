@@ -5,7 +5,8 @@ import spacy
 import spacy.symbols
 
 from .constants import PLACES
-from .models import Coordinates, Place
+
+Coordinates = tuple[float, float]
 
 # TODO: with bisect module and custom structure it's possible to improve performance
 

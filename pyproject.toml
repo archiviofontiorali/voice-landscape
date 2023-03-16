@@ -27,7 +27,6 @@ dependencies = [
     "databases[sqlite]",
     "databases[postgresql]",
     "jinja2",
-    "pydantic",
     "python-multipart",
     "starlette",
     "uvicorn",
