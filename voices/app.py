@@ -56,28 +56,19 @@ class App:
             json=presenters.JSON(),
         )
         c = self._cases = Container(
-            home=cases.TemplatePage("index.html"),
-            map=cases.LeafletMapPage("map.html", r.frequencies),
             showcase=cases.ShowcasePage("showcase.html", r.frequencies),
             share=cases.SharePage("share.html", r.frequencies),
             stt=cases.SpeechToText(),
-            privacy=cases.TemplatePage("privacy.html"),
         )
         h = self._handlers = Container(
-            home=PageHandler(c.home, p.template),
-            map=PageHandler(c.map, p.template),
             showcase=PageHandler(c.showcase, p.template),
             share=PageHandler(c.share, p.template),
             stt=APIHandler(c.stt, p.json),
-            privacy=PageHandler(c.privacy, p.template),
         )
         self._routes = [
-            get("/", h.home),
-            get("/map", endpoint=h.map),
             get("/showcase", endpoint=h.showcase),
             get("/share", endpoint=h.share),
             post("/share", endpoint=h.share),
-            get("/privacy", endpoint=h.privacy),
             post("/api/stt", endpoint=h.stt),
         ]
 
