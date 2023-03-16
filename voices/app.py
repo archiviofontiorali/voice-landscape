@@ -2,8 +2,10 @@ import contextlib
 
 import databases
 from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.templating import Jinja2Templates
 
-from . import cases, constants, presenters
+from . import cases, constants
 from .handlers import APIHandler, PageHandler
 from .repos import FrequencySQLRepo
 from .system.web import get, post
@@ -15,6 +17,20 @@ class Container(dict):
             return self.__getitem__(item)
         except KeyError:
             raise AttributeError(f"'Container' object has no attribute '{item}'")
+
+
+class JSON:
+    @staticmethod
+    def json(data):
+        return JSONResponse(data)
+
+
+class Template:
+    def __init__(self, directory: str = "templates"):
+        self.templates = Jinja2Templates(directory=directory)
+
+    def render(self, template: str, context: dict):
+        return self.templates.TemplateResponse(template, context)
 
 
 class Database:
@@ -52,8 +68,8 @@ class App:
         s = self._services = Container(db=Database(constants.DATABASE_URL))
         r = self._repos = Container(frequencies=FrequencySQLRepo(s.db))
         p = self._presenters = Container(
-            template=presenters.Template(),
-            json=presenters.JSON(),
+            template=Template(),
+            json=JSON(),
         )
         c = self._cases = Container(
             share=cases.SharePage("share.html", r.frequencies),
