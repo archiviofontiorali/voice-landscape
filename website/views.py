@@ -1,7 +1,7 @@
 from django.db.models import Max
 from django.views import generic
 
-from . import models
+from . import forms, models
 
 
 class MapContextMixin:
@@ -42,6 +42,11 @@ class HomePage(generic.TemplateView):
 # TODO: add form logic from SharePage in voices/cases
 class SharePage(generic.TemplateView):
     template_name = "share.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = forms.ShareForm()
+        return context
 
 
 class MapPage(MapContextMixin, generic.TemplateView):

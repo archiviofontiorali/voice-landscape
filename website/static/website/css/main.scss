@@ -38,3 +38,11 @@ a { color: var(--afor-primary); }
 .alert-warning  { outline-color: var(--afor-warning); }
 .alert-info     { outline-color: var(--afor-info); }
 .alert-debug    { outline-color: var(--afor-debug); }
+
+
+a[type="button"].center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

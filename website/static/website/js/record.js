@@ -1,3 +1,5 @@
+// TODO: move to speech app
+
 const config = { type: "audio", mimeType: "audio/wav" };
 const constrains = { audio: true, video: false };
 let recorder;

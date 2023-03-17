@@ -5,13 +5,24 @@
 {% block main %}
   <main class="w-100 mw9 outline mb0 ma1 pa1 center flex-grow flex flex-column justify-center">
     <form action="" method="post" class="flex flex-column mw7 center">
-      <div class="flex flex-row flex-wrap mh2 mv4">
-        <label for="text" class="w-100">Esprimi la tua voce</label>
-        <input id="text" class="w-90" type="text" name="text" required>
+      {% csrf_token %}
+    
+      <div class="flex flex-row flex-wrap justify-around items-center mh2 mv4">
+        <div class="flex flex-row flex-wrap w-80">
+          <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
+          <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
+                    rows="5" cols="10" placeholder="{{ form.message.help_text }}"
+                    class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
+        </div>
         
-        <button type="button" id="record-button" class="f4 black w-10">🎙</button>
-        <button type="button" id="stop-button" class="dn f4 black w-10">⏹</button>
+{# TODO <a type="button" id="record-button" class="link center w3 h3 f2 black ba bw1 b--black br4 bg-white w-10">🎙</a>#}
+        <button type="button" id="record-button" class="link w2 h3 f3 black bg-white w-10">🎙</button>
+        <button type="button" id="stop-button" class="dn w2 h3 f3 black w-10">⏹</button>
       </div>
+      {% for field in share_form %}
+        {{ field }}
+      {% endfor %}
+      
       
       <fieldset class="flex flex-wrap mv4">
         <legend>Coordinate GPS</legend>
