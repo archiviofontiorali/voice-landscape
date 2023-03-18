@@ -53,10 +53,14 @@
 {% block scripts %}
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-  <script>
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+  
+  <script defer>
     function readCurrentPosition() {
       if (!navigator.geolocation) { 
-        showErrorAlert("Geolocation is not supported by this browser."); return;
+        showErrorAlert("Geolocation is not supported by this browser."); 
+        return;
       }
       
       navigator.geolocation.getCurrentPosition(
@@ -71,7 +75,7 @@
   </script>
   
   <!-- recommended -->
-  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
-  <script src="{% static 'website/js/record.js' %}"></script>
+  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js" defer></script>
+  <script src="{% static 'website/js/record.js' %}" defer></script>
   
 {% endblock %}
