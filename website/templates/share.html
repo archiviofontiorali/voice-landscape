@@ -73,8 +73,8 @@
       
       navigator.geolocation.getCurrentPosition(
           position => {
-            $("input#latitude").val(position.coords.latitude);
-            $("input#longitude").val(position.coords.longitude);
+            $("input#{{ form.latitude.id_for_label }}").val(position.coords.latitude);
+            $("input#{{ form.longitude.id_for_label }}").val(position.coords.longitude);
             $("input#button-submit").removeAttr("disabled");
           }, 
           error => showErrorAlert(error.message)
