@@ -4,15 +4,15 @@
 
 {% block main %}
   <main class="w-100 mw9 outline mb0 ma1 pa1 center flex-grow flex flex-column justify-center">
-    <form action="" method="post" class="flex flex-column mw7 center">
+    <form action="" method="post" class="flex flex-column w-100 mw7 center">
       {% csrf_token %}
     
-      <div class="flex flex-row flex-wrap justify-around items-center mh2 mv4">
-        <div class="flex flex-row flex-wrap w-80">
-          <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
+      <div class="flex flex-row flex-wrap justify-center justify-between-ns items-center mh2 mv4">
+        <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
+        <div class="w-100 w-90-ns flex flex-row">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
-                    rows="5" cols="10" placeholder="{{ form.message.help_text }}"
-                    class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
+                  rows="5" cols="10" placeholder="{{ form.message.help_text }}"
+                  class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
         </div>
         <div class="w-10-ns pa2 flex flex-row justify-center">
           <a id="record-button" type="button" 
