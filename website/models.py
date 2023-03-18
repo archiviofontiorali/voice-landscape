@@ -11,7 +11,7 @@ class Share(models.Model):
     message = models.TextField(max_length=500)
 
     @property
-    def coordinates(self) -> tuple[float, float]:
+    def coordinates(self) -> list[float, float]:
         return [self.location.y, self.location.x]  # noqa
 
 
@@ -22,7 +22,7 @@ class Place(models.Model):
     location = models.PointField()
 
     @property
-    def coordinates(self) -> tuple[float, float]:
+    def coordinates(self) -> list[float, float]:
         return [self.location.y, self.location.x]  # noqa
 
     def __str__(self):
