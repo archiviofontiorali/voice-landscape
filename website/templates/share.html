@@ -14,10 +14,16 @@
                     rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                     class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
         </div>
-        
-{# TODO <a type="button" id="record-button" class="link center w3 h3 f2 black ba bw1 b--black br4 bg-white w-10">🎙</a>#}
-        <button type="button" id="record-button" class="link w2 h3 f3 black bg-white w-10">🎙</button>
-        <button type="button" id="stop-button" class="dn w2 h3 f3 black w-10">⏹</button>
+        <div class="w-10-ns pa2 flex flex-row justify-center">
+          <a id="record-button" type="button" 
+             class="link flex flex-column items-center justify-center w3 h3 white br4 bg-dark-gray">
+            <i data-feather="mic" class="w2 h2"></i>
+          </a>
+          <a id="stop-button" type="button" 
+             class="link dn flex-column items-center justify-center w3 h3 white br4 bg-red">
+            <i data-feather="circle" class="w2 h2"></i>
+          </a>
+        </div>
       </div>
       {% for field in share_form %}
         {{ field }}
@@ -51,7 +57,11 @@
 
 
 {% block scripts %}
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  
+  <script src="https://unpkg.com/feather-icons" defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => feather.replace());
+  </script>
 
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>

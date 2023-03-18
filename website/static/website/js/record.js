@@ -11,8 +11,8 @@ const recordButton = $('#record-button');
 const stopButton = $('#stop-button');
 
 function animateControls() {
-  recordButton.toggleClass('dn');
-  stopButton.toggleClass('dn');
+  recordButton.toggleClass('dn flex');
+  stopButton.toggleClass('dn flex');
 }
 
 function onDataAvailable(blob) {
