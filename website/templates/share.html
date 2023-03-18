@@ -25,20 +25,18 @@
           </a>
         </div>
       </div>
-      {% for field in share_form %}
-        {{ field }}
-      {% endfor %}
-      
-      
+    
       <fieldset class="flex flex-wrap mv4">
         <legend>Coordinate GPS</legend>
         <div class="pa1 w-50-ns">
-          <label id="location-x" for="loc-x">Latitudine </label>
-          <input id="loc-x" class="w-100" type=number name=loc-x step="any" required readonly>
+          <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+          <input id="{{ form.latitude.id_for_label }}" name="{{ form.latitude.html_name }}"
+                 type=number step="any" class="w-100" required readonly>
         </div>
         <div class="pa1 w-50-ns">
-          <label id="location-y" for="loc-y">Longitudine </label>
-          <input id="loc-y" class="w-100" type=number name=loc-y step="any" required readonly>
+          <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
+          <input id="{{ form.longitude.id_for_label }}" name="{{ form.longitude.html_name }}"
+                 type=number step="any" class="w-100" required readonly>
         </div>
         
         <div class="w-100 pa1 tc">
@@ -75,8 +73,8 @@
       
       navigator.geolocation.getCurrentPosition(
           position => {
-            $("input#loc-x").val(position.coords.latitude);
-            $("input#loc-y").val(position.coords.longitude);
+            $("input#latitude").val(position.coords.latitude);
+            $("input#longitude").val(position.coords.longitude);
             $("input#button-submit").removeAttr("disabled");
           }, 
           error => showErrorAlert(error.message)
