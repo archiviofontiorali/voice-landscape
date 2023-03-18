@@ -138,6 +138,8 @@ class SharePage(Case):
             text = data.get("text", None)
 
             logger.debug(f"Receiving text from {coordinates}: {text}")
+
+            # TODO: start from here
             nearest, _ = self.find_nearest_place(
                 coordinates, self._frequency_repo.places
             )
@@ -185,10 +187,6 @@ def route(path: str, endpoint: Handler, method: Method = "GET", **kwargs) -> Rou
     return Route(path, endpoint=endpoint, methods=[method], **kwargs)
 
 
-def get(path: str, endpoint: Handler, **kwargs):
-    return route(path, endpoint, "GET", **kwargs)
-
-
 def post(path: str, endpoint: Handler, **kwargs):
     return route(path, endpoint, "POST", **kwargs)
 
@@ -207,7 +205,6 @@ class App:
             share=PageHandler(c.share, p.template),
         )
         self._routes = [
-            get("/share", endpoint=h.share),
             post("/share", endpoint=h.share),
         ]
 

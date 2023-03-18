@@ -1,5 +1,7 @@
+from django.contrib.gis.geos import Point
 from django.db.models import Max
 from django.views import generic
+from loguru import logger
 
 from . import forms, models
 
@@ -43,6 +45,23 @@ class HomePage(generic.TemplateView):
 class SharePage(generic.TemplateView):
     template_name = "share.html"
 
+    def post(self, request):
+        form = forms.ShareForm(request.POST)
+        if form.is_valid():
+            message = form.cleaned_data["message"]
+
+            latitude = float(form.cleaned_data["latitude"])
+            longitude = float(form.cleaned_data["longitude"])
+            location = Point(x=longitude, y=latitude)
+
+            share = models.Share(message=message, location=location)
+            share.save()
+        else:
+            # TODO: manage errors in form by returning messages
+            logger.error(form.errors)
+
+        return self.get(request, form=form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = forms.ShareForm()
@@ -65,6 +84,3 @@ class ShowcasePage(MapContextMixin, generic.TemplateView):
 
 class PrivacyPage(generic.TemplateView):
     template_name = "privacy.html"
-
-
-# TODO: Add SpeechToText API call from voices/cases/SpeechToText
