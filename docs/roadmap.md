@@ -23,10 +23,10 @@
 - [x] Remove old app
 - [x] Add signal to save frequencies on Share save
 - [x] Complete share template
+- [x] Unistall starlette, Pydantic, ...
 
 - [ ] Move test to django
 - [ ] Add support to PostgreSQL and PostGIS
-- [ ] Unistall starlette, Pydantic, ...
 - [ ] Privacy and cookies page
 - [ ] Improve how axios show messages in SharePage
 

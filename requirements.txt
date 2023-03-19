@@ -4,8 +4,6 @@
 #
 #    pip-compile --extra=prod --output-file=requirements.txt --resolver=backtracking pyproject.toml
 #
-anyio==3.6.2
-    # via starlette
 asgiref==3.6.0
     # via django
 blis==0.7.9
@@ -22,9 +20,7 @@ cffi==1.15.1
 charset-normalizer==3.1.0
     # via requests
 click==8.1.3
-    # via
-    #   typer
-    #   uvicorn
+    # via typer
 confection==0.0.4
     # via thinc
 cymem==2.0.7
@@ -51,22 +47,12 @@ django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
 django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
-geographiclib==2.0
-    # via geopy
-geopy==2.3.0
-    # via voice-landscape (pyproject.toml)
 gunicorn==20.1.0
     # via voice-landscape (pyproject.toml)
-h11==0.14.0
-    # via uvicorn
 idna==3.4
-    # via
-    #   anyio
-    #   requests
+    # via requests
 jinja2==3.1.2
-    # via
-    #   spacy
-    #   voice-landscape (pyproject.toml)
+    # via spacy
 langcodes==3.3.0
     # via spacy
 libsass==0.22.0
@@ -108,8 +94,6 @@ pydub==0.25.1
     # via voice-landscape (pyproject.toml)
 python-decouple==3.8
     # via voice-landscape (pyproject.toml)
-python-multipart==0.0.6
-    # via voice-landscape (pyproject.toml)
 rcssmin==1.1.1
     # via django-compressor
 requests==2.28.2
@@ -122,8 +106,6 @@ smart-open==6.3.0
     # via
     #   pathy
     #   spacy
-sniffio==1.3.0
-    # via anyio
 sounddevice==0.4.6
     # via pocketsphinx
 spacy==3.5.1
@@ -141,8 +123,6 @@ srsly==2.4.6
     #   confection
     #   spacy
     #   thinc
-starlette==0.26.1
-    # via voice-landscape (pyproject.toml)
 thinc==8.1.9
     # via spacy
 tqdm==4.65.0
@@ -155,8 +135,6 @@ typing-extensions==4.5.0
     # via pydantic
 urllib3==1.26.15
     # via requests
-uvicorn==0.21.1
-    # via voice-landscape (pyproject.toml)
 wasabi==1.1.1
     # via
     #   spacy

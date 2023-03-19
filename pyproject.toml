@@ -19,17 +19,11 @@ dependencies = [
     "loguru",
     "python-decouple",
     
-    "geopy",
     "pydub",
-    "spacy",
-    "SpeechRecognition",
     "pocketsphinx",
-    
-    "jinja2",
-    "python-multipart",
-    "starlette",
-    "uvicorn",
-    "libsass",
+    "SpeechRecognition",
+
+    "spacy",
 ]
 
 [project.optional-dependencies]
