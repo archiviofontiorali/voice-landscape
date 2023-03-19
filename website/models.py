@@ -38,7 +38,7 @@ class Place(models.Model):
 class WordFrequency(models.Model):
     word = models.CharField(max_length=100)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    frequency = models.PositiveIntegerField(default=1)
+    frequency = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name_plural = "Word Frequencies"

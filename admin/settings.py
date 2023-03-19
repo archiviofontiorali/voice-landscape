@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+import spacy.symbols
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -157,3 +158,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8001",
     "http://127.0.0.1:8001",
 ]
+
+
+SPACY_MODEL_NAME = "it_core_news_sm"
+SPACY_VALID_TOKENS = (
+    spacy.symbols.ADV,
+    spacy.symbols.NOUN,
+    spacy.symbols.VERB,
+    spacy.symbols.ADJ,
+)
