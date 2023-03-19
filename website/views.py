@@ -1,7 +1,6 @@
 from django.contrib.gis.geos import Point
 from django.db.models import Max
 from django.views import generic
-from loguru import logger
 
 from . import forms, models
 
@@ -47,6 +46,7 @@ class SharePage(generic.TemplateView):
 
     def post(self, request):
         form = forms.ShareForm(request.POST)
+
         if form.is_valid():
             message = form.cleaned_data["message"]
 
@@ -56,15 +56,13 @@ class SharePage(generic.TemplateView):
 
             share = models.Share(message=message, location=location)
             share.save()
-        else:
-            # TODO: manage errors in form by returning messages
-            logger.error(form.errors)
 
-        return self.get(request, form=form)
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = forms.ShareForm()
+        context.setdefault("form", forms.ShareForm())
         return context
 
 

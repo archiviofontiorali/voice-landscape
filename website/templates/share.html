@@ -7,14 +7,22 @@
     <form action="" method="post" class="flex flex-column w-100 mw7 center">
       {% csrf_token %}
     
-      <div class="flex flex-row flex-wrap justify-center justify-between-ns items-center mh2 mv4">
+      {% for error in form.non_field_errors %}
+        <span class="w-100 f6 red b">{{ error }}</span>
+      {% endfor %}
+    
+      <div class="flex flex-row flex-wrap justify-center justify-between-l items-center mh2 mv4">
         <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
-        <div class="w-100 w-90-ns flex flex-row">
+        <div class="w-100 w-90-l flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
                   rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                   class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
+          {% for error in form.message.errors %}
+            <span class="w-100 f6 red b">{{ error }}</span>
+          {% endfor %}
         </div>
-        <div class="w-10-ns pa2 flex flex-row justify-center">
+        
+        <div class="w-10-l pa1 flex flex-row justify-center">
           <a id="record-button" type="button" 
              class="link flex flex-column items-center justify-center w3 h3 white br4 bg-dark-gray">
             <i data-feather="mic" class="w2 h2"></i>
@@ -32,11 +40,17 @@
           <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
           <input id="{{ form.latitude.id_for_label }}" name="{{ form.latitude.html_name }}"
                  type=number step="any" class="w-100" required readonly>
+          {% for error in form.latitude.errors %}
+            <span class="w-100 f6 red b">{{ error }}</span>
+          {% endfor %}
         </div>
         <div class="pa1 w-50-ns">
           <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
           <input id="{{ form.longitude.id_for_label }}" name="{{ form.longitude.html_name }}"
                  type=number step="any" class="w-100" required readonly>
+          {% for error in form.longitude.errors %}
+            <span class="w-100 f6 red b">{{ error }}</span>
+          {% endfor %}
         </div>
         
         <div class="w-100 pa1 tc">
