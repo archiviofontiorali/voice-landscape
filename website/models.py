@@ -2,7 +2,7 @@ import random
 
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
-from django.db.models import Sum
+from django.db.models import F, Sum
 
 
 class Share(models.Model):
@@ -56,12 +56,9 @@ class WordFrequency(models.Model):
 
     @classmethod
     def create_random(cls):
-        sample = cls(
+        sample, created = cls.objects.get_or_create(
             word=f"WORD{random.randint(0, 20):02d}",
             place=random.choice(Place.objects.all()),
-            frequency=random.randint(0, 10),
         )
-        if obj := cls.objects.filter(word=sample.word, place=sample.place).first():
-            obj.frequency += sample.frequency
-        else:
-            sample.save()
+        sample.frequency = F("frequency") + random.randint(1, 10)
+        sample.save()
