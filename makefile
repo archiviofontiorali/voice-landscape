@@ -76,13 +76,16 @@ restore:
 # Django commands
 .PHONY: migrate migrations bootstrap-django clean-django superuser
 
-bootstrap-django: clean-django migrate superuser 
+bootstrap-django: clean-django migrate superuser shell 
 	
 clean-django:
 	rm -rf db.sqlite3 .media .static
 	
 superuser:
 	$(django) createsuperuser --username=admin --email=voci@afor.dev
+
+shell:
+	$(django) shell
 
 migrate:
 	# Temporary solution for https://code.djangoproject.com/ticket/32935 

@@ -15,7 +15,7 @@ dependencies = [
     "django-extensions",
     "django-jazzmin",
     "django-sass-processor",
-    "libsass", 
+    "libsass",
     "loguru",
     "python-decouple",
     
@@ -28,7 +28,7 @@ dependencies = [
 
 [project.optional-dependencies]
 prod = ["gunicorn"]
-dev = ["black", "isort"]
+dev = ["black", "ipython", "isort"]
 test = ["pytest", "httpx"]
 
 [tool.isort]
