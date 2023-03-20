@@ -12,3 +12,8 @@ class WebsiteConfig(AppConfig):
 
         # Send loguru logging to python standard logging library (managed by Django)
         logger.add(loggers.PropagateHandler())
+
+        # signal: update frequencies on Share creation
+        post_save.connect(
+            signals.on_share_creation_update_frequencies, sender=models.Share
+        )

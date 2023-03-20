@@ -1,17 +1,14 @@
-# import spacy
 import spacy.symbols
 from django.conf import settings
 from django.contrib.gis.db.models.functions import Distance
 from django.db.models import F
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from loguru import logger
 
 from . import models
 
 nlp = spacy.load(settings.SPACY_MODEL_NAME)
 
 
-@receiver(post_save, sender=models.Share)
 def on_share_creation_update_frequencies(
     sender, instance: models.Share, created, **kwargs
 ):
