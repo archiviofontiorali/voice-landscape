@@ -14,6 +14,12 @@ class Share(models.Model):
     def coordinates(self) -> list[float, float]:
         return [self.location.y, self.location.x]  # noqa
 
+    def __str__(self):
+        return (
+            f"[{self.timestamp}] ({self.location.y:.6f}, {self.location.x:.6f}) | "
+            f"{self.message[:20]}"
+        )
+
 
 class Place(models.Model):
     slug = models.SlugField(unique=True, null=True, blank=True)
