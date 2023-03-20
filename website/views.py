@@ -8,22 +8,25 @@ from . import forms, models
 class MapContextMixin:
     @staticmethod
     def _calculate_centroid():
-        places = models.Place.objects.all()
+        places = models.Place.objects.values("location")
         return [
-            sum(p.location.y for p in places) / len(places) if places else 0.0,
-            sum(p.location.x for p in places) / len(places) if places else 0.0,
+            sum(p["location"].y for p in places) / len(places) if places else 0.0,
+            sum(p["location"].x for p in places) / len(places) if places else 0.0,
         ]
 
     @staticmethod
     def _fetch_place_frequencies(place: models.Place):
-        query = models.WordFrequency.objects.filter(place=place)
-        max_frequency = query.aggregate(Max("frequency"))["frequency__max"]
+        max_frequency = place.word_frequencies.aggregate(Max("frequency"))[
+            "frequency__max"
+        ]
 
-        obj = {"coordinates": place.coordinates, "frequencies": {}}
-        for wf in query.all():
-            obj["frequencies"][wf.word] = wf.frequency / max_frequency
-
-        return obj
+        return {
+            "coordinates": place.coordinates,
+            "frequencies": {
+                wf.word: wf.frequency / max_frequency
+                for wf in place.word_frequencies.all()
+            },
+        }
 
     def get_context_data(self):
         context: dict = {
