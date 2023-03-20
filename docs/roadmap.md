@@ -24,14 +24,22 @@
 - [x] Add signal to save frequencies on Share save
 - [x] Complete share template
 - [x] Unistall starlette, Pydantic, ...
+- [x] Update how spacy handle tokens
+- [x] Add basic file logging and support for loguru in Django 
 
 - [ ] Move test to django
 - [ ] Add support to PostgreSQL and PostGIS
 - [ ] Privacy and cookies page
 - [ ] Improve how axios show messages in SharePage
 
-- [ ] Check why auto location is so slow
-- [ ] Check why frequencies are not updated correctly
+- [ ] Test STT for errors
+- [ ] Enable italian language recognition in PocketSphinx. Follow this [link](https://github.com/Uberi/speech_recognition/blob/master/reference/pocketsphinx.rst#installing-other-languages)
+
+
+## Future improvements
+- [ ] Add Landscapes models to manage different maps and places
+- [ ] Create model abstract classes to manage slug, created/updated fields, ...
+
 
 ### Code to generate grid of places
 ```python
