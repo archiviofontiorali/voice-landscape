@@ -187,8 +187,10 @@ CORS_ALLOWED_ORIGINS = [
 
 SPACY_MODEL_NAME = "it_core_news_lg"
 SPACY_VALID_TOKENS = (
+    spacy.symbols.ADJ,
     spacy.symbols.ADV,
     spacy.symbols.NOUN,
+    spacy.symbols.NUM,
+    spacy.symbols.PROPN,  # Proper noun
     spacy.symbols.VERB,
-    spacy.symbols.ADJ,
 )
