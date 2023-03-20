@@ -1,6 +1,7 @@
 import random
 
 from django.contrib.gis.db import models
+from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Sum
 
@@ -30,6 +31,14 @@ class Place(models.Model):
     @property
     def coordinates(self) -> list[float, float]:
         return [self.location.y, self.location.x]  # noqa
+
+    @classmethod
+    def get_nearest(cls, location: Point) -> "Place":
+        return (
+            cls.objects.annotate(distance=Distance("location", location))
+            .order_by("distance")
+            .first()
+        )
 
     def __str__(self):
         if self.title:
