@@ -6,7 +6,11 @@ from loguru import logger
 
 from . import models
 
-nlp = spacy.load(settings.SPACY_MODEL_NAME)
+try:
+    nlp = spacy.load(settings.SPACY_MODEL_NAME)
+except IOError:
+    spacy.cli.download(settings.SPACY_MODEL_NAME)
+    nlp = spacy.load(settings.SPACY_MODEL_NAME)
 
 
 def on_share_creation_update_frequencies(

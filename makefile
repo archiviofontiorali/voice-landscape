@@ -59,7 +59,6 @@ production: clean
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	python3.10 -m venv $(VENV)
 	$(python) -m pip install -r requirements.txt
-	$(python) -m spacy download it_core_news_sm
 	$(python) -m pip install --editable .
 
 
