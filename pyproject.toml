@@ -6,7 +6,7 @@ include = ["voices"]
 
 [project]
 name = "voice-landscape"
-version = "0.1.1"
+version = "0.2.0"
 requires-python = ">=3.10"
 dependencies = [
     "django>=4",
