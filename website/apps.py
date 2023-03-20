@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_save
+from loguru import logger
 
 
 class WebsiteConfig(AppConfig):
@@ -6,4 +8,7 @@ class WebsiteConfig(AppConfig):
     name = "website"
 
     def ready(self):
-        from . import signals
+        from . import loggers, models, signals
+
+        # Send loguru logging to python standard logging library (managed by Django)
+        logger.add(loggers.PropagateHandler())

@@ -13,11 +13,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 import spacy.symbols
-from decouple import config
+from decouple import config  # noqa
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_ROOT = BASE_DIR / ".static"
+LOG_ROOT = BASE_DIR / ".log"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -140,12 +142,35 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-STATIC_ROOT = BASE_DIR / ".static"
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "sass_processor.finders.CssFinder",
 ]
+
+LOG_ROOT.mkdir(exist_ok=True)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": str(LOG_ROOT / "voices.log"),
+        },
+    },
+    "root": {
+        "handlers": ["file"],
+        "level": config("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO"),
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": config("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO"),
+            "propagate": False,
+        }
+    },
+}
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
