@@ -73,9 +73,9 @@ restore:
 	
 
 # Django commands
-.PHONY: migrate migrations bootstrap-django clean-django superuser
+.PHONY: migrate migrations bootstrap-django clean-django superuser shell
 
-bootstrap-django: clean-django migrate superuser shell 
+bootstrap-django: clean-django migrate superuser 
 	
 clean-django:
 	rm -rf db.sqlite3 .media .static
