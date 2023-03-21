@@ -38,15 +38,14 @@ $ sudo pacman -S gdal libspatialite
 
 Imposta un percorso SQLite valido (di tipo spatialite) in `.env` (default: spatialite:///db.sqlite)
 
-Inizializza Spatialite e applica le migrazioni
+Inizializza Spatialite
 ```shell
 # Automatic
-$ make bootstrap-sqlite migrate
+$ make bootstrap-sqlite
 
 # Manually
 $ source .venv/bin/activate
 (.venv)$ python manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
-(.venv)$ python manage.py migrate
 ```
 
 
@@ -72,14 +71,6 @@ $ psql <db name>
 > CREATE EXTENSION postgis;
 ```
 
-Applica le migrazioni
-```shell
-# Automatic
-$ make migrate
-
-# Manually
-(.venv)$ python manage.py migrate
-```
 
 ## Ambiente di produzione
 
@@ -94,6 +85,16 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
 (venv)$ pip install -r requirements.txt
 (venv)$ pip install --editable .
+```
+
+Applica le migrazioni e abilità l'utente admin
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
 ### Come avviare il server in produzione
@@ -131,6 +132,16 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip pip-tools
 (venv)$ pip install -r requirements.dev.txt
 (venv)$ pip install --editable .
+```
+
+Applica le migrazioni e abilità l'utente admin
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
 ## Execute server
