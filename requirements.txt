@@ -83,6 +83,8 @@ preshed==3.0.8
     # via
     #   spacy
     #   thinc
+psycopg2==2.9.5
+    # via voice-landscape (pyproject.toml)
 pycparser==2.21
     # via cffi
 pydantic==1.10.6
