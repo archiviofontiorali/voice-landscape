@@ -61,37 +61,42 @@ production: clean
 	$(python) -m pip install --editable .
 
 
-# Database Management
-.PHONY: backup restore
-
-backup:
-	pg_dump voci > voci."$(date --iso-8601=seconds)".backup 
-
-restore:
-	psql voci < $(shell ls db/voci.* | head -1)
-	
 
 # Django commands
-.PHONY: migrate migrations bootstrap-django clean-django superuser shell
+.PHONY: bootstrap-django clean-django migrate migrations shell superuser
 
 bootstrap-django: clean-django migrate superuser 
-	
+
 clean-django:
 	rm -rf db.sqlite3 .media .static
-	
-superuser:
-	$(django) createsuperuser --username=admin --email=voci@afor.dev
-
-shell:
-	$(django) shell
 
 migrate:
-	# Temporary solution for https://code.djangoproject.com/ticket/32935 
-	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 	$(django) migrate
 
 migrations:
 	$(django) makemigrations
+
+shell:
+	$(django) shell
+
+superuser:
+	$(django) createsuperuser --username=admin --email=voci@afor.dev
+
+
+
+# Database Management
+.PHONY: pg-backup pg-restore sqlite-bootstrap
+
+pg-backup:
+	pg_dump voci > voci."$(date --iso-8601=seconds)".backup 
+
+pg-restore:
+	psql voci < $(shell ls db/voci.* | head -1)
+
+sqlite-bootstrap: 
+	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
+	# Temporary solution for https://code.djangoproject.com/ticket/32935 
+	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
 
 # Demo commands
