@@ -8,6 +8,25 @@ Un progetto sviluppato da [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 Richiede `python>=3.10`, `pip` e `venv`. 
 `make` è consigliato per semplificare l'installazione
 
+Questo pacchetto usa [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) 
+per gestire funzionalità geografiche come distanze e coordinate. Alcuni pacchetti aggiuntivi sono richiesti:
+- [GDAL](https://gdal.org/) 
+- [spatiallite](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/spatialite/) if using sqlite db
+- ~~[PostGIS](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/) if using PostgreSQL~~
+
+```shell
+# On ubuntu
+$ sudo apt install gdal-bin
+$ sudo apt install libsqlite3-mod-spatialite
+$ # sudo apt install postgresql-<x>-postgis-3  # Where <x> is the postgres version
+
+# On archlinux
+$ sudo pacman -S gdal
+$ sudo pacman -S libspatialite
+$ # sudo pacman -S postgis
+```
+
+### Installazione repository
 ```shell
 # Installazione guidata
 $ make production
@@ -18,7 +37,6 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
 (venv)$ pip install -r requirements.txt
 (venv)$ pip install --editable .
-(venv)$ python -m spacy download it_core_news_sm
 ```
 
 ### Installazione dipendenze su linux
@@ -31,10 +49,10 @@ $ sudo apt install python3 python3-pip python3-venv make
 $ sudo pacman -S python python-pip python-virtualenv make
 ```
 
-### Come usarlo
+### Come avviare il server in produzione
 ```shell
 $ source .venv/bin/activate
-(venv)$ gunicorn -k uvicorn.workers.UvicornWorker -w 4 demo.asgi:app
+(venv)$ gunicorn admin.wsgi
 ```
 
 Per abilitare `nginx` e `gunicorn` all'avvio, crea un `systemd unit file` e usa 
@@ -68,7 +86,6 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip pip-tools
 (venv)$ pip install -r requirements.dev.txt
 (venv)$ pip install --editable .
-(venv)$ python -m spacy download it_core_news_sm
 ```
 
 ## Execute server
@@ -77,5 +94,5 @@ Execute on url http://localhost:8001 with autoreload enabled
 # Execute with autoreload
 (venv)$ make serve
 
-(venv)$ uvicorn demo.asgi:app --reload --port 8001
+(venv)$ python manage.py runserver http://localhost:8001
 ```
