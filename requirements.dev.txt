@@ -141,6 +141,8 @@ preshed==3.0.8
     #   thinc
 prompt-toolkit==3.0.38
     # via ipython
+psycopg2==2.9.5
+    # via voice-landscape (pyproject.toml)
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
