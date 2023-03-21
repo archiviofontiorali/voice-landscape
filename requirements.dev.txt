@@ -45,8 +45,11 @@ cymem==2.0.7
     #   thinc
 decorator==5.1.1
     # via ipython
+dj-database-url==1.2.0
+    # via voice-landscape (pyproject.toml)
 django==4.1.7
     # via
+    #   dj-database-url
     #   django-appconf
     #   django-cors-headers
     #   django-extensions

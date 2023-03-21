@@ -15,6 +15,7 @@ dependencies = [
     "django-extensions",
     "django-jazzmin",
     "django-sass-processor",
+    "dj-database-url",
     "libsass",
     "loguru",
     "psycopg2",
