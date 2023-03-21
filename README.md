@@ -34,7 +34,7 @@ $ sudo apt install gdal-bin libsqlite3-mod-spatialite
 $ sudo pacman -S gdal libspatialite
 ```
 
-Set a valid SQLite path in `.env` file (default: sqlite:///db.sqlite)
+Set a valid SQLite path (of type spatialite) in `.env` file (default: spatialite:///db.sqlite3)
 
 Enable Spatialite and migrations by executing 
 ```shell
@@ -57,9 +57,11 @@ $ sudo apt install gdal-bin postgresql-<x>-postgis-3
 $ sudo pacman -S gdal postgis
 ```
 
-Set a valid PostgreSQL path in `.env` file (default: sqlite:///db.sqlite)
+Set a valid PostgreSQL path (of type PostGIS) in `.env` file (example: postgis://...)
+Remember, by default a sqlite file is used
 
-Create DB and enable PostGIS (this also depend on which way you installed postgres) 
+Create DB and enable PostGIS (this also depend on which way you installed postgres)
+in `system/` there is a docker-compose file for creating a postgres instance.
 ```shell
 # For more info go to https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/
 $ createdb  <db name>
@@ -113,8 +115,6 @@ $ git clone https://github.com/archiviofontiorali/voice-landscape ~/git/
 
 
 ## Development instructions
-Require at least `python>=3.10`, `pip` and `venv` to work. 
-To simplify installation `make` is suggested
 
 ```shell
 $ make bootstrap
