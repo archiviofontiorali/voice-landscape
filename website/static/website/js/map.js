@@ -7,9 +7,9 @@ const wordCloudOptions = {
   backgroundColor: "rgba(255, 255, 255, 0)", 
   shrinkToFit: true,
   minSize: '1rem',
-  weightFactor: 15,
+  weightFactor: 20,
   fontWeight: 'bold',
-  fontFamily: "Consolas, monaco, monospace",
+  fontFamily: "Open Sans, Consolas, monaco, monospace",
   color: "black",
 };
 
@@ -19,7 +19,7 @@ function initMap(places, centerCoordinates = [0., 0.], options) {
     zoom: {...defaultOptions.zoom, ...options.zoom },
     map: {...defaultOptions.map, ...options.map }
   }
-  console.log(options)
+  console.debug(options)
   
   const minWidth = 100, maxWidth = 400;
   const zoomRatio = (maxWidth - minWidth) / (options.zoom.max - options.zoom.min);
