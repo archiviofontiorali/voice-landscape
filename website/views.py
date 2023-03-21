@@ -22,10 +22,10 @@ class MapContextMixin:
 
         return {
             "coordinates": place.coordinates,
-            "frequencies": {
-                wf.word: wf.frequency / max_frequency
+            "frequencies": [
+                [wf.word, wf.frequency / max_frequency]
                 for wf in place.word_frequencies.all()
-            },
+            ],
         }
 
     def get_context_data(self):

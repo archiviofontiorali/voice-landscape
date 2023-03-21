@@ -41,7 +41,7 @@ function initMap(places, centerCoordinates = [0., 0.], options) {
     });
     L.marker(coordinates, { icon: icon }).addTo(map);
     canvas = $(`#map .word-cloud.word-cloud-${index} canvas`);
-    WordCloud(canvas[0], { list: Object.entries(frequencies), ...wordCloudOptions });
+    WordCloud(canvas[0], { list: frequencies, ...wordCloudOptions });
   }
   
   function setMarkersWidth() {
