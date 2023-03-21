@@ -39,12 +39,11 @@ Set a valid SQLite path (of type spatialite) in `.env` file (default: spatialite
 Enable Spatialite and migrations by executing 
 ```shell
 # Automatic
-$ make bootstrap-sqlite migrate
+$ make bootstrap-sqlite
 
 # Manually
 $ source .venv/bin/activate
 (.venv)$ python manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
-(.venv)$ python manage.py migrate
 ```
 
 ### Prepare PostgreSQL
@@ -69,15 +68,6 @@ $ psql <db name>
 > CREATE EXTENSION postgis;
 ```
 
-Then make migrations
-```shell
-# Automatic
-$ make migrate
-
-# Manually
-(.venv)$ python manage.py migrate
-```
-
 ## Production environment instructions
 
 ### Install repository
@@ -91,6 +81,16 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
 (venv)$ pip install -r requirements.txt
 (venv)$ pip install --editable .
+```
+
+Apply migrations and create admin user
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
 ### Launch server
@@ -125,6 +125,16 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip pip-tools
 (venv)$ pip install -r requirements.dev.txt
 (venv)$ pip install --editable .
+```
+
+Apply migrations and create admin user
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
 ## Execute server
