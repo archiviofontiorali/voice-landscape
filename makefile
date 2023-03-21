@@ -41,7 +41,6 @@ bootstrap: venv develop
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	$(python) -m pip install -r requirements.dev.txt
-	$(python) -m spacy download it_core_news_sm
 	$(python) -m pip install --editable .
 
 serve:
