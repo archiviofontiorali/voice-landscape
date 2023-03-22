@@ -1,5 +1,3 @@
-// TODO: move to speech app
-
 const config = { type: "audio", mimeType: "audio/wav" };
 const constrains = { audio: true, video: false };
 let recorder;
@@ -21,7 +19,7 @@ function onDataAvailable(blob) {
   
   axios.post("/api/speech/stt", formData, {headers: {'Content-Type': 'multipart/form-data'}})
       .then(response => $('#text-container > textarea').val(response.data.text))
-      .catch(error => showErrorAlert(error));
+      .catch(error => showErrorAlert(error.response.data.message));
 }
 
 function startRecording() {
