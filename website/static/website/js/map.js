@@ -36,13 +36,14 @@ function initMap(places, centerCoordinates = [0., 0.], options) {
       continue
     
     icon = L.divIcon({ 
-      html: '<canvas></canvas>', 
+      html: '<canvas class="canvas"></canvas>',
+      // html: '<div class="canvas db relative w2 h2"></div>', 
       className: `word-cloud word-cloud-${index}`, 
       iconSize: null 
     });
     
     L.marker(coordinates, { icon: icon }).addTo(map);
-    canvas = $(`#map .word-cloud.word-cloud-${index} canvas`);
+    canvas = $(`#map .word-cloud.word-cloud-${index} .canvas`);
     WordCloud(canvas[0], { list: frequencies, ...wordCloudOptions });
   }
   
