@@ -19,7 +19,9 @@ from decouple import config  # noqa
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_ROOT = BASE_DIR / ".static"
+
 LOG_ROOT = BASE_DIR / ".log"
+DATA_ROOT = BASE_DIR / ".data"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
