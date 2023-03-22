@@ -195,3 +195,5 @@ SPACY_VALID_TOKENS = (
     spacy.symbols.PROPN,  # Proper noun
     spacy.symbols.VERB,
 )
+
+SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
