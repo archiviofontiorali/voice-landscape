@@ -58,16 +58,17 @@ def run():
 
     for lat, lon, title in (_places := places[place_id]):
         slug = django.utils.text.slugify(title)
-        place = models.Place(slug=slug, title=title, location=Point(x=lon, y=lat))
+        place, created = models.Place.objects.get_or_create(
+            slug=slug, title=title, location=Point(x=lon, y=lat)
+        )
 
-        if models.Place.objects.filter(slug=slug).exists():
+        if created:
+            place.save()
+            logger.info(f"Added place {place}")
+        else:
             logger.info(f"Place with slug {slug} already exists")
-            continue
 
-        place.save()
-        logger.info(f"Added place {place}")
-
-    if config("DEMO_ADD_WORDS", cast=bool, default=True):
-        logger.info("Adding some test words to places")
-        for _ in tqdm(range(10 * len(_places))):
-            models.WordFrequency.create_random()
+        if config("DEMO_ADD_WORDS", cast=bool, default=True):
+            logger.info(f"Adding some test words to place {place.title}")
+            for _ in tqdm(range(10)):
+                models.WordFrequency.create_random(place)
