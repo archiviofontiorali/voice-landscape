@@ -32,24 +32,28 @@ function initMap(places, centerCoordinates = [0., 0.], options) {
   let canvas, icon;
   
   for(const [index, {coordinates, frequencies}] of places.entries()) {
-    if ($.isEmptyObject(frequencies)) continue
-    // L.marker(coordinates).addTo(map);
+    if ($.isEmptyObject(frequencies)) 
+      continue
+    
     icon = L.divIcon({ 
       html: '<canvas></canvas>', 
       className: `word-cloud word-cloud-${index}`, 
       iconSize: null 
     });
+    
     L.marker(coordinates, { icon: icon }).addTo(map);
     canvas = $(`#map .word-cloud.word-cloud-${index} canvas`);
     WordCloud(canvas[0], { list: frequencies, ...wordCloudOptions });
   }
   
   function setMarkersWidth() {
-    let width = minWidth + zoomRatio * (map.getZoom() - options.zoom.min);
-    let height = width / 2;
-    $("#map .word-cloud canvas").css({
-      width: `${width}px`, height: `${height}px`,
-      "margin-left": `-${width / 2}px`, "margin-top": `-${height / 2}px`
+    let width = Math.floor(minWidth + zoomRatio * (map.getZoom() - options.zoom.min));
+    let height = Math.floor(width / 2);
+    $("#map .word-cloud .canvas").css({
+      width: `${width}px`, 
+      height: `${height}px`,
+      "margin-left": `-${width / 2}px`, 
+      "margin-top": `-${height / 2}px`
     });
   }
 
