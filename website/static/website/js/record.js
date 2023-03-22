@@ -37,8 +37,10 @@ function startRecording() {
 
 function stopRecording() {
   if (recorder.state !== "recording") return
-  recorder.stopRecording(() => onDataAvailable(recorder.getBlob()));
-  animateControls();
+  setTimeout(() => {
+    recorder.stopRecording(() => onDataAvailable(recorder.getBlob()));
+    animateControls();  
+  }, 300)
 }
 
 recordButton.click(startRecording)
