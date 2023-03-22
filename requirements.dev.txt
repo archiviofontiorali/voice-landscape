@@ -212,7 +212,9 @@ tomli==2.0.1
     #   black
     #   pytest
 tqdm==4.65.0
-    # via spacy
+    # via
+    #   spacy
+    #   voice-landscape (pyproject.toml)
 traitlets==5.9.0
     # via
     #   ipython

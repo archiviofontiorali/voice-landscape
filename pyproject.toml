@@ -20,6 +20,7 @@ dependencies = [
     "loguru",
     "psycopg2",
     "python-decouple",
+    "tqdm",
     
     "pydub",
     "pocketsphinx",

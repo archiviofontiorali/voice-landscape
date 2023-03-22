@@ -131,7 +131,9 @@ srsly==2.4.6
 thinc==8.1.9
     # via spacy
 tqdm==4.65.0
-    # via spacy
+    # via
+    #   spacy
+    #   voice-landscape (pyproject.toml)
 typer==0.7.0
     # via
     #   pathy
