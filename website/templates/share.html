@@ -13,7 +13,7 @@
     
       <div class="flex flex-row flex-wrap justify-center justify-between-l items-center mh2 mv4">
         <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
-        <div class="w-100 w-90-l flex flex-row flex-wrap">
+        <div id="text-container" class="w-100 w-90-l flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
                   rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                   class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>

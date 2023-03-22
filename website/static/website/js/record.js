@@ -20,7 +20,7 @@ function onDataAvailable(blob) {
   formData.append("audio", blob, "audio.wav")
   
   axios.post("/api/speech/stt", formData, {headers: {'Content-Type': 'multipart/form-data'}})
-      .then(response => $('input#text').val(response.data.text))
+      .then(response => $('#text-container > textarea').val(response.data.text))
       .catch(error => showErrorAlert(error));
 }
 
