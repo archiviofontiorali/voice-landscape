@@ -74,10 +74,11 @@ class WordFrequency(models.Model):
         return [(obj["word"], obj["total"]) for obj in query]
 
     @classmethod
-    def create_random(cls):
+    def create_random(cls, place: Place = None):
+        if place is None:
+            place = random.choice(Place.objects.all())
         sample, created = cls.objects.get_or_create(
-            word=f"WORD{random.randint(0, 20):02d}",
-            place=random.choice(Place.objects.all()),
+            word=f"WORD{random.randint(0, 20):02d}", place=place
         )
         sample.frequency = F("frequency") + random.randint(1, 10)
         sample.save()
