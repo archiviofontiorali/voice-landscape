@@ -1,7 +1,7 @@
 const defaultOptions = {
   zoom: { initial: 15, min: 13, max: 20 },
   map: { provider: "Stamen.TonerBackground" },
-  markers: {minWidth: 50, maxWidth: 200, minHeight: 50, maxHeight: 200},
+  markers: {minWidth: 100, maxWidth: 200, minHeight: 50, maxHeight: 200},
   useDOM: false,
 }
 
