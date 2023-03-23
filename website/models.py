@@ -82,3 +82,6 @@ class WordFrequency(models.Model):
         )
         sample.frequency = F("frequency") + random.randint(1, 10)
         sample.save()
+
+    def __str__(self):
+        return f"Word({self.word}, {self.frequency})"
