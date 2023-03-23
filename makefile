@@ -82,6 +82,9 @@ shell:
 superuser:
 	$(django) createsuperuser --username=admin --email=voci@afor.dev
 
+generate_secret_key:
+	@$(python) -c "from django.core.management.utils import get_random_secret_key;print(get_random_secret_key())"
+
 
 
 # Database Management
