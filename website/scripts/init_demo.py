@@ -42,13 +42,20 @@ places = {
     ],
     # Scuola di Storia Orale (25-26/03/2023)
     "sso_2023": [
-        (44.6543937853751, 10.901187414574565, "#Ovestlab"),
+        (44.65460, 10.90104, "#Ovestlab"),
+        (44.65905, 10.91090, "San Cataldo"),
+        (44.66201, 10.93171, "Parco Vittime di Utoya"),
+        (44.66356, 10.92692, "Campo Cesena"),
+        (44.65292, 10.89572, "Diagonale verde - campo"),
+        (44.65012, 10.88912, "Fine ciclabile"),
+        (44.65040, 10.89507, "Alboni"),
+        (44.65374, 10.90391, "Fratellanza"),
     ],
 }
 
 
 def run():
-    place_id = config("DEMO_REFERENCE", default="ff_2019")
+    place_id = config("DEMO_REFERENCE", default="sso_2023")
     if place_id not in places:
         raise Exception(f"DEMO_REFERENCE can be only one of {', '.join(places)}")
 
