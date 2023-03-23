@@ -57,7 +57,9 @@ places = {
 def run():
     place_id = config("DEMO_REFERENCE", default="sso_2023")
     if place_id not in places:
-        raise Exception(f"DEMO_REFERENCE can be only one of {', '.join(places)}")
+        raise Exception(
+            f"DEMO_REFERENCE should be one of {', '.join(places)}, found {place_id}"
+        )
 
     for lat, lon, title in (_places := places[place_id]):
         slug = django.utils.text.slugify(title)
