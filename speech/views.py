@@ -39,7 +39,7 @@ class SpeechToText(View):
         if not form.is_valid():
             return JsonErrorResponse("Invalid audio request", status=400)
 
-        sound = pydub.AudioSegment.from_ogg(request.FILES["audio"])
+        sound = pydub.AudioSegment.from_file(request.FILES["audio"])
         if settings.SPEECH_RECOGNITION_DEBUG:
             sound.export(DATA_SPEECH_ROOT / f"sample_{timestamp()}.wav", format="wav")
         sound.export(audio := io.BytesIO(), format="wav")
