@@ -18,7 +18,7 @@ from decouple import config  # noqa
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
-STATIC_ROOT = BASE_DIR / ".static"
+
 LOG_ROOT = BASE_DIR / ".log"
 DATA_ROOT = BASE_DIR / ".data"
 
@@ -133,6 +133,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_ROOT: Path = config("STATIC_ROOT", default=BASE_DIR / ".static")
+
 
 STATIC_URL = "static/"
 
