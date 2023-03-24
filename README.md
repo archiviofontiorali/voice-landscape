@@ -51,6 +51,8 @@ Install GDAL and PostGIS dependencies
 ```shell
 # On ubuntu (<x> is the postgres version)
 $ sudo apt install gdal-bin postgresql-<x>-postgis-3  
+# NOTE: With postgresql-11 and postgis 2.5
+$ sudo apt install postgresql-11-postgis-2.5 postgresql-11-postgis-2.5-scripts
 
 # On archlinux
 $ sudo pacman -S gdal postgis

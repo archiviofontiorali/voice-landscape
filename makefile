@@ -58,7 +58,7 @@ production: clean
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	python3.10 -m venv $(VENV)
 	$(python) -m pip install -r requirements.txt
-	$(python) -m pip install --editable .
+	$(python) -m pip install .
 
 
 
