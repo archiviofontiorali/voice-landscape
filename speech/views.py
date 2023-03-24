@@ -12,7 +12,7 @@ from django.views import View
 from loguru import logger
 
 DATA_SPEECH_ROOT: pathlib.Path = settings.DATA_ROOT / "speech"
-DATA_SPEECH_ROOT.mkdir(exist_ok=True)
+DATA_SPEECH_ROOT.mkdir(exist_ok=True, parents=True)
 
 
 def timestamp(t: dt.datetime = None):

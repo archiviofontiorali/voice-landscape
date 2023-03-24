@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
 from pathlib import Path
 
 import dj_database_url
@@ -17,12 +16,14 @@ import spacy.symbols
 from decouple import config  # noqa
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 STATIC_ROOT = BASE_DIR / ".static"
-
 LOG_ROOT = BASE_DIR / ".log"
 DATA_ROOT = BASE_DIR / ".data"
+
+LOG_ROOT.mkdir(exist_ok=True)
+DATA_ROOT.mkdir(exist_ok=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
