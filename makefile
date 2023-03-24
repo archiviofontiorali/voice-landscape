@@ -63,9 +63,9 @@ production: clean
 
 
 # Django commands
-.PHONY: bootstrap-django clean-django migrate migrations shell superuser
+.PHONY: bootstrap-django clean-django migrate migrations secret_key shell superuser
 
-bootstrap-django: clean-django migrate superuser 
+bootstrap-django: clean-django secret_key migrate superuser 
 
 clean-django:
 	rm -rf db.sqlite3 .media .static
@@ -82,8 +82,8 @@ shell:
 superuser:
 	$(django) createsuperuser --username=admin --email=voci@afor.dev
 
-generate_secret_key:
-	@$(python) -c "from django.core.management.utils import get_random_secret_key;print(get_random_secret_key())"
+secret_key:
+	@$(python) website/scripts/generate_random_key.py
 
 
 
