@@ -29,8 +29,8 @@ Install `redirect` app in YUNoHost `administration > applications > install`
 $ sudo vim /etc/nginx/conf.d/<domain>/conf.d/redirect.conf
 $ sudo nginx -t # To check if configuration is valid
 $ sudo nginx -s reload
+$ sudo mkdir -p /usr/share/nginx/voice-landscape
 $ sudo chown -R admin:1007 /usr/share/nginx/voice-landscape
-$ sudo mkdir -p /usr/share/nginx/voice-landscape /usr/share/nginx/voice-landscape/static
 ```
 
 Set in `.env`
@@ -40,15 +40,13 @@ Set in `.env`
 
 Generate static file, db and load previous site contents
 ```shell
-$ sudo .venv/bin/python manage.py collectstatic
-#$ sudo .venv/bin/python manage.py compress --force
-#$ sudo .venv/bin/python manage.py runscript load_data
+$ make collectstatic
 ```
 
 Load gunicorn service file and start/enable it
 Remember to change user and/or repository path if different from .service file
 ```shell
-$ sudo cp gunicorn.service /etc/systemd/system/gunicorn.service
-$ sudo systemctl enable gunicorn
-$ sudo systemctl start gunicorn
+$ sudo cp system/voice-landscape.service /etc/systemd/system/
+$ sudo systemctl enable voice-landscape
+$ sudo systemctl start voice-landscape
 ```
