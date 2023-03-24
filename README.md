@@ -49,8 +49,8 @@ $ source .venv/bin/activate
 ### Prepare PostgreSQL
 Install GDAL and PostGIS dependencies
 ```shell
-# On ubuntu (<x> is the postgres version)
-$ sudo apt install gdal-bin postgresql-<x>-postgis-3  
+# On ubuntu (<x> is the postgres version, libpq-dev is required to have a valid licence)
+$ sudo apt install gdal-bin libpq-dev postgresql-<x>-postgis-3  
 # NOTE: With postgresql-11 and postgis 2.5
 $ sudo apt install postgresql-11-postgis-2.5 postgresql-11-postgis-2.5-scripts
 
