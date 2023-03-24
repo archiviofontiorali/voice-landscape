@@ -83,7 +83,7 @@ superuser:
 	$(django) createsuperuser --username=admin --email=voci@afor.dev
 
 secret_key:
-	@$(python) website/scripts/generate_random_key.py
+	@$(python) website/scripts/generate_secret_key.py
 
 
 
