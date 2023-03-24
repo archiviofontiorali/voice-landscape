@@ -18,15 +18,12 @@ dependencies = [
     "dj-database-url",
     "libsass",
     "loguru",
+    "pydub",
     "psycopg2",
     "python-decouple",
-    "tqdm",
-    
-    "pydub",
-    "pocketsphinx",
-    "SpeechRecognition",
-
     "spacy",
+    "SpeechRecognition",
+    "tqdm",
 ]
 
 [project.optional-dependencies]
