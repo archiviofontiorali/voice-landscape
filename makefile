@@ -63,7 +63,7 @@ production: clean
 
 
 # Django commands
-.PHONY: bootstrap-django clean-django migrate migrations secret_key shell superuser
+.PHONY: bootstrap-django clean-django collectstatic migrate migrations secret_key shell superuser 
 
 bootstrap-django: clean-django secret_key migrate superuser 
 
@@ -85,6 +85,9 @@ superuser:
 secret_key:
 	@$(python) website/scripts/generate_secret_key.py
 
+collectstatic:
+	$(django) collectstatic --ignore=*.scss
+	$(django) compilescss --use-storage
 
 
 # Database Management
