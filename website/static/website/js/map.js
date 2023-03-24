@@ -9,7 +9,7 @@ const wordCloudOptions = {
   backgroundColor: "rgba(255, 255, 255, 0)", 
   shrinkToFit: true,
   minSize: '2rem',
-  weightFactor: size => Math.floor(8 + size * (36-8)),
+  weightFactor: size => Math.floor(6 + size * (30-6)),
   fontWeight: '700',
   fontFamily: "Open Sans, Consolas, monaco, monospace",
   color: 'black',
