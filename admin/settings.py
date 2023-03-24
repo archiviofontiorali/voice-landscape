@@ -28,9 +28,7 @@ DATA_ROOT = BASE_DIR / ".data"
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config(
-    "SECRET_KEY", "django-insecure-7pl+bmw@2qfaurownmy%4^@8k9_9!ye7(qp*sq#ag+t_9c^8(x"
-)
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", True, cast=bool)
