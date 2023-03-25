@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.db.models import Max
 from django.views import generic
@@ -35,6 +36,12 @@ class MapContextMixin:
                 self._fetch_place_frequencies(place)
                 for place in models.Place.objects.all()
             ],
+            "zoom": {
+                "initial": settings.LANDSCAPE_DEFAULT_ZOOM.get("initial", 15),
+                "min": settings.LANDSCAPE_DEFAULT_ZOOM.get("min", 13),
+                "max": settings.LANDSCAPE_DEFAULT_ZOOM.get("max", 20),
+            },
+            "provider": settings.LANDSCAPE_PROVIDER,
         }
         return context
 
