@@ -10,8 +10,8 @@ from tqdm import tqdm
 from website import models
 
 places = {
-    # Festival Filosofia 2019
-    "ff_2019": [
+    # Festival Filosofia 2021
+    "ff_2021": [
         (44.65461615128406, 10.901229167243947, "AFOr | Archivio delle Fonti Orali"),
         (44.64409256289870, 10.931416796520214, "Teatro Storchi"),
         (44.64076056627556, 10.925855204224685, "Casa del Mutilato"),
