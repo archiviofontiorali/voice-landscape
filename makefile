@@ -91,14 +91,8 @@ collectstatic:
 
 
 # Database Management
-.PHONY: pg-backup pg-restore sqlite-bootstrap
+.PHONY: sqlite-bootstrap
 
-pg-backup:
-	mkdir .backup
-	pg_dump landscapes > .backup/landscapes."$(date --iso-8601=seconds)".backup 
-
-pg-restore:
-	psql voci < $(shell ls .backup/landscapes.* | head -1)
 
 sqlite-bootstrap: 
 	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
