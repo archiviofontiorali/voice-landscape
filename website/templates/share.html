@@ -58,6 +58,19 @@
             Inserisci posizione
           </button>  
         </div>
+      
+        <div class="dn w-100 pa1 tc">
+          <label for="place">Place</label>
+          <select name="place" id="place">
+            {% for place in places %}
+              <option class="tc" 
+                      value="{{ place.id }}" data-coordinates="{{ place.coordinates }}"
+                      onclick="console.log(JSON.parse(this.getAttribute('data-coordinates')))">
+                {{ place.title }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
       </fieldset>
       
       <div class="center pa2">
