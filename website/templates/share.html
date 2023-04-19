@@ -11,9 +11,9 @@
         <span class="w-100 f6 red b">{{ error }}</span>
       {% endfor %}
     
-      <div class="flex flex-row flex-wrap justify-center justify-between-l items-center mh2 mv4">
+      <section class="flex flex-row flex-wrap justify-center justify-between-l items-center mv4">
         <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
-        <div id="text-container" class="w-100 w-90-l flex flex-row flex-wrap">
+        <div id="text-container"  class="w-100 w-80-l flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
                   rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                   class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
@@ -22,7 +22,7 @@
           {% endfor %}
         </div>
         
-        <div class="w-10-l pa1 flex flex-row justify-center">
+        <div class="w-20-l pa2 flex flex-row justify-center">
           <a id="record-button" type="button" 
              class="link flex flex-column items-center justify-center w3 h3 white br4 bg-dark-gray">
             <i data-feather="mic" class="w2 h2"></i>
@@ -30,52 +30,67 @@
           <a id="stop-button" type="button" 
              class="link dn flex-column items-center justify-center w3 h3 white br4 bg-red">
             <i data-feather="circle" class="w2 h2"></i>
-          </a>
+          </a>  
         </div>
-      </div>
+      </section>
     
-      <fieldset class="flex flex-wrap mv4">
-        <legend>Coordinate GPS</legend>
-        <div class="pa1 w-50-ns">
-          <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
-          <input id="{{ form.latitude.id_for_label }}" name="{{ form.latitude.html_name }}"
-                 type=number step="any" class="w-100" required readonly>
-          {% for error in form.latitude.errors %}
-            <span class="w-100 f6 red b">{{ error }}</span>
-          {% endfor %}
-        </div>
-        <div class="pa1 w-50-ns">
-          <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
-          <input id="{{ form.longitude.id_for_label }}" name="{{ form.longitude.html_name }}"
-                 type=number step="any" class="w-100" required readonly>
-          {% for error in form.longitude.errors %}
-            <span class="w-100 f6 red b">{{ error }}</span>
-          {% endfor %}
-        </div>
-        
-        <div class="w-100 pa1 tc">
-          <button id="location-button" type="button" onclick="readCurrentPosition()">
-            Inserisci posizione
-          </button>  
+      <section class="flex flex-wrap mv4">
+      
+        <div id="location-auto-icon" 
+             class="w-100 w-50-l h4 pa3 gray br bw1 b--gray
+                    flex flex-column items-center justify-between">
+          <div class="w-100 tc">
+            <i data-feather="map-pin" class="b w3 h3 gray grow"
+             onclick="readCurrentPosition()"></i>  
+          </div>
+          <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label> 
         </div>
       
-        <div class="dn w-100 pa1 tc">
-          <label for="place">Place</label>
-          <select name="place" id="place">
+        <div id="location-place" 
+             class="w-100 w-50-l pa3 h4 tc 
+                    flex flex-column items-center justify-between">
+          <select name="place" id="place" class="" onchange="selectPlace(this.value)">
+            <option value="" selected></option>
             {% for place in places %}
-              <option class="tc" 
-                      value="{{ place.id }}" data-coordinates="{{ place.coordinates }}"
-                      onclick="console.log(JSON.parse(this.getAttribute('data-coordinates')))">
+              <option class="tc" value="{{ place.id }}" 
+                      data-coordinates="{{ place.coordinates }}">
                 {{ place.title }}
               </option>
             {% endfor %}
           </select>
+          <label for="place" class="gray b w-100 tc ttu">
+            Seleziona un punto di interesse
+          </label>
         </div>
-      </fieldset>
       
-      <div class="center pa2">
+        <div id="location-display" class="gray w-100 tc mv2 pa2">
+          <p id="location-display-title"></p>
+          <p id="location-display-coordinates"></p>
+        </div>
+        <div>
+          {% for error in form.latitude.errors %}
+            <span class="w-100 f6 red b">{{ error }}</span>
+          {% endfor %}
+          {% for error in form.longitude.errors %}
+            <span class="w-100 f6 red b">{{ error }}</span>
+          {% endfor %}
+        </div>
+      
+        <div class="pa1 w-50-ns" hidden>
+          <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+          <input id="{{ form.latitude.id_for_label }}" name="{{ form.latitude.html_name }}"
+                 type=number step="any" class="w-100" required readonly>
+        </div>
+        <div class="pa1 w-50-ns" hidden>
+          <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
+          <input id="{{ form.longitude.id_for_label }}" name="{{ form.longitude.html_name }}"
+                 type=number step="any" class="w-100" required readonly>
+        </div>
+      </section>
+      
+      <section class="center pa2">
         <input id="button-submit" type="submit" value="Partecipa!" disabled>
-      </div>
+      </section>
     </form>
   </main>
 {% endblock %}
@@ -92,17 +107,44 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
   
   <script defer>
-    function readCurrentPosition() {
+  
+    function setCoordinates(coords, title='') {
+      console.debug(`Found coordinates (${coords})`);
+            
+      $("input#{{ form.latitude.id_for_label }}").val(coords[0]);
+      $("input#{{ form.longitude.id_for_label }}").val(coords[1]);
+
+      $('#location-display-coordinates').text(`(${coords[0]}, ${coords[1]})`);
+      $('#location-display-title').text(title);
+      
+      $("input#button-submit").removeAttr("disabled");
+    }
+    
+    function selectPlace(place_id) {
+      if (place_id > 0) {
+        let option =  $('#location-place #place').children().eq(place_id);
+        let coords = option.data('coordinates');
+        setCoordinates(coords, option.text());
+        $('#location-auto-icon svg').removeClass("red green");
+      }
+    }
+  
+    function readCurrentPosition() {      
       if (!navigator.geolocation) { 
         showErrorAlert("Geolocation is not supported by this browser."); 
         return;
-      }
+      }      
       
       navigator.geolocation.getCurrentPosition(
           position => {
-            $("input#{{ form.latitude.id_for_label }}").val(position.coords.latitude);
-            $("input#{{ form.longitude.id_for_label }}").val(position.coords.longitude);
-            $("input#button-submit").removeAttr("disabled");
+            let coords = [position.coords.latitude, position.coords.longitude];
+            
+            $('#location-auto-icon svg').removeClass("red").addClass("green");
+            $('#location-auto-icon p').text("Posizione ottenuta");
+            
+            setCoordinates(coords);
+            
+            $('#location-place select#place').val([]);
           }, 
           error => showErrorAlert(error.message)
       );
