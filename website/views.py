@@ -46,7 +46,6 @@ class HomePage(generic.TemplateView):
     template_name = "home.html"
 
 
-# TODO: add form logic from SharePage in voices/cases
 class SharePage(generic.TemplateView):
     template_name = "share.html"
 
