@@ -63,3 +63,12 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
       -1px 1px 0 $color,
        1px 1px 0 $color;
 }
+
+#location-auto-icon svg{
+  color: gray;
+  
+  &[data-state="disabled"] { color: lightgray; }
+  &[data-state="processing"] { color: lightgreen }
+  &[data-state="success"] { color: green }
+  &[data-state="error"] { color: red }
+}
