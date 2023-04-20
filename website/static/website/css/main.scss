@@ -25,6 +25,16 @@ h1, h2, h3, b {  }
 
 a { color: var(--afor-primary); }
 
+$sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
+
+@for $index from 1 through 5 {
+  $size: nth($sizes, $index);
+  .i#{$index} {
+    height: $size;
+    width: $size;
+  }
+}
+
 
 .flex-grow { flex-grow: 1; }
 .titillium  { font-family: $titillium }
