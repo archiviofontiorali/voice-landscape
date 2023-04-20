@@ -29,8 +29,16 @@ class Place(models.Model):
     location = models.PointField()
 
     @property
+    def latitude(self) -> float:
+        return self.location.y
+
+    @property
+    def longitude(self) -> float:
+        return self.location.x
+
+    @property
     def coordinates(self) -> list[float, float]:
-        return [self.location.y, self.location.x]  # noqa
+        return [self.latitude, self.longitude]
 
     @classmethod
     def get_nearest(cls, location: Point) -> "Place":
