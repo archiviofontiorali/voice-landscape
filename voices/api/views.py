@@ -8,7 +8,7 @@ from .serializers import PlaceSerializer, ShareSerializer, WordFrequencySerializ
 class PlaceViewSet(viewsets.ModelViewSet):
     """API endpoint for places."""
 
-    queryset = Place.objects.all()
+    queryset = Place.objects.order_by("slug").all()
     serializer_class = PlaceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -24,6 +24,6 @@ class ShareViewSet(viewsets.ModelViewSet):
 class WordFrequencyViewSet(viewsets.ModelViewSet):
     """API endpoint for word frequencies."""
 
-    queryset = WordFrequency.objects.all()
+    queryset = WordFrequency.objects.order_by("place", "word").all()
     serializer_class = WordFrequencySerializer
     permission_classes = [permissions.IsAuthenticated]
