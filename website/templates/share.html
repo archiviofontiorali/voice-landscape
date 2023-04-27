@@ -11,7 +11,7 @@
         <span class="w-100 f6 red b">{{ error }}</span>
       {% endfor %}
     
-      <section class="flex flex-row flex-wrap justify-center items-center mv4">
+      <section id="message-section" class="flex flex-row flex-wrap justify-center items-center mv4">
         <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
         <div id="text-container"  class="w-100 flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
@@ -32,7 +32,7 @@
         </a>  
         <a id="reset-button" type="button" 
            class="link flex flex-center w3 h3 white ma1 br4 bg-gray" 
-           onclick="$('#{{ form.message.id_for_label }}').val('')">
+           onclick="$('#{{ form.message.id_for_label }}').val(''); disableSubmit();">
           <i data-feather="trash-2" class="w2 h2"></i>
         </a>
         
@@ -93,9 +93,11 @@
         </div>
       </section>
       
-      <section class="center pa2">
-        <input id="submit-button" type="submit" value="Partecipa!" disabled>
-      </section>
+      <div id="share-section" class="w-100 flex flex-row justify-between items-center pa2">
+        <input id="prev-tab-button" type="button" class="pa1 grow" value="Indietro" onclick="showPrevTab()">
+        <input id="submit-button"   type="submit" class="pa1 grow" value="Partecipa!" disabled>
+        <input id="next-tab-button" type="button" class="pa1 grow" value="Avanti" onclick="showNextTab()">
+      </div>
     </form>
   </main>
 {% endblock %}
@@ -109,6 +111,35 @@
   </script>
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+  
+  <script defer>
+    let currentTab = firstTab = 0, lastTab = 1;
+  
+    function showTab(tabIndex = currentTab) {
+      currentTab = tabIndex;
+      setButtonsState();
+      $("form").children('section').each((index, tab) => {
+        $(tab)
+          .addClass((tabIndex === index) ? "flex" : "dn")
+          .removeClass((tabIndex === index) ? "dn" : "flex");
+      });
+    }
+    
+    function setButtonsState() {
+      $("#next-tab-button").prop("disabled", (currentTab >= lastTab));
+      $("#prev-tab-button").prop("disabled", (currentTab <= firstTab));
+    }
+    
+    function showNextTab() { showTab(Math.min(currentTab + 1, lastTab)); }
+    function showPrevTab() { showTab(currentTab = Math.max(currentTab - 1, 0)); }
+  
+    document.addEventListener('DOMContentLoaded', () => { showTab(0); });        
+  </script>
+  
+  <script defer>
+    function enableSubmit() { $("input#submit-button").prop("disabled", false); }
+    function disableSubmit() { $("input#submit-button").prop("disabled", true); }  
+  </script>
 
   <script defer>  
     class Coordinates {
@@ -135,7 +166,7 @@
       $('#location-display-coordinates').text(coords.as_string);
       $('#location-display-title').text(title);
       
-      $("input#submit-button").removeAttr("disabled");
+      enableSubmit();
     }
     
     /** Unset coordinates from imput tags and display */
