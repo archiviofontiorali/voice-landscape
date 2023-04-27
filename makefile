@@ -32,7 +32,7 @@ freeze:
 	
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	@$(pip) install -r requirements.dev.txt
+	@$(pip) install -r requirements.txt
 	@$(pip) install --editable .
 
 production: clean venv
