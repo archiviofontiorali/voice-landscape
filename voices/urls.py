@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("", include("website.urls")),
-    path("api/speech/", include("speech.urls")),
+    path("", include("voices.website.urls")),
+    path("api/speech/", include("voices.speech.urls")),
     path("admin/", admin.site.urls),
 ]

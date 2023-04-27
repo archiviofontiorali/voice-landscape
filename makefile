@@ -32,13 +32,18 @@ freeze:
 	
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	@$(pip) install -r requirements.dev.txt
+	@$(pip) install -r requirements.txt
 	@$(pip) install --editable .
 
 production: clean venv
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	@$(pip) install .
 
+
+# Notebooks commands
+.PHONY: lab
+lab:
+	@$(django) shell_plus --lab
 
 
 # Django development commands
@@ -57,7 +62,7 @@ shell:
 	@$(django) shell
 
 secret_key:
-	@$(python) website/scripts/generate_secret_key.py
+	@$(python) scripts/generate_secret_key.py
 
 
 
@@ -83,7 +88,7 @@ migrate:
 	@$(django) migrate
 
 migrations:
-	@echo -e $(bold)Create migraiton files$(sgr0)
+	@echo -e $(bold)Create migration files$(sgr0)
 	@$(django) makemigrations
 
 superuser:
