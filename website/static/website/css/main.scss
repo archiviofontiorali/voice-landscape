@@ -8,6 +8,7 @@
     --afor-error: DarkRed;
     --afor-warning: Orange;
     --afor-info: inherit; 
+    --afor-success: darkgreen;
     --afor-debug: gray;
 }
 
@@ -50,9 +51,10 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
 .alert { outline: 1px solid; }
 .alert:hover { outline-width: 2px; }
 
-.alert-error    { outline-color: var(--afor-error); }
+.alert-error    { outline-color: var(--afor-error); color: var(--afor-error); }
 .alert-warning  { outline-color: var(--afor-warning); }
 .alert-info     { outline-color: var(--afor-info); }
+.alert-success  { outline-color: var(--afor-success); color: var(--afor-success); }
 .alert-debug    { outline-color: var(--afor-debug); }
 
 
