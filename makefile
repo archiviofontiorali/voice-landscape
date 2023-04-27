@@ -88,7 +88,7 @@ migrate:
 	@$(django) migrate
 
 migrations:
-	@echo -e $(bold)Create migraiton files$(sgr0)
+	@echo -e $(bold)Create migration files$(sgr0)
 	@$(django) makemigrations
 
 superuser:
