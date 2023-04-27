@@ -179,6 +179,8 @@ JAZZMIN_UI_TWEAKS = {
     # "dark_mode_theme": "darkly",  # Not working at the moment
 }
 
+NOTEBOOK_ARGUMENTS = ["--notebook-dir", "notebooks"]
+
 
 CORS_ALLOWED_ORIGINS = [
     "https://voci.afor.dev",

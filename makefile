@@ -43,7 +43,7 @@ production: clean venv
 # Notebooks commands
 .PHONY: lab
 lab:
-	@$(venv)/bin/jupyter-lab --notebook-dir notebooks
+	@$(django) shell_plus --lab
 
 
 # Django development commands
