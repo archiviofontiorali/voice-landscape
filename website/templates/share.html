@@ -11,9 +11,9 @@
         <span class="w-100 f6 red b">{{ error }}</span>
       {% endfor %}
     
-      <section class="flex flex-row flex-wrap justify-center justify-between-l items-center mv4">
+      <section class="flex flex-row flex-wrap justify-center items-center mv4">
         <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
-        <div id="text-container"  class="w-100 w-80-l flex flex-row flex-wrap">
+        <div id="text-container"  class="w-100 flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
                   rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                   class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
@@ -22,16 +22,20 @@
           {% endfor %}
         </div>
         
-        <div class="w-20-l pa2 flex flex-row justify-center">
-          <a id="record-button" type="button" 
-             class="link flex flex-column items-center justify-center w3 h3 white br4 bg-dark-gray">
-            <i data-feather="mic" class="w2 h2"></i>
-          </a>
-          <a id="stop-button" type="button" 
-             class="link dn flex-column items-center justify-center w3 h3 white br4 bg-red">
-            <i data-feather="circle" class="w2 h2"></i>
-          </a>  
-        </div>
+        <a id="record-button" type="button" 
+           class="link flex flex-center w3 h3 white ma1 br4 bg-dark-gray">
+          <i data-feather="mic" class="w2 h2"></i>
+        </a>
+        <a id="stop-button" type="button" 
+           class="link dn flex-center w3 h3 white ma1 br4 bg-red">
+          <i data-feather="circle" class="w2 h2"></i>
+        </a>  
+        <a id="reset-button" type="button" 
+           class="link flex flex-center w3 h3 white ma1 br4 bg-gray" 
+           onclick="$('#{{ form.message.id_for_label }}').val('')">
+          <i data-feather="trash-2" class="w2 h2"></i>
+        </a>
+        
       </section>
     
       <section id="location-selector" class="flex flex-wrap mv4">
