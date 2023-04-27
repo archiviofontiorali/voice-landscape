@@ -3,23 +3,9 @@ Un progetto sviluppato da [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
 > For International English language instructions go to [README.md](/README.md) 
 
-
 ## Instruzioni installazione (produzione)
 Richiede `python>=3.10`, `pip` e `venv`. 
 `make` è consigliato per semplificare l'installazione
-
-```shell
-# Installazione guidata
-$ make production
-
-# Installazione manuale
-$ python3 -m venv .venv
-$ source .venv/bin/activate
-(venv)$ pip install --upgrade pip
-(venv)$ pip install -r requirements.txt
-(venv)$ pip install --editable .
-(venv)$ python -m spacy download it_core_news_sm
-```
 
 ### Installazione dipendenze su linux
 ```shell
@@ -31,10 +17,90 @@ $ sudo apt install python3 python3-pip python3-venv make
 $ sudo pacman -S python python-pip python-virtualenv make
 ```
 
-### Come usarlo
+## Istruzioni per inizializzazione Database
+Questo pacchetto usa [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) 
+per gestire funzionalità geografiche come distanze e coordinate. Alcuni pacchetti aggiuntivi sono richiesti:
+- [GDAL](https://gdal.org/) 
+- [spatiallite](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/spatialite/) if using sqlite db
+- [PostGIS](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/) if using PostgreSQL
+- MySQL non è attualmente supportato
+
+
+### Preparazione per SQLite
+Installa GDAL e Spatialite
+```shell
+# On ubuntu
+$ sudo apt install gdal-bin libsqlite3-mod-spatialite
+
+# On archlinux
+$ sudo pacman -S gdal libspatialite
+```
+
+Imposta un percorso SQLite valido (di tipo spatialite) in `.env` (default: spatialite:///db.sqlite)
+
+Inizializza Spatialite
+```shell
+# Automatic
+$ make bootstrap-sqlite
+
+# Manually
+$ source .venv/bin/activate
+(.venv)$ python manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
+```
+
+
+### Preparazione per PostgreSQL
+Installa GDAL e PostGIS
+```shell
+# On ubuntu (<x> is the postgres version)
+$ sudo apt install gdal-bin postgresql-<x>-postgis-3  
+
+# On archlinux
+$ sudo pacman -S gdal postgis
+```
+
+Imposta un percorso PostgreSQL valido (di tipo PostGIS) in `.env` (example: postgis://...)
+Ricorda che di default questa app usa sqlite
+
+Crea il DB e abilita PostGIS (dipende da come hai installato postgres sul tuo sistema, 
+in system/ è presente un docker-compose file per creare un istanza postgres con docker)
+```shell
+# For more info go to https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/
+$ createdb  <db name>
+$ psql <db name>
+> CREATE EXTENSION postgis;
+```
+
+
+## Ambiente di produzione
+
+### Installazione repository
+```shell
+# Installazione guidata
+$ make production
+
+# Installazione manuale
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+(venv)$ pip install --upgrade pip
+(venv)$ pip install -r requirements.txt
+(venv)$ pip install --editable .
+```
+
+Applica le migrazioni e abilità l'utente admin
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
+```
+
+### Come avviare il server in produzione
 ```shell
 $ source .venv/bin/activate
-(venv)$ gunicorn -k uvicorn.workers.UvicornWorker -w 4 demo.asgi:app
+(venv)$ gunicorn admin.wsgi
 ```
 
 Per abilitare `nginx` e `gunicorn` all'avvio, crea un `systemd unit file` e usa 
@@ -56,8 +122,6 @@ $ git clone https://github.com/archiviofontiorali/voice-landscape ~/git/
 
 
 ## Development instructions
-Richiede `python>=3.10`, `pip` e `venv`. 
-`make` è consigliato per semplificare l'installazione
 
 ```shell
 $ make bootstrap
@@ -68,7 +132,16 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip pip-tools
 (venv)$ pip install -r requirements.dev.txt
 (venv)$ pip install --editable .
-(venv)$ python -m spacy download it_core_news_sm
+```
+
+Applica le migrazioni e abilità l'utente admin
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
 ## Execute server
@@ -77,5 +150,5 @@ Execute on url http://localhost:8001 with autoreload enabled
 # Execute with autoreload
 (venv)$ make serve
 
-(venv)$ uvicorn demo.asgi:app --reload --port 8001
+(venv)$ python manage.py runserver http://localhost:8001
 ```

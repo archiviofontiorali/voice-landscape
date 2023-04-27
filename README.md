@@ -3,31 +3,76 @@ A project by [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
 > 🇮🇹 Per leggere le istruzioni in italiano vai in [README-IT.md](/README-it.md) 🇮🇹 
 
-
-## Production environment instructions
+## System dependencies installation
 Require at least `python>=3.10`, `pip` and `venv` to work.
 To simplify installation `make` is suggested
 
-This package uses [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) 
+```shell
+# Ubuntu/debian
+$ sudo apt update
+$ sudo apt install python3 python3-pip python3-venv make
+
+# Archlinux
+$ sudo pacman -S python python-pip python-virtualenv make
+```
+
+## Database instructions
+This Django app uses [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) 
 to handle spatial features like coordinates. Some additional package are required to use database
 - [GDAL](https://gdal.org/) 
 - [spatiallite](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/spatialite/) if using sqlite db
 - [PostGIS](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/) if using PostgreSQL
+- MySQL is not supported or tested at the moment 
 
-To install it:
+### Prepare SQLite
+Install GDAL and Spatialite dependencies
 ```shell
 # On ubuntu
-$ sudo apt install gdal-bin
-$ sudo apt install libsqlite3-mod-spatialite
-$ sudo apt install postgresql-<x>-postgis-3  # Where <x> is the postgres version
+$ sudo apt install gdal-bin libsqlite3-mod-spatialite
 
 # On archlinux
-$ sudo pacman -S gdal
-$ sudo pacman -S libspatialite
-$ sudo pacman -S postgis
+$ sudo pacman -S gdal libspatialite
 ```
 
-To install repository
+Set a valid SQLite path (of type spatialite) in `.env` file (default: spatialite:///db.sqlite3)
+
+Enable Spatialite and migrations by executing 
+```shell
+# Automatic
+$ make bootstrap-sqlite
+
+# Manually
+$ source .venv/bin/activate
+(.venv)$ python manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
+```
+
+### Prepare PostgreSQL
+Install GDAL and PostGIS dependencies
+```shell
+# On ubuntu (<x> is the postgres version, libpq-dev is required to have a valid licence)
+$ sudo apt install gdal-bin libpq-dev postgresql-<x>-postgis-3  
+# NOTE: With postgresql-11 and postgis 2.5
+$ sudo apt install postgresql-11-postgis-2.5 postgresql-11-postgis-2.5-scripts
+
+# On archlinux
+$ sudo pacman -S gdal postgis
+```
+
+Set a valid PostgreSQL path (of type PostGIS) in `.env` file (example: postgis://...)
+Remember, by default a sqlite file is used
+
+Create DB and enable PostGIS (this also depend on which way you installed postgres)
+in `system/` there is a docker-compose file for creating a postgres instance.
+```shell
+# For more info go to https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/
+$ createdb  <db name>
+$ psql <db name>
+> CREATE EXTENSION postgis;
+```
+
+## Production environment instructions
+
+### Install repository
 ```shell
 # Automatic installation
 $ make production
@@ -38,27 +83,26 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
 (venv)$ pip install -r requirements.txt
 (venv)$ pip install --editable .
-(venv)$ python -m spacy download it_core_news_sm
 ```
 
-### Dependencies installation on linux
+Apply migrations and create admin user
 ```shell
-# Ubuntu/debian
-$ sudo apt update
-$ sudo apt install python3 python3-pip python3-venv make
+# Automatic
+$ make migrate createsuperuser
 
-# Archlinux
-$ sudo pacman -S python python-pip python-virtualenv make
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
-### Make it work
+### Launch server
 ```shell
 $ source .venv/bin/activate
-(venv)$ gunicorn -k uvicorn.workers.UvicornWorker -w 4 demo.asgi:app
+(venv)$ gunicorn -w 4 admin.wsgi
 ```
 
-To enable `nginx` and `gunicorn`, create a systemd unit file and apply HTTPS via 
-certbot, follow this 
+To enable `nginx` and `gunicorn` on boot, create a systemd unit file and apply HTTPS via 
+certbot, following this 
 [tutorial](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04)
 (ubuntu 20.04) 
 
@@ -73,8 +117,6 @@ $ git clone https://github.com/archiviofontiorali/voice-landscape ~/git/
 
 
 ## Development instructions
-Require at least `python>=3.10`, `pip` and `venv` to work. 
-To simplify installation `make` is suggested
 
 ```shell
 $ make bootstrap
@@ -85,7 +127,16 @@ $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip pip-tools
 (venv)$ pip install -r requirements.dev.txt
 (venv)$ pip install --editable .
-(venv)$ python -m spacy download it_core_news_sm
+```
+
+Apply migrations and create admin user
+```shell
+# Automatic
+$ make migrate createsuperuser
+
+# Manually
+(.venv)$ python manage.py migrate
+(.venv)$ python manage.py createsuperuser
 ```
 
 ## Execute server
@@ -94,5 +145,5 @@ Execute on url http://localhost:8001 with autoreload enabled
 # Execute with autoreload
 (venv)$ make serve
 
-(venv)$ uvicorn demo.asgi:app --reload --port 8001
+(venv)$ python manage.py runserver http://localhost:8001
 ```

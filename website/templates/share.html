@@ -11,9 +11,9 @@
         <span class="w-100 f6 red b">{{ error }}</span>
       {% endfor %}
     
-      <div class="flex flex-row flex-wrap justify-center justify-between-l items-center mh2 mv4">
+      <section id="message-section" class="flex flex-row flex-wrap justify-center items-center mv4">
         <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
-        <div class="w-100 w-90-l flex flex-row flex-wrap">
+        <div id="text-container"  class="w-100 flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
                   rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                   class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
@@ -22,46 +22,81 @@
           {% endfor %}
         </div>
         
-        <div class="w-10-l pa1 flex flex-row justify-center">
-          <a id="record-button" type="button" 
-             class="link flex flex-column items-center justify-center w3 h3 white br4 bg-dark-gray">
-            <i data-feather="mic" class="w2 h2"></i>
-          </a>
-          <a id="stop-button" type="button" 
-             class="link dn flex-column items-center justify-center w3 h3 white br4 bg-red">
-            <i data-feather="circle" class="w2 h2"></i>
-          </a>
-        </div>
-      </div>
+        <a id="record-button" type="button" 
+           class="link flex flex-center w3 h3 white ma1 br4 bg-dark-gray">
+          <i data-feather="mic" class="w2 h2"></i>
+        </a>
+        <a id="stop-button" type="button" 
+           class="link dn flex-center w3 h3 white ma1 br4 bg-red">
+          <i data-feather="circle" class="w2 h2"></i>
+        </a>  
+        <a id="reset-button" type="button" 
+           class="link flex flex-center w3 h3 white ma1 br4 bg-gray" 
+           onclick="$('#{{ form.message.id_for_label }}').val(''); disableSubmit();">
+          <i data-feather="trash-2" class="w2 h2"></i>
+        </a>
+        
+      </section>
     
-      <fieldset class="flex flex-wrap mv4">
-        <legend>Coordinate GPS</legend>
-        <div class="pa1 w-50-ns">
-          <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
-          <input id="{{ form.latitude.id_for_label }}" name="{{ form.latitude.html_name }}"
-                 type=number step="any" class="w-100" required readonly>
-          {% for error in form.latitude.errors %}
-            <span class="w-100 f6 red b">{{ error }}</span>
-          {% endfor %}
+      <section id="location-section" class="flex flex-row flex-wrap mv4">
+      
+        <div id="location-auto-icon" class="w-100 w-50-ns h4 pa3 br-ns bw1 b--gray gray flex flex-column items-center justify-between">
+          <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label> 
+          <div class="w-100 tc">
+            <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting" onclick="getAutoPosition()"></i>
+          </div>
         </div>
-        <div class="pa1 w-50-ns">
-          <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
-          <input id="{{ form.longitude.id_for_label }}" name="{{ form.longitude.html_name }}"
-                 type=number step="any" class="w-100" required readonly>
+        
+        <p class="w-100 ttu gray tc dn-ns">Oppure</p>
+      
+        <div id="location-place" class="w-100 w-50-ns pa3 h4 tc flex flex-column items-center justify-between">
+          <label for="place" class="gray b w-100 tc ttu">
+            Seleziona un punto di interesse
+          </label>
+          <div class="h-100 flex flex-column justify-center">
+            <select name="place" id="place" class="" onchange="getPlacePosition(this.value)">
+              <option selected></option>
+              
+              {% for place in places %}
+                <option class="tc" value="{{ place.id }}"
+                        data-latitude="{{ place.latitude | floatformat:'7u' }}"
+                        data-longitude="{{ place.longitude | floatformat:'7u' }}">
+                  {{ place.title }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      
+        <div id="location-display" class="gray w-100 tc mv2 pa2">
+          <p id="location-display-title"></p>
+          <p id="location-display-coordinates"></p>
+          
+          {% for error in form.latitude.errors %}
+            <p class="w-100 f6 red b">{{ error }}</p>
+          {% endfor %}
+          
           {% for error in form.longitude.errors %}
-            <span class="w-100 f6 red b">{{ error }}</span>
+            <p class="w-100 f6 red b">{{ error }}</p>
           {% endfor %}
         </div>
         
-        <div class="w-100 pa1 tc">
-          <button id="location-button" type="button" onclick="readCurrentPosition()">
-            Inserisci posizione
-          </button>  
+        <div hidden class="pa1 w-50-ns">
+          <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+          <input id="{{ form.latitude.id_for_label }}" name="{{ form.latitude.html_name }}"
+                 type=number step="any" class="w-100" required readonly>
+        </div>        
+        <div hidden class="pa1 w-50-ns">
+          <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
+          <input id="{{ form.longitude.id_for_label }}" name="{{ form.longitude.html_name }}"
+                 type=number step="any" class="w-100" required readonly>
         </div>
-      </fieldset>
+      </section>
       
-      <div class="center pa2">
-        <input id="button-submit" type="submit" value="Partecipa!" disabled>
+      <div id="share-section" class="w-100 flex flex-row justify-between items-center pa2">
+        <input id="prev-tab-button" type="button" class="pa1 grow" value="Indietro" onclick="showPrevTab()">
+        <input id="submit-button"   type="submit" class="pa1 grow" value="Partecipa!" disabled>
+        <input id="next-tab-button" type="button" class="pa1 grow" value="Avanti" onclick="showNextTab()">
       </div>
     </form>
   </main>
@@ -74,25 +109,109 @@
   <script defer>
     document.addEventListener('DOMContentLoaded', () => feather.replace());
   </script>
-
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
   
   <script defer>
-    function readCurrentPosition() {
+    let currentTab = firstTab = 0, lastTab = 1;
+  
+    function showTab(tabIndex = currentTab) {
+      currentTab = tabIndex;
+      setButtonsState();
+      $("form").children('section').each((index, tab) => {
+        $(tab)
+          .addClass((tabIndex === index) ? "flex" : "dn")
+          .removeClass((tabIndex === index) ? "dn" : "flex");
+      });
+    }
+    
+    function setButtonsState() {
+      $("#next-tab-button").prop("disabled", (currentTab >= lastTab));
+      $("#prev-tab-button").prop("disabled", (currentTab <= firstTab));
+    }
+    
+    function showNextTab() { showTab(Math.min(currentTab + 1, lastTab)); }
+    function showPrevTab() { showTab(currentTab = Math.max(currentTab - 1, 0)); }
+  
+    document.addEventListener('DOMContentLoaded', () => { showTab(0); });        
+  </script>
+  
+  <script defer>
+    function enableSubmit() { $("input#submit-button").prop("disabled", false); }
+    function disableSubmit() { $("input#submit-button").prop("disabled", true); }  
+  </script>
+
+  <script defer>  
+    class Coordinates {
+      constructor(latitude, longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+      }
+      
+      get as_array() { return [this.latitude, this.longitude] }
+      get as_string() { return `(${this.latitude}, ${this.longitude})` }
+    }
+    
+    const inputLatitude = "input#{{ form.latitude.id_for_label }}";
+    const inputLongitude = "input#{{ form.longitude.id_for_label }}";
+    const locationIcon = "#location-auto-icon svg";
+      
+    /** Set coordinates inside respective input tags and display value for user */
+    function setCoordinates(coords, title='') {
+      console.info(`Select coordinates ${coords.as_string}`, coords.as_array);
+      
+      $(inputLatitude).val(coords.latitude);
+      $(inputLongitude).val(coords.longitude);
+            
+      $('#location-display-coordinates').text(coords.as_string);
+      $('#location-display-title').text(title);
+      
+      enableSubmit();
+    }
+    
+    /** Unset coordinates from imput tags and display */
+    function unsetCoordinates() {
+      $(inputLatitude).removeAttr("value");
+      $(inputLongitude).removeAttr("value");
+      $('#location-display-coordinates').text('');
+      $('#location-display-title').text('');
+      $("input#submit-button").prop("disabled", true);
+    }
+    
+    function disableIcon(element) { 
+      element.attr("data-state", "disabled").removeAttr("onclick").removeClass("grow"); 
+    }
+    
+    function getAutoPosition() {
+      const icon = $(locationIcon);
+      
+      if (icon.attr("data-state") === "processing") { return }
+      icon.attr("data-state", "processing")
+      
       if (!navigator.geolocation) { 
-        showErrorAlert("Geolocation is not supported by this browser."); 
+        showErrorAlert("Geolocation is not supported by this browser.");
+        disableIcon(icon);
         return;
       }
       
       navigator.geolocation.getCurrentPosition(
           position => {
-            $("input#{{ form.latitude.id_for_label }}").val(position.coords.latitude);
-            $("input#{{ form.longitude.id_for_label }}").val(position.coords.longitude);
-            $("input#button-submit").removeAttr("disabled");
-          }, 
-          error => showErrorAlert(error.message)
+            let coords = new Coordinates(position.coords.latitude, position.coords.longitude); 
+            setCoordinates(coords);
+            icon.attr("data-state", "success");
+          },
+          error => { showErrorAlert(error); icon.attr("data-state", "error"); }
       );
+    }
+    
+    function getPlacePosition(place_id) {      
+      if(place_id === "") { unsetCoordinates(); return }
+      
+      let option = $(`#location-place select#place option[value=${place_id}]`);
+      let coords = new Coordinates(option.data("latitude"), option.data("longitude"));
+      
+      setCoordinates(coords, option.text());
+      $(locationIcon).attr("data-state", "waiting")
     }
   </script>
   

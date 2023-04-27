@@ -6,7 +6,7 @@ include = ["voices"]
 
 [project]
 name = "voice-landscape"
-version = "0.2.0"
+version = "0.3.0"
 requires-python = ">=3.10"
 dependencies = [
     "django>=4",
@@ -15,15 +15,15 @@ dependencies = [
     "django-extensions",
     "django-jazzmin",
     "django-sass-processor",
+    "dj-database-url",
     "libsass",
     "loguru",
-    "python-decouple",
-    
     "pydub",
-    "pocketsphinx",
-    "SpeechRecognition",
-
+    "psycopg2",
+    "python-decouple",
     "spacy",
+    "SpeechRecognition",
+    "tqdm",
 ]
 
 [project.optional-dependencies]

@@ -8,6 +8,7 @@
     --afor-error: DarkRed;
     --afor-warning: Orange;
     --afor-info: inherit; 
+    --afor-success: darkgreen;
     --afor-debug: gray;
 }
 
@@ -25,8 +26,24 @@ h1, h2, h3, b {  }
 
 a { color: var(--afor-primary); }
 
+$sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
+
+@for $index from 1 through 5 {
+  $size: nth($sizes, $index);
+  .i#{$index} {
+    height: $size;
+    width: $size;
+  }
+}
+
 
 .flex-grow { flex-grow: 1; }
+.flex-center {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .titillium  { font-family: $titillium }
 .open-sans  { font-family: $open-sans }
 
@@ -34,7 +51,32 @@ a { color: var(--afor-primary); }
 .alert { outline: 1px solid; }
 .alert:hover { outline-width: 2px; }
 
-.alert-error    { outline-color: var(--afor-error); }
+.alert-error    { outline-color: var(--afor-error); color: var(--afor-error); }
 .alert-warning  { outline-color: var(--afor-warning); }
 .alert-info     { outline-color: var(--afor-info); }
+.alert-success  { outline-color: var(--afor-success); color: var(--afor-success); }
 .alert-debug    { outline-color: var(--afor-debug); }
+
+
+.canvas span {
+    /* Better solution only available in firefox */
+    //-webkit-text-stroke: 2px white;
+    //paint-order: stroke fill;
+  
+    $color: white;
+    text-shadow:
+       1px 1px 0 $color,
+     -1px -1px 0 $color,  
+      1px -1px 0 $color,
+      -1px 1px 0 $color,
+       1px 1px 0 $color;
+}
+
+#location-auto-icon svg{
+  color: gray;
+  
+  &[data-state="disabled"] { color: lightgray; }
+  &[data-state="processing"] { color: lightgreen }
+  &[data-state="success"] { color: green }
+  &[data-state="error"] { color: red }
+}

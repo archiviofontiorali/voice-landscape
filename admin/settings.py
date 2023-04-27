@@ -9,25 +9,27 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
 from pathlib import Path
 
+import dj_database_url
 import spacy.symbols
 from decouple import config  # noqa
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
-STATIC_ROOT = BASE_DIR / ".static"
+
 LOG_ROOT = BASE_DIR / ".log"
+DATA_ROOT = BASE_DIR / ".data"
+
+LOG_ROOT.mkdir(exist_ok=True)
+DATA_ROOT.mkdir(exist_ok=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config(
-    "SECRET_KEY", "django-insecure-7pl+bmw@2qfaurownmy%4^@8k9_9!ye7(qp*sq#ag+t_9c^8(x"
-)
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", True, cast=bool)
@@ -88,17 +90,15 @@ WSGI_APPLICATION = "admin.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.contrib.gis.db.backends.spatialite",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-    # },
-}
+DATABASE_URL = config("DATABASE_URL", default="spatialite:///db.sqlite3")
 
+DATABASES = {
+    "default": dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        conn_health_checks=True,
+    ),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -133,6 +133,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_ROOT: Path = config("STATIC_ROOT", default=BASE_DIR / ".static")
+
 
 STATIC_URL = "static/"
 
@@ -194,3 +196,24 @@ SPACY_VALID_TOKENS = (
     spacy.symbols.PROPN,  # Proper noun
     spacy.symbols.VERB,
 )
+
+SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
+
+if DEBUG is False:
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 300
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+    SECURE_SSL_REDIRECT = True
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+
+LANDSCAPE_SHOWCASE_RELOAD = config("LANDSCAPE_SHOWCASE_RELOAD", 5 * 60)
+LANDSCAPE_PROVIDER = config("LANDSCAPE_PROVIDER", default="Stamen.TonerBackground")
+LANDSCAPE_DEFAULT_ZOOM = {
+    "initial": config("LANDSCAPE_DEFAULT_ZOOM_INITIAL", 15),
+    "min": config("LANDSCAPE_DEFAULT_ZOOM_MIN", 13),
+    "max": config("LANDSCAPE_DEFAULT_ZOOM_MAX", 20),
+}

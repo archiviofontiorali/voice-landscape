@@ -45,8 +45,11 @@ cymem==2.0.7
     #   thinc
 decorator==5.1.1
     # via ipython
+dj-database-url==1.2.0
+    # via voice-landscape (pyproject.toml)
 django==4.1.7
     # via
+    #   dj-database-url
     #   django-appconf
     #   django-cors-headers
     #   django-extensions
@@ -141,6 +144,8 @@ preshed==3.0.8
     #   thinc
 prompt-toolkit==3.0.38
     # via ipython
+psycopg2==2.9.5
+    # via voice-landscape (pyproject.toml)
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
@@ -207,7 +212,9 @@ tomli==2.0.1
     #   black
     #   pytest
 tqdm==4.65.0
-    # via spacy
+    # via
+    #   spacy
+    #   voice-landscape (pyproject.toml)
 traitlets==5.9.0
     # via
     #   ipython

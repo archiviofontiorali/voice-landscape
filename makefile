@@ -41,7 +41,6 @@ bootstrap: venv develop
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	$(python) -m pip install -r requirements.dev.txt
-	$(python) -m spacy download it_core_news_sm
 	$(python) -m pip install --editable .
 
 serve:
@@ -59,40 +58,46 @@ production: clean
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	python3.10 -m venv $(VENV)
 	$(python) -m pip install -r requirements.txt
-	$(python) -m pip install --editable .
+	$(python) -m pip install .
 
 
-# Database Management
-.PHONY: backup restore
-
-backup:
-	pg_dump voci > voci."$(date --iso-8601=seconds)".backup 
-
-restore:
-	psql voci < $(shell ls db/voci.* | head -1)
-	
 
 # Django commands
-.PHONY: migrate migrations bootstrap-django clean-django superuser
+.PHONY: bootstrap-django clean-django collectstatic migrate migrations secret_key shell superuser 
 
-bootstrap-django: clean-django migrate superuser shell 
-	
+bootstrap-django: clean-django secret_key migrate superuser 
+
 clean-django:
 	rm -rf db.sqlite3 .media .static
-	
-superuser:
-	$(django) createsuperuser --username=admin --email=voci@afor.dev
-
-shell:
-	$(django) shell
 
 migrate:
-	# Temporary solution for https://code.djangoproject.com/ticket/32935 
-	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 	$(django) migrate
 
 migrations:
 	$(django) makemigrations
+
+shell:
+	$(django) shell
+
+superuser:
+	$(django) createsuperuser --username=admin --email=voci@afor.dev
+
+secret_key:
+	@$(python) website/scripts/generate_secret_key.py
+
+collectstatic:
+	$(django) collectstatic --ignore=*.scss
+	$(django) compilescss --use-storage
+
+
+# Database Management
+.PHONY: sqlite-bootstrap
+
+
+sqlite-bootstrap: 
+	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
+	# Temporary solution for https://code.djangoproject.com/ticket/32935 
+	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
 
 # Demo commands

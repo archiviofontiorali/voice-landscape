@@ -129,6 +129,8 @@ dmypy.json
 .pyre/
 
 # Custom
+.backup
+.data
 .static
 .media
 

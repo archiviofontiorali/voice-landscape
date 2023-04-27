@@ -28,8 +28,11 @@ cymem==2.0.7
     #   preshed
     #   spacy
     #   thinc
+dj-database-url==1.2.0
+    # via voice-landscape (pyproject.toml)
 django==4.1.7
     # via
+    #   dj-database-url
     #   django-appconf
     #   django-cors-headers
     #   django-extensions
@@ -83,6 +86,8 @@ preshed==3.0.8
     # via
     #   spacy
     #   thinc
+psycopg2==2.9.5
+    # via voice-landscape (pyproject.toml)
 pycparser==2.21
     # via cffi
 pydantic==1.10.6
@@ -126,7 +131,9 @@ srsly==2.4.6
 thinc==8.1.9
     # via spacy
 tqdm==4.65.0
-    # via spacy
+    # via
+    #   spacy
+    #   voice-landscape (pyproject.toml)
 typer==0.7.0
     # via
     #   pathy

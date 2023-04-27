@@ -1,5 +1,9 @@
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.db.models import Max
+from django.shortcuts import HttpResponse
+from django.utils.translation import gettext as _
 from django.views import generic
 
 from . import forms, models
@@ -22,10 +26,10 @@ class MapContextMixin:
 
         return {
             "coordinates": place.coordinates,
-            "frequencies": {
-                wf.word: wf.frequency / max_frequency
+            "frequencies": [
+                [wf.word, wf.frequency / max_frequency]
                 for wf in place.word_frequencies.all()
-            },
+            ],
         }
 
     def get_context_data(self):
@@ -35,6 +39,8 @@ class MapContextMixin:
                 self._fetch_place_frequencies(place)
                 for place in models.Place.objects.all()
             ],
+            "zoom": settings.LANDSCAPE_DEFAULT_ZOOM,
+            "provider": settings.LANDSCAPE_PROVIDER,
         }
         return context
 
@@ -43,7 +49,6 @@ class HomePage(generic.TemplateView):
     template_name = "home.html"
 
 
-# TODO: add form logic from SharePage in voices/cases
 class SharePage(generic.TemplateView):
     template_name = "share.html"
 
@@ -59,6 +64,9 @@ class SharePage(generic.TemplateView):
 
             share = models.Share(message=message, location=location)
             share.save()
+            messages.add_message(
+                request, messages.SUCCESS, _("Grazie per la condivisione")
+            )
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -66,6 +74,7 @@ class SharePage(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.setdefault("form", forms.ShareForm())
+        context.setdefault("places", models.Place.objects.all())
         return context
 
 
@@ -85,3 +94,10 @@ class ShowcasePage(MapContextMixin, generic.TemplateView):
 
 class PrivacyPage(generic.TemplateView):
     template_name = "privacy.html"
+
+
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")

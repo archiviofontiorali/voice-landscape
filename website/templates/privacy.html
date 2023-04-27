@@ -9,16 +9,20 @@
     
     <p>
       Nella sezione "partecipa" è possibile per chiunque inserire un messaggio. 
-      Dal messaggio vengono estrapolate le singole parole con l'unico fine di 
-      memorizzare la frequenza di utilizzo delle singole parole rispetto a tutti gli 
-      utenti dell'applicazione. In nessun modo l'applicazione è in grado di ricostruire 
-      il messaggio originale o di poterlo associare a una persona fisica.  
+      Il messaggio viene salvato così com'è indicando la posizione rilevata insieme a 
+      data e ora del contributo.
+      
+      Dal messaggio vengono estrapolate le singole parole con lo scopo di 
+      memorizzare la frequenza di utilizzo delle singole parole.
+      
+      L'utente non viene tracciato in alcun modo, ogni contributo è salvato a se stante.
     </p>
      
     <p>
       Nel caso di messaggi vocali, l'audio verrà inviato al server solamente con lo scopo 
       di essere trascritto e poi reinviato al dispositivo dell'utente in modo che possa
-      decidere se inviare il messaggio trascritto o no.
+      decidere se inviare il messaggio trascritto o no. 
+      Il file audio e la trascrizione non vengono salvati.
     </p>
     
     <p>
@@ -28,4 +32,4 @@
     </p>
   </article>
   
-{%  endblock %}
+{% endblock %}

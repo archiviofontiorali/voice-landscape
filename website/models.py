@@ -29,8 +29,16 @@ class Place(models.Model):
     location = models.PointField()
 
     @property
+    def latitude(self) -> float:
+        return self.location.y
+
+    @property
+    def longitude(self) -> float:
+        return self.location.x
+
+    @property
     def coordinates(self) -> list[float, float]:
-        return [self.location.y, self.location.x]  # noqa
+        return [self.latitude, self.longitude]
 
     @classmethod
     def get_nearest(cls, location: Point) -> "Place":
@@ -74,10 +82,14 @@ class WordFrequency(models.Model):
         return [(obj["word"], obj["total"]) for obj in query]
 
     @classmethod
-    def create_random(cls):
+    def create_random(cls, place: Place = None):
+        if place is None:
+            place = random.choice(Place.objects.all())
         sample, created = cls.objects.get_or_create(
-            word=f"WORD{random.randint(0, 20):02d}",
-            place=random.choice(Place.objects.all()),
+            word=f"WORD{random.randint(0, 20):02d}", place=place
         )
         sample.frequency = F("frequency") + random.randint(1, 10)
         sample.save()
+
+    def __str__(self):
+        return f"Word({self.word}, {self.frequency})"
