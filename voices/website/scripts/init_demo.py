@@ -7,7 +7,7 @@ from django.contrib.gis.geos import Point
 from loguru import logger
 from tqdm import tqdm
 
-from website import models
+from .. import models
 
 places = {
     # Festival Filosofia 2021

@@ -62,7 +62,7 @@ shell:
 	@$(django) shell
 
 secret_key:
-	@$(python) website/scripts/generate_secret_key.py
+	@$(python) scripts/generate_secret_key.py
 
 
 
