@@ -28,12 +28,8 @@ venv: clean
 
 freeze:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
-	@$(python) -m piptools compile --upgrade --resolver backtracking \
-		--extra prod -o requirements.txt pyproject.toml
-	@$(python) -m piptools compile --upgrade --resolver backtracking \
-		--extra prod --extra dev --extra test \
-		-o requirements.dev.txt pyproject.toml
-
+	@$(python) -m piptools compile -vU --resolver backtracking --all-extras -o requirements.txt pyproject.toml
+	
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
 	@$(pip) install -r requirements.dev.txt
