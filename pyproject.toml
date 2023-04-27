@@ -17,6 +17,7 @@ dependencies = [
     "django-sass-processor",
     "dj-database-url",
     "gunicorn",
+    "jupyterlab",
     "libsass",
     "loguru",
     "pydub",
