@@ -38,18 +38,18 @@
         
       </section>
     
-      <section id="location-selector" class="flex flex-wrap mv4">
+      <section id="location-section" class="flex flex-row flex-wrap mv4">
       
-        <div id="location-auto-icon"
-             class="w-100 w-50-l h4 pa3 br bw1 b--gray gray flex flex-column items-center justify-between">
+        <div id="location-auto-icon" class="w-100 w-50-ns h4 pa3 br-ns bw1 b--gray gray flex flex-column items-center justify-between">
           <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label> 
           <div class="w-100 tc">
             <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting" onclick="getAutoPosition()"></i>
           </div>
         </div>
+        
+        <p class="w-100 ttu gray tc dn-ns">Oppure</p>
       
-        <div id="location-place" 
-             class="w-100 w-50-l pa3 h4 tc flex flex-column items-center justify-between">
+        <div id="location-place" class="w-100 w-50-ns pa3 h4 tc flex flex-column items-center justify-between">
           <label for="place" class="gray b w-100 tc ttu">
             Seleziona un punto di interesse
           </label>
