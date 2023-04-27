@@ -5,7 +5,9 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r"places", views.PlaceViewSet)
+router.register(r"shares", views.ShareViewSet)
 router.register(r"word-frequencies", views.WordFrequencyViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
