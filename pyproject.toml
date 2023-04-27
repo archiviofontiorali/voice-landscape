@@ -28,7 +28,7 @@ dependencies = [
 
 [project.optional-dependencies]
 prod = ["gunicorn"]
-dev = ["black", "ipython", "isort"]
+dev = ["black", "ipython", "isort", "pip-tools"]
 test = ["pytest", "httpx"]
 
 [tool.isort]

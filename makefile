@@ -2,7 +2,7 @@ VENV=.venv
 SHELL=/bin/bash
 
 python=$(VENV)/bin/python3
-pip=$(VENV)/bin/pip3
+pip=$(VENV)/bin/python -m pip
 django=$(python) manage.py
 
 # Utility scripts to prettify echo outputs
@@ -24,7 +24,7 @@ clean:
 venv: clean
 	@echo -e $(bold)Create virtualenv$(sgr0)
 	@python3.10 -m venv $(VENV)
-	@$(pip) install --upgrade pip pip-tools
+	@$(pip) install --upgrade pip
 
 freeze:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
@@ -36,14 +36,12 @@ freeze:
 
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	@$(python) -m pip install -r requirements.dev.txt
-	@$(python) -m pip install --editable .
+	@$(pip) install -r requirements.dev.txt
+	@$(pip) install --editable .
 
-production: clean
+production: clean venv
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	@python3.10 -m venv $(VENV)
-	@$(python) -m pip install -r requirements.txt
-	@$(python) -m pip install .
+	@$(pip) install .
 
 
 
