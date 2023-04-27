@@ -16,6 +16,7 @@ dependencies = [
     "django-jazzmin",
     "django-sass-processor",
     "dj-database-url",
+    "gunicorn",
     "libsass",
     "loguru",
     "pydub",
@@ -27,7 +28,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-prod = ["gunicorn"]
 dev = ["black", "ipython", "isort", "pip-tools"]
 test = ["pytest", "httpx"]
 
