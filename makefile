@@ -65,7 +65,7 @@ production: clean
 # Django commands
 .PHONY: bootstrap-django clean-django collectstatic migrate migrations secret_key shell superuser 
 
-bootstrap-django: clean-django secret_key migrate superuser 
+bootstrap-django: clean-django secret_key sqlite-bootstrap migrate superuser 
 
 clean-django:
 	rm -rf db.sqlite3 .media .static
