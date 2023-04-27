@@ -37,6 +37,12 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
 
 
 .flex-grow { flex-grow: 1; }
+.flex-center {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .titillium  { font-family: $titillium }
 .open-sans  { font-family: $open-sans }
 
