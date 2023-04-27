@@ -127,13 +127,11 @@
       
     /** Set coordinates inside respective input tags and display value for user */
     function setCoordinates(coords, title='') {
-      console.debug(`Select coordinates ${coords.as_string}`, coords.as_array);
+      console.info(`Select coordinates ${coords.as_string}`, coords.as_array);
       
       $(inputLatitude).val(coords.latitude);
       $(inputLongitude).val(coords.longitude);
-      
-      console.debug($(inputLongitude).val())
-      
+            
       $('#location-display-coordinates').text(coords.as_string);
       $('#location-display-title').text(title);
       
@@ -155,7 +153,6 @@
     
     function getAutoPosition() {
       const icon = $(locationIcon);
-      console.debug(locationIcon)
       
       if (icon.attr("data-state") === "processing") { return }
       icon.attr("data-state", "processing")
