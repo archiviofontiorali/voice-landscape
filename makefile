@@ -40,6 +40,11 @@ production: clean venv
 	@$(pip) install .
 
 
+# Notebooks commands
+.PHONY: lab
+lab:
+	@$(venv)/bin/jupyter-lab --notebook-dir notebooks
+
 
 # Django development commands
 .PHONY: clean-django serve test shell 
