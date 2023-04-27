@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
     "voices.speech.apps.SpeechConfig",
-    "website.apps.WebsiteConfig",
+    "voices.website.apps.WebsiteConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

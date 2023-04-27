@@ -6,7 +6,7 @@ from loguru import logger
 
 class WebsiteConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "website"
+    name = "voices.website"
 
     def ready(self):
         from . import loggers, models, signals
