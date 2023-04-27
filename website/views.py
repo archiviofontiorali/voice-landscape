@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.db.models import Max
+from django.shortcuts import HttpResponse
 from django.utils.translation import gettext as _
 from django.views import generic
 
@@ -93,3 +94,10 @@ class ShowcasePage(MapContextMixin, generic.TemplateView):
 
 class PrivacyPage(generic.TemplateView):
     template_name = "privacy.html"
+
+
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
