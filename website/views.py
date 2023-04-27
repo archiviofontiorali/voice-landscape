@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.db.models import Max
+from django.utils.translation import gettext as _
 from django.views import generic
 
 from . import forms, models
@@ -61,6 +63,7 @@ class SharePage(generic.TemplateView):
 
             share = models.Share(message=message, location=location)
             share.save()
+            messages.add_message(request, messages.SUCCESS, _("Thanks for sharing"))
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
