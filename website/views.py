@@ -63,7 +63,9 @@ class SharePage(generic.TemplateView):
 
             share = models.Share(message=message, location=location)
             share.save()
-            messages.add_message(request, messages.SUCCESS, _("Thanks for sharing"))
+            messages.add_message(
+                request, messages.SUCCESS, _("Grazie per la condivisione")
+            )
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
