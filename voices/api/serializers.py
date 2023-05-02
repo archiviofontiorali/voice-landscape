@@ -3,19 +3,19 @@ from rest_framework import serializers
 from ..website.models import Place, Share, WordFrequency
 
 
-class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Place
-        fields = ["url", "slug", "title", "description", "coordinates"]
+        fields = ["id", "url", "slug", "title", "description", "coordinates"]
 
 
-class ShareSerializer(serializers.HyperlinkedModelSerializer):
+class ShareSerializer(serializers.ModelSerializer):
     class Meta:
         model = Share
-        fields = ["url", "timestamp", "coordinates", "message"]
+        fields = ["id", "url", "timestamp", "coordinates", "message"]
 
 
-class WordFrequencySerializer(serializers.HyperlinkedModelSerializer):
+class WordFrequencySerializer(serializers.ModelSerializer):
     class Meta:
         model = WordFrequency
-        fields = ["url", "word", "place", "frequency"]
+        fields = ["id", "url", "word", "place", "frequency"]
