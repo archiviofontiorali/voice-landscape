@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "sass_processor",
     "django_extensions",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -172,6 +173,11 @@ LOGGING = {
             "propagate": False,
         }
     },
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 1000,
 }
 
 JAZZMIN_UI_TWEAKS = {

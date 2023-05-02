@@ -13,7 +13,7 @@ HOST:=127.0.0.1
 PORT:=8001
 
 
-.PHONY: bootstrap clean venv freeze develop production
+.PHONY: bootstrap clean venv requirements develop production
 
 bootstrap: venv develop
 
@@ -26,7 +26,7 @@ venv: clean
 	@python3.10 -m venv $(VENV)
 	@$(pip) install --upgrade pip
 
-freeze:
+requirements:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
 	@$(python) -m piptools compile -vU --resolver backtracking --all-extras -o requirements.txt pyproject.toml
 	

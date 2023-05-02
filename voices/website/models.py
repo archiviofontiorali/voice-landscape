@@ -16,10 +16,7 @@ class Share(models.Model):
         return [self.location.y, self.location.x]  # noqa
 
     def __str__(self):
-        return (
-            f"[{self.timestamp}] ({self.location.y:.6f}, {self.location.x:.6f}) | "
-            f"{self.message[:20]}"
-        )
+        return f"Share({self.id})[{self.location.y:.6f}, {self.location.x:.6f}]"
 
 
 class Place(models.Model):
