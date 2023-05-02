@@ -18,7 +18,6 @@ dependencies = [
     "django-sass-processor",
     "dj-database-url",
     "gunicorn",
-    "jupyterlab",
     "libsass",
     "loguru",
     "pydub",
@@ -31,6 +30,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["black", "ipython", "isort", "pip-tools"]
+lab = ["jupyterlab", "ipympl", "matplotlib", "seaborn"]
 test = ["pytest", "httpx"]
 
 [tool.isort]

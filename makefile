@@ -41,7 +41,10 @@ production: clean venv
 
 
 # Notebooks commands
-.PHONY: lab
+.PHONY: bootstrap-lab lab
+bootstrap-lab:
+	@$(pip) install -e .[lab]
+
 lab:
 	@$(django) shell_plus --lab
 
