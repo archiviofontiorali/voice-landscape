@@ -6,24 +6,8 @@ from django.contrib.gis.geos import Point
 from django.db.models import F, Sum
 
 
-class Share(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    location = models.PointField()
-    message = models.TextField(max_length=500)
-
-    @property
-    def coordinates(self) -> list[float, float]:
-        return [self.location.y, self.location.x]  # noqa
-
-    def __str__(self):
-        return f"Share({self.id})[{self.location.y:.6f}, {self.location.x:.6f}]"
-
-
-class Place(models.Model):
-    slug = models.SlugField(unique=True, null=True, blank=True)
-    title = models.CharField(max_length=100, blank=True)
-    description = models.TextField(max_length=500, blank=True)
-    location = models.PointField()
+class LocationMixin:
+    location: models.PointField | Point
 
     @property
     def latitude(self) -> float:
@@ -36,6 +20,22 @@ class Place(models.Model):
     @property
     def coordinates(self) -> list[float, float]:
         return [self.latitude, self.longitude]
+
+
+class Share(models.Model, LocationMixin):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    location = models.PointField()
+    message = models.TextField(max_length=500)
+
+    def __str__(self):
+        return f"Share({self.id})[{self.latitude:.6f}, {self.longitude:.6f}]"
+
+
+class Place(models.Model, LocationMixin):
+    slug = models.SlugField(unique=True, null=True, blank=True)
+    title = models.CharField(max_length=100, blank=True)
+    description = models.TextField(max_length=500, blank=True)
+    location = models.PointField()
 
     @classmethod
     def get_nearest(cls, location: Point) -> "Place":
@@ -51,7 +51,7 @@ class Place(models.Model):
         if self.slug:
             return self.slug
         if isinstance(self.location, Point):
-            return f"({self.location.y:.6f}, {self.location.x:.6f})"
+            return f"({self.latitude:.6f}, {self.longitude:.6f})"
         return super().__str__()
 
 
