@@ -30,7 +30,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["black", "ipython", "isort", "pip-tools"]
-lab = ["jupyterlab", "ipympl", "matplotlib", "seaborn"]
+lab = [
+    "ipympl",
+    "bokeh",
+    "jupyterlab",
+    "jupyter-bokeh",
+    "matplotlib",
+    "seaborn",
+]
 test = ["pytest", "httpx"]
 
 [tool.isort]
