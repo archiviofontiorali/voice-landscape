@@ -2,7 +2,7 @@ VENV=.venv
 SHELL=/bin/bash
 
 python=$(VENV)/bin/python3
-pip=$(VENV)/bin/pip3
+pip=$(VENV)/bin/python -m pip
 django=$(python) manage.py
 
 # Utility scripts to prettify echo outputs
@@ -13,96 +13,92 @@ HOST:=127.0.0.1
 PORT:=8001
 
 
-.PHONY: clean
-clean:
-	@echo -e $(bold)Clean up old virtualenv and cache$(sgr0)
-	rm -rf $(VENV) *.egg-info .pytest_cache
-
-.PHONY: venv
-venv: clean
-	@echo -e $(bold)Create virtualenv$(sgr0)
-	python3.10 -m venv $(VENV)
-	$(pip) install --upgrade pip pip-tools
-
-.PHONY: freeze
-freeze:
-	$(python) -m piptools compile --upgrade --resolver backtracking \
-		--extra prod -o requirements.txt pyproject.toml
-	$(python) -m piptools compile --upgrade --resolver backtracking \
-		--extra prod --extra dev --extra test \
-		-o requirements.dev.txt pyproject.toml
-
-
-# Development Environment
-.PHONY: serve bootstrap develop test
+.PHONY: bootstrap clean venv requirements develop production
 
 bootstrap: venv develop
 
+clean:
+	@echo -e $(bold)Clean up old virtualenv and cache$(sgr0)
+	@rm -rf $(VENV) *.egg-info .pytest_cache
+
+venv: clean
+	@echo -e $(bold)Create virtualenv$(sgr0)
+	@python3.10 -m venv $(VENV)
+	@$(pip) install --upgrade pip
+
+requirements:
+	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
+	@$(python) -m piptools compile -vU --resolver backtracking --all-extras -o requirements.txt pyproject.toml
+	
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	$(python) -m pip install -r requirements.dev.txt
-	$(python) -m pip install --editable .
+	@$(pip) install -r requirements.txt
+	@$(pip) install --editable .
 
-serve:
-	$(django) runserver $(HOST):$(PORT)
-
-test:
-	$(python) -m pytest 
-
-
-
-# Production Environment
-.PHONY: production
-
-production: clean
+production: clean venv
 	@echo -e $(bold)Install and update requirements$(sgr0)
-	python3.10 -m venv $(VENV)
-	$(python) -m pip install -r requirements.txt
-	$(python) -m pip install .
+	@$(pip) install .
 
 
+# Notebooks commands
+.PHONY: bootstrap-lab lab
+bootstrap-lab:
+	@$(pip) install -e .[lab]
 
-# Django commands
-.PHONY: bootstrap-django clean-django collectstatic migrate migrations secret_key shell superuser 
+lab:
+	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
+	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
 
-bootstrap-django: clean-django secret_key migrate superuser 
+
+# Django development commands
+.PHONY: clean-django serve test shell 
 
 clean-django:
-	rm -rf db.sqlite3 .media .static
+	@rm -rf db.sqlite3 .media .static
 
-migrate:
-	$(django) migrate
+serve:
+	@$(django) runserver $(HOST):$(PORT)
 
-migrations:
-	$(django) makemigrations
+test:
+	@$(python) -m pytest 
 
 shell:
-	$(django) shell
-
-superuser:
-	$(django) createsuperuser --username=admin --email=voci@afor.dev
+	@$(django) shell
 
 secret_key:
-	@$(python) website/scripts/generate_secret_key.py
+	@$(python) scripts/generate_secret_key.py
+
+
+
+# Django production commands
+.PHONY: collectstatic
 
 collectstatic:
-	$(django) collectstatic --ignore=*.scss
-	$(django) compilescss --use-storage
+	@$(django) collectstatic --ignore=*.scss
+	@$(django) compilescss --use-storage
 
 
-# Database Management
-.PHONY: sqlite-bootstrap
 
+# Django database commands
+.PHONY: bootstrap-django demo migrate migrations superuser sqlite-bootstrap 
+
+bootstrap-django: clean-django secret_key sqlite-bootstrap migrate superuser 
+
+demo:
+	@$(django) runscript init_demo
+
+migrate:
+	@echo -e $(bold)Apply migration to database$(sgr0)
+	@$(django) migrate
+
+migrations:
+	@echo -e $(bold)Create migration files$(sgr0)
+	@$(django) makemigrations
+
+superuser:
+	@$(django) createsuperuser --username=admin --email=voci@afor.dev
 
 sqlite-bootstrap: 
 	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
 	# Temporary solution for https://code.djangoproject.com/ticket/32935 
-	$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
-
-
-# Demo commands
-.PHONY: bootstrap-demo
- 
-bootstrap-demo:
-	$(django) runscript init_demo
-	
+	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";

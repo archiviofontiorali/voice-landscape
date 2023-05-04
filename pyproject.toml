@@ -10,12 +10,14 @@ version = "0.3.0"
 requires-python = ">=3.10"
 dependencies = [
     "django>=4",
+    "djangorestframework",
     "django-compressor",
     "django-cors-headers",
     "django-extensions",
     "django-jazzmin",
     "django-sass-processor",
     "dj-database-url",
+    "gunicorn",
     "libsass",
     "loguru",
     "pydub",
@@ -27,8 +29,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-prod = ["gunicorn"]
-dev = ["black", "ipython", "isort"]
+dev = ["black", "ipython", "isort", "pip-tools"]
+lab = [
+    "ipympl",
+    "bokeh",
+    "jupyterlab",
+    "jupyter-bokeh",
+    "matplotlib",
+    "seaborn",
+]
 test = ["pytest", "httpx"]
 
 [tool.isort]

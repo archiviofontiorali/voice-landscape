@@ -75,14 +75,13 @@ $ psql <db name>
 ### Install repository
 ```shell
 # Automatic installation
-$ make production
+$ make package
 
 # Or if you prefer installing manually
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
-(venv)$ pip install -r requirements.txt
-(venv)$ pip install --editable .
+(venv)$ pip install .
 ```
 
 Apply migrations and create admin user
@@ -124,8 +123,8 @@ $ make bootstrap
 # Or if you prefer installing manually
 $ python3 -m venv .venv
 $ source .venv/bin/activate
-(venv)$ pip install --upgrade pip pip-tools
-(venv)$ pip install -r requirements.dev.txt
+(venv)$ pip install --upgrade pip
+(venv)$ pip install -r requirements.txt
 (venv)$ pip install --editable .
 ```
 
