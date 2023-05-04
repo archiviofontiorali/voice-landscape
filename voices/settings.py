@@ -18,7 +18,6 @@ from decouple import config  # noqa
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
-
 LOG_ROOT = BASE_DIR / ".log"
 DATA_ROOT = BASE_DIR / ".data"
 
@@ -91,7 +90,7 @@ WSGI_APPLICATION = "voices.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASE_URL = config("DATABASE_URL", default="spatialite:///db.sqlite3")
+DATABASE_URL = config("DATABASE_URL", default=f"spatialite:///{BASE_DIR}/db.sqlite3")
 
 DATABASES = {
     "default": dj_database_url.parse(
