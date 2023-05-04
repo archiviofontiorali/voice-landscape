@@ -143,7 +143,7 @@ ipykernel==6.22.0
     #   notebook
 ipympl==0.9.3
     # via voice-landscape (pyproject.toml)
-ipython==8.13.1
+ipython==8.13.2
     # via
     #   ipykernel
     #   ipympl
@@ -159,6 +159,7 @@ ipywidgets==8.0.6
     # via
     #   ipympl
     #   jupyter-bokeh
+    #   voice-landscape (pyproject.toml)
 isoduration==20.11.0
     # via jsonschema
 isort==5.12.0
@@ -413,7 +414,7 @@ pyzmq==25.0.2
     #   notebook
 rcssmin==1.1.1
     # via django-compressor
-requests==2.29.0
+requests==2.30.0
     # via
     #   jupyterlab-server
     #   spacy
@@ -529,7 +530,7 @@ tzdata==2023.3
     # via pandas
 uri-template==1.2.0
     # via jsonschema
-urllib3==1.26.15
+urllib3==2.0.2
     # via requests
 wasabi==1.1.1
     # via
