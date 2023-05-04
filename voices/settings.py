@@ -15,9 +15,9 @@ import dj_database_url
 import spacy.symbols
 from decouple import config  # noqa
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR: Path = Path(__file__).resolve().parent.parent
+# Project paths
 
+BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 LOG_ROOT = BASE_DIR / ".log"
 DATA_ROOT = BASE_DIR / ".data"
@@ -25,8 +25,7 @@ DATA_ROOT = BASE_DIR / ".data"
 LOG_ROOT.mkdir(exist_ok=True)
 DATA_ROOT.mkdir(exist_ok=True)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+# WebApp settings
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
@@ -35,6 +34,23 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", True, cast=bool)
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev"]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://voci.afor.dev",
+    "http://localhost:8001",
+    "http://127.0.0.1:8001",
+]
+
+
+if DEBUG is False:
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 300
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+    SECURE_SSL_REDIRECT = True
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 # Application definition
@@ -91,7 +107,7 @@ WSGI_APPLICATION = "voices.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASE_URL = config("DATABASE_URL", default="spatialite:///db.sqlite3")
+DATABASE_URL = config("DATABASE_URL", default=f"spatialite:///{BASE_DIR}/db.sqlite3")
 
 DATABASES = {
     "default": dj_database_url.parse(
@@ -135,8 +151,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_ROOT: Path = config("STATIC_ROOT", default=BASE_DIR / ".static")
-
-
 STATIC_URL = "static/"
 
 # Default primary key field type
@@ -151,6 +165,7 @@ STATICFILES_FINDERS = [
     "sass_processor.finders.CssFinder",
 ]
 
+# Logging
 LOG_ROOT.mkdir(exist_ok=True)
 LOGGING = {
     "version": 1,
@@ -175,6 +190,8 @@ LOGGING = {
     },
 }
 
+# Additional Modules
+
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 1000,
@@ -187,14 +204,6 @@ JAZZMIN_UI_TWEAKS = {
 
 NOTEBOOK_ARGUMENTS = ["--notebook-dir", "notebooks"]
 
-
-CORS_ALLOWED_ORIGINS = [
-    "https://voci.afor.dev",
-    "http://localhost:8001",
-    "http://127.0.0.1:8001",
-]
-
-
 SPACY_MODEL_NAME = "it_core_news_lg"
 SPACY_VALID_TOKENS = (
     spacy.symbols.ADJ,
@@ -206,17 +215,6 @@ SPACY_VALID_TOKENS = (
 )
 
 SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
-
-if DEBUG is False:
-    SECURE_HSTS_PRELOAD = True
-    SECURE_HSTS_SECONDS = 300
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-    SECURE_SSL_REDIRECT = True
-
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
 
 LANDSCAPE_SHOWCASE_RELOAD = config("LANDSCAPE_SHOWCASE_RELOAD", 5 * 60)
 LANDSCAPE_PROVIDER = config("LANDSCAPE_PROVIDER", default="Stamen.TonerBackground")
