@@ -46,7 +46,7 @@ bootstrap-lab:
 	@$(pip) install -e .[lab]
 
 lab:
-	# see: https://docs.djangoproject.com/en/4.2/topics/async/
+	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
 	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
 
 
