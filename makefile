@@ -28,7 +28,8 @@ venv: clean
 
 requirements:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
-	@$(python) -m piptools compile -vU --resolver backtracking --all-extras -o requirements.txt pyproject.toml
+	@$(python) -m piptools compile -vU --resolver backtracking \
+			   --extra dev --extra test -o requirements.txt pyproject.toml
 	
 develop:
 	@echo -e $(bold)Install and update requirements$(sgr0)
@@ -41,7 +42,11 @@ production: clean venv
 
 
 # Notebooks commands
-.PHONY: lab
+.PHONY: develop-lab lab
+
+develop-lab:
+	@$(pip) install .[lab]
+
 lab:
 	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
 	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
