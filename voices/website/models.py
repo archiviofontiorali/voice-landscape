@@ -1,10 +1,11 @@
 import random
 
-import numpy as np
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Sum
+
+from ..geo.utils import mercator_coordinates
 
 
 class LocationMixin:
@@ -24,9 +25,7 @@ class LocationMixin:
 
     @property
     def mercator_coordinates(self) -> tuple[float, float]:
-        x = self.longitude * (6378137 * np.pi / 180.0)
-        y = np.log(np.tan((90 + self.latitude) * np.pi / 360.0)) * 6378137
-        return x, y
+        return mercator_coordinates(self.latitude, self.longitude)
 
 
 class Share(models.Model, LocationMixin):
