@@ -23,7 +23,7 @@ clean:
 
 venv: clean
 	@echo -e $(bold)Create virtualenv$(sgr0)
-	@python3.10 -m venv $(VENV)
+	@python3 -m venv $(VENV)
 	@$(pip) install --upgrade pip
 
 requirements:
