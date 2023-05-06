@@ -4,7 +4,7 @@
 # Ensure .backup folder exists
 $ mkdir -p .backup
 
-# Dump db with pg_dump (with or without compression
+# Dump db with pg_dump (with or without compression)
 $ pg_dump -U DB_USER DB_NAME > .backup/landscapes."$(date --iso-8601=seconds)".sql
 $ pg_dump -U DB_USER DB_NAME | gzip -9 > .backup/landscapes."$(date --iso-8601=seconds)".sql.gz
 
