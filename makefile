@@ -9,8 +9,9 @@ django=$(python) manage.py
 bold := '\033[1m'
 sgr0 := '\033[0m'
 
-HOST:=127.0.0.1
-PORT:=8001
+HOST?=127.0.0.1
+PORT?=8001
+DEBUG?=1
 
 
 .PHONY: bootstrap clean venv requirements develop production
@@ -59,7 +60,7 @@ clean-django:
 	@rm -rf db.sqlite3 .media .static
 
 serve:
-	@$(django) runserver $(HOST):$(PORT)
+	@DEBUG=$(DEBUG) $(django) runserver $(HOST):$(PORT)
 
 test:
 	@$(python) -m pytest 

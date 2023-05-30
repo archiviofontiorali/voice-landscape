@@ -31,7 +31,7 @@ DATA_ROOT.mkdir(exist_ok=True)
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", True, cast=bool)
+DEBUG = config("DEBUG", False, cast=bool)
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev"]
 
