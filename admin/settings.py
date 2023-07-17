@@ -58,8 +58,8 @@ if DEBUG is False:
 INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
-    "voices.speech.apps.SpeechConfig",
-    "voices.website.apps.WebsiteConfig",
+    "apps.speech.apps.SpeechConfig",
+    "apps.website.apps.WebsiteConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
