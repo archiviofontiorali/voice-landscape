@@ -43,10 +43,7 @@ production:
 
 
 # Django development commands
-.PHONY: clean-django lab serve test shell 
-
-clean-django:
-	@rm -rf db.sqlite3 .media .static
+.PHONY: lab serve test shell 
 
 serve:
 	@DEBUG=$(DEBUG) $(django) runserver $(HOST):$(PORT)
@@ -61,9 +58,6 @@ test:
 shell:
 	@$(django) shell
 
-secret_key:
-	@$(python) scripts/generate_secret_key.py
-
 
 
 # Django production commands
@@ -76,9 +70,12 @@ collectstatic:
 
 
 # Django database commands
-.PHONY: bootstrap-django demo migrate migrations superuser sqlite-bootstrap 
+.PHONY: bootstrap-django clean-django demo migrate migrations secret_key superuser sqlite-bootstrap 
 
 bootstrap-django: clean-django secret_key sqlite-bootstrap migrate superuser 
+
+clean-django:
+	@rm -rf db.sqlite3 .media .static
 
 demo:
 	@$(django) runscript init_demo
@@ -90,6 +87,9 @@ migrate:
 migrations:
 	@echo -e $(bold)Create migration files$(sgr0)
 	@$(django) makemigrations
+
+secret_key:
+	@$(python) scripts/generate_secret_key.py
 
 superuser:
 	@$(django) createsuperuser --username=admin --email=voci@afor.dev
