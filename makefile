@@ -17,6 +17,7 @@ DEBUG?=1
 .PHONY: bootstrap clean venv requirements develop production
 
 bootstrap: venv develop
+bootstrap-prod: venv production
 
 clean:
 	@echo -e $(bold)Clean up old virtualenv and cache$(sgr0)
@@ -25,42 +26,34 @@ clean:
 venv: clean
 	@echo -e $(bold)Create virtualenv$(sgr0)
 	@python3 -m venv $(VENV)
-	@$(pip) install --upgrade pip
+	@$(pip) install --upgrade pip pip-tools
 
 requirements:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
-	@$(python) -m piptools compile -vU --resolver backtracking \
-			   --extra dev --extra test -o requirements.txt pyproject.toml
+	@$(VENV)/bin/pip-compile -vU --resolver backtracking -o requirements.txt pyproject.toml
+	@$(VENV)/bin/pip-compile -vU --resolver backtracking --all-extras -o requirements.dev.txt pyproject.toml
 	
 develop:
-	@echo -e $(bold)Install and update requirements$(sgr0)
+	@echo -e $(bold)Install and update development requirements$(sgr0)
+	@$(pip) install -r requirements.dev.txt
+
+production:
+	@echo -e $(bold)Install and update production requirements$(sgr0)
 	@$(pip) install -r requirements.txt
-	@$(pip) install --editable .
-
-production: clean venv
-	@echo -e $(bold)Install and update requirements$(sgr0)
-	@$(pip) install .
-
-
-# Notebooks commands
-.PHONY: develop-lab lab
-
-develop-lab:
-	@$(pip) install .[lab]
-
-lab:
-	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
-	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
 
 
 # Django development commands
-.PHONY: clean-django serve test shell 
+.PHONY: clean-django lab serve test shell 
 
 clean-django:
 	@rm -rf db.sqlite3 .media .static
 
 serve:
 	@DEBUG=$(DEBUG) $(django) runserver $(HOST):$(PORT)
+
+lab:
+	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
+	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
 
 test:
 	@$(python) -m pytest 
