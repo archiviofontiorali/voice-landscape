@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgis/postgis
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: lv-password
+    ports:
+      - "54320:5432"
+        
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+        
+  app:
+    build: .
+    # command: python manage.py runserver 0.0.0.0:8000
+    # volumes:
+    #   - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=lv-password
+      - DATABASE_URL=postgis://postgres:lv-password@localhost:54320/landscapes
+
+    depends_on:
+      - db
