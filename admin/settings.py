@@ -207,7 +207,7 @@ JAZZMIN_UI_TWEAKS = {
 
 NOTEBOOK_ARGUMENTS = ["--notebook-dir", "notebooks"]
 
-SPACY_MODEL_NAME = "it_core_news_lg"
+SPACY_MODEL_NAME = config("SPACY_MODEL_NAME", default="it_core_news_lg")
 SPACY_VALID_TOKENS = (
     spacy.symbols.ADJ,
     spacy.symbols.ADV,
