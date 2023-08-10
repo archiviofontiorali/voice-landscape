@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: lv-password
     ports:
-      - "54320:5432"
+      - "5432:5432"
         
   adminer:
     image: adminer
@@ -22,6 +22,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - DEBUG=1
       - DATABASE_URL=postgis://postgres:lv-password@db:5432/landscapes
     depends_on:
       - db
