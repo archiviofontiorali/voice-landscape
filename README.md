@@ -1,7 +1,6 @@
 # Landscape of Voices | Paesaggio di Voci
 A project by [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
-> 🇮🇹 Per leggere le istruzioni in italiano vai in [README-IT.md](/README-it.md) 🇮🇹 
 
 ## System dependencies installation
 Require at least `python>=3.10`, `pip` and `venv` to work.
