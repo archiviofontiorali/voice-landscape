@@ -31,9 +31,9 @@ DATA_ROOT.mkdir(exist_ok=True)
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", False, cast=bool)
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "voci.afor.dev", "0.0.0.0"]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost 127.0.0.1 [::1]").split(" ")
 
 CORS_ALLOWED_ORIGINS = [
     "https://voci.afor.dev",
