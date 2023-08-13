@@ -22,14 +22,14 @@ services:
       - "54320:5432"
       
   nginx:
-    build: ./nginx
+    build: ../nginx
     ports:
       - "1337:80"
     depends_on:
       - app
         
   app:
-    build: .
+    build: ../app
     command: gunicorn --workers=3 --bind 0.0.0.0:8000 admin.wsgi
     ports:
       - "8000:8000"

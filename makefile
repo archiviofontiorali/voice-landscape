@@ -99,12 +99,3 @@ sqlite-bootstrap:
 	# Temporary solution for https://code.djangoproject.com/ticket/32935 
 	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
-
-docker-migrate:
-	docker compose exec app python manage.py migrate --noinput
-
-docker-superuser:
-	docker compose exec app python manage.py createsuperuser
-
-docker-flushdb:
-	docker compose exec app python manage.py flush --no-input

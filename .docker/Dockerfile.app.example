@@ -14,15 +14,15 @@ RUN apt-get update && \
 RUN pip install --upgrade pip
 
 RUN pip install black isort
-COPY manage.py .
-COPY admin/ ./admin/
-COPY apps/ ./apps/
-COPY scripts/ ./scripts/
-RUN black admin apps scripts && \
-    isort --profile black admin apps scripts
+
+COPY ../app/admin /usr/src/app/admin/
+COPY ../app/apps /usr/src/app/apps/
+COPY ../app/manage.py /usr/src/app/
+
+RUN black . && isort --profile black .
 
 # Install python dependencies
-COPY ./requirements.txt .
+COPY ../requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
@@ -42,14 +42,13 @@ COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
-COPY ./entrypoint.sh .
+COPY entrypoint.sh .
 RUN sed -i 's/\r$//g' $APP_SRC/entrypoint.sh
 RUN chmod +x $APP_SRC/entrypoint.sh
 
-COPY manage.py .
-COPY admin/ ./admin/
-COPY apps/ ./apps/
-COPY scripts/ ./scripts/
+COPY ../app/admin $APP_SRC/admin/
+COPY ../app/apps $APP_SRC/apps/
+COPY ../app/manage.py $APP_SRC/
 
 # Install Spacy model
 ENV SPACY_MODEL_NAME=it_core_news_sm
