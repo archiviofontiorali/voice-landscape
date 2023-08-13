@@ -1,29 +1,68 @@
-FROM python:3.11
+FROM python:3.11.4-bookworm as builder
 
-EXPOSE 8000
+WORKDIR /usr/src/app
 
-ENV PYTHONDONTWRITEBYTECODE=1
+# Prevents Python from writing pyc files to disc
+ENV PYTHONDONTWRITEBYTECODE=1  
+# Prevents Python from buffering stdout and stderr
 ENV PYTHONUNBUFFERED=1
-ENV DEBUG=0
-ENV DATABASE_URL=postgis://postgres:lv-password@db:5432/landscapes
-ENV SPACY_MODEL_NAME=it_core_news_lg
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc
 
 
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get -y install gdal-bin ffmpeg
+RUN pip install --upgrade pip
 
-WORKDIR /app
+RUN pip install black isort
+COPY manage.py .
+COPY admin/ ./admin/
+COPY apps/ ./apps/
+COPY scripts/ ./scripts/
+RUN black admin apps scripts && \
+    isort --profile black admin apps scripts
 
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+# Install python dependencies
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
+
+FROM python:3.11.4-bookworm
+
+RUN mkdir -p /home/user
+RUN addgroup --system user && adduser --system --group user
+
+ENV APP_SRC=/home/user/app
+RUN mkdir $APP_SRC
+WORKDIR $APP_SRC
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat-openbsd gdal-bin ffmpeg
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
+
+COPY ./entrypoint.sh .
+RUN sed -i 's/\r$//g' $APP_SRC/entrypoint.sh
+RUN chmod +x $APP_SRC/entrypoint.sh
+
+COPY manage.py .
+COPY admin/ ./admin/
+COPY apps/ ./apps/
+COPY scripts/ ./scripts/
+
+# Install Spacy model
+ENV SPACY_MODEL_NAME=it_core_news_sm
 RUN python -m spacy download $SPACY_MODEL_NAME
 
-COPY manage.py /app/
-COPY admin/ /app/admin/
-COPY apps/ /app/apps/
-COPY scripts/ /app/scripts/
+RUN chown -R user:user $APP_SRC
+
+USER user
 
 RUN python scripts/generate_secret_key.py
-CMD python manage.py runserver 0.0.0.0:8000
+
+ENV DEBUG=0
+ENV DATABASE=postgres
+ENV DATABASE_URL=postgis://postgres:lv-password@db:5432/landscapes
+
+ENTRYPOINT ["/home/user/app/entrypoint.sh"]
