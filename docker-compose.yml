@@ -1,6 +1,12 @@
-version: "3"
+version: "3.8"
 
 services:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+        
   db:
     image: postgis/postgis
     restart: always
@@ -8,18 +14,14 @@ services:
       POSTGRES_DB: landscapes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: lv-password
-    ports:
-      - "5432:5432"
-        
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - "5432"
         
   app:
     build: .
-    command: gunicorn --workers=3 --bind 0.0.0.0:8000 admin.wsgi  
+    command: gunicorn --workers=3 --bind 0.0.0.0:8000 admin.wsgi
     ports:
       - "8000:8000"
     environment:
@@ -27,6 +29,6 @@ services:
       - DATABASE_URL=postgis://postgres:lv-password@db:5432/landscapes
     depends_on:
       - db
-    # command: python manage.py runserver 0.0.0.0:8000
-    # volumes:
-    #   - .:/code
+        
+volumes:
+  postgres_data:
