@@ -103,3 +103,7 @@ class WordFrequency(models.Model):
 
     def __str__(self):
         return f"Word({self.word}, {self.frequency})"
+
+
+class Landscape(TitleModel, LocationModel):
+    places = models.ManyToManyField(Place, blank=True)

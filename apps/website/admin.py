@@ -28,3 +28,8 @@ class PlaceAdmin(LocationGISModel):
 @admin.register(models.WordFrequency)
 class WordFrequencyAdmin(admin.GISModelAdmin):
     list_display = ("word", "place", "frequency")
+
+
+@admin.register(models.Landscape)
+class LandscapeAdmin(LocationGISModel):
+    list_display = ("title", "slug", "location")
