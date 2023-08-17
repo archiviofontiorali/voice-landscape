@@ -10,7 +10,7 @@ anyio==3.7.1
     # via
     #   httpcore
     #   jupyter-server
-argon2-cffi==21.3.0
+argon2-cffi==23.1.0
     # via jupyter-server
 argon2-cffi-bindings==21.2.0
     # via argon2-cffi
@@ -38,7 +38,7 @@ bleach==6.0.0
     # via nbconvert
 blis==0.7.10
     # via thinc
-bokeh==3.2.1
+bokeh==3.2.2
     # via
     #   jupyter-bokeh
     #   voice-landscape (pyproject.toml)
@@ -86,7 +86,7 @@ decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
-dj-database-url==2.0.0
+dj-database-url==2.1.0
     # via voice-landscape (pyproject.toml)
 django==4.2.4
     # via
@@ -197,7 +197,7 @@ jupyter-events==0.7.0
     # via jupyter-server
 jupyter-lsp==2.2.0
     # via jupyterlab
-jupyter-server==2.7.0
+jupyter-server==2.7.1
     # via
     #   jupyter-lsp
     #   jupyterlab
@@ -245,7 +245,7 @@ mypy-extensions==1.0.0
     # via black
 nbclient==0.8.0
     # via nbconvert
-nbconvert==7.7.3
+nbconvert==7.7.4
     # via jupyter-server
 nbformat==5.9.2
     # via

@@ -28,7 +28,7 @@ cymem==2.0.7
     #   preshed
     #   spacy
     #   thinc
-dj-database-url==2.0.0
+dj-database-url==2.1.0
     # via voice-landscape (pyproject.toml)
 django==4.2.4
     # via
