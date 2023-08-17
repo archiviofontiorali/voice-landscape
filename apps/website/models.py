@@ -8,8 +8,16 @@ from django.db.models import F, Sum
 from ..geo.utils import mercator_coordinates
 
 
-class LocationMixin:
-    location: models.PointField | Point
+class TitleModel(models.Model):
+    slug = models.SlugField(unique=True, null=True, blank=True)
+    title = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class LocationModel(models.Model):
+    location = models.PointField()
 
     @property
     def latitude(self) -> float:
@@ -27,21 +35,20 @@ class LocationMixin:
     def mercator_coordinates(self) -> tuple[float, float]:
         return mercator_coordinates(self.latitude, self.longitude)
 
+    class Meta:
+        abstract = True
 
-class Share(models.Model, LocationMixin):
+
+class Share(LocationModel):
     timestamp = models.DateTimeField(auto_now_add=True)
-    location = models.PointField()
     message = models.TextField(max_length=500)
 
     def __str__(self):
         return f"Share({self.id})[{self.latitude:.6f}, {self.longitude:.6f}]"
 
 
-class Place(models.Model, LocationMixin):
-    slug = models.SlugField(unique=True, null=True, blank=True)
-    title = models.CharField(max_length=100, blank=True)
+class Place(TitleModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
-    location = models.PointField()
 
     @classmethod
     def get_nearest(cls, location: Point) -> "Place":
