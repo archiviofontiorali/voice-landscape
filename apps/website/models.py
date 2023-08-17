@@ -6,6 +6,7 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Sum
+from django.utils.translation import gettext as _
 
 from ..geo.utils import mercator_coordinates
 
@@ -116,6 +117,13 @@ class WordFrequency(models.Model):
 
 class Landscape(TitleModel, LocationModel):
     places = models.ManyToManyField(Place, blank=True)
+
+    reload_time = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        default=300,
+        help_text=_("Reload time (in seconds) for showcase page"),
+    )
 
     @property
     def centroid(self):
