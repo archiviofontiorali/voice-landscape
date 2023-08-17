@@ -39,8 +39,8 @@ class MapContextMixin:
                 self._fetch_place_frequencies(place)
                 for place in models.Place.objects.all()
             ],
-            "zoom": settings.LANDSCAPE_DEFAULT_ZOOM,
-            "provider": settings.LANDSCAPE_PROVIDER,
+            "zoom": settings.MAP_ZOOM,
+            "provider": settings.MAP_PROVIDER,
         }
         return context
 
