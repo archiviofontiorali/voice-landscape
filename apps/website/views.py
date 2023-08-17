@@ -87,7 +87,7 @@ class ShowcasePage(MapContextMixin, generic.TemplateView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context.setdefault("reload", 5 * 60)
+        context.setdefault("reload", settings.MAP_RELOAD_TIME)
         context.setdefault("stats", models.WordFrequency.top_words())
         return context
 
