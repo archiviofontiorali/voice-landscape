@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.gis import admin
+from django.utils.translation import gettext as _
 
 from . import models
 
@@ -33,3 +35,14 @@ class WordFrequencyAdmin(admin.GISModelAdmin):
 @admin.register(models.Landscape)
 class LandscapeAdmin(LocationGISModel):
     list_display = ("title", "slug", "location")
+    actions = ["set_centroid_as_location"]
+
+    @admin.action(description="Set places' centroid as location")
+    def set_centroid_as_location(self, request, queryset):
+        for landscape in queryset:
+            landscape.set_centroid()
+            self.message_user(
+                request,
+                _("Set places' centroid as landscape %s location") % landscape,
+                messages.SUCCESS,
+            )
