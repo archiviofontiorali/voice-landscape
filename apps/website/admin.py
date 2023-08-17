@@ -34,7 +34,7 @@ class WordFrequencyAdmin(admin.GISModelAdmin):
 
 @admin.register(models.Landscape)
 class LandscapeAdmin(LocationGISModel):
-    list_display = ("title", "slug", "location")
+    list_display = ("__str__", "title", "slug", "location")
     actions = ["set_centroid_as_location"]
 
     @admin.action(description="Set places' centroid as location")
@@ -43,6 +43,6 @@ class LandscapeAdmin(LocationGISModel):
             landscape.set_centroid()
             self.message_user(
                 request,
-                _("Set places' centroid as landscape %s location") % landscape,
+                _("Set %s location to its places' centroid") % landscape,
                 messages.SUCCESS,
             )

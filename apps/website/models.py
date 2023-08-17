@@ -1,4 +1,5 @@
 import random
+import textwrap
 
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
@@ -12,6 +13,13 @@ from ..geo.utils import mercator_coordinates
 class TitleModel(models.Model):
     slug = models.SlugField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        if self.title:
+            return self.title
+        if self.slug:
+            return self.slug
+        return str(self.id)
 
     class Meta:
         abstract = True
@@ -36,6 +44,9 @@ class LocationModel(models.Model):
     def mercator_coordinates(self) -> tuple[float, float]:
         return mercator_coordinates(self.latitude, self.longitude)
 
+    def __str__(self):
+        return f"({self.latitude:.4f}, {self.longitude:.4f})"
+
     class Meta:
         abstract = True
 
@@ -45,7 +56,8 @@ class Share(LocationModel):
     message = models.TextField(max_length=500)
 
     def __str__(self):
-        return f"Share({self.id})[{self.latitude:.6f}, {self.longitude:.6f}]"
+        message = textwrap.shorten(self.message, width=12, placeholder="...")
+        return f"{super().__str__()} [{message}]"
 
 
 class Place(TitleModel, LocationModel):
@@ -60,13 +72,9 @@ class Place(TitleModel, LocationModel):
         )
 
     def __str__(self):
-        if self.title:
-            return self.title
-        if self.slug:
-            return self.slug
-        if isinstance(self.location, Point):
-            return f"({self.latitude:.6f}, {self.longitude:.6f})"
-        return super().__str__()
+        if self.title or self.slug:
+            return TitleModel.__str__(self)
+        return LocationModel.__str__(self)
 
 
 class WordFrequency(models.Model):
@@ -113,3 +121,8 @@ class Landscape(TitleModel, LocationModel):
         response = self.places.aggregate(centroid=Centroid(Union("location")))
         self.location = response["centroid"]
         self.save()
+
+    def __str__(self):
+        if self.title or self.slug:
+            return TitleModel.__str__(self)
+        return LocationModel.__str__(self)
