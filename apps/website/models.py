@@ -117,9 +117,12 @@ class WordFrequency(models.Model):
 class Landscape(TitleModel, LocationModel):
     places = models.ManyToManyField(Place, blank=True)
 
+    @property
+    def centroid(self):
+        return self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
+
     def set_centroid(self):
-        response = self.places.aggregate(centroid=Centroid(Union("location")))
-        self.location = response["centroid"]
+        self.location = self.centroid
         self.save()
 
     def __str__(self):
