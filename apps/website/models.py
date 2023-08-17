@@ -1,7 +1,8 @@
 import random
 
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.db.models.aggregates import Union
+from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Sum
 
@@ -107,3 +108,8 @@ class WordFrequency(models.Model):
 
 class Landscape(TitleModel, LocationModel):
     places = models.ManyToManyField(Place, blank=True)
+
+    def set_centroid(self):
+        response = self.places.aggregate(centroid=Centroid(Union("location")))
+        self.location = response["centroid"]
+        self.save()
