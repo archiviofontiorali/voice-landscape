@@ -8,7 +8,7 @@ from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Sum
 from django.utils.translation import gettext as _
 
-from ..geo.utils import mercator_coordinates
+from ..geo.utils import coordinates, mercator_coordinates
 from .fields import UniqueBooleanField
 
 
@@ -40,7 +40,7 @@ class LocationModel(models.Model):
 
     @property
     def coordinates(self) -> list[float, float]:
-        return [self.latitude, self.longitude]
+        return coordinates(self.location)
 
     @property
     def mercator_coordinates(self) -> tuple[float, float]:
@@ -147,7 +147,9 @@ class Landscape(TitleModel, LocationModel):
     default = UniqueBooleanField(default=False)
 
     @property
-    def centroid(self):
+    def centroid(self) -> Point:
+        if self.places.count() <= 1:
+            return self.location
         return self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
 
     def set_centroid(self):

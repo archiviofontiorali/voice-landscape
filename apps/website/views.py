@@ -49,7 +49,8 @@ class MapPage(generic.TemplateView):
         if slug := kwargs.pop("slug", None):
             landscape = get_object_or_404(models.Landscape, slug=slug)
         else:
-            landscape = models.Landscape.objects.first()
+            landscape = get_object_or_404(models.Landscape, default=True)
+
         context["landscape"] = landscape
 
         centroid = landscape.centroid
