@@ -34,6 +34,7 @@ class WordFrequencyAdmin(admin.GISModelAdmin):
 
 @admin.register(models.Landscape)
 class LandscapeAdmin(LocationGISModel):
+    prepopulated_fields = {"slug": ("title",)}
     list_display = ("__str__", "title", "slug", "location", "default", "provider")
     actions = ["set_centroid_as_location"]
 

@@ -12,21 +12,6 @@ from ..geo.utils import coordinates, mercator_coordinates
 from .fields import UniqueBooleanField
 
 
-class TitleModel(models.Model):
-    slug = models.SlugField(unique=True, null=True, blank=True)
-    title = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        if self.title:
-            return self.title
-        if self.slug:
-            return self.slug
-        return str(self.id)
-
-    class Meta:
-        abstract = True
-
-
 class LocationModel(models.Model):
     location = models.PointField()
 
@@ -62,7 +47,10 @@ class Share(LocationModel):
         return f"{super().__str__()} [{message}]"
 
 
-class Place(TitleModel, LocationModel):
+class Place(LocationModel):
+    slug = models.SlugField(unique=True, null=True, blank=True)
+    title = models.CharField(max_length=100, blank=True)
+
     description = models.TextField(max_length=500, blank=True)
 
     @classmethod
@@ -79,8 +67,10 @@ class Place(TitleModel, LocationModel):
         return [[wf.word, wf.frequency / max_] for wf in self.word_frequencies.all()]
 
     def __str__(self):
-        if self.title or self.slug:
-            return TitleModel.__str__(self)
+        if self.title:
+            return self.title
+        if self.slug:
+            return self.slug
         return LocationModel.__str__(self)
 
 
@@ -121,12 +111,16 @@ class WordFrequency(models.Model):
         return f"Word({self.word}, {self.frequency})"
 
 
-class Landscape(TitleModel, LocationModel):
+class Landscape(LocationModel):
     class MapProvider(models.TextChoices):
         TONER_BACKGROUND = "Stamen.TonerBackground", _("Toner Background")
         TONER = "Stamen.Toner", _("Toner")
         TERRAIN = "Stamen.Terrain", _("Terrain")
         WATERCOLOR = "Stamen.Watercolor", _("Watercolor")
+
+    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length=500, blank=True)
 
     places = models.ManyToManyField(Place, blank=True)
 
@@ -157,6 +151,4 @@ class Landscape(TitleModel, LocationModel):
         self.save()
 
     def __str__(self):
-        if self.title or self.slug:
-            return TitleModel.__str__(self)
-        return LocationModel.__str__(self)
+        return self.title
