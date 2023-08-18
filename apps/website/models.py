@@ -5,7 +5,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
-from django.db.models import F, Max, Sum
+from django.db.models import F, Max, Q, Sum
 from django.utils.translation import gettext as _
 
 from ..geo.utils import coordinates, mercator_coordinates
@@ -164,3 +164,15 @@ class Landscape(LocationModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                name="zoom_min <= zoom_initial",
+                check=Q(zoom_min__lte=F("zoom_initial")),
+            ),
+            models.CheckConstraint(
+                name="zoom_max >= zoom_initial",
+                check=Q(zoom_max__gte=F("zoom_initial")),
+            ),
+        ]
