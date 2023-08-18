@@ -122,6 +122,8 @@ class Landscape(LocationModel):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=500, blank=True)
 
+    default = UniqueBooleanField(default=False)
+
     places = models.ManyToManyField(Place, blank=True)
 
     reload_time = models.PositiveIntegerField(
@@ -138,13 +140,23 @@ class Landscape(LocationModel):
         help_text="The map provider to use with leaflet map",
     )
 
-    default = UniqueBooleanField(default=False)
+    zoom_initial = models.PositiveSmallIntegerField(default=15)
+    zoom_min = models.PositiveSmallIntegerField(default=13)
+    zoom_max = models.PositiveSmallIntegerField(default=20)
 
     @property
     def centroid(self) -> Point:
         if self.places.count() <= 1:
             return self.location
         return self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
+
+    @property
+    def zoom(self):
+        return {
+            "initial": self.zoom_initial,
+            "min": self.zoom_min,
+            "max": self.zoom_max,
+        }
 
     def set_centroid(self):
         self.location = self.centroid

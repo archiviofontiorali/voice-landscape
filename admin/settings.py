@@ -220,11 +220,5 @@ SPACY_VALID_TOKENS = (
 
 SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
 
-MAP_ZOOM = {
-    "initial": config("MAP_ZOOM_INITIAL", 15),
-    "min": config("MAP_ZOOM_MIN", 13),
-    "max": config("MAP_ZOOM_MAX", 20),
-}
-
 DEFAULT_POINT_LATITUDE = config("DEFAULT_POINT_LATITUDE", 44.6488366, cast=float)
 DEFAULT_POINT_LONGITUDE = config("DEFAULT_POINT_LONGITUDE", 10.9200867, cast=float)

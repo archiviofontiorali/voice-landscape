@@ -65,7 +65,7 @@ class MapPage(generic.TemplateView):
                 for place in landscape.places.all()
             ],
         )
-        context.setdefault("zoom", settings.MAP_ZOOM)
+        context.setdefault("zoom", landscape.zoom)
         context.setdefault("provider", landscape.provider)
 
         return context
