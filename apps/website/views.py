@@ -111,6 +111,16 @@ class LandscapeMap(generic.TemplateView):
         return context
 
 
+class LandscapeShowcase(LandscapeMap):
+    template_name = "showcase.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.setdefault("reload", settings.MAP_RELOAD_TIME)
+        context.setdefault("stats", models.WordFrequency.top_words())
+        return context
+
+
 class PrivacyPage(generic.TemplateView):
     template_name = "privacy.html"
 
