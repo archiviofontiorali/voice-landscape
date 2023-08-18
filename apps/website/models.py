@@ -9,6 +9,7 @@ from django.db.models import F, Max, Sum
 from django.utils.translation import gettext as _
 
 from ..geo.utils import mercator_coordinates
+from .fields import UniqueBooleanField
 
 
 class TitleModel(models.Model):
@@ -142,6 +143,8 @@ class Landscape(TitleModel, LocationModel):
         default=MapProvider.TONER_BACKGROUND,
         help_text="The map provider to use with leaflet map",
     )
+
+    default = UniqueBooleanField(default=False)
 
     @property
     def centroid(self):
