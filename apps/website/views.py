@@ -65,7 +65,7 @@ class LandscapeMap(generic.TemplateView):
             ],
         )
         context.setdefault("zoom", settings.MAP_ZOOM)
-        context.setdefault("provider", settings.MAP_PROVIDER)
+        context.setdefault("provider", landscape.provider)
 
         return context
 

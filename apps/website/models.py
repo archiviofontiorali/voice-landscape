@@ -121,6 +121,12 @@ class WordFrequency(models.Model):
 
 
 class Landscape(TitleModel, LocationModel):
+    class MapProvider(models.TextChoices):
+        TONER_BACKGROUND = "Stamen.TonerBackground", _("Toner Background")
+        TONER = "Stamen.Toner", _("Toner")
+        TERRAIN = "Stamen.Terrain", _("Terrain")
+        WATERCOLOR = "Stamen.Watercolor", _("Watercolor")
+
     places = models.ManyToManyField(Place, blank=True)
 
     reload_time = models.PositiveIntegerField(
@@ -128,6 +134,13 @@ class Landscape(TitleModel, LocationModel):
         blank=False,
         default=300,
         help_text=_("Reload time (in seconds) for showcase page"),
+    )
+
+    provider = models.CharField(
+        max_length=100,
+        choices=MapProvider.choices,
+        default=MapProvider.TONER_BACKGROUND,
+        help_text="The map provider to use with leaflet map",
     )
 
     @property
