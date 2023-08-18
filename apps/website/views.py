@@ -50,6 +50,7 @@ class LandscapeMap(generic.TemplateView):
             landscape = get_object_or_404(models.Landscape, slug=slug)
         else:
             landscape = models.Landscape.objects.first()
+        context["landscape"] = landscape
 
         centroid = landscape.centroid
         context.setdefault("center", [centroid.y, centroid.x])
@@ -74,7 +75,7 @@ class LandscapeShowcase(LandscapeMap):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.setdefault("reload", settings.MAP_RELOAD_TIME)
+        context.setdefault("reload", context["landscape"].reload_time)
         context.setdefault("stats", models.WordFrequency.top_words())
         return context
 

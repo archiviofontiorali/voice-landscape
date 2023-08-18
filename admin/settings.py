@@ -220,7 +220,6 @@ SPACY_VALID_TOKENS = (
 
 SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
 
-MAP_RELOAD_TIME = config("MAP_RELOAD_TIME", 5 * 60)
 MAP_PROVIDER = config("MAP_PROVIDER", default="Stamen.TonerBackground")
 MAP_ZOOM = {
     "initial": config("MAP_ZOOM_INITIAL", 15),
