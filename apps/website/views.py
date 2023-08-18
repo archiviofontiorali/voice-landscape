@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.db.models import Max
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import generic
 
@@ -92,12 +92,29 @@ class ShowcasePage(MapContextMixin, generic.TemplateView):
         return context
 
 
+class LandscapeMap(generic.TemplateView):
+    template_name = "map.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if slug := kwargs.pop("slug", None):
+            landscape = get_object_or_404(models.Landscape, slug=slug)
+        else:
+            landscape = models.Landscape.objects.first()
+
+        centroid = landscape.centroid
+        context.setdefault("center", [centroid.y, centroid.x])
+        context.setdefault("places", [])
+        context.setdefault("zoom", settings.MAP_ZOOM)
+        context.setdefault("provider", settings.MAP_PROVIDER)
+
+        return context
+
+
 class PrivacyPage(generic.TemplateView):
     template_name = "privacy.html"
 
 
 def robots_txt(request):
-    lines = [
-        "User-Agent: *",
-    ]
+    lines = ["User-Agent: *"]
     return HttpResponse("\n".join(lines), content_type="text/plain")
