@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
-from django.db.models import Max
 from django.shortcuts import HttpResponse, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import generic
@@ -104,7 +103,16 @@ class LandscapeMap(generic.TemplateView):
 
         centroid = landscape.centroid
         context.setdefault("center", [centroid.y, centroid.x])
-        context.setdefault("places", [])
+        context.setdefault(
+            "places",
+            [
+                {
+                    "coordinates": place.coordinates,
+                    "frequencies": place.get_frequencies(),
+                }
+                for place in landscape.places.all()
+            ],
+        )
         context.setdefault("zoom", settings.MAP_ZOOM)
         context.setdefault("provider", settings.MAP_PROVIDER)
 

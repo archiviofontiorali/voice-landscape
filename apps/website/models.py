@@ -5,7 +5,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
-from django.db.models import F, Sum
+from django.db.models import F, Max, Sum
 from django.utils.translation import gettext as _
 
 from ..geo.utils import mercator_coordinates
@@ -71,6 +71,11 @@ class Place(TitleModel, LocationModel):
             .order_by("distance")
             .first()
         )
+
+    def get_frequencies(self) -> list[list[str, float]]:
+        """Return a list of [word, frequency] with the latest normalized"""
+        max_ = self.word_frequencies.aggregate(Max("frequency"))["frequency__max"]
+        return [[wf.word, wf.frequency / max_] for wf in self.word_frequencies.all()]
 
     def __str__(self):
         if self.title or self.slug:
