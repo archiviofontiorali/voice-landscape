@@ -1,5 +1,6 @@
 {% extends "map.html" %}
 
+{% load qr_code %}
 {% load static %}
 
 {% block custom_meta %}
@@ -18,16 +19,10 @@
       <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
     </section>
     
-    <section id="statistics" class="outline w-20 ml1 pa2">
-      <h2 class="black">Top 10 words</h2>
-      <table class="tc w-100">
-      {% for word, freq in stats %}
-        <tr class="striped--light-gray">
-          <td class="pa2">{{ word | title }}</td>
-          <td>{{ freq }}</td>
-        </tr>
-      {% endfor %}
-      </table>
+    <section id="statistics" class="outline w-20 ml1 pa2 tc">
+      <h2 class="black">Partecipa</h2>
+      <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}">
+      <p>{{ qr_url }}</p>
     </section>
   </main>
 {% endblock %}

@@ -76,6 +76,7 @@ class ShowcasePage(MapPage):
         context = super().get_context_data(**kwargs)
         context.setdefault("reload", context["landscape"].reload_time)
         context.setdefault("stats", models.WordFrequency.top_words())
+        context.setdefault("qr_url", f"https://{settings.DOMAIN}")
         return context
 
 
