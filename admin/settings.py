@@ -33,14 +33,17 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost 127.0.0.1 [::1]").split(" ")
+DOMAIN = config("DOMAIN")
 
-CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = [
-#     "https://voci.afor.dev",
-#     "http://localhost:8000",
-#     "http://127.0.0.1:8000",
-# ]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
+if DOMAIN not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(DOMAIN)
+
+CORS_ALLOWED_ORIGINS = [
+    f"https://${DOMAIN}",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
 
 
 if DEBUG is False:
