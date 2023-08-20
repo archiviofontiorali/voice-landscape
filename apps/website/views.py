@@ -46,12 +46,10 @@ class MapPage(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if slug := kwargs.pop("slug", None):
-            landscape = get_object_or_404(models.Landscape, slug=slug)
-        else:
-            landscape = get_object_or_404(models.Landscape, default=True)
 
-        context["landscape"] = landscape
+        slug = kwargs.pop("slug", None)
+        query = dict(slug=slug) if slug else dict(default=True)
+        context["landscape"] = landscape = get_object_or_404(models.Landscape, **query)
 
         centroid = landscape.centroid
         context.setdefault("center", [centroid.y, centroid.x])

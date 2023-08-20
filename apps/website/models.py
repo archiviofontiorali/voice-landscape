@@ -64,7 +64,8 @@ class Place(LocationModel):
     def get_frequencies(self) -> list[list[str, float]]:
         """Return a list of [word, frequency] with the latest normalized"""
         max_ = self.word_frequencies.aggregate(Max("frequency"))["frequency__max"]
-        return [[wf.word, wf.frequency / max_] for wf in self.word_frequencies.all()]
+        frequencies = self.word_frequencies.filter(frequency__gt=1, word__visible=True)
+        return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
 
     def __str__(self):
         if self.title:
@@ -74,8 +75,23 @@ class Place(LocationModel):
         return LocationModel.__str__(self)
 
 
+class Word(models.Model):
+    text = models.CharField(max_length=100, unique=True)
+    visible = models.BooleanField(
+        default=True,
+        help_text="Set to False to hide this word in maps",
+    )
+
+    def __str__(self):
+        return ("🚩 " if not self.visible else "") + self.text
+
+
 class WordFrequency(models.Model):
-    word = models.CharField(max_length=100)
+    word = models.ForeignKey(
+        Word,
+        on_delete=models.CASCADE,
+        related_name="place_frequencies",
+    )
     place = models.ForeignKey(
         Place,
         on_delete=models.CASCADE,
@@ -108,7 +124,7 @@ class WordFrequency(models.Model):
         sample.save()
 
     def __str__(self):
-        return f"Word({self.word}, {self.frequency})"
+        return f"({self.word} | {self.place})"
 
 
 class Landscape(LocationModel):

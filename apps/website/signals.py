@@ -4,6 +4,7 @@ from django.db.models import F
 from loguru import logger
 
 from . import models
+from .tools.blacklist import BlackList
 
 try:
     nlp = spacy.load(settings.SPACY_MODEL_NAME)
@@ -11,6 +12,10 @@ except IOError:
     logger.info("Spacy model not found downloading it")
     spacy.cli.download(settings.SPACY_MODEL_NAME)
     nlp = spacy.load(settings.SPACY_MODEL_NAME)
+
+blacklist = BlackList()
+if path := settings.BLACKLIST_PATH:
+    blacklist.load_file(path)
 
 
 def on_share_creation_update_frequencies(
@@ -31,8 +36,15 @@ def on_share_creation_update_frequencies(
             logger.debug(f"Skip {message}")
             continue
 
-        word = token.lemma_
-        wf, created = models.WordFrequency.objects.get_or_create(place=place, word=word)
+        text = token.lemma_.strip().lower()
+
+        word, created = models.Word.objects.get_or_create(text=text)
+        if created and word.text in blacklist:
+            word.visible = False
+        word.full_clean()
+        word.save()
+
+        wf, _ = models.WordFrequency.objects.get_or_create(place=place, word=word)
         wf.frequency = F("frequency") + 1
         wf.save()
 
