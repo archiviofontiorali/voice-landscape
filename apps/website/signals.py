@@ -4,6 +4,7 @@ from django.db.models import F
 from loguru import logger
 
 from . import models
+from .tools.blacklist import BlackList
 
 try:
     nlp = spacy.load(settings.SPACY_MODEL_NAME)
@@ -11,6 +12,10 @@ except IOError:
     logger.info("Spacy model not found downloading it")
     spacy.cli.download(settings.SPACY_MODEL_NAME)
     nlp = spacy.load(settings.SPACY_MODEL_NAME)
+
+blacklist = BlackList()
+if path := settings.BLACKLIST_PATH:
+    blacklist.load_file(path)
 
 
 def on_share_creation_update_frequencies(
