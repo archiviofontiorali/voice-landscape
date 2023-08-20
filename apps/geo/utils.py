@@ -1,4 +1,5 @@
 import numpy as np
+from django.contrib.gis.geos import Point
 
 
 def mercator_longitude(longitude: float):
@@ -16,3 +17,7 @@ def mercator_coordinates(latitude: float, longitude: float) -> tuple[float, floa
     x = mercator_longitude(longitude)
     y = mercator_latitude(latitude)
     return x, y
+
+
+def coordinates(point: Point) -> list[float, float]:
+    return [point.y, point.x]

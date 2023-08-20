@@ -1,15 +1,19 @@
 import random
+import textwrap
 
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.db.models.aggregates import Union
+from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
-from django.db.models import F, Sum
+from django.db.models import F, Max, Q, Sum
+from django.utils.translation import gettext as _
 
-from ..geo.utils import mercator_coordinates
+from ..geo.utils import coordinates, mercator_coordinates
+from .fields import UniqueBooleanField
 
 
-class LocationMixin:
-    location: models.PointField | Point
+class LocationModel(models.Model):
+    location = models.PointField()
 
     @property
     def latitude(self) -> float:
@@ -21,27 +25,33 @@ class LocationMixin:
 
     @property
     def coordinates(self) -> list[float, float]:
-        return [self.latitude, self.longitude]
+        return coordinates(self.location)
 
     @property
     def mercator_coordinates(self) -> tuple[float, float]:
         return mercator_coordinates(self.latitude, self.longitude)
 
+    def __str__(self):
+        return f"({self.latitude:.4f}, {self.longitude:.4f})"
 
-class Share(models.Model, LocationMixin):
+    class Meta:
+        abstract = True
+
+
+class Share(LocationModel):
     timestamp = models.DateTimeField(auto_now_add=True)
-    location = models.PointField()
     message = models.TextField(max_length=500)
 
     def __str__(self):
-        return f"Share({self.id})[{self.latitude:.6f}, {self.longitude:.6f}]"
+        message = textwrap.shorten(self.message, width=12, placeholder="...")
+        return f"{super().__str__()} [{message}]"
 
 
-class Place(models.Model, LocationMixin):
+class Place(LocationModel):
     slug = models.SlugField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
+
     description = models.TextField(max_length=500, blank=True)
-    location = models.PointField()
 
     @classmethod
     def get_nearest(cls, location: Point) -> "Place":
@@ -51,14 +61,17 @@ class Place(models.Model, LocationMixin):
             .first()
         )
 
+    def get_frequencies(self) -> list[list[str, float]]:
+        """Return a list of [word, frequency] with the latest normalized"""
+        max_ = self.word_frequencies.aggregate(Max("frequency"))["frequency__max"]
+        return [[wf.word, wf.frequency / max_] for wf in self.word_frequencies.all()]
+
     def __str__(self):
         if self.title:
             return self.title
         if self.slug:
             return self.slug
-        if isinstance(self.location, Point):
-            return f"({self.latitude:.6f}, {self.longitude:.6f})"
-        return super().__str__()
+        return LocationModel.__str__(self)
 
 
 class WordFrequency(models.Model):
@@ -96,3 +109,70 @@ class WordFrequency(models.Model):
 
     def __str__(self):
         return f"Word({self.word}, {self.frequency})"
+
+
+class Landscape(LocationModel):
+    class MapProvider(models.TextChoices):
+        TONER_BACKGROUND = "Stamen.TonerBackground", _("Toner Background")
+        TONER = "Stamen.Toner", _("Toner")
+        TERRAIN = "Stamen.Terrain", _("Terrain")
+        WATERCOLOR = "Stamen.Watercolor", _("Watercolor")
+
+    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length=500, blank=True)
+
+    default = UniqueBooleanField(default=False)
+
+    places = models.ManyToManyField(Place, blank=True)
+
+    reload_time = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        default=300,
+        help_text=_("Reload time (in seconds) for showcase page"),
+    )
+
+    provider = models.CharField(
+        max_length=100,
+        choices=MapProvider.choices,
+        default=MapProvider.TONER_BACKGROUND,
+        help_text="The map provider to use with leaflet map",
+    )
+
+    zoom_initial = models.PositiveSmallIntegerField(default=15)
+    zoom_min = models.PositiveSmallIntegerField(default=13)
+    zoom_max = models.PositiveSmallIntegerField(default=20)
+
+    @property
+    def centroid(self) -> Point:
+        if self.places.count() <= 1:
+            return self.location
+        return self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
+
+    @property
+    def zoom(self):
+        return {
+            "initial": self.zoom_initial,
+            "min": self.zoom_min,
+            "max": self.zoom_max,
+        }
+
+    def set_centroid(self):
+        self.location = self.centroid
+        self.save()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                name="zoom_min <= zoom_initial",
+                check=Q(zoom_min__lte=F("zoom_initial")),
+            ),
+            models.CheckConstraint(
+                name="zoom_max >= zoom_initial",
+                check=Q(zoom_max__gte=F("zoom_initial")),
+            ),
+        ]

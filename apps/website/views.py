@@ -1,48 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
-from django.db.models import Max
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import generic
 
 from . import forms, models
-
-
-class MapContextMixin:
-    @staticmethod
-    def _calculate_centroid():
-        places = models.Place.objects.values("location")
-        return [
-            sum(p["location"].y for p in places) / len(places) if places else 0.0,
-            sum(p["location"].x for p in places) / len(places) if places else 0.0,
-        ]
-
-    @staticmethod
-    def _fetch_place_frequencies(place: models.Place):
-        max_frequency = place.word_frequencies.aggregate(Max("frequency"))[
-            "frequency__max"
-        ]
-
-        return {
-            "coordinates": place.coordinates,
-            "frequencies": [
-                [wf.word, wf.frequency / max_frequency]
-                for wf in place.word_frequencies.all()
-            ],
-        }
-
-    def get_context_data(self):
-        context: dict = {
-            "center": self._calculate_centroid(),
-            "places": [
-                self._fetch_place_frequencies(place)
-                for place in models.Place.objects.all()
-            ],
-            "zoom": settings.LANDSCAPE_DEFAULT_ZOOM,
-            "provider": settings.LANDSCAPE_PROVIDER,
-        }
-        return context
 
 
 class HomePage(generic.TemplateView):
@@ -78,16 +41,42 @@ class SharePage(generic.TemplateView):
         return context
 
 
-class MapPage(MapContextMixin, generic.TemplateView):
+class MapPage(generic.TemplateView):
     template_name = "map.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if slug := kwargs.pop("slug", None):
+            landscape = get_object_or_404(models.Landscape, slug=slug)
+        else:
+            landscape = get_object_or_404(models.Landscape, default=True)
 
-class ShowcasePage(MapContextMixin, generic.TemplateView):
+        context["landscape"] = landscape
+
+        centroid = landscape.centroid
+        context.setdefault("center", [centroid.y, centroid.x])
+        context.setdefault(
+            "places",
+            [
+                {
+                    "coordinates": place.coordinates,
+                    "frequencies": place.get_frequencies(),
+                }
+                for place in landscape.places.all()
+            ],
+        )
+        context.setdefault("zoom", landscape.zoom)
+        context.setdefault("provider", landscape.provider)
+
+        return context
+
+
+class ShowcasePage(MapPage):
     template_name = "showcase.html"
 
-    def get_context_data(self):
-        context = super().get_context_data()
-        context.setdefault("reload", 5 * 60)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.setdefault("reload", context["landscape"].reload_time)
         context.setdefault("stats", models.WordFrequency.top_words())
         return context
 
@@ -97,7 +86,5 @@ class PrivacyPage(generic.TemplateView):
 
 
 def robots_txt(request):
-    lines = [
-        "User-Agent: *",
-    ]
+    lines = ["User-Agent: *"]
     return HttpResponse("\n".join(lines), content_type="text/plain")
