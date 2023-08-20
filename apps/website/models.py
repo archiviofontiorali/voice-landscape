@@ -64,7 +64,7 @@ class Place(LocationModel):
     def get_frequencies(self) -> list[list[str, float]]:
         """Return a list of [word, frequency] with the latest normalized"""
         max_ = self.word_frequencies.aggregate(Max("frequency"))["frequency__max"]
-        frequencies = self.word_frequencies.filter(word__visible=True)
+        frequencies = self.word_frequencies.filter(frequency__gt=1, word__visible=True)
         return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
 
     def __str__(self):
