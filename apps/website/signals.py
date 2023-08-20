@@ -36,8 +36,15 @@ def on_share_creation_update_frequencies(
             logger.debug(f"Skip {message}")
             continue
 
-        word = token.lemma_
-        wf, created = models.WordFrequency.objects.get_or_create(place=place, word=word)
+        text = token.lemma_.strip().lower()
+
+        word, created = models.Word.objects.get_or_create(text=text)
+        if created and word.text in blacklist:
+            word.visible = False
+        word.full_clean()
+        word.save()
+
+        wf, _ = models.WordFrequency.objects.get_or_create(place=place, word=word)
         wf.frequency = F("frequency") + 1
         wf.save()
 
