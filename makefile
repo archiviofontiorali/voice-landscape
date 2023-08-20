@@ -9,8 +9,8 @@ django=$(python) manage.py
 bold := '\033[1m'
 sgr0 := '\033[0m'
 
-HOST?=127.0.0.1
-PORT?=8001
+HOST?=localhost
+PORT?=8000
 DEBUG?=1
 
 

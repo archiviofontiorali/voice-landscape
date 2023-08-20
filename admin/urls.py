@@ -21,4 +21,5 @@ urlpatterns = [
     path("api/", include("apps.api.urls")),
     path("api/speech/", include("apps.speech.urls")),
     path("admin/", admin.site.urls),
+    path("qr_code/", include("qr_code.urls", namespace="qr_code")),
 ]
