@@ -58,7 +58,6 @@ if DEBUG is False:
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
@@ -71,10 +70,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
-    "sass_processor",
     "django_extensions",
+    "qr_code",
     "rest_framework",
+    "sass_processor",
 ]
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

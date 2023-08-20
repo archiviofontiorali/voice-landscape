@@ -19,7 +19,7 @@ certifi==2023.7.22
     # via requests
 charset-normalizer==3.2.0
     # via requests
-click==8.1.6
+click==8.1.7
     # via typer
 confection==0.1.1
     # via thinc
@@ -37,6 +37,7 @@ django==4.2.4
     #   django-cors-headers
     #   django-extensions
     #   django-jazzmin
+    #   django-qr-code
     #   djangorestframework
     #   voice-landscape (pyproject.toml)
 django-appconf==1.0.5
@@ -48,6 +49,8 @@ django-cors-headers==4.2.0
 django-extensions==3.2.3
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
+    # via voice-landscape (pyproject.toml)
+django-qr-code==3.1.1
     # via voice-landscape (pyproject.toml)
 django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
@@ -90,19 +93,22 @@ preshed==3.0.8
     #   thinc
 psycopg2==2.9.7
     # via voice-landscape (pyproject.toml)
-pydantic==2.1.1
+pydantic==2.2.1
     # via
     #   confection
+    #   django-qr-code
     #   spacy
     #   thinc
-pydantic-core==2.4.0
+pydantic-core==2.6.1
     # via pydantic
 pydub==0.25.1
     # via voice-landscape (pyproject.toml)
 python-decouple==3.8
     # via voice-landscape (pyproject.toml)
 pytz==2023.3
-    # via djangorestframework
+    # via
+    #   django-qr-code
+    #   djangorestframework
 rcssmin==1.1.1
     # via django-compressor
 requests==2.31.0
@@ -111,6 +117,8 @@ requests==2.31.0
     #   speechrecognition
 rjsmin==1.2.1
     # via django-compressor
+segno==1.5.2
+    # via django-qr-code
 smart-open==6.3.0
     # via
     #   pathy
