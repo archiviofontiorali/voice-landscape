@@ -129,12 +129,12 @@ $ source .venv/bin/activate
 Apply migrations and create admin user
 ```shell
 # Automatic
-$ make migrate createsuperuser secret_key
+$ make secret_key migrate superuser
 
 # Manually
+(.venv)$ python scripts/generate_secret_key.py
 (.venv)$ python manage.py migrate
 (.venv)$ python manage.py createsuperuser
-(.venv)$ python scripts/generate_secret_key.py
 ```
 
 ### Launch server
@@ -151,6 +151,11 @@ certbot, following this
 An example systemd service file is located in [voice-landscape.service](/system/voice-landscape.service)
 It assumes you clone this repository inside your user folder inside a `git` folder
 Remember to change `<YOUR USER>` with your effective user
+
+```shell
+$ sudo sh -c "sed 's/$USER/USER/' system/voice-landscape.service > /etc/nginx/sites-available/vl"
+$ sudo cp system/nginx.conf /etc/nginx/sites-available/nginx.conf
+```
 
 ```shell
 $ cd ~ && mkdir -p git 
@@ -182,10 +187,10 @@ $ make migrate createsuperuser
 ```
 
 ## Execute server
-Execute on url http://localhost:8001 with autoreload enabled
+Execute on url http://localhost:8000 with autoreload enabled
 ```shell
 # Execute with autoreload
 (venv)$ make serve
 
-(venv)$ python manage.py runserver http://localhost:8001
+(venv)$ python manage.py runserver http://localhost:8000
 ```
