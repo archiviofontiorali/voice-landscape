@@ -14,6 +14,7 @@ from pathlib import Path
 import dj_database_url
 import spacy.symbols
 from decouple import config  # noqa
+from django.contrib.gis.geos import Point
 
 # Project paths
 
@@ -225,5 +226,6 @@ SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default
 
 DEFAULT_POINT_LATITUDE = config("DEFAULT_POINT_LATITUDE", 44.6488366, cast=float)
 DEFAULT_POINT_LONGITUDE = config("DEFAULT_POINT_LONGITUDE", 10.9200867, cast=float)
+DEFAULT_POINT = Point(x=DEFAULT_POINT_LONGITUDE, y=DEFAULT_POINT_LATITUDE)
 
 BLACKLIST_PATH = config("BLACKLIST_PATH", default=None)

@@ -1,15 +1,21 @@
 """This script fill the db with demo data."""
 
+import random
+import re
+
 import django.db.utils
 import django.utils.text
-from decouple import config  # noqa
+from decouple import config
+from django.conf import settings
 from django.contrib.gis.geos import Point
 from loguru import logger
 from tqdm import tqdm
 
 from .. import models
 
-places = {
+TEXT_ROW_RE = re.compile(r"[A-Za-z]")
+
+_places = {
     # Festival Filosofia 2021
     "ff_2021": [
         (44.65461615128406, 10.901229167243947, "AFOr | Archivio delle Fonti Orali"),
@@ -54,26 +60,62 @@ places = {
 }
 
 
+def prepare_demo_landscape():
+    defaults = dict(
+        title="demo",
+        description="A demo Landscape with sample shares",
+        default=True,
+        location=settings.DEFAULT_POINT,
+    )
+    landscape, _ = models.Landscape.objects.update_or_create(
+        slug="demo", defaults=defaults
+    )
+    landscape.full_clean()
+    landscape.save()
+
+    return landscape
+
+
+def prepare_demo_place(slug: str, **options):
+    place, created = models.Place.objects.update_or_create(slug=slug, defaults=options)
+    logger.info(("Created" if created else "Updated") + f" Place with slug {slug}")
+    place.save()
+    return place
+
+
+def prepare_demo_share(location: Point, message: str):
+    share = models.Share(location=location, message=message)
+    share.full_clean()
+    share.save()
+    return share
+
+
 def run():
-    place_id = config("DEMO_REFERENCE", default="sso_2023")
-    if place_id not in places:
-        raise Exception(
-            f"DEMO_REFERENCE should be one of {', '.join(places)}, found {place_id}"
-        )
+    landscape = prepare_demo_landscape()
 
-    for lat, lon, title in (_places := places[place_id]):
+    places = _places.get(config("DEMO_REFERENCE", default="sso_2023"))
+    if places is None:
+        raise Exception(f"DEMO_REFERENCE should be one of {', '.join(_places)}")
+
+    for lat, lon, title in tqdm(places):
         slug = django.utils.text.slugify(title)
-        place, created = models.Place.objects.get_or_create(
-            slug=slug, title=title, location=Point(x=lon, y=lat)
-        )
+        place = prepare_demo_place(slug, title=title, location=Point(x=lon, y=lat))
+        landscape.places.add(place)
 
-        if created:
-            place.save()
-            logger.info(f"Added place {place}")
-        else:
-            logger.info(f"Place with slug {slug} already exists")
+    landscape.set_centroid()
 
-        if config("DEMO_ADD_WORDS", cast=bool, default=True):
-            logger.info(f"Adding some test words to place {place.title}")
-            for _ in tqdm(range(10)):
-                models.WordFrequency.create_random(place)
+    if not (path := config("DEMO_SHARES_PATH", default=None)):
+        logger.info("Skipping adding shares, set DEMO_SHARES_PATH to add shares")
+        return
+
+    with open(path, "rt") as fp:
+        shares = fp.readlines()
+
+    for message in tqdm(shares):
+        if not TEXT_ROW_RE.match(message):
+            continue
+        lat, lon, _ = random.choice(places)
+        lat += random.gauss(0, 0.5)
+        lon += random.gauss(0, 0.5)
+        location = Point(x=lon, y=lat)
+        prepare_demo_share(location, message)
