@@ -8,8 +8,8 @@ from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Q, Sum
 from django.utils.translation import gettext as _
 
-from ..geo.utils import coordinates, mercator_coordinates
 from .fields import UniqueBooleanField
+from .tools.geo import coordinates, mercator_coordinates
 
 
 class LocationModel(models.Model):
