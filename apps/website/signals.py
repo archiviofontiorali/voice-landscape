@@ -1,3 +1,5 @@
+import re
+
 import spacy.symbols
 from django.conf import settings
 from django.db.models import F
@@ -5,6 +7,10 @@ from loguru import logger
 
 from . import models
 from .tools.blacklist import BlackList
+
+# For more info see:
+# https://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
+HTML_TAG_RE = re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});")
 
 try:
     nlp = spacy.load(settings.SPACY_MODEL_NAME)
@@ -36,7 +42,7 @@ def on_share_creation_update_frequencies(
             logger.debug(f"Skip {message}")
             continue
 
-        text = token.lemma_.strip().lower()
+        text = HTML_TAG_RE.sub("", token.lemma_).strip().lower()
 
         word, created = models.Word.objects.get_or_create(text=text)
         if created and word.text in blacklist:
