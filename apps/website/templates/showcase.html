@@ -1,0 +1,28 @@
+{% extends "map.html" %}
+
+{% load qr_code %}
+{% load static %}
+
+{% block custom_meta %}
+  <meta http-equiv="refresh" content="{{ reload }}" />
+{% endblock %}
+
+
+{% block header %}{% endblock %}
+{% block alert %}{% endblock %}
+{% block footer %}{% endblock %}
+
+
+{% block main %}
+  <main id="showcase" class="flex flex-row">
+    <section id="full-map" class="outline w-80 mr1 pa1">
+      <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
+    </section>
+    
+    <section id="statistics" class="outline w-20 ml1 pa2 tc">
+      <h2 class="black">Partecipa</h2>
+      <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}">
+      <p>{{ qr_url }}</p>
+    </section>
+  </main>
+{% endblock %}

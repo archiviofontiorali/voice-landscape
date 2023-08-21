@@ -1,16 +1,24 @@
-
 ## Nginx instructions
+Copy nginx configurations and prepare static/media folders
 ```shell
 $ sudo cp nginx.conf /etc/nginx/sites-available/voci.afor.dev
 $ sudo ln -s /etc/nginx/sites-available/voci.afor.dev /etc/nginx/sites-enabled/voci.afor.dev
 $ sudo nginx -t # To check if configuration is valid
 $ sudo nginx -s reload
 $ sudo mkdir -p /usr/share/nginx/voice-landscape /usr/share/nginx/voice-landscape/static 
+```
 
-# Set DEBUG=1 and STATIC_ROOT and MEDIA_ROOT in .env to the last two created folders
- 
+Set .env configurations
+```dotenv
+DEBUG=1
+STATIC_ROOT=/usr/share/nginx/voice-landscape/static
+# MEDIA_ROOT= 
+```
+
+Install dependencies and collect static and css files
+```shell
 $ make production
-$ make bootstrap-db
+$ make migrate
 $ sudo .venv/bin/python manage.py collectstatic
 $ sudo .venv/bin/python manage.py compress --force
 ```
@@ -34,9 +42,11 @@ $ sudo chown -R admin:1007 /usr/share/nginx/voice-landscape
 ```
 
 Set in `.env`
-- `DEBUG=false`
-- `STATIC_ROOT=/usr/share/nginx/voice-landscape/static` 
-- `MEDIA_ROOT=/usr/share/nginx/voice-landscape/media`
+```dotenv
+DEBUG=false
+STATIC_ROOT=/usr/share/nginx/voice-landscape/static
+MEDIA_ROOT=/usr/share/nginx/voice-landscape/media
+```
 
 Generate static file, db and load previous site contents
 ```shell

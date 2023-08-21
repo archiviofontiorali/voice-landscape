@@ -1,9 +1,8 @@
 # Landscape of Voices | Paesaggio di Voci
 A project by [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
-> 🇮🇹 Per leggere le istruzioni in italiano vai in [README-IT.md](/README-it.md) 🇮🇹 
 
-## System dependencies installation
+## System dependencies installation (either development and production)
 Require at least `python>=3.10`, `pip` and `venv` to work.
 To simplify installation `make` is suggested
 
@@ -17,52 +16,65 @@ $ sudo pacman -S python python-pip python-virtualenv make
 ```
 
 ## Database instructions
-This Django app uses [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) 
-to handle spatial features like coordinates. Some additional package are required to use database
+This Django app uses [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) to handle spatial features like coordinates.
+You can chose between using sqlite3 (with spatialite) and postgres (with postgis). 
+For postgis a docker-compose file is available in `system/` folder 
+Note that MySQL/mariadb is not supported or tested at the moment 
+
+Some additional package are required to use database:
 - [GDAL](https://gdal.org/) 
 - [spatiallite](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/spatialite/) if using sqlite db
 - [PostGIS](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/) if using PostgreSQL
-- MySQL is not supported or tested at the moment 
 
-### Prepare SQLite
+Install GDAL and then go to the choosen DB section
+```shell
+# On ubuntu
+$ sudo apt install gdal-bin
+
+# On archlinux
+$ sudo pacman -S gdal
+```
+
+### Prepare SQLite (manually)
 Install GDAL and Spatialite dependencies
 ```shell
 # On ubuntu
-$ sudo apt install gdal-bin libsqlite3-mod-spatialite
+$ sudo apt install libsqlite3-mod-spatialite
 
 # On archlinux
-$ sudo pacman -S gdal libspatialite
+$ sudo pacman -S libspatialite
 ```
 
-Set a valid SQLite path (of type spatialite) in `.env` file (default: spatialite:///db.sqlite3)
+Set a valid SQLite path (of type spatialite) in `.env` file 
+(default: spatialite:///db.sqlite3)
 
-Enable Spatialite and migrations by executing 
+Enable Spatialite and apply migrations by executing 
 ```shell
-# Automatic
+# via makefile
 $ make bootstrap-sqlite
 
 # Manually
 $ source .venv/bin/activate
-(.venv)$ python manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
+(.venv)$ python app/manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 ```
 
-### Prepare PostgreSQL
-Install GDAL and PostGIS dependencies
+### Prepare PostgreSQL manually
+Install PostGIS dependencies
 ```shell
 # On ubuntu (<x> is the postgres version, libpq-dev is required to have a valid licence)
-$ sudo apt install gdal-bin libpq-dev postgresql-<x>-postgis-3  
+$ sudo apt install libpq-dev postgresql-<x>-postgis-3  
 # NOTE: With postgresql-11 and postgis 2.5
 $ sudo apt install postgresql-11-postgis-2.5 postgresql-11-postgis-2.5-scripts
 
 # On archlinux
-$ sudo pacman -S gdal postgis
+$ sudo pacman -S postgis
 ```
 
 Set a valid PostgreSQL path (of type PostGIS) in `.env` file (example: postgis://...)
-Remember, by default a sqlite file is used
 
-Create DB and enable PostGIS (this also depend on which way you installed postgres)
-in `system/` there is a docker-compose file for creating a postgres instance.
+**Remember**: if variable `DATABASE_URL` is not set, by default a sqlite file is used
+
+Create DB and enable PostGIS
 ```shell
 # For more info go to https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/
 $ createdb  <db name>
@@ -70,26 +82,57 @@ $ psql <db name>
 > CREATE EXTENSION postgis;
 ```
 
+Some additional step may be needed if you want a custom user or some specific configuration
+
+Apply migrations
+```shell
+# via makefile
+$ make migrate
+
+# manually (inside environment)
+(.venv)$ python app/manage.py migrate
+```
+
+### Prepare PostgreSQL with docker-compose
+Inside `system/` subfolder you can find a docker-compose.yml to automatically install a 
+postgis database with adminer
+
+```shell
+$ docker compose -f system/docker-compose.yml up
+```
+
+db is available at `postgis://postgres:lv-password@localhost:54320/landscapes` so 
+remember to add `DATABASE_URL=postgis://postgres:lv-password@localhost:54320/landscapes` 
+inside .env file 
+
+db is linked to a docker volume to preserve data. To reset data you can use: 
+```shell
+$ python manage.py flush --no-input
+```
+
+
+
 ## Production environment instructions
 
 ### Install repository
 ```shell
 # Automatic installation
-$ make package
+$ make venv production
 
 # Or if you prefer installing manually
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 (venv)$ pip install --upgrade pip
-(venv)$ pip install .
+(venv)$ pip install -r requirements.txt
 ```
 
 Apply migrations and create admin user
 ```shell
 # Automatic
-$ make migrate createsuperuser
+$ make secret_key migrate superuser
 
 # Manually
+(.venv)$ python scripts/generate_secret_key.py
 (.venv)$ python manage.py migrate
 (.venv)$ python manage.py createsuperuser
 ```
@@ -108,6 +151,11 @@ certbot, following this
 An example systemd service file is located in [voice-landscape.service](/system/voice-landscape.service)
 It assumes you clone this repository inside your user folder inside a `git` folder
 Remember to change `<YOUR USER>` with your effective user
+
+```shell
+$ sudo sh -c "sed 's/$USER/USER/' system/voice-landscape.service > /etc/nginx/sites-available/vl"
+$ sudo cp system/nginx.conf /etc/nginx/sites-available/nginx.conf
+```
 
 ```shell
 $ cd ~ && mkdir -p git 
@@ -139,10 +187,10 @@ $ make migrate createsuperuser
 ```
 
 ## Execute server
-Execute on url http://localhost:8001 with autoreload enabled
+Execute on url http://localhost:8000 with autoreload enabled
 ```shell
 # Execute with autoreload
 (venv)$ make serve
 
-(venv)$ python manage.py runserver http://localhost:8001
+(venv)$ python manage.py runserver http://localhost:8000
 ```

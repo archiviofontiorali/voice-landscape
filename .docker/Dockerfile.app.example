@@ -1,0 +1,67 @@
+FROM python:3.11.4-bookworm as builder
+
+WORKDIR /usr/src/app
+
+# Prevents Python from writing pyc files to disc
+ENV PYTHONDONTWRITEBYTECODE=1  
+# Prevents Python from buffering stdout and stderr
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc
+
+
+RUN pip install --upgrade pip
+
+RUN pip install black isort
+
+COPY ../app/admin /usr/src/app/admin/
+COPY ../app/apps /usr/src/app/apps/
+COPY ../app/manage.py /usr/src/app/
+
+RUN black . && isort --profile black .
+
+# Install python dependencies
+COPY ../requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+
+FROM python:3.11.4-bookworm
+
+RUN mkdir -p /home/user
+RUN addgroup --system user && adduser --system --group user
+
+ENV APP_SRC=/home/user/app
+RUN mkdir $APP_SRC
+WORKDIR $APP_SRC
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat-openbsd gdal-bin ffmpeg
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
+
+COPY entrypoint.sh .
+RUN sed -i 's/\r$//g' $APP_SRC/entrypoint.sh
+RUN chmod +x $APP_SRC/entrypoint.sh
+
+COPY ../app/admin $APP_SRC/admin/
+COPY ../app/apps $APP_SRC/apps/
+COPY ../app/manage.py $APP_SRC/
+
+# Install Spacy model
+ENV SPACY_MODEL_NAME=it_core_news_sm
+RUN python -m spacy download $SPACY_MODEL_NAME
+
+RUN chown -R user:user $APP_SRC
+
+USER user
+
+RUN python scripts/generate_secret_key.py
+
+ENV DEBUG=0
+ENV DATABASE=postgres
+ENV DATABASE_URL=postgis://postgres:lv-password@db:5432/landscapes
+
+ENTRYPOINT ["/home/user/app/entrypoint.sh"]
