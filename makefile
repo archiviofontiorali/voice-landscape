@@ -78,7 +78,7 @@ clean-django:
 	@rm -rf db.sqlite3 .media .static
 
 demo:
-	@$(django) runscript init_demo
+	@LOGURU_LEVEL=INFO $(django) runscript init_demo
 
 migrate:
 	@echo -e $(bold)Apply migration to database$(sgr0)

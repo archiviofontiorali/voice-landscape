@@ -175,6 +175,8 @@ STATICFILES_FINDERS = [
 
 # Logging
 LOG_ROOT.mkdir(exist_ok=True)
+LOGURU_LOG_LEVEL = config("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
+DJANGO_LOG_LEVEL = config("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -185,14 +187,11 @@ LOGGING = {
             "filename": str(LOG_ROOT / "voices.log"),
         },
     },
-    "root": {
-        "handlers": ["file"],
-        "level": config("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO"),
-    },
+    "root": {"handlers": ["file"], "level": DJANGO_LOG_LEVEL},
     "loggers": {
         "django": {
             "handlers": ["console"],
-            "level": config("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO"),
+            "level": DJANGO_LOG_LEVEL,
             "propagate": False,
         }
     },

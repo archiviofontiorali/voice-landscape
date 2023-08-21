@@ -12,9 +12,7 @@ class WebsiteConfig(AppConfig):
         from . import loggers, models, signals
 
         # Send loguru logging to python standard logging library (managed by Django)
-        logger.add(
-            loggers.PropagateHandler(), level="DEBUG" if settings.DEBUG else "WARNING"
-        )
+        logger.add(loggers.PropagateHandler(), level=settings.LOGURU_LOG_LEVEL)
 
         # signal: update frequencies on Share creation
         post_save.connect(
