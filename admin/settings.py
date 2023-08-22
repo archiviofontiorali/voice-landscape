@@ -222,10 +222,16 @@ SPACY_VALID_TOKENS = (
     spacy.symbols.VERB,
 )
 
-SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
 
 DEFAULT_POINT_LATITUDE = config("DEFAULT_POINT_LATITUDE", 44.6488366, cast=float)
 DEFAULT_POINT_LONGITUDE = config("DEFAULT_POINT_LONGITUDE", 10.9200867, cast=float)
 DEFAULT_POINT = Point(x=DEFAULT_POINT_LONGITUDE, y=DEFAULT_POINT_LATITUDE)
 
 BLACKLIST_PATH = config("BLACKLIST_PATH", default=None)
+
+SPEECH_RECOGNITION_SERVICE = config("SPEECH_RECOGNITION_SERVICE")
+SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
+
+WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
+# See https://github.com/openai/whisper#available-models-and-languages
+WHISPER_MODEL = config("WHSIPER_MODEL", default="base")

@@ -52,7 +52,16 @@ class SpeechToText(View):
         with speech_recognition.AudioFile(audio) as source:
             data = self.recognizer.record(source)
         try:
-            text = self.recognizer.recognize_google(data, language="it-IT")
+            match settings.SPEECH_RECOGNITION_SERVICE.lower():
+                case "whisper":
+                    text = self.recognizer.recognize_whisper(
+                        data,
+                        language=settings.WHISPER_LANGUAGE,
+                        model=settings.WHISPER_MODEL,
+                    )
+                case "google":
+                    text = self.recognizer.recognize_google(data, language="it-IT")
+
         except speech_recognition.exceptions.UnknownValueError:
             return JsonErrorResponse(_("Audio non comprensibile, riprova"), status=400)
 
