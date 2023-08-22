@@ -55,7 +55,9 @@ certifi==2023.7.22
     #   httpx
     #   requests
 cffi==1.15.1
-    # via argon2-cffi-bindings
+    # via
+    #   argon2-cffi-bindings
+    #   soundfile
 charset-normalizer==3.2.0
     # via requests
 click==8.1.7
@@ -63,6 +65,8 @@ click==8.1.7
     #   black
     #   pip-tools
     #   typer
+cmake==3.27.2
+    # via triton
 comm==0.1.4
     # via
     #   ipykernel
@@ -118,10 +122,18 @@ executing==1.2.0
     # via stack-data
 fastjsonschema==2.18.0
     # via nbformat
+ffmpeg-python==0.2.0
+    # via openai-whisper
+filelock==3.12.2
+    # via
+    #   torch
+    #   triton
 fonttools==4.42.1
     # via matplotlib
 fqdn==1.5.1
     # via jsonschema
+future==0.18.3
+    # via ffmpeg-python
 gunicorn==21.2.0
     # via voice-landscape (pyproject.toml)
 h11==0.14.0
@@ -169,6 +181,7 @@ jinja2==3.1.2
     #   jupyterlab-server
     #   nbconvert
     #   spacy
+    #   torch
 json5==0.9.14
     # via jupyterlab-server
 jsonpointer==2.4
@@ -222,6 +235,10 @@ langcodes==3.3.0
     # via spacy
 libsass==0.22.0
     # via voice-landscape (pyproject.toml)
+lit==16.0.6
+    # via triton
+llvmlite==0.40.1
+    # via numba
 loguru==0.7.0
     # via voice-landscape (pyproject.toml)
 markupsafe==2.1.3
@@ -239,6 +256,10 @@ matplotlib-inline==0.1.6
     #   ipython
 mistune==3.0.1
     # via nbconvert
+more-itertools==10.1.0
+    # via openai-whisper
+mpmath==1.3.0
+    # via sympy
 murmurhash==1.0.9
     # via
     #   preshed
@@ -257,19 +278,52 @@ nbformat==5.9.2
     #   nbconvert
 nest-asyncio==1.5.7
     # via ipykernel
+networkx==3.1
+    # via torch
 notebook-shim==0.2.3
     # via jupyterlab
-numpy==1.25.2
+numba==0.57.1
+    # via openai-whisper
+numpy==1.24.4
     # via
     #   blis
     #   bokeh
     #   contourpy
     #   ipympl
     #   matplotlib
+    #   numba
+    #   openai-whisper
     #   pandas
     #   seaborn
     #   spacy
     #   thinc
+nvidia-cublas-cu11==11.10.3.66
+    # via
+    #   nvidia-cudnn-cu11
+    #   nvidia-cusolver-cu11
+    #   torch
+nvidia-cuda-cupti-cu11==11.7.101
+    # via torch
+nvidia-cuda-nvrtc-cu11==11.7.99
+    # via torch
+nvidia-cuda-runtime-cu11==11.7.99
+    # via torch
+nvidia-cudnn-cu11==8.5.0.96
+    # via torch
+nvidia-cufft-cu11==10.9.0.58
+    # via torch
+nvidia-curand-cu11==10.2.10.91
+    # via torch
+nvidia-cusolver-cu11==11.4.0.1
+    # via torch
+nvidia-cusparse-cu11==11.7.4.91
+    # via torch
+nvidia-nccl-cu11==2.14.3
+    # via torch
+nvidia-nvtx-cu11==11.7.91
+    # via torch
+openai-whisper==20230314
+    # via voice-landscape (pyproject.toml)
 overrides==7.4.0
     # via jupyter-server
 packaging==23.1
@@ -387,11 +441,14 @@ referencing==0.30.2
     #   jsonschema
     #   jsonschema-specifications
     #   jupyter-events
+regex==2023.8.8
+    # via tiktoken
 requests==2.31.0
     # via
     #   jupyterlab-server
     #   spacy
     #   speechrecognition
+    #   tiktoken
 rfc3339-validator==0.1.4
     # via
     #   jsonschema
@@ -427,6 +484,8 @@ sniffio==1.3.0
     #   anyio
     #   httpcore
     #   httpx
+soundfile==0.12.1
+    # via voice-landscape (pyproject.toml)
 soupsieve==2.4.1
     # via beautifulsoup4
 spacy==3.6.1
@@ -446,14 +505,22 @@ srsly==2.4.7
     #   thinc
 stack-data==0.6.2
     # via ipython
+sympy==1.12
+    # via torch
 terminado==0.17.1
     # via
     #   jupyter-server
     #   jupyter-server-terminals
 thinc==8.1.12
     # via spacy
+tiktoken==0.3.1
+    # via openai-whisper
 tinycss2==1.2.1
     # via nbconvert
+torch==2.0.1
+    # via
+    #   openai-whisper
+    #   triton
 tornado==6.3.3
     # via
     #   bokeh
@@ -464,6 +531,7 @@ tornado==6.3.3
     #   terminado
 tqdm==4.66.1
     # via
+    #   openai-whisper
     #   spacy
     #   voice-landscape (pyproject.toml)
 traitlets==5.9.0
@@ -482,6 +550,10 @@ traitlets==5.9.0
     #   nbclient
     #   nbconvert
     #   nbformat
+triton==2.0.0
+    # via
+    #   openai-whisper
+    #   torch
 typer==0.9.0
     # via
     #   pathy
@@ -491,6 +563,7 @@ typing-extensions==4.7.1
     #   dj-database-url
     #   pydantic
     #   pydantic-core
+    #   torch
     #   typer
 tzdata==2023.3
     # via pandas
@@ -510,10 +583,17 @@ webencodings==0.5.1
     # via
     #   bleach
     #   tinycss2
-websocket-client==1.6.1
+websocket-client==1.6.2
     # via jupyter-server
-wheel==0.41.1
-    # via pip-tools
+wheel==0.41.2
+    # via
+    #   nvidia-cublas-cu11
+    #   nvidia-cuda-cupti-cu11
+    #   nvidia-cuda-runtime-cu11
+    #   nvidia-curand-cu11
+    #   nvidia-cusparse-cu11
+    #   nvidia-nvtx-cu11
+    #   pip-tools
 widgetsnbextension==4.0.8
     # via ipywidgets
 xyzservices==2023.7.0
