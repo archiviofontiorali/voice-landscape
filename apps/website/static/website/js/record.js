@@ -18,7 +18,10 @@ function onDataAvailable(blob) {
   formData.append("audio", blob, "audio.wav")
   
   axios.post("/api/speech/stt", formData, {headers: {'Content-Type': 'multipart/form-data'}})
-      .then(response => $('#text-container > textarea').val(response.data.text))
+      .then(response => {
+        $('#text-container > textarea').val(response.data.text);
+        recordButton.toggleClass('animated')
+      })
       .catch(error => showErrorAlert(error.response.data.message));
 }
 
@@ -39,7 +42,8 @@ function stopRecording() {
   if (recorder.state !== "recording") return
   setTimeout(() => {
     recorder.stopRecording(() => onDataAvailable(recorder.getBlob()));
-    animateControls();  
+    animateControls();
+    recordButton.toggleClass('animated')
   }, 300)
 }
 
