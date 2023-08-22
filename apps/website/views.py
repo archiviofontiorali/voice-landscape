@@ -8,14 +8,27 @@ from django.views import generic
 from . import forms, models
 
 
+class LandscapeTemplateView(generic.TemplateView):
+    @staticmethod
+    def get_landscape(slug: str = None):
+        query = dict(slug=slug) if slug else dict(default=True)
+        return get_object_or_404(models.Landscape, **query)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["slug"] = kwargs.pop("slug", None)
+        context["landscape"] = self.get_landscape(context["slug"])
+        return context
+
+
 class HomePage(generic.TemplateView):
     template_name = "home.html"
 
 
-class SharePage(generic.TemplateView):
+class SharePage(LandscapeTemplateView):
     template_name = "share.html"
 
-    def post(self, request):
+    def post(self, request, slug: str = None):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -25,7 +38,11 @@ class SharePage(generic.TemplateView):
             longitude = float(form.cleaned_data["longitude"])
             location = Point(x=longitude, y=latitude)
 
-            share = models.Share(message=message, location=location)
+            landscape = self.get_landscape(slug)
+
+            share = models.Share(
+                message=message, location=location, landscape=landscape
+            )
             share.save()
             messages.add_message(
                 request, messages.SUCCESS, _("Grazie per la condivisione")
@@ -37,21 +54,19 @@ class SharePage(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.setdefault("form", forms.ShareForm())
-        context.setdefault("places", models.Place.objects.all())
+        context.setdefault("places", context["landscape"].places.all())
         return context
 
 
-class MapPage(generic.TemplateView):
+class MapPage(LandscapeTemplateView):
     template_name = "map.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        slug = kwargs.pop("slug", None)
-        query = dict(slug=slug) if slug else dict(default=True)
-        context["landscape"] = landscape = get_object_or_404(models.Landscape, **query)
-
+        landscape = context["landscape"]
         centroid = landscape.centroid
+
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault(
             "places",
