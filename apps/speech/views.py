@@ -4,12 +4,14 @@ import pathlib
 
 import pydub
 import speech_recognition
-from django import forms
 from django.conf import settings
 from django.http import HttpRequest, JsonResponse
 from django.utils.translation import gettext as _
 from django.views import View
 from loguru import logger
+
+from .errors import SpeechRecognitionError, UnsupportedSpeechRecognitionError
+from .forms import UploadAudioForm
 
 DATA_SPEECH_ROOT: pathlib.Path = settings.DATA_ROOT / "speech"
 DATA_SPEECH_ROOT.mkdir(exist_ok=True, parents=True)
@@ -39,10 +41,6 @@ class JsonErrorResponse(JsonResponse):
     def __init__(self, message, status: int = 400, **kwargs):
         response = {"message": message, "status_code": status}
         super().__init__(response, status=status, **kwargs)
-
-
-class UploadAudioForm(forms.Form):
-    audio = forms.FileField()
 
 
 class SpeechToText(View):
