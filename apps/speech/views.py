@@ -23,7 +23,7 @@ def timestamp(t: dt.datetime = None):
     return t.isoformat(timespec="seconds")
 
 
-def read_audio_to_bytes(path):
+def read_audio_to_bytes(path) -> io.BytesIO:
     sound = pydub.AudioSegment.from_file(path)
     if settings.SPEECH_RECOGNITION_DEBUG:
         sound.export(DATA_SPEECH_ROOT / f"sample_{timestamp()}.wav", format="wav")
@@ -46,6 +46,28 @@ class JsonErrorResponse(JsonResponse):
 class SpeechToText(View):
     recognizer = speech_recognition.Recognizer()
 
+    def transcribe_with_whisper(self, data: speech_recognition.audio.AudioData):
+        return self.recognizer.recognize_whisper(
+            data,
+            language=settings.WHISPER_LANGUAGE,
+            model=settings.WHISPER_MODEL,
+        )
+
+    def transcribe_with_google(self, data: speech_recognition.audio.AudioData):
+        return self.recognizer.recognize_google(data, language="it-IT")
+
+    def transcribe_audio(self, audio: io.BytesIO) -> str:
+        with speech_recognition.AudioFile(audio) as source:
+            data = self.recognizer.record(source)
+
+        match settings.SPEECH_RECOGNITION_SERVICE.lower():
+            case "whisper":
+                return self.transcribe_with_whisper(data)
+            case "google":
+                return self.transcribe_with_google(data)
+            case _:
+                raise UnsupportedSpeechRecognitionError
+
     def post(self, request: HttpRequest):
         form = UploadAudioForm(request.POST, request.FILES)
         if not form.is_valid():
@@ -53,23 +75,12 @@ class SpeechToText(View):
 
         audio = read_audio_to_bytes(request.FILES["audio"])
 
-        with speech_recognition.AudioFile(audio) as source:
-            data = self.recognizer.record(source)
         try:
-            match settings.SPEECH_RECOGNITION_SERVICE.lower():
-                case "whisper":
-                    text = self.recognizer.recognize_whisper(
-                        data,
-                        language=settings.WHISPER_LANGUAGE,
-                        model=settings.WHISPER_MODEL,
-                    )
-                case "google":
-                    text = self.recognizer.recognize_google(data, language="it-IT")
-                case _:
-                    return JsonErrorResponse("Unsupported SPEECH_RECOGNITION_SERVICE")
-
+            text = self.transcribe_audio(audio)
         except speech_recognition.exceptions.UnknownValueError:
             return JsonErrorResponse(_("Audio non comprensibile, riprova"), status=400)
+        except SpeechRecognitionError as err:
+            return JsonErrorResponse(err.message, status=500)
 
         logger.debug(f"[speech_recognition] transcription: {text}")
         return JsonResponse({"text": text})
