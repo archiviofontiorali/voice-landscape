@@ -58,7 +58,7 @@ lab:
 	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
 
 test:
-	@$(python) -m pytest 
+	@$(python) -m pytest
 
 shell:
 	@$(django) shell
