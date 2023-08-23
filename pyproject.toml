@@ -32,7 +32,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["black", "ipython", "isort", "pip-tools"]
+dev = ["black", "ipython", "isort", "pip-tools", "pytest-django"]
 lab = [
     "ipympl",
     "ipywidgets",
@@ -42,7 +42,9 @@ lab = [
     "matplotlib",
     "seaborn",
 ]
-test = ["pytest", "httpx"]
 
 [tool.isort]
 profile = "black"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "admin.settings"

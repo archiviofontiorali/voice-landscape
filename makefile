@@ -14,7 +14,7 @@ PORT?=8000
 DEBUG?=1
 
 
-.PHONY: bootstrap clean venv requirements develop production
+.PHONY: bootstrap clean venv requirements develop develop-lab production
 
 bootstrap: venv develop
 bootstrap-prod: venv production
@@ -31,11 +31,16 @@ venv: clean
 requirements:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
 	@$(VENV)/bin/pip-compile -vU --resolver backtracking -o requirements.txt pyproject.toml
-	@$(VENV)/bin/pip-compile -vU --resolver backtracking --all-extras -o requirements.dev.txt pyproject.toml
+	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra dev -o requirements.dev.txt pyproject.toml
+	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra lab -o requirements.lab.txt pyproject.toml
 	
 develop:
 	@echo -e $(bold)Install and update development requirements$(sgr0)
 	@$(pip) install -r requirements.dev.txt
+
+develop-lab:
+	@echo -e $(bold)Install and update jupyter requirements$(sgr0)
+	@$(pip) install -r requirements.lab.txt
 
 production:
 	@echo -e $(bold)Install and update production requirements$(sgr0)
