@@ -67,6 +67,8 @@ class SpeechToText(View):
                     )
                 case "google":
                     text = self.recognizer.recognize_google(data, language="it-IT")
+                case _:
+                    return JsonErrorResponse("Unsupported SPEECH_RECOGNITION_SERVICE")
 
         except speech_recognition.exceptions.UnknownValueError:
             return JsonErrorResponse(_("Audio non comprensibile, riprova"), status=400)
