@@ -21,6 +21,20 @@ def timestamp(t: dt.datetime = None):
     return t.isoformat(timespec="seconds")
 
 
+def read_audio_to_bytes(path):
+    sound = pydub.AudioSegment.from_file(path)
+    if settings.SPEECH_RECOGNITION_DEBUG:
+        sound.export(DATA_SPEECH_ROOT / f"sample_{timestamp()}.wav", format="wav")
+    sound.export(audio := io.BytesIO(), format="wav")
+
+    logger.debug(
+        f"[pydub] channels: {sound.channels}, frame_rate: {sound.frame_rate}, "
+        f"duration: {sound.duration_seconds:.2f}"
+    )
+
+    return audio
+
+
 class JsonErrorResponse(JsonResponse):
     def __init__(self, message, status: int = 400, **kwargs):
         response = {"message": message, "status_code": status}
@@ -39,15 +53,7 @@ class SpeechToText(View):
         if not form.is_valid():
             return JsonErrorResponse("Invalid audio request", status=400)
 
-        sound = pydub.AudioSegment.from_file(request.FILES["audio"])
-        if settings.SPEECH_RECOGNITION_DEBUG:
-            sound.export(DATA_SPEECH_ROOT / f"sample_{timestamp()}.wav", format="wav")
-        sound.export(audio := io.BytesIO(), format="wav")
-
-        logger.debug(
-            f"[pydub] channels: {sound.channels}, frame_rate: {sound.frame_rate}, "
-            f"duration: {sound.duration_seconds:.2f}"
-        )
+        audio = read_audio_to_bytes(request.FILES["audio"])
 
         with speech_recognition.AudioFile(audio) as source:
             data = self.recognizer.record(source)
