@@ -21,16 +21,18 @@ dependencies = [
     "gunicorn",
     "libsass",
     "loguru",
+    "openai-whisper",
     "pydub",
     "psycopg2",
     "python-decouple",
+    "soundfile",
     "spacy",
     "SpeechRecognition",
     "tqdm",
 ]
 
 [project.optional-dependencies]
-dev = ["black", "ipython", "isort", "pip-tools"]
+dev = ["black", "ipython", "isort", "pip-tools", "pytest-django"]
 lab = [
     "ipympl",
     "ipywidgets",
@@ -40,7 +42,22 @@ lab = [
     "matplotlib",
     "seaborn",
 ]
-test = ["pytest", "httpx"]
 
 [tool.isort]
 profile = "black"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "admin.settings"
+python_files = "tests.py test_*.py *_tests.py"
+filterwarnings = [
+    "ignore::django.utils.deprecation.RemovedInDjango50Warning",
+    "ignore::DeprecationWarning",
+    "ignore::pydantic.warnings.PydanticDeprecatedSince20",
+    "ignore::numba.core.errors.NumbaDeprecationWarning"
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+addopts = [
+    "-m slow"
+]

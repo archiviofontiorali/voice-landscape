@@ -80,3 +80,16 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
   &[data-state="success"] { color: green }
   &[data-state="error"] { color: red }
 }
+
+@keyframes color-animation {
+  from {color: white;}
+  to {color: DimGray;}
+}
+
+.animated {
+  background-color: DimGray;
+  animation-name: color-animation;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  animation-direction: alternate;
+}
