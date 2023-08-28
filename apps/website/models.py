@@ -41,9 +41,7 @@ class LocationModel(models.Model):
 class Share(LocationModel):
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.TextField(max_length=500)
-    landscape = models.ForeignKey(
-        "Landscape", on_delete=models.CASCADE, null=True, blank=True
-    )
+    landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
 
     def __str__(self):
         message = textwrap.shorten(self.message, width=12, placeholder="...")

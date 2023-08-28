@@ -83,8 +83,8 @@ def prepare_demo_place(slug: str, **options):
     return place
 
 
-def prepare_demo_share(location: Point, message: str):
-    share = models.Share(location=location, message=message)
+def prepare_demo_share(location: Point, message: str, landscape: models.Landscape):
+    share = models.Share(location=location, message=message, landscape=landscape)
     share.full_clean()
     share.save()
     return share
@@ -111,6 +111,7 @@ def run():
     with open(path, "rt") as fp:
         shares = fp.readlines()
 
+    logger.info(f"Adding shares from file in DEMO_SHARES_PATH")
     for message in tqdm(shares):
         if not TEXT_ROW_RE.match(message):
             continue
@@ -118,4 +119,4 @@ def run():
         lat += random.gauss(0, 0.5)
         lon += random.gauss(0, 0.5)
         location = Point(x=lon, y=lat)
-        prepare_demo_share(location, message)
+        prepare_demo_share(location, message, landscape=landscape)
