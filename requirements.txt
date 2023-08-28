@@ -23,7 +23,7 @@ charset-normalizer==3.2.0
     # via requests
 click==8.1.7
     # via typer
-cmake==3.27.2
+cmake==3.27.4.1
     # via triton
 confection==0.1.1
     # via thinc
@@ -150,13 +150,13 @@ psycopg2==2.9.7
     # via voice-landscape (pyproject.toml)
 pycparser==2.21
     # via cffi
-pydantic==2.2.1
+pydantic==2.3.0
     # via
     #   confection
     #   django-qr-code
     #   spacy
     #   thinc
-pydantic-core==2.6.1
+pydantic-core==2.6.3
     # via pydantic
 pydub==0.25.1
     # via voice-landscape (pyproject.toml)
