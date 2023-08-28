@@ -45,14 +45,7 @@ function addWordCloudCanvas(index, markerWidth, markerHeight) {
 }
 
 
-function initMap(places, centroid = [0., 0.], o) {
-  o = {
-    zoom: {...defaultOptions.zoom, ...o.zoom },
-    map: {...defaultOptions.map, ...o.map },
-    markers: {...defaultOptions.markers, ...o.markers },
-    useDOM: (o.useDOM) ? o.useDOM : defaultOptions.useDOM,
-  }
-  
+function createMap(centroid = [0., 0.], o) {
   // Generate Map
   const map = L.map('map').setView(centroid, o.zoom.initial);
   
@@ -60,6 +53,11 @@ function initMap(places, centroid = [0., 0.], o) {
   const bgOptions = {minZoom: o.zoom.min, maxZoom: o.zoom.max}
   L.tileLayer.provider(o.map.provider, bgOptions).addTo(map);
   
+  return map;  
+}
+
+
+function addWordClouds(map, places, o) {
   // Get marker width
   const widthRatio = (o.markers.maxWidth - o.markers.minWidth) / (o.zoom.max - o.zoom.min);
   function getMarkerWidth() { 
@@ -94,6 +92,20 @@ function initMap(places, centroid = [0., 0.], o) {
   }
   
   map.on('zoomend', () => updateWordCloudMarkers());
+}
+
+
+
+function initMap(places, centroid = [0., 0.], o) {
+  o = {
+    zoom: {...defaultOptions.zoom, ...o.zoom },
+    map: {...defaultOptions.map, ...o.map },
+    markers: {...defaultOptions.markers, ...o.markers },
+    useDOM: (o.useDOM) ? o.useDOM : defaultOptions.useDOM,
+  }
+  
+  const map = createMap(centroid, o);
+  addWordClouds(map, places, o);
 }
 
 
