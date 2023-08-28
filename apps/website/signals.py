@@ -2,6 +2,7 @@ import re
 
 import spacy.symbols
 from django.conf import settings
+from django.contrib.gis.db.models.functions import Distance
 from django.db.models import F
 from loguru import logger
 
@@ -30,7 +31,13 @@ def on_share_creation_update_frequencies(
     if not created:
         return
 
-    place = models.Place.get_nearest(instance.location)
+    place = (
+        models.Place.objects.filter(landscape=instance.landscape)
+        .annotate(distance=Distance("location", instance.location))
+        .order_by("distance")
+        .first()
+    )
+
     logger.debug(
         f"Add share near '{place}', try to update frequencies "
         f"(message: {instance.message})"
