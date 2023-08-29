@@ -38,6 +38,17 @@ class LocationModel(models.Model):
         abstract = True
 
 
+class TitledModel(models.Model):
+    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        abstract = True
+
+
 class Share(LocationModel):
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.TextField(max_length=500)
@@ -130,15 +141,13 @@ class WordFrequency(models.Model):
         return f"({self.word} | {self.place})"
 
 
-class Landscape(LocationModel):
     class MapProvider(models.TextChoices):
         TONER_BACKGROUND = "Stamen.TonerBackground", _("Toner Background")
         TONER = "Stamen.Toner", _("Toner")
         TERRAIN = "Stamen.Terrain", _("Terrain")
         WATERCOLOR = "Stamen.Watercolor", _("Watercolor")
 
-    slug = models.SlugField(unique=True)
-    title = models.CharField(max_length=100)
+class Landscape(TitledModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
 
     default = UniqueBooleanField(default=False)
@@ -180,9 +189,6 @@ class Landscape(LocationModel):
     def set_centroid(self):
         self.location = self.centroid
         self.save()
-
-    def __str__(self):
-        return self.title
 
     class Meta:
         constraints = [
