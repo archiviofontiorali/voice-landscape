@@ -1,6 +1,6 @@
 const defaultOptions = {
   zoom: { initial: 15, min: 13, max: 20 },
-  map: { provider: "Stamen.TonerBackground" },
+  map: { provider: { url: 'https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png' }},
   markers: {minWidth: 100, maxWidth: 200, minHeight: 50, maxHeight: 200},
   useDOM: false,
 }
@@ -51,8 +51,11 @@ function createMap(centroid = [0., 0.], o) {
   
   // Generate Background
   const bgOptions = {minZoom: o.zoom.min, maxZoom: o.zoom.max}
-  L.tileLayer.provider(o.map.provider, bgOptions).addTo(map);
-  
+  if (o.map.provider.name)
+    L.tileLayer.provider(o.map.provider.name, bgOptions).addTo(map);
+  else
+    L.tileLayer(o.map.provider.url, bgOptions).addTo(map);
+    
   return map;  
 }
 

@@ -59,6 +59,32 @@ class Share(LocationModel):
         return f"{super().__str__()} [{message}]"
 
 
+class LeafletProvider(TitledModel):
+    name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text=_("The short name to use with provider.js"),
+    )
+    url = models.URLField(
+        max_length=150,
+        null=True,
+        blank=True,
+        help_text=_("The url for a generic leaflet provider"),
+    )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(name__isnull=False) | Q(url__isnull=False),
+                name="either_name_or_url_not_null",
+                violation_error_message=_(
+                    _("Either name or url should be set to a valid value")
+                ),
+            )
+        ]
+
+
 class Place(LocationModel):
     slug = models.SlugField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
@@ -141,12 +167,6 @@ class WordFrequency(models.Model):
         return f"({self.word} | {self.place})"
 
 
-    class MapProvider(models.TextChoices):
-        TONER_BACKGROUND = "Stamen.TonerBackground", _("Toner Background")
-        TONER = "Stamen.Toner", _("Toner")
-        TERRAIN = "Stamen.Terrain", _("Terrain")
-        WATERCOLOR = "Stamen.Watercolor", _("Watercolor")
-
 class Landscape(TitledModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
 
@@ -161,10 +181,9 @@ class Landscape(TitledModel, LocationModel):
         help_text=_("Reload time (in seconds) for showcase page"),
     )
 
-    provider = models.CharField(
-        max_length=100,
-        choices=MapProvider.choices,
-        default=MapProvider.TONER_BACKGROUND,
+    provider = models.ForeignKey(
+        LeafletProvider,
+        on_delete=models.PROTECT,
         help_text="The map provider to use with leaflet map",
     )
 

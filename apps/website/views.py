@@ -30,7 +30,9 @@ class LandscapeMapPage(LandscapeTemplateView):
 
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault("zoom", landscape.zoom)
-        context.setdefault("provider", landscape.provider)
+        context.setdefault(
+            "provider", {"url": landscape.provider.url, "name": landscape.provider.name}
+        )
 
         return context
 

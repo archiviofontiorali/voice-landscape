@@ -22,7 +22,12 @@
         min: {{ zoom.min }}, 
         max: {{ zoom.max }} 
       },
-      map: { provider: "{{ provider }}" }
+      map: { 
+        provider: { 
+          name: "{{provider.name}}", 
+          url: "{{ provider.url }}" 
+        }
+      }
     }
     document.addEventListener(
         'DOMContentLoaded', 
