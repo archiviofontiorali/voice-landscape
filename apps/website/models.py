@@ -55,7 +55,7 @@ class Share(LocationModel):
     landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
 
     def __str__(self):
-        message = textwrap.shorten(self.message, width=12, placeholder="...")
+        message = textwrap.shorten(self.message, width=20, placeholder="...")
         return f"{super().__str__()} [{message}]"
 
 
@@ -141,6 +141,7 @@ class WordFrequency(models.Model):
 
     class Meta:
         verbose_name_plural = "Word Frequencies"
+        ordering = ("-frequency",)
         constraints = [
             models.UniqueConstraint(
                 fields=("word", "place"), name="WordFrequency uniqueness"

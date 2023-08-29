@@ -85,7 +85,7 @@ function addWordClouds(map, places, o) {
   }
   
   function updateWordCloudMarkers() {
-    for(const [index, {_coordinates, frequencies}] of places.entries()) {
+    for(const [index, {frequencies}] of places.entries()) {
       if ($.isEmptyObject(frequencies))
         continue
       
