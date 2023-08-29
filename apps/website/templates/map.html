@@ -29,9 +29,9 @@
         }
       }
     }
-    document.addEventListener(
-        'DOMContentLoaded', 
-        () => initMap({{ places | safe }}, {{ center }}, options)
+    document.addEventListener('DOMContentLoaded', () => 
+        new LeafletMap("map", {{ center }}, options)
+            .addWordClouds({{ places | safe }})
     );
   </script>
 {% endblock %}
