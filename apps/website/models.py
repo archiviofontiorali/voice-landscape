@@ -103,7 +103,7 @@ class Place(LocationModel):
         """Return a list of [word, frequency] with the latest normalized"""
         frequencies = self.word_frequencies.filter(
             frequency__gte=min_frequency, word__visible=True
-        )
+        ).order_by("-frequency")[:50]
         max_ = frequencies.aggregate(Max("frequency"))["frequency__max"]
         return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
 
