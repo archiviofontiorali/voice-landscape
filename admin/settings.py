@@ -235,3 +235,7 @@ SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default
 WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
 # See https://github.com/openai/whisper#available-models-and-languages
 WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
+
+
+DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
+DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)

@@ -6,7 +6,6 @@ import re
 import django.db.models
 import django.db.utils
 import django.utils.text
-from decouple import config
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from loguru import logger
@@ -124,7 +123,7 @@ def run():
     print("Add default demo landscape")
     landscape = save_landscape()
 
-    if (place_id := config("DEMO_REFERENCE", default="sso_2023")) not in PLACES:
+    if (place_id := settings.DEMO_PLACES_REFERENCE) not in PLACES:
         raise Exception(f"DEMO_REFERENCE should be one of {', '.join(PLACES)}")
 
     for lat, lon, title in tqdm(PLACES[place_id], desc=f"Add places from {place_id}"):
@@ -134,7 +133,7 @@ def run():
     print("Set landscape center to places centroid")
     landscape.set_centroid()
 
-    if not (path := config("DEMO_SHARES_PATH", default=None)):
+    if not (path := settings.DEMO_SHARES_PATH):
         logger.info("Skipping adding shares, set DEMO_SHARES_PATH to add shares")
         return
 
