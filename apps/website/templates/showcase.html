@@ -16,53 +16,47 @@
 {% block main %}
   <main id="showcase" class="flex flex-row">
   <section id="description" 
-           class="outline w-third tc pa2 mr1 tc flex flex-column justify-around">
-    <section id="description-title" class="flex flex-column items-center">
-      <h1 class="f-subheadline measure-narrow ttu">Paesaggio di Voci</h1>
-      <p class="f2 mid-gray measure-narrow">
-        Come percepisci lo spazio?<br>
-        Come si declina la libertà che hai nel muoverti in questo spazio?
-      </p>
-      
-      <p class="b f3 lh-copy">Partecipa anche tu all'esperimento collettivo</p>
-      <p class="b f2 ttu">{{ landscape.domain|default:domain }}</p>  
-    </section>
+           class="outline w-third tc pa2 mr1 tc flex flex-column justify-between items-center">
+    <h1 class="f1 ttu measure-wide">Paesaggio di Voci</h1>
+    <p class="f3 mid-gray ttu measure-narrow">
+      Come percepisci lo spazio?<br>
+      Come si declina la libertà che hai nel muoverti in questo spazio?
+    </p>
     
-    {# <hr class="w-third ba b--black mv4">#}
+    <p class="b f3 lh-copy ttu measure-narrow">Partecipa anche tu all'esperimento collettivo</p>
+    <p class="b f2">{{ landscape.domain|default:domain }}</p>  
+    
     {# <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}"> #}
-    {# <p>{{ qr_url }}</p> #}
 
-
-    <section id="description-logo">
-      <div class="flex justify-around">
-        {% if landscape.logo_event %}
-        <figure>
-          <figcaption>In occasione di</figcaption>
-          <img class="ma2 h4 b" src="{{ landscape.logo_event.url }}" 
-               alt="{{ landscape.logo_event.name }}">
-        </figure>
-        {% endif %}
-      
-        {% if landscape.logo_organizer %}
-        <figure>
-          <figcaption>Un progetto di</figcaption>
-          <img class="ma2 h4" src="{{ landscape.logo_organizer.url }}" 
-               alt="{{ landscape.logo_organizer.name }}">
-        </figure>
-        {% endif %}
-      </div>
-      
+    
+    <section class="flex justify-around flex-wrap">
+      {% if landscape.logo_event %}
+      <figure>
+        <figcaption>In occasione di</figcaption>
+        <img class="ma2 h4 b" src="{{ landscape.logo_event.url }}" 
+             alt="{{ landscape.logo_event.name }}">
+      </figure>
+      {% endif %}
+    
+      {% if landscape.logo_organizer %}
+      <figure>
+        <figcaption>Un progetto di</figcaption>
+        <img class="ma2 h4" src="{{ landscape.logo_organizer.url }}" 
+             alt="{{ landscape.logo_organizer.name }}">
+      </figure>
+      {% endif %}
+    
       {% if landscape.logo_partners.count %}
-      <p>Rete del gruppo di lavoro</p>
-      <div class="flex justify-center flex-wrap">
+      <p class="w-100">Rete del gruppo di lavoro</p>
+    
       {% for logo in landscape.logo_partners.all %}
         <img class="b h3 mh3 mv2" src="{{ logo.url }}" alt="{{ logo.name }}">
       {% endfor %}
-      </div>
       {% endif %}
+    
     </section>
     
-  </section>  
+  </section>
     
   <section id="full-map" class="outline w-two-thirds pa1 ml1">
     <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
