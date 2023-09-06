@@ -38,16 +38,51 @@ class LocationModel(models.Model):
         abstract = True
 
 
+class TitledModel(models.Model):
+    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        abstract = True
+
+
 class Share(LocationModel):
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.TextField(max_length=500)
-    landscape = models.ForeignKey(
-        "Landscape", on_delete=models.CASCADE, null=True, blank=True
-    )
+    landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
 
     def __str__(self):
-        message = textwrap.shorten(self.message, width=12, placeholder="...")
+        message = textwrap.shorten(self.message, width=20, placeholder="...")
         return f"{super().__str__()} [{message}]"
+
+
+class LeafletProvider(TitledModel):
+    name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text=_("The short name to use with provider.js"),
+    )
+    url = models.URLField(
+        max_length=150,
+        null=True,
+        blank=True,
+        help_text=_("The url for a generic leaflet provider"),
+    )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(name__isnull=False) | Q(url__isnull=False),
+                name="either_name_or_url_not_null",
+                violation_error_message=_(
+                    _("Either name or url should be set to a valid value")
+                ),
+            )
+        ]
 
 
 class Place(LocationModel):
@@ -68,7 +103,7 @@ class Place(LocationModel):
         """Return a list of [word, frequency] with the latest normalized"""
         frequencies = self.word_frequencies.filter(
             frequency__gte=min_frequency, word__visible=True
-        )
+        ).order_by("-frequency")[:50]
         max_ = frequencies.aggregate(Max("frequency"))["frequency__max"]
         return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
 
@@ -106,6 +141,7 @@ class WordFrequency(models.Model):
 
     class Meta:
         verbose_name_plural = "Word Frequencies"
+        ordering = ("-frequency",)
         constraints = [
             models.UniqueConstraint(
                 fields=("word", "place"), name="WordFrequency uniqueness"
@@ -132,15 +168,7 @@ class WordFrequency(models.Model):
         return f"({self.word} | {self.place})"
 
 
-class Landscape(LocationModel):
-    class MapProvider(models.TextChoices):
-        TONER_BACKGROUND = "Stamen.TonerBackground", _("Toner Background")
-        TONER = "Stamen.Toner", _("Toner")
-        TERRAIN = "Stamen.Terrain", _("Terrain")
-        WATERCOLOR = "Stamen.Watercolor", _("Watercolor")
-
-    slug = models.SlugField(unique=True)
-    title = models.CharField(max_length=100)
+class Landscape(TitledModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
 
     default = UniqueBooleanField(default=False)
@@ -154,10 +182,9 @@ class Landscape(LocationModel):
         help_text=_("Reload time (in seconds) for showcase page"),
     )
 
-    provider = models.CharField(
-        max_length=100,
-        choices=MapProvider.choices,
-        default=MapProvider.TONER_BACKGROUND,
+    provider = models.ForeignKey(
+        LeafletProvider,
+        on_delete=models.PROTECT,
         help_text="The map provider to use with leaflet map",
     )
 
@@ -182,9 +209,6 @@ class Landscape(LocationModel):
     def set_centroid(self):
         self.location = self.centroid
         self.save()
-
-    def __str__(self):
-        return self.title
 
     class Meta:
         constraints = [

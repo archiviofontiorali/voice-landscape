@@ -3,9 +3,9 @@
 import random
 import re
 
+import django.db.models
 import django.db.utils
 import django.utils.text
-from decouple import config
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from loguru import logger
@@ -15,7 +15,29 @@ from .. import models
 
 TEXT_ROW_RE = re.compile(r"[A-Za-z]")
 
-_places = {
+MAP_PROVIDERS = [
+    {"title": "Stamen Toner Background", "name": "Stadia.StamenTonerBackground"},
+    {"title": "Stamen Toner (Basic)", "name": "Stadia.StamenToner"},
+    {
+        "title": "Watercolor",
+        "name": "Stadia.StamenWatercolor",
+        "url": "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}",
+    },
+    {
+        "title": "Stamen Terrain",
+        "name": "Stadia.StamenTerrain",
+        "url": "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}",
+    },
+]
+
+LANDSCAPE_DEMO = {
+    "slug": "demo",
+    "title": "demo",
+    "location": settings.DEFAULT_POINT,
+    "description": "A demo Landscape with sample shares",
+}
+
+PLACES = {
     # Festival Filosofia 2021
     "ff_2021": [
         (44.65461615128406, 10.901229167243947, "AFOr | Archivio delle Fonti Orali"),
@@ -60,62 +82,69 @@ _places = {
 }
 
 
-def prepare_demo_landscape():
-    defaults = dict(
-        title="demo",
-        description="A demo Landscape with sample shares",
-        default=True,
-        location=settings.DEFAULT_POINT,
-    )
-    landscape, _ = models.Landscape.objects.update_or_create(
-        slug="demo", defaults=defaults
-    )
-    landscape.full_clean()
-    landscape.save()
-
-    return landscape
+def save_model(model: type[django.db.models.Model], filters: dict, defaults: dict):
+    instance, created = model.objects.update_or_create(**filters, defaults=defaults)
+    instance.full_clean()
+    instance.save()
+    logger.info(f"{'Created' if created else 'Updated'} {model.__name__}: {instance}")
+    return instance
 
 
-def prepare_demo_place(slug: str, **options):
-    place, created = models.Place.objects.update_or_create(slug=slug, defaults=options)
-    logger.info(("Created" if created else "Updated") + f" Place with slug {slug}")
-    place.save()
-    return place
+def save_provider(provider: dict):
+    filters = {"slug": django.utils.text.slugify(provider["title"])}
+    return save_model(models.LeafletProvider, filters, provider)
 
 
-def prepare_demo_share(location: Point, message: str):
-    share = models.Share(location=location, message=message)
+def save_landscape():
+    filters = {"slug": LANDSCAPE_DEMO.pop("slug")}
+    defaults = {"provider": models.LeafletProvider.objects.first(), **LANDSCAPE_DEMO}
+    return save_model(models.Landscape, filters, defaults)
+
+
+def save_place(title, lat, lon):
+    filters = {"slug": django.utils.text.slugify(title)}
+    defaults = {"title": title, "location": Point(x=lon, y=lat)}
+    return save_model(models.Place, filters, defaults)
+
+
+def save_share(location: Point, message: str, landscape: models.Landscape):
+    defaults = {"location": location, "message": message, "landscape": landscape}
+    share = models.Share(**defaults)
     share.full_clean()
     share.save()
+    logger.debug(f"Created Share: {share}")
     return share
 
 
 def run():
-    landscape = prepare_demo_landscape()
+    for provider in tqdm(MAP_PROVIDERS, desc="Add Leaflet map providers"):
+        save_provider(provider)
 
-    places = _places.get(config("DEMO_REFERENCE", default="sso_2023"))
-    if places is None:
-        raise Exception(f"DEMO_REFERENCE should be one of {', '.join(_places)}")
+    print("Add default demo landscape")
+    landscape = save_landscape()
 
-    for lat, lon, title in tqdm(places):
-        slug = django.utils.text.slugify(title)
-        place = prepare_demo_place(slug, title=title, location=Point(x=lon, y=lat))
+    if (place_id := settings.DEMO_PLACES_REFERENCE) not in PLACES:
+        raise Exception(f"DEMO_REFERENCE should be one of {', '.join(PLACES)}")
+
+    for lat, lon, title in tqdm(PLACES[place_id], desc=f"Add places from {place_id}"):
+        place = save_place(title, lat, lon)
         landscape.places.add(place)
 
+    print("Set landscape center to places centroid")
     landscape.set_centroid()
 
-    if not (path := config("DEMO_SHARES_PATH", default=None)):
+    if not (path := settings.DEMO_SHARES_PATH):
         logger.info("Skipping adding shares, set DEMO_SHARES_PATH to add shares")
         return
 
     with open(path, "rt") as fp:
         shares = fp.readlines()
 
-    for message in tqdm(shares):
+    for message in tqdm(shares, desc="Adding shares from file in DEMO_SHARES_PATH"):
         if not TEXT_ROW_RE.match(message):
             continue
-        lat, lon, _ = random.choice(places)
+        lat, lon, _ = random.choice(PLACES[place_id])
         lat += random.gauss(0, 0.5)
         lon += random.gauss(0, 0.5)
         location = Point(x=lon, y=lat)
-        prepare_demo_share(location, message)
+        save_share(location, message, landscape)

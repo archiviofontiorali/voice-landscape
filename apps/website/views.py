@@ -21,6 +21,22 @@ class LandscapeTemplateView(generic.TemplateView):
         return context
 
 
+class LandscapeMapPage(LandscapeTemplateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        landscape = context["landscape"]
+        centroid = landscape.centroid
+
+        context.setdefault("center", [centroid.y, centroid.x])
+        context.setdefault("zoom", landscape.zoom)
+        context.setdefault(
+            "provider", {"url": landscape.provider.url, "name": landscape.provider.name}
+        )
+
+        return context
+
+
 class HomePage(generic.TemplateView):
     template_name = "home.html"
 
@@ -58,16 +74,13 @@ class SharePage(LandscapeTemplateView):
         return context
 
 
-class MapPage(LandscapeTemplateView):
+class MapPage(LandscapeMapPage):
     template_name = "map.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         landscape = context["landscape"]
-        centroid = landscape.centroid
-
-        context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault(
             "places",
             [
@@ -78,9 +91,6 @@ class MapPage(LandscapeTemplateView):
                 for place in landscape.places.all()
             ],
         )
-        context.setdefault("zoom", landscape.zoom)
-        context.setdefault("provider", landscape.provider)
-
         return context
 
 
@@ -91,6 +101,7 @@ class ShowcasePage(MapPage):
         context = super().get_context_data(**kwargs)
         reload_time = self.request.GET.get("reload", context["landscape"].reload_time)
         context.setdefault("reload", reload_time)
+        context.setdefault("domain", settings.DOMAIN)
         context.setdefault("qr_url", f"https://{settings.DOMAIN}")
         return context
 

@@ -15,14 +15,52 @@
 
 {% block main %}
   <main id="showcase" class="flex flex-row">
-    <section id="full-map" class="outline w-80 mr1 pa1">
-      <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
+  <section id="description" 
+           class="outline w-third tc pa2 mr1 tc flex flex-column justify-around">
+    <section id="description-title">
+      <h1 class="f-subheadline ttu">Paesaggio<br>di Voci</h1>
+      <p class="f3 mid-gray">
+        Come percepisci lo spazio?
+        Come si declina la libertà che hai nel muoverti in questo spazio?
+      </p>
+      
+      <p class="b f3 lh-copy">Partecipa anche tu all'esperimento collettivo</p>
+      <p class="b f2 ttu">{{ domain }}</p>  
     </section>
     
-    <section id="statistics" class="outline w-20 ml1 pa2 tc">
-      <h2 class="black">Partecipa</h2>
-      <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}">
-      <p>{{ qr_url }}</p>
+    <hr class="w-third ba b--black mv4">
+    {# <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}"> #}
+    {# <p>{{ qr_url }}</p> #}
+
+
+    <section id="description-logo">
+      <div class="flex justify-around">
+        <figure>
+          <figcaption>In occasione di</figcaption>
+          <img class="bg-gray h4 w4" src="" alt="">
+        </figure>
+        
+        <figure>
+          <figcaption>Un progetto di</figcaption>
+          <img class="bg-gray h4 w4" src="" alt="">
+        </figure>
+      </div>
+      
+      
+      <p>Rete del gruppo di lavoro</p>
+      <div class="flex justify-around flex-wrap">
+        <img class="bg-gray h3 w-20 ma3" src="" alt="">
+        <img class="bg-gray h3 w-20 ma3" src="" alt="">
+        <img class="bg-gray h3 w-20 ma3" src="" alt="">
+        <img class="bg-gray h3 w-20 ma3" src="" alt="">
+        <img class="bg-gray h3 w-20 ma3" src="" alt="">
+      </div>    
     </section>
+    
+  </section>  
+    
+  <section id="full-map" class="outline w-two-thirds pa1 ml1">
+    <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
+  </section>
   </main>
 {% endblock %}

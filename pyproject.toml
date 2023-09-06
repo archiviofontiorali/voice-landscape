@@ -9,6 +9,7 @@ name = "voice-landscape"
 version = "0.6.0"
 requires-python = ">=3.10"
 dependencies = [
+    "aiohttp",
     "django>=4",
     "djangorestframework",
     "django-compressor",
@@ -32,7 +33,13 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["black", "ipython", "isort", "pip-tools", "pytest-django"]
+dev = [
+    "black", 
+    "ipython", 
+    "isort", 
+    "pip-tools", 
+    "pytest-django", 
+]
 lab = [
     "ipympl",
     "ipywidgets",
