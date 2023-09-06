@@ -43,6 +43,11 @@ class WordAdmin(admin.ModelAdmin):
     inlines = [WordFrequencyInline]
 
 
+@admin.register(models.Logo)
+class LogoAdmin(admin.ModelAdmin):
+    list_display = ("name", "image", "width", "height")
+
+
 @admin.register(models.Landscape)
 class LandscapeAdmin(LocationGISModel):
     prepopulated_fields = {"slug": ("title",)}
