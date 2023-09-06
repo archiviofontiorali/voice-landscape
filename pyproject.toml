@@ -23,6 +23,7 @@ dependencies = [
     "libsass",
     "loguru",
     "openai-whisper",
+    "Pillow",
     "pydub",
     "psycopg2",
     "python-decouple",
