@@ -1,6 +1,7 @@
 import random
 import textwrap
 
+from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
@@ -168,8 +169,28 @@ class WordFrequency(models.Model):
         return f"({self.word} | {self.place})"
 
 
+class Logo(models.Model):
+    name = models.CharField(max_length=150, blank=True)
+    image = models.ImageField(
+        upload_to="logos/", height_field="height", width_field="width"
+    )
+    width = models.PositiveSmallIntegerField(null=True, blank=True, editable=False)
+    height = models.PositiveSmallIntegerField(null=True, blank=True, editable=False)
+
+    @property
+    def url(self):
+        return self.image.url
+
+    def __str__(self):
+        return self.name if self.name else super().__str__()
+
+
 class Landscape(TitledModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
+    domain = models.URLField(
+        blank=True,
+        help_text="The domain to show. Leave blank to use the default one set in .env",
+    )
 
     default = UniqueBooleanField(default=False)
 
@@ -191,6 +212,24 @@ class Landscape(TitledModel, LocationModel):
     zoom_initial = models.PositiveSmallIntegerField(default=15)
     zoom_min = models.PositiveSmallIntegerField(default=13)
     zoom_max = models.PositiveSmallIntegerField(default=20)
+
+    logo_event = models.ForeignKey(
+        Logo,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        default=None,
+        related_name="+",
+    )
+    logo_organizer = models.ForeignKey(
+        Logo,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        default=None,
+        related_name="+",
+    )
+    logo_partners = models.ManyToManyField(to=Logo, related_name="+", blank=True)
 
     @property
     def centroid(self) -> Point:

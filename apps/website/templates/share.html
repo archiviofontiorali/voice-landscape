@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block main %}
-  <main class="w-100 mw9 outline mb0 ma1 pa1 center flex-grow flex flex-column justify-center">
+  <main class="w-100 mw9 outline mb0 ma1 pa2 center flex-grow flex flex-column justify-center">
     <form action="" method="post" class="flex flex-column w-100 mw7 center">
       {% csrf_token %}
     
@@ -40,7 +40,9 @@
     
       <section id="location-section" class="flex flex-row flex-wrap mv4">
       
-        <div id="location-auto-icon" class="w-100 w-50-ns h4 pa3 br-ns bw1 b--gray gray flex flex-column items-center justify-between">
+        <div id="text-preview" class="tc outline w-100 pa2 mv2 mb4 dark-gray"></div>
+      
+        <div id="location-auto-icon" class="w-100 w-50-ns h4 pa3 br-ns bw1 b--black gray flex flex-column items-center justify-between">
           <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label> 
           <div class="w-100 tc">
             <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting" onclick="getAutoPosition()"></i>
@@ -130,7 +132,10 @@
       $("#prev-tab-button").prop("disabled", (currentTab <= firstTab));
     }
     
-    function showNextTab() { showTab(Math.min(currentTab + 1, lastTab)); }
+    function showNextTab() { 
+        showTab(Math.min(currentTab + 1, lastTab));
+        $("#text-preview").text($(`textarea#{{ form.message.id_for_label }}`).val().trim());
+    }
     function showPrevTab() { showTab(currentTab = Math.max(currentTab - 1, 0)); }
   
     document.addEventListener('DOMContentLoaded', () => { showTab(0); });        

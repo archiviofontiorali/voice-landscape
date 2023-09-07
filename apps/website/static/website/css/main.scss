@@ -59,17 +59,28 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
 
 
 .canvas span {
-    /* Better solution only available in firefox */
-    //-webkit-text-stroke: 2px white;
-    //paint-order: stroke fill;
+  /* Better solution only available in firefox 
+      -webkit-text-stroke: 2px white;    
+      paint-order: stroke fill; */
   
-    $color: white;
+  $color: white;
+  text-shadow:
+     1px 1px 0 $color,
+   -1px -1px 0 $color,  
+    1px -1px 0 $color,
+    -1px 1px 0 $color,
+     1px 1px 0 $color;
+  
+  &:hover { 
+    //opacity: .8; 
+    $color: silver;
     text-shadow:
        1px 1px 0 $color,
      -1px -1px 0 $color,  
       1px -1px 0 $color,
       -1px 1px 0 $color,
        1px 1px 0 $color;
+  }    
 }
 
 #location-auto-icon svg{
@@ -92,4 +103,40 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
   animation-iteration-count: infinite;
   animation-duration: 1s;
   animation-direction: alternate;
+}
+
+.text-shadow {
+  $color: black;
+  text-shadow:
+       1px 1px 0 $color,
+     -1px -1px 0 $color,  
+      1px -1px 0 $color,
+      -1px 1px 0 $color,
+       1px 1px 0 $color;
+}
+
+#showcase {
+  /* Full HD 1920x1080 */ 
+  @media screen and (min-width: 1500px) {
+    h1, h2, p, figcaption { 
+      transform: scale(1.0);
+      //line-height: 100%;
+    }
+  } 
+  
+  /* 2K 2560x1440 */
+  @media screen and (min-width: 2000px) {
+    h1, h2, p, figcaption { 
+      transform: scale(1.28);
+      //line-height: 128%;
+    }
+  } 
+  
+  /* 4K 3840x2160 */
+  @media screen and (min-width: 3000px) {
+    h1, h2, p, figcaption { 
+      transform: scale(2);
+      //line-height: 192%;
+    }
+  }
 }

@@ -10,7 +10,7 @@ aiosignal==1.3.1
     # via aiohttp
 annotated-types==0.5.0
     # via pydantic
-anyio==3.7.1
+anyio==4.0.0
     # via jupyter-server
 argon2-cffi==23.1.0
     # via jupyter-server
@@ -20,7 +20,7 @@ arrow==1.2.3
     # via isoduration
 asgiref==3.7.2
     # via django
-asttokens==2.2.1
+asttokens==2.4.0
     # via stack-data
 async-lru==2.0.4
     # via jupyterlab
@@ -62,13 +62,13 @@ charset-normalizer==3.2.0
     #   requests
 click==8.1.7
     # via typer
-cmake==3.27.2
+cmake==3.27.4.1
     # via triton
 comm==0.1.4
     # via
     #   ipykernel
     #   ipywidgets
-confection==0.1.1
+confection==0.1.2
     # via thinc
 contourpy==1.1.0
     # via
@@ -89,7 +89,7 @@ defusedxml==0.7.1
     # via nbconvert
 dj-database-url==2.1.0
     # via voice-landscape (pyproject.toml)
-django==4.2.4
+django==4.2.5
     # via
     #   dj-database-url
     #   django-appconf
@@ -143,11 +143,11 @@ idna==3.4
     #   jsonschema
     #   requests
     #   yarl
-ipykernel==6.25.1
+ipykernel==6.25.2
     # via jupyterlab
 ipympl==0.9.3
     # via voice-landscape (pyproject.toml)
-ipython==8.14.0
+ipython==8.15.0
     # via
     #   ipykernel
     #   ipympl
@@ -203,7 +203,7 @@ jupyter-events==0.7.0
     # via jupyter-server
 jupyter-lsp==2.2.0
     # via jupyterlab
-jupyter-server==2.7.2
+jupyter-server==2.7.3
     # via
     #   jupyter-lsp
     #   jupyterlab
@@ -229,7 +229,7 @@ lit==16.0.6
     # via triton
 llvmlite==0.40.1
     # via numba
-loguru==0.7.0
+loguru==0.7.1
     # via voice-landscape (pyproject.toml)
 markupsafe==2.1.3
     # via
@@ -349,6 +349,7 @@ pillow==10.0.0
     #   bokeh
     #   ipympl
     #   matplotlib
+    #   voice-landscape (pyproject.toml)
 platformdirs==3.10.0
     # via jupyter-core
 preshed==3.0.8
@@ -397,7 +398,7 @@ python-decouple==3.8
     # via voice-landscape (pyproject.toml)
 python-json-logger==2.0.7
     # via jupyter-events
-pytz==2023.3
+pytz==2023.3.post1
     # via
     #   django-qr-code
     #   djangorestframework
@@ -436,7 +437,7 @@ rfc3986-validator==0.1.1
     #   jupyter-events
 rjsmin==1.2.1
     # via django-compressor
-rpds-py==0.10.0
+rpds-py==0.10.2
     # via
     #   jsonschema
     #   referencing
@@ -460,7 +461,7 @@ sniffio==1.3.0
     # via anyio
 soundfile==0.12.1
     # via voice-landscape (pyproject.toml)
-soupsieve==2.4.1
+soupsieve==2.5
     # via beautifulsoup4
 spacy==3.6.1
     # via voice-landscape (pyproject.toml)

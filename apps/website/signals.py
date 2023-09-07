@@ -38,7 +38,7 @@ def on_share_creation_update_frequencies(
         .first()
     )
 
-    logger.info(
+    logger.debug(
         f"Receive share near [{place}], update WordFrequency "
         f"(message: {instance.message})"
     )
