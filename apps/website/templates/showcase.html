@@ -16,7 +16,7 @@
 {% block main %}
   <main id="showcase" class="flex flex-row">
   <section id="description" 
-           class="outline w-third tc pa2 mr1 tc flex flex-column justify-between items-center">
+           class="outline w-third tc mr1 flex flex-column justify-around items-center">
     <h1 class="f1 ttu measure-wide">Paesaggio di Voci</h1>
     <p class="f3 mid-gray ttu measure-narrow">
       Come percepisci lo spazio?<br>
@@ -24,24 +24,23 @@
     </p>
     
     <p class="b f3 lh-copy ttu measure-narrow">Partecipa anche tu all'esperimento collettivo</p>
-    <p class="b f2">{{ landscape.domain|default:domain }}</p>  
+    <p class="b f2 measure">{{ landscape.domain|default:domain }}</p>  
     
     {# <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}"> #}
 
-    
-    <section class="flex justify-around flex-wrap">
+    <section id="logos-description" class="flex justify-center flex-wrap">
       {% if landscape.logo_event %}
-      <figure>
+      <figure class="w-third tc">
         <figcaption>In occasione di</figcaption>
-        <img class="ma2 h4 b" src="{{ landscape.logo_event.url }}" 
+        <img class="b mt2 w-100" src="{{ landscape.logo_event.url }}" 
              alt="{{ landscape.logo_event.name }}">
       </figure>
       {% endif %}
     
       {% if landscape.logo_organizer %}
-      <figure>
+      <figure class="w-third tc">
         <figcaption>Un progetto di</figcaption>
-        <img class="ma2 h4" src="{{ landscape.logo_organizer.url }}" 
+        <img class="b mt2 w-100" src="{{ landscape.logo_organizer.url }}" 
              alt="{{ landscape.logo_organizer.name }}">
       </figure>
       {% endif %}
@@ -50,7 +49,12 @@
       <p class="w-100">Rete del gruppo di lavoro</p>
     
       {% for logo in landscape.logo_partners.all %}
-        <img class="b h3 mh3 mv2" src="{{ logo.url }}" alt="{{ logo.name }}">
+      <figure class="w3 flex flex-center">
+        <img class="b" src="{{ logo.url }}" alt="{{ logo.name }}">
+      </figure>
+      <figure class="w3 flex flex-center">
+        <img class="b" src="{{ logo.url }}" alt="{{ logo.name }}">
+      </figure>
       {% endfor %}
       {% endif %}
     
