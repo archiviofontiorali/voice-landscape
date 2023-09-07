@@ -104,3 +104,13 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
   animation-duration: 1s;
   animation-direction: alternate;
 }
+
+.text-shadow {
+  $color: black;
+  text-shadow:
+       1px 1px 0 $color,
+     -1px -1px 0 $color,  
+      1px -1px 0 $color,
+      -1px 1px 0 $color,
+       1px 1px 0 $color;
+}
