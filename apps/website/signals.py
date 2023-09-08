@@ -44,9 +44,11 @@ def on_share_creation_update_frequencies(
     )
 
     for token in nlp(instance.message):
-        message = f"token {token} with pos ({token.pos}) '{spacy.explain(token.pos_)}'"
         if token.pos not in settings.SPACY_VALID_TOKENS:
-            logger.debug(f"Skip {message}")
+            logger.debug(
+                f"Skip token {token} with pos ({token.pos}) "
+                f"'{spacy.explain(token.pos_)}'"
+            )
             continue
 
         text = HTML_TAG_RE.sub("", token.lemma_).strip().lower()
@@ -62,6 +64,6 @@ def on_share_creation_update_frequencies(
         wf.save()
 
         if created:
-            logger.debug(f"Found {message}, create counter for {word}")
+            logger.debug(f"Create counter for {word}")
         else:
-            logger.debug(f"Found {message}, increment counter for {word}")
+            logger.debug(f"Increment counter for {word}")
