@@ -41,7 +41,7 @@ if DOMAIN not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(DOMAIN)
 
 CORS_ALLOWED_ORIGINS = [
-    f"https://${DOMAIN}",
+    f"https://{DOMAIN}",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
