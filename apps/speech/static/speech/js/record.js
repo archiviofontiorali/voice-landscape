@@ -5,6 +5,13 @@ class AudioRecorderError extends Error {
   }
 }
 
+class AlreadyRecordingError extends AudioRecorderError {
+  constructor(message) {
+    super(message);
+    this.name = "AlreadyRecordingError";
+  }
+}
+
 class UnavailableUserMediaError extends AudioRecorderError {
   constructor(message) {
     super(message);
@@ -45,22 +52,40 @@ class AudioRecorder {
         this.chunks = [];
     }
     
-    async getUserMedia() {
+    async getMediaStream() {
         // if (!window.navigator.mediaDevices)          
         //     return getLegacyUserMedia(constraints);
         return window.navigator.mediaDevices.getUserMedia(this.constraints);
     }
     
-    async start(onBlobReady) {
-        let stream = await this.getUserMedia();
-        
-        this.recorder = new MediaRecorder(stream, this.options);
-        this.recorder.ondataavailable = (event) => this.chunks.push(event.data)
-        this.recorder.onstop = () => {
+    async getMediaRecorder(onBlobReady) {
+        const stream = await  this.getMediaStream();
+        const recorder = new MediaRecorder(stream, this.options);
+        recorder.ondataavailable = (event) => this.chunks.push(event.data)
+        recorder.onstop = async () => {
             let blob = new Blob(this.chunks, {type: 'audio/ogg;codecs=opus'});
-            onBlobReady(blob);
+            await onBlobReady(blob);            
+            this.closeMediaRecorder();
         }
+        return recorder
+    }
+    
+    closeMediaStream() {
+        if (this.recorder)
+            this.recorder.stream.getTracks().forEach(track => track.stop())
+    }
+    
+    closeMediaRecorder() {
+        this.closeMediaStream();
+        this.chunks = [];
+        this.recorder = null;
+    }
+    
+    async start(onBlobReady) {
+        if (this.recorder && this.recorder.state === "recording")
+            throw new AlreadyRecordingError()
         
+        this.recorder = await this.getMediaRecorder(onBlobReady);
         this.recorder.start();
     }
     
