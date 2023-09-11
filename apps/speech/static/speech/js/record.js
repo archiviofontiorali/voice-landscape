@@ -99,64 +99,74 @@ class AudioRecorder {
 }
 
 
-class RecordWidget {
-    constructor(recordElement, stopElement, textElement) { 
-        this.recordElement = $(recordElement);
-        this.stopElement = $(stopElement);
-        this.textElement = $(textElement);        
+class RecordWidget {    
+    constructor(recordButton, stopButton, waitButton, textElement, recorder) { 
+        this.recordButton = $(recordButton);
+        this.stopButton = $(stopButton);
+        this.waitButton = $(waitButton);
+        this.textElement = $(textElement);
+        
+        this.recorder = recorder;
+        this.timeout = null;
+        
+        this.recordButton.click(() => this.start());
+        this.stopButton.click(() => this.stop());
     }
     
     setText(text) { this.textElement.val(text); }
     
     setDefault() {
-        this.stopElement.addClass('dn').removeClass('flex');
-        this.recordElement.addClass('flex').removeClass('dn animated');
+        this.recordButton.addClass('flex').removeClass('dn');
+        this.stopButton.addClass('dn').removeClass('flex');
+        this.waitButton.addClass('dn').removeClass('flex');
     }
     
     setRecording() {
-        this.recordElement.addClass('dn').removeClass('flex');
-        this.stopElement.addClass('flex').removeClass('dn');
+        this.recordButton.addClass('dn').removeClass('flex');
+        this.stopButton.addClass('flex').removeClass('dn');
+        this.waitButton.addClass('dn').removeClass('flex');
     }
     
     setWaiting() {
-        this.stopElement.addClass('dn').removeClass('flex');
-        this.recordElement.addClass('flex animated').removeClass('dn');
+        this.recordButton.addClass('dn').removeClass('flex');
+        this.stopButton.addClass('dn').removeClass('flex');
+        this.waitButton.addClass('flex').removeClass('dn');
+    }
+    
+    async sendAudio(blob, url, filename = "audio.ogg") {
+        let formData = new FormData();
+        formData.append("audio", blob, filename);
+        try {
+            let response =  await axios.post(url, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            this.setText(response.data.text);
+            this.setDefault();
+        }
+        catch (error) { 
+            throw new ServerResponseError(error.response.data.message) 
+        }    
+    }
+    
+    async start() {
+        await this.recorder.start(blob => this.sendAudio(blob, "/api/speech/stt", "audio.ogg"));
+        button.setRecording();
+        this.timeout = setTimeout(() => this.stop(), 30000);
+    }
+    
+    async stop() {
+        await this.recorder.stop();
+        button.setWaiting();
+        clearTimeout(this.timeout);
     }
 }
-
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
-const button = new RecordWidget('#record-button', '#stop-button', '#text-container > textarea');
-const recorder = new AudioRecorder('audio/ogg');
-
-
-async function sendAudio(blob, url, filename = "audio.ogg") {
-    let formData = new FormData();
-    formData.append("audio", blob, filename);
-    try {
-        let response =  await axios.post(url, formData, {headers: {'Content-Type': 'multipart/form-data'}})
-        button.setText(response.data.text);
-        button.setDefault();
-    } 
-    catch (error) { 
-        throw new ServerResponseError(error.response.data.message) 
-    }    
-}
-
-
-button.recordElement.click(
-    async () => {
-        await recorder.start(
-            blob => sendAudio(blob, "/api/speech/stt", "audio.ogg")
-        );
-        button.setRecording();
-    })
-
-button.stopElement.click(
-    async () => {
-        await recorder.stop();
-        button.setWaiting();
-    })
-
+const recorder = new AudioRecorder();
+const button = new RecordWidget(
+    $('#record-button'), 
+    $('#stop-button'),
+    $('#wait-button'),
+    $('#text-container > textarea'),
+    recorder
+);

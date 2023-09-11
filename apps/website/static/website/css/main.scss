@@ -92,17 +92,25 @@ $sizes: 1rem, 2rem, 4rem, 8rem, 16rem;
   &[data-state="error"] { color: red }
 }
 
-@keyframes color-animation {
-  from {color: white;}
-  to {color: DimGray;}
-}
+$animation-colors: ("red": rgb(255, 65, 54), "gray": DimGray);
 
-.animated {
-  background-color: DimGray;
-  animation-name: color-animation;
-  animation-iteration-count: infinite;
-  animation-duration: 1s;
-  animation-direction: alternate;
+@each $name, $color in $animation-colors {
+  @keyframes color-animation--#{$name} {
+    from {
+      color: white;
+    }
+    to {
+      color: $color;
+    }
+  }
+
+  .animated--#{$name} {
+    background-color: $color;
+    animation-name: color-animation--#{$name};
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-direction: alternate;
+  }
 }
 
 .text-shadow {
