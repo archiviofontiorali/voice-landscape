@@ -1,9 +1,1 @@
-{% if messages %}
-{% for message in messages %}  
-  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mv1 pa1 flex">
-    <div class="w-100 tc pl-2">{{ message }}</div>
-    <a class="alert-close-button w2 tc pointer dark-gray" 
-       aria-label="Close ${kind} alert box" onclick="closeAlert(this)">×</a>
-  </div>
-{% endfor %}  
-{% endif %}
+<section id="alert-list" class="flex flex-column"></section>

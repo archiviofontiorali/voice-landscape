@@ -33,6 +33,7 @@ SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+HTTPS = config("HTTPS", default=True, cast=bool)
 
 DOMAIN = config("DOMAIN")
 
@@ -47,7 +48,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-if DEBUG is False:
+if HTTPS is True and DEBUG is False:
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 300
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
     "jazzmin",
     "apps.speech.apps.SpeechConfig",
     "apps.website.apps.WebsiteConfig",
+    "apps.showcase.apps.ShowcaseConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -94,7 +96,9 @@ ROOT_URLCONF = "admin.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

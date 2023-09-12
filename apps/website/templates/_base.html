@@ -22,23 +22,21 @@
 <body class="flex flex-column min-vh-100 open-sans pa2">
   
   {% block header %}
-    <header class="w-100 outline center mt0 ma1">{% include "_header.html" %}</header>
+    <header class="w-100 outline mb1">{% include "_header.html" %}</header>
   {% endblock %}
   
-  {% block alert %}
-    <header id="alert-box" class="w-100 center mh1">{% include "_alerts.html" %}</header>
+  {% block alerts %}
+    <header id="alert-box" class="w-100">{% include "_alerts.html" %}</header>
   {% endblock %}
 
   {% block main %}
-    <main class="w-100 outline mb0 ma1 pa1 center flex-grow">
+    <main class="w-100 outline mv1 flex-grow flex flex-center">
       {% block contents %}{% endblock %}
     </main>  
   {% endblock %}
 
   {% block footer %}
-    <footer class="w-100 outline mt2 mb0 mh1 center">
-      {% include "_footer.html" %}
-    </footer>
+    <footer class="w-100 outline mt1">{% include "_footer.html" %}</footer>
   {% endblock %}
 
   {% include "_scripts.html" %}

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.shortcuts import HttpResponse, get_object_or_404, redirect
@@ -16,8 +15,10 @@ class LandscapeTemplateView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         slug = context.setdefault("slug", None)
-        context.setdefault("landscape", self.get_landscape(slug))
+        context["landscape"] = self.get_landscape(slug)
+
         return context
 
 
@@ -31,7 +32,11 @@ class LandscapeMapPage(LandscapeTemplateView):
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault("zoom", landscape.zoom)
         context.setdefault(
-            "provider", {"url": landscape.provider.url, "name": landscape.provider.name}
+            "provider",
+            {
+                "url": landscape.provider.url,
+                "name": landscape.provider.name,
+            },
         )
 
         return context
@@ -60,9 +65,7 @@ class SharePage(LandscapeTemplateView):
                 message=message, location=location, landscape=landscape
             )
             share.save()
-            messages.add_message(
-                request, messages.SUCCESS, _("Grazie per la condivisione")
-            )
+            messages.success(request, _("Grazie per la condivisione"))
             return redirect("map", slug=landscape.slug)
 
         context = self.get_context_data(form=form)
@@ -92,18 +95,6 @@ class MapPage(LandscapeMapPage):
                 for place in landscape.places.all()
             ],
         )
-        return context
-
-
-class ShowcasePage(MapPage):
-    template_name = "showcase.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        reload_time = self.request.GET.get("reload", context["landscape"].reload_time)
-        context.setdefault("reload", reload_time)
-        context.setdefault("domain", settings.DOMAIN)
-        context.setdefault("qr_url", f"https://{settings.DOMAIN}")
         return context
 
 
