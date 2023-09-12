@@ -1,6 +1,13 @@
 {% extends "_base.html" %}
 
 {% load static %}
+{% load sass_tags %}
+
+{% block stylesheet %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% sass_src 'css/website/map.scss' %}">
+{% endblock %}
+
 
 {% block main %}
   <main class="w-100 outline mv1 flex-grow 
