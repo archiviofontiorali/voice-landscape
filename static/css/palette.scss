@@ -1,0 +1,31 @@
+/* Color palette */ 
+
+$black: black;
+$white: white;
+
+$palette-primary: $black;
+
+$palette-alert-success: DarkGreen;
+$palette-alert-error: DarkRed;
+$palette-alert-warning: DarkOrange;
+$palette-alert-info: inherit;
+$palette-alert-debug: Gray;
+
+$palette: (
+        black: $black,
+        white: $white,
+        
+        primary: $black,
+        
+        alert-success: $palette-alert-success,
+        alert-error: $palette-alert-error, 
+        alert-warning: $palette-alert-warning, 
+        alert-info: $palette-alert-info, 
+        alert-debug: $palette-alert-debug
+);
+
+:root {
+  @each $key, $color in $palette {
+    --palette-#{key}: $color  
+  }  
+}
