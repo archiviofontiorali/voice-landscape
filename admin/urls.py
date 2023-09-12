@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path("", include("apps.website.urls")),
     # Static pages
-    # path("info", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("info", TemplateView.as_view(template_name="info.html"), name="info"),
     path("privacy", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
     path(
         "robots.txt",

@@ -37,8 +37,7 @@
       }
     }
     document.addEventListener('DOMContentLoaded', () => 
-        new LeafletMap("map", {{ center }}, options)
-            .addWordClouds({{ places | safe }})
+        new LeafletMap("map", {{ center }}, options).addWordClouds({{ places | safe }})
     );
   </script>
 {% endblock %}
