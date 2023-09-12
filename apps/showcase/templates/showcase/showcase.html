@@ -4,7 +4,9 @@
 {% load static %}
 
 {% block custom_meta %}
+  {% if reload and reload > 0 %}
   <meta http-equiv="refresh" content="{{ reload }}" />
+  {% endif %}
 {% endblock %}
 
 

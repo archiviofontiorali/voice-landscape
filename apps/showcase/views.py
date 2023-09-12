@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.views.generic import TemplateView
 
 from ..website.views import MapPage
 
@@ -7,8 +6,15 @@ from ..website.views import MapPage
 class ReloadTemplateView(MapPage):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        reload_time = self.request.GET.get("reload", context["landscape"].reload_time)
-        context.setdefault("reload", reload_time)
+
+        # Reload time is set from landscape unless an int or keyword is passed in query
+        context.setdefault("reload", context["landscape"].reload_time)
+        if (reload := self.request.GET.get("reload")) and isinstance(reload, str):
+            if (reload := reload.strip()).isdigit():
+                context["reload"] = max(0, int(reload))
+            if reload.lower() in ("none", "disable", "false"):
+                context["reload"] = 0
+
         return context
 
 
