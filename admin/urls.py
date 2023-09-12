@@ -24,6 +24,10 @@ urlpatterns = [
     # Static pages
     # path("info", TemplateView.as_view(template_name="home.html"), name="home"),
     path("privacy", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+    ),
     # apps
     path("showcase/", include("apps.showcase.urls", namespace="showcase")),
     path("api/", include("apps.api.urls")),

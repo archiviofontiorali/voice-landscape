@@ -92,8 +92,3 @@ class MapPage(LandscapeMapPage):
             ],
         )
         return context
-
-
-def robots_txt(request):
-    lines = ["User-Agent: *"]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
