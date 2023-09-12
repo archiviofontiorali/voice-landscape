@@ -122,29 +122,3 @@ $animation-colors: ("red": rgb(255, 65, 54), "gray": DimGray);
       -1px 1px 0 $color,
        1px 1px 0 $color;
 }
-
-#showcase {
-  /* Full HD 1920x1080 */ 
-  @media screen and (min-width: 1500px) {
-    h1, h2, p, figcaption { 
-      transform: scale(1.0);
-      //line-height: 100%;
-    }
-  } 
-  
-  /* 2K 2560x1440 */
-  @media screen and (min-width: 2000px) {
-    h1, h2, p, figcaption { 
-      transform: scale(1.28);
-      //line-height: 128%;
-    }
-  } 
-  
-  /* 4K 3840x2160 */
-  @media screen and (min-width: 3000px) {
-    h1, h2, p, figcaption { 
-      transform: scale(2);
-      //line-height: 192%;
-    }
-  }
-}
