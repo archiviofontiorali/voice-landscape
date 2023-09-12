@@ -1,10 +1,11 @@
 from django.conf import settings
+from django.views.generic import TemplateView
 
 from ..website.views import MapPage
 
 
 class ShowcasePage(MapPage):
-    template_name = "showcase.html"
+    template_name = "showcase/showcase.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -13,3 +14,7 @@ class ShowcasePage(MapPage):
         context.setdefault("domain", settings.DOMAIN)
         context.setdefault("qr_url", f"https://{settings.DOMAIN}")
         return context
+
+
+class ShowcasePageImage(TemplateView):
+    pass
