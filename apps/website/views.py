@@ -94,10 +94,6 @@ class MapPage(LandscapeMapPage):
         return context
 
 
-class PrivacyPage(generic.TemplateView):
-    template_name = "privacy.html"
-
-
 def robots_txt(request):
     lines = ["User-Agent: *"]
     return HttpResponse("\n".join(lines), content_type="text/plain")
