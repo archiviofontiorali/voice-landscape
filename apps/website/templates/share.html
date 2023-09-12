@@ -26,8 +26,12 @@
            class="link flex flex-center w3 h3 white ma1 br4 bg-dark-gray">
           <i data-feather="mic" class="w2 h2"></i>
         </a>
+        <a id="wait-button" type="button" 
+           class="link dn flex-center w3 h3 white ma1 br4 animated--gray">
+          <i data-feather="more-horizontal" class="w2 h2"></i>
+        </a>
         <a id="stop-button" type="button" 
-           class="link dn flex-center w3 h3 white ma1 br4 bg-red">
+           class="link dn flex-center w3 h3 white ma1 br4 animated--red">
           <i data-feather="circle" class="w2 h2"></i>
         </a>  
         <a id="reset-button" type="button" 
@@ -35,7 +39,7 @@
            onclick="$('#{{ form.message.id_for_label }}').val(''); disableSubmit();">
           <i data-feather="trash-2" class="w2 h2"></i>
         </a>
-        
+
       </section>
     
       <section id="location-section" class="flex flex-row flex-wrap mv4">
@@ -221,7 +225,6 @@
   </script>
   
   <!-- recommended -->
-  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js" defer></script>
-  <script src="{% static 'website/js/record.js' %}" defer></script>
+  <script src="{% static 'speech/js/record.js' %}" defer></script>
   
 {% endblock %}

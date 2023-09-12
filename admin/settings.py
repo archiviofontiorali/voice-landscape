@@ -235,8 +235,8 @@ BLACKLIST_PATH = config("BLACKLIST_PATH", default=None)
 SPEECH_RECOGNITION_SERVICE = config("SPEECH_RECOGNITION_SERVICE")
 SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
 
-WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
 # See https://github.com/openai/whisper#available-models-and-languages
+WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
 WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
 
 

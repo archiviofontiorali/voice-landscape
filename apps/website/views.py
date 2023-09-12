@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
-from django.shortcuts import HttpResponse, get_object_or_404
+from django.shortcuts import HttpResponse, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.views import generic
 
@@ -63,6 +63,7 @@ class SharePage(LandscapeTemplateView):
             messages.add_message(
                 request, messages.SUCCESS, _("Grazie per la condivisione")
             )
+            return redirect("map", slug=landscape.slug)
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
