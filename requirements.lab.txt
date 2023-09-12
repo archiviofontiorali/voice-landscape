@@ -137,8 +137,6 @@ future==0.18.3
     # via ffmpeg-python
 gunicorn==21.2.0
     # via voice-landscape (pyproject.toml)
-html2image==2.0.4.3
-    # via voice-landscape (pyproject.toml)
 idna==3.4
     # via
     #   anyio
@@ -217,7 +215,7 @@ jupyterlab==4.0.5
     # via voice-landscape (pyproject.toml)
 jupyterlab-pygments==0.2.2
     # via nbconvert
-jupyterlab-server==2.24.0
+jupyterlab-server==2.25.0
     # via jupyterlab
 jupyterlab-widgets==3.0.8
     # via ipywidgets
@@ -425,7 +423,6 @@ regex==2023.8.8
     # via tiktoken
 requests==2.31.0
     # via
-    #   html2image
     #   jupyterlab-server
     #   spacy
     #   speechrecognition
@@ -562,9 +559,7 @@ webencodings==0.5.1
     #   bleach
     #   tinycss2
 websocket-client==1.6.3
-    # via
-    #   html2image
-    #   jupyter-server
+    # via jupyter-server
 wheel==0.41.2
     # via
     #   nvidia-cublas-cu11

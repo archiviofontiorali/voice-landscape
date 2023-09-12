@@ -99,8 +99,6 @@ future==0.18.3
     # via ffmpeg-python
 gunicorn==21.2.0
     # via voice-landscape (pyproject.toml)
-html2image==2.0.4.3
-    # via voice-landscape (pyproject.toml)
 idna==3.4
     # via
     #   requests
@@ -254,7 +252,6 @@ regex==2023.8.8
     # via tiktoken
 requests==2.31.0
     # via
-    #   html2image
     #   spacy
     #   speechrecognition
     #   tiktoken
@@ -329,8 +326,6 @@ wasabi==1.1.2
     #   thinc
 wcwidth==0.2.6
     # via prompt-toolkit
-websocket-client==1.6.3
-    # via html2image
 wheel==0.41.2
     # via
     #   nvidia-cublas-cu11
