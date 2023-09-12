@@ -6,5 +6,5 @@ from . import views
 app_name = "showcase"
 urlpatterns = [
     path("", views.ShowcasePage.as_view(), name="view"),
-    path("<slug:slug>", views.ShowcasePage.as_view(), name="view"),
+    path("<slug:slug>", views.ShowcasePage.as_view()),
 ]
