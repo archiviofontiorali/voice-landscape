@@ -20,9 +20,13 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("apps.website.urls")),
+    # Static pages
+    # path("info", TemplateView.as_view(template_name="home.html"), name="home"),
+    # apps
     path("showcase/", include("apps.showcase.urls", namespace="showcase")),
     path("api/", include("apps.api.urls")),
     path("api/speech/", include("apps.speech.urls")),
+    # Third party libraries
     path("admin/", admin.site.urls),
     path("qr_code/", include("qr_code.urls", namespace="qr_code")),
 ]

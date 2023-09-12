@@ -42,10 +42,6 @@ class LandscapeMapPage(LandscapeTemplateView):
         return context
 
 
-class HomePage(generic.TemplateView):
-    template_name = "home.html"
-
-
 class SharePage(LandscapeTemplateView):
     template_name = "share.html"
 
