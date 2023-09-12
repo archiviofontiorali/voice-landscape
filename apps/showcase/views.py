@@ -1,19 +1,34 @@
 from django.conf import settings
+from django.contrib import messages
+from django.shortcuts import reverse
+from django.utils.translation import gettext as _
+from playwright.sync_api import sync_playwright
 
 from ..website.views import MapPage
 
 
 class ReloadTemplateView(MapPage):
+    def get_reload_from_query(self) -> int | None:
+        """Get Reload Time from GET query, convert to int if possible or return None"""
+        if (reload := self.request.GET.get("reload")) is None:
+            return
+
+        if isinstance(reload, int):
+            return max(0, reload)
+
+        if isinstance(reload, str):
+            if (reload := reload.strip()).isdigit():
+                return int(reload)
+            if reload.lower() in ("none", "disable", "false"):
+                return 0
+
+        messages.error(self.request, _("Invalid reload value, use default"))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Reload time is set from landscape unless an int or keyword is passed in query
         context.setdefault("reload", context["landscape"].reload_time)
-        if (reload := self.request.GET.get("reload")) and isinstance(reload, str):
-            if (reload := reload.strip()).isdigit():
-                context["reload"] = max(0, int(reload))
-            if reload.lower() in ("none", "disable", "false"):
-                context["reload"] = 0
+        if reload := self.get_reload_from_query():
+            context["reload"] = reload
 
         return context
 
