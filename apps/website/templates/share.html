@@ -168,6 +168,7 @@
     const inputLatitude = "input#{{ form.latitude.id_for_label }}";
     const inputLongitude = "input#{{ form.longitude.id_for_label }}";
     const locationIcon = "#location-auto-icon svg";
+    const messageBox = "textarea#{{ form.message.id_for_label }}";
       
     /** Set coordinates inside respective input tags and display value for user */
     function setCoordinates(coords, title='') {
@@ -179,7 +180,8 @@
       $('#location-display-coordinates').text(coords.as_string);
       $('#location-display-title').text(title);
       
-      enableSubmit();
+      if ($(messageBox).val())
+          enableSubmit();
     }
     
     /** Unset coordinates from input tags and display */
@@ -189,6 +191,8 @@
       $('#location-display-coordinates').text('');
       $('#location-display-title').text('');
       $("input#submit-button").prop("disabled", true);
+      
+      disableSubmit();
     }
     
     function disableIcon(element) { 
