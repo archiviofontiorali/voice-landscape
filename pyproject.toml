@@ -20,6 +20,7 @@ dependencies = [
     "django-sass-processor",
     "dj-database-url",
     "gunicorn",
+    "html2image",
     "libsass",
     "loguru",
     "openai-whisper",
