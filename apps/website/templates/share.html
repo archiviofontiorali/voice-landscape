@@ -140,18 +140,17 @@
       $("#prev-tab-button").prop("disabled", (currentTab <= firstTab));
     }
     
-    function showNextTab() { 
+    function showNextTab() {
         showTab(Math.min(currentTab + 1, lastTab));
         $("#text-preview").text($(`textarea#{{ form.message.id_for_label }}`).val().trim());
+        enableSubmit();
     }
-    function showPrevTab() { showTab(currentTab = Math.max(currentTab - 1, 0)); }
+    function showPrevTab() { 
+        showTab(currentTab = Math.max(currentTab - 1, 0));
+        disableSubmit();
+    }
   
     document.addEventListener('DOMContentLoaded', () => { showTab(0); });        
-  </script>
-  
-  <script defer>
-    function enableSubmit() { $("input#submit-button").prop("disabled", false); }
-    function disableSubmit() { $("input#submit-button").prop("disabled", true); }  
   </script>
 
   <script defer>  
@@ -167,8 +166,16 @@
     
     const inputLatitude = "input#{{ form.latitude.id_for_label }}";
     const inputLongitude = "input#{{ form.longitude.id_for_label }}";
+    const inputMessage = "textarea#{{ form.message.id_for_label }}";
     const locationIcon = "#location-auto-icon svg";
-    const messageBox = "textarea#{{ form.message.id_for_label }}";
+    
+    function enableSubmit() {
+        if ($(inputMessage).val() && $(inputLatitude).val() && $(inputLongitude).val())
+            $("input#submit-button").prop("disabled", false);
+    }
+    function disableSubmit() { 
+        $("input#submit-button").prop("disabled", true); 
+    } 
       
     /** Set coordinates inside respective input tags and display value for user */
     function setCoordinates(coords, title='') {
@@ -180,8 +187,7 @@
       $('#location-display-coordinates').text(coords.as_string);
       $('#location-display-title').text(title);
       
-      if ($(messageBox).val())
-          enableSubmit();
+      enableSubmit();
     }
     
     /** Unset coordinates from input tags and display */
