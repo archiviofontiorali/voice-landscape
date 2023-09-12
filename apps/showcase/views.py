@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import reverse
 from django.utils.translation import gettext as _
-from playwright.sync_api import sync_playwright
 
 from ..website.views import MapPage
 
@@ -41,7 +39,3 @@ class ShowcasePage(ReloadTemplateView):
         context.setdefault("domain", settings.DOMAIN)
         context.setdefault("qr_url", f"https://{settings.DOMAIN}")
         return context
-
-
-class ShowcasePageImage(TemplateView):
-    pass

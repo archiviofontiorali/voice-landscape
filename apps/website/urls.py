@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path("", views.HomePage.as_view(), name="home"),
-    path("map", views.MapPage.as_view(), name="map"),
+    path("map/", views.MapPage.as_view(), name="map"),
     path("map/<slug:slug>", views.MapPage.as_view(), name="map"),
     path("share", views.SharePage.as_view(), name="share"),
     path("share/<slug:slug>", views.SharePage.as_view(), name="share"),
