@@ -1,6 +1,13 @@
 {% extends "_base.html" %}
 
 {% load static %}
+{% load sass_tags %}
+
+{% block stylesheet %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% sass_src 'css/website/map.scss' %}">
+{% endblock %}
+
 
 {% block contents %}
   <div id="map" style="width: 100%; height: calc(100vh - 4rem - 2.5rem)"></div>
