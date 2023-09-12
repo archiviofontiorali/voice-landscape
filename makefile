@@ -11,7 +11,6 @@ sgr0 := '\033[0m'
 
 HOST?=localhost
 PORT?=8000
-DEBUG?=1
 
 
 .PHONY: bootstrap clean venv requirements develop develop-lab production
@@ -51,7 +50,7 @@ production:
 .PHONY: lab serve test shell 
 
 serve:
-	@DEBUG=$(DEBUG) $(django) runserver $(HOST):$(PORT)
+	@$(django) runserver $(HOST):$(PORT)
 
 lab:
 	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
