@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "jazzmin",
     "apps.speech.apps.SpeechConfig",
     "apps.website.apps.WebsiteConfig",
+    "apps.showcase.apps.ShowcaseConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
