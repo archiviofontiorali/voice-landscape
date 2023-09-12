@@ -16,8 +16,8 @@ class LandscapeTemplateView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["slug"] = kwargs.pop("slug", None)
-        context["landscape"] = self.get_landscape(context["slug"])
+        slug = context.setdefault("slug", None)
+        context.setdefault("landscape", self.get_landscape(slug))
         return context
 
 
