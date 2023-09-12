@@ -11,13 +11,14 @@
 
 
 {% block header %}{% endblock %}
+{% block alerts %}{% endblock %}
 {% block footer %}{% endblock %}
 
 
 {% block main %}
-  <main id="showcase" class="flex flex-row">
+<main id="showcase" class="w-100 flex-grow flex flex-row">
   <section id="description" 
-           class="outline w-third tc mr1 flex flex-column justify-around items-center">
+           class="w-third tc mr1 pa2 flex flex-column justify-around items-center">
     <h1 class="f1 ttu measure-wide">Paesaggio di Voci</h1>
     <p class="f3 mid-gray ttu measure-narrow">
       Come percepisci lo spazio?<br>
@@ -60,8 +61,8 @@
     
   </section>
     
-  <section id="full-map" class="outline w-two-thirds pa1 ml1">
-    <div id="map" style="height: calc(100vh - .5rem - 1rem);"></div>  
+  <section id="full-map" class="w-two-thirds ml1 pa2">
+    <div id="map" style="height: 100%;"></div>  
   </section>
-  </main>
+</main>
 {% endblock %}
