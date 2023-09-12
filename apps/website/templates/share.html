@@ -3,17 +3,21 @@
 {% load static %}
 
 {% block main %}
-  <main class="w-100 mw9 outline mb0 ma1 pa2 center flex-grow flex flex-column justify-center">
-    <form action="" method="post" class="flex flex-column w-100 mw7 center">
+  <main class="w-100 outline mv1 flex-grow 
+               flex flex-column justify-start justify-center-ns items-center">
+    <form action="" method="post" 
+          class="flex flex-column flex-center w-100 measure-wide pa2">
       {% csrf_token %}
     
       {% for error in form.non_field_errors %}
         <span class="w-100 f6 red b">{{ error }}</span>
       {% endfor %}
     
-      <section id="message-section" class="flex flex-row flex-wrap justify-center items-center mv4">
-        <label for="{{ form.message.id_for_label }}" class="w-100 mb1">{{ form.message.label }}</label>
-        <div id="text-container"  class="w-100 flex flex-row flex-wrap">
+      <section id="message-section" class="w-100 flex flex-row flex-wrap justify-center">
+        <label for="{{ form.message.id_for_label }}" class="w-100 mt2 mb2 tc">
+          {{ form.message.label }}
+        </label>
+        <div id="text-container" class="w-100 flex flex-row flex-wrap">
           <textarea id="{{ form.message.id_for_label }}" name="{{ form.message.html_name }}"
                   rows="5" cols="10" placeholder="{{ form.message.help_text }}"
                   class="w-100" maxlength="500" required>{{ form.message.value | default:'' }}</textarea>
@@ -42,7 +46,7 @@
 
       </section>
     
-      <section id="location-section" class="flex flex-row flex-wrap mv4">
+      <section id="location-section" class="flex flex-row flex-wrap">
       
         <div id="text-preview" class="tc outline w-100 pa2 mv2 mb4 dark-gray"></div>
       
