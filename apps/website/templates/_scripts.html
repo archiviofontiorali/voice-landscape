@@ -5,7 +5,8 @@
 
 <script defer>
   function showAlert(message, kind="info") {
-    $("#alert-box").append(
+    console[kind](message)
+    $("#alert-box > #alert-list").append(
         `
           <div class="alert alert-${kind} mv1 pa1 flex">
             <div class="w-100 tc pl-2">${message}</div>
@@ -22,4 +23,14 @@
   function showDebugAlert(message) { showAlert(message, "debug") }
   
   function closeAlert(element) { element.parentNode.remove() }
+</script>
+
+<script defer>
+  {% if messages %}
+  document.addEventListener('DOMContentLoaded', () => { 
+      {% for message in messages %}
+      showAlert("{{ message }}", "{{ message.tags|default:'info' }}");
+      {% endfor %}  
+  });
+  {% endif %}
 </script>
