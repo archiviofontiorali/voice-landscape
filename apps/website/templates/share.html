@@ -20,7 +20,7 @@
         <span class="w-100 f6 red b">{{ error }}</span>
       {% endfor %}
     
-      <section id="message-section" class="w-100 flex flex-row flex-wrap justify-center">
+      <section id="message-section" class="widget-tab w-100 flex flex-row flex-wrap justify-center">
         <label for="{{ form.message.id_for_label }}" class="w-100 mt2 mb2 tc">
           {{ form.message.label }}
         </label>
@@ -46,21 +46,20 @@
           <i data-feather="circle" class="w2 h2"></i>
         </a>  
         <a id="reset-button" type="button" 
-           class="link flex flex-center w3 h3 white ma1 br4 bg-gray" 
-           onclick="$('#{{ form.message.id_for_label }}').val(''); disableSubmit();">
+           class="link flex flex-center w3 h3 white ma1 br4 bg-gray">
           <i data-feather="trash-2" class="w2 h2"></i>
         </a>
 
       </section>
     
-      <section id="location-section" class="flex flex-row flex-wrap">
+      <section id="location-section" class="widget-tab flex flex-row flex-wrap">
       
         <div id="text-preview" class="tc outline w-100 pa2 mv2 mb4 dark-gray"></div>
       
         <div id="location-auto-icon" class="w-100 w-50-ns h4 pa3 br-ns bw1 b--black gray flex flex-column items-center justify-between">
           <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label> 
           <div class="w-100 tc">
-            <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting" onclick="getAutoPosition()"></i>
+            <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting"></i>
           </div>
         </div>
         
@@ -71,7 +70,7 @@
             Seleziona un punto di interesse
           </label>
           <div class="h-100 flex flex-column justify-center">
-            <select name="place" id="place" class="" onchange="getPlacePosition(this.value)">
+            <select name="place" id="place" class="" _onchange="getPlacePosition(this.value)">
               <option selected></option>
               
               {% for place in places %}
@@ -111,9 +110,9 @@
       </section>
       
       <div id="share-section" class="w-100 flex flex-row justify-between items-center pa2">
-        <input id="prev-tab-button" type="button" class="pa1 grow" value="Indietro" onclick="showPrevTab()">
+        <input id="prev-tab-button" type="button" class="pa1 grow" value="Indietro">
         <input id="submit-button"   type="submit" class="pa1 grow" value="Partecipa!" disabled>
-        <input id="next-tab-button" type="button" class="pa1 grow" value="Avanti" onclick="showNextTab()">
+        <input id="next-tab-button" type="button" class="pa1 grow" value="Avanti">
       </div>
     </form>
   </main>
@@ -128,124 +127,25 @@
   </script>
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+  <script src="{% static 'js/website/share.js' %}"></script>
   
   <script defer>
-    let currentTab = firstTab = 0, lastTab = 1;
-  
-    function showTab(tabIndex = currentTab) {
-      currentTab = tabIndex;
-      setButtonsState();
-      $("form").children('section').each((index, tab) => {
-        $(tab)
-          .addClass((tabIndex === index) ? "flex" : "dn")
-          .removeClass((tabIndex === index) ? "dn" : "flex");
-      });
-    }
-    
-    function setButtonsState() {
-      $("#next-tab-button").prop("disabled", (currentTab >= lastTab));
-      $("#prev-tab-button").prop("disabled", (currentTab <= firstTab));
-    }
-    
-    function showNextTab() {
-        showTab(Math.min(currentTab + 1, lastTab));
-        $("#text-preview").text($(`textarea#{{ form.message.id_for_label }}`).val().trim());
-        enableSubmit();
-    }
-    function showPrevTab() { 
-        showTab(currentTab = Math.max(currentTab - 1, 0));
-        disableSubmit();
-    }
-  
-    document.addEventListener('DOMContentLoaded', () => { showTab(0); });        
-  </script>
-
-  <script defer>  
-    class Coordinates {
-      constructor(latitude, longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-      }
-      
-      get as_array() { return [this.latitude, this.longitude] }
-      get as_string() { return `(${this.latitude}, ${this.longitude})` }
-    }
-    
-    const inputLatitude = "input#{{ form.latitude.id_for_label }}";
-    const inputLongitude = "input#{{ form.longitude.id_for_label }}";
-    const inputMessage = "textarea#{{ form.message.id_for_label }}";
-    const locationIcon = "#location-auto-icon svg";
-    
-    function enableSubmit() {
-        if ($(inputMessage).val() && $(inputLatitude).val() && $(inputLongitude).val())
-            $("input#submit-button").prop("disabled", false);
-    }
-    function disableSubmit() { 
-        $("input#submit-button").prop("disabled", true); 
-    } 
-      
-    /** Set coordinates inside respective input tags and display value for user */
-    function setCoordinates(coords, title='') {
-      console.info(`Select coordinates ${coords.as_string}`, coords.as_array);
-      
-      $(inputLatitude).val(coords.latitude);
-      $(inputLongitude).val(coords.longitude);
-            
-      $('#location-display-coordinates').text(coords.as_string);
-      $('#location-display-title').text(title);
-      
-      enableSubmit();
-    }
-    
-    /** Unset coordinates from input tags and display */
-    function unsetCoordinates() {
-      $(inputLatitude).removeAttr("value");
-      $(inputLongitude).removeAttr("value");
-      $('#location-display-coordinates').text('');
-      $('#location-display-title').text('');
-      $("input#submit-button").prop("disabled", true);
-      
-      disableSubmit();
-    }
-    
-    function disableIcon(element) { 
-      element.attr("data-state", "disabled").removeAttr("onclick").removeClass("grow"); 
-    }
-    
-    function getAutoPosition() {
-      const icon = $(locationIcon);
-      
-      if (icon.attr("data-state") === "processing") { return }
-      icon.attr("data-state", "processing")
-      
-      if (!navigator.geolocation) { 
-        showErrorAlert("Geolocation is not supported by this browser.");
-        disableIcon(icon);
-        return;
-      }
-      
-      navigator.geolocation.getCurrentPosition(
-          position => {
-            let coords = new Coordinates(position.coords.latitude, position.coords.longitude); 
-            setCoordinates(coords);
-            icon.attr("data-state", "success");
-          },
-          error => { showErrorAlert(error); icon.attr("data-state", "error"); }
-      );
-    }
-    
-    function getPlacePosition(place_id) {      
-      if(place_id === "") { unsetCoordinates(); return }
-      
-      let option = $(`#location-place select#place option[value=${place_id}]`);
-      let coords = new Coordinates(option.data("latitude"), option.data("longitude"));
-      
-      setCoordinates(coords, option.text());
-      $(locationIcon).attr("data-state", "waiting")
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        new TabWidget(
+            $("#prev-tab-button"),
+            $("#next-tab-button"),
+        );
+        const widget = new ShareWidget(
+            $("input#{{ form.latitude.id_for_label }}"),
+            $("input#{{ form.longitude.id_for_label }}"),
+            $("textarea#{{ form.message.id_for_label }}"),
+            $("#text-preview")
+        );
+        
+        $(`section#message-section a#reset-button`).click(() => widget.resetMessage());
+    });
   </script>
   
-  <!-- recommended -->
   <script src="{% static 'js/speech/record.js' %}" defer></script>
   
 {% endblock %}
