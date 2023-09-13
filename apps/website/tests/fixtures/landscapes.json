@@ -1,0 +1,12 @@
+{
+  "LeafletProvider": [
+    {"title": "Stamen Toner Background", "name": "Stadia.StamenTonerBackground"},
+    {"title": "Stamen Toner (Basic)", "name": "Stadia.StamenToner"}
+  ],
+  "Landscape": [
+    {
+      "title": "demo",
+      "slug": "demo"
+    }
+  ]
+}
