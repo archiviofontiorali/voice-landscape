@@ -31,8 +31,12 @@ class TabWidget {
     showTab(index = this.current) {        
         this.current = ensureNumberRange(index, this.first, this.last);      
         
-        this.nextButton.prop("disabled", (this.current >= this.last));
-        this.prevButton.prop("disabled", (this.current <= this.first));
+        this.nextButton
+            .toggleClass("dn", this.current >= this.last)
+            .toggleClass("flex", this.current < this.last);
+        this.prevButton
+            .toggleClass("dn", this.current <= this.first)
+            .toggleClass("flex", this.current > this.first);
     
         $("form").children('section.widget-tab').each((index, tab) => {
             $(tab)
@@ -41,14 +45,11 @@ class TabWidget {
         });
     }
     
-    
     showNextTab() {
         this.showTab(Math.min(this.current + 1, this.last));       
-        // enableSubmit();
     }
     showPrevTab() { 
         this.showTab(Math.max(this.current - 1, 0));
-        // disableSubmit();
     }
 }
 
@@ -94,8 +95,8 @@ class ShareWidget {
         this.inputLatitude.val(coords.latitude);
         this.inputLongitude.val(coords.longitude);
         
-        $('#location-display-coordinates').text(coords.as_string);
-        $('#location-display-title').text(title); 
+        $('#location-display-coordinates').text(title ? '' : coords.as_string);
+        $('#location-display-title').text(title);
         
         this.enableSubmit();
     }
@@ -104,7 +105,7 @@ class ShareWidget {
     unsetCoordinates() {
         this.inputLatitude.removeAttr("value");
         this.inputLongitude.removeAttr("value");
-        $('#location-display-coordinates').text('');
+        $('#location-display-coordinates').html('&nbsp;');
         $('#location-display-title').text('');
         this.disableSubmit();
     }

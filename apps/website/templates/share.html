@@ -70,7 +70,7 @@
             Seleziona un punto di interesse
           </label>
           <div class="h-100 flex flex-column justify-center">
-            <select name="place" id="place" class="" _onchange="getPlacePosition(this.value)">
+            <select name="place" id="place" class="">
               <option selected></option>
               
               {% for place in places %}
@@ -82,19 +82,6 @@
               {% endfor %}
             </select>
           </div>
-        </div>
-      
-        <div id="location-display" class="gray w-100 tc mv2 pa2">
-          <p id="location-display-title"></p>
-          <p id="location-display-coordinates"></p>
-          
-          {% for error in form.latitude.errors %}
-            <p class="w-100 f6 red b">{{ error }}</p>
-          {% endfor %}
-          
-          {% for error in form.longitude.errors %}
-            <p class="w-100 f6 red b">{{ error }}</p>
-          {% endfor %}
         </div>
         
         <div hidden class="pa1 w-50-ns">
@@ -108,11 +95,30 @@
                  type=number step="any" class="w-100" required readonly>
         </div>
       </section>
+    
+      <div id="location-display" class="gray w-100 tc mv2 pa2">
+        <p id="location-display-title">&nbsp;</p>
+        <p id="location-display-coordinates"></p>
+        
+        {% for error in form.latitude.errors %}
+          <p class="w-100 f6 red b">{{ error }}</p>
+        {% endfor %}
+        
+        {% for error in form.longitude.errors %}
+          <p class="w-100 f6 red b">{{ error }}</p>
+        {% endfor %}
+      </div>
       
       <div id="share-section" class="w-100 flex flex-row justify-between items-center pa2">
-        <input id="prev-tab-button" type="button" class="pa1 grow" value="Indietro">
-        <input id="submit-button"   type="submit" class="pa1 grow" value="Partecipa!" disabled>
-        <input id="next-tab-button" type="button" class="pa1 grow" value="Avanti">
+        <a id="prev-tab-button" type="button" class="link dim flex flex-center w2 h2">
+          <i data-feather="arrow-left-circle" class="w2 h2"></i>
+        </a>
+        
+        <input id="submit-button" type="submit" class="pa1 grow" value="Partecipa!" disabled>
+        
+        <a id="next-tab-button" type="button" class="link dim flex flex-center w2 h2">
+          <i data-feather="arrow-right-circle" class="w2 h2"></i>
+        </a>
       </div>
     </form>
   </main>
@@ -132,8 +138,8 @@
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
         new TabWidget(
-            $("#prev-tab-button"),
-            $("#next-tab-button"),
+            $("#prev-tab-button > svg"),
+            $("#next-tab-button > svg"),
         );
         const widget = new ShareWidget(
             $("input#{{ form.latitude.id_for_label }}"),
