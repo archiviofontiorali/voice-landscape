@@ -17,12 +17,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path("", include("apps.website.urls")),
+    # Static pages
+    path("info", TemplateView.as_view(template_name="info.html"), name="info"),
+    path("privacy", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+    ),
+    # apps
     path("showcase/", include("apps.showcase.urls", namespace="showcase")),
     path("api/", include("apps.api.urls")),
     path("api/speech/", include("apps.speech.urls")),
+    # Third party libraries
     path("admin/", admin.site.urls),
     path("qr_code/", include("qr_code.urls", namespace="qr_code")),
 ]

@@ -1,12 +1,19 @@
 {% extends "map.html" %}
 
 {% load qr_code %}
+
+{% load sass_tags %}
 {% load static %}
 
 {% block custom_meta %}
   {% if reload and reload > 0 %}
   <meta http-equiv="refresh" content="{{ reload }}" />
   {% endif %}
+{% endblock %}
+
+{% block stylesheet %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% sass_src 'css/showcase/main.scss' %}">
 {% endblock %}
 
 
@@ -16,7 +23,7 @@
 
 
 {% block main %}
-<main id="showcase" class="w-100 flex-grow flex flex-row">
+<main class="w-100 flex-grow flex flex-row">
   <section id="description" 
            class="w-third tc mr1 pa2 flex flex-column justify-around items-center">
     <h1 class="f1 ttu measure-wide">Paesaggio di Voci</h1>

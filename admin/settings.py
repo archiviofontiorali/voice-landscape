@@ -166,20 +166,25 @@ USE_TZ = True
 STATIC_ROOT: Path = config("STATIC_ROOT", default=BASE_DIR / ".static")
 STATIC_URL = "static/"
 
-MEDIA_ROOT: Path = config("MEDIA_ROOT", default=BASE_DIR / ".media")
-MEDIA_URL = "media/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "sass_processor.finders.CssFinder",
 ]
+
+MEDIA_ROOT: Path = config("MEDIA_ROOT", default=BASE_DIR / ".media")
+MEDIA_URL = "media/"
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # Logging
 LOG_ROOT.mkdir(exist_ok=True)

@@ -42,10 +42,6 @@ class LandscapeMapPage(LandscapeTemplateView):
         return context
 
 
-class HomePage(generic.TemplateView):
-    template_name = "home.html"
-
-
 class SharePage(LandscapeTemplateView):
     template_name = "share.html"
 
@@ -66,7 +62,7 @@ class SharePage(LandscapeTemplateView):
             )
             share.save()
             messages.success(request, _("Grazie per la condivisione"))
-            return redirect("map", slug=landscape.slug)
+            return redirect("map_", slug=slug) if slug else redirect("map")
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -96,12 +92,3 @@ class MapPage(LandscapeMapPage):
             ],
         )
         return context
-
-
-class PrivacyPage(generic.TemplateView):
-    template_name = "privacy.html"
-
-
-def robots_txt(request):
-    lines = ["User-Agent: *"]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
