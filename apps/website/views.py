@@ -62,7 +62,7 @@ class SharePage(LandscapeTemplateView):
             )
             share.save()
             messages.success(request, _("Grazie per la condivisione"))
-            return redirect("map", slug=landscape.slug)
+            return redirect("map_", slug=slug) if slug else redirect("map")
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
