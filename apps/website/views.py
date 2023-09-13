@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.gis.geos import Point
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
@@ -8,16 +9,35 @@ from . import forms, models
 
 
 class LandscapeTemplateView(TemplateView):
-    def get_landscape(self, default: str = None):
-        if (slug := self.request.COOKIES.get("landscape", default)) is None:
-            return get_object_or_404(models.Landscape, default=True)
-        return get_object_or_404(models.Landscape, slug=slug)
+    @staticmethod
+    def get_default_landscape():
+        return get_object_or_404(models.Landscape, default=True)
+
+    def get_landscape(self):
+        if (slug := self.request.COOKIES.get("landscape")) is None:
+            return self.get_default_landscape()
+
+        landscape = get_object_or_404(models.Landscape, slug=slug)
+
+        if not landscape.default and not landscape.enabled:
+            landscape = self.get_default_landscape()
+
+        return landscape
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["landscape"] = self.get_landscape()
-        context["landscapes"] = models.Landscape.objects.values_list("slug", "title")
+        context["landscapes"] = models.Landscape.objects.filter(
+            Q(enabled=True) | Q(default=True)
+        ).values_list("slug", "title")
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        response = super().render_to_response(context, **response_kwargs)
+        response.set_cookie(
+            "landscape", context["landscape"].slug, path="/", samesite="Lax"
+        )
+        return response
 
 
 class MapTemplateView(LandscapeTemplateView):

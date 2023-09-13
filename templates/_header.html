@@ -6,7 +6,7 @@
   {% if landscapes and landscapes|length > 1 %}
   <label for="landscape-select"></label>
   <select id="landscape-select" name="landscape-select"
-          onchange="document.cookie = `landscape=${this.value}`; location.reload();">
+          onchange="document.cookie = `landscape=${this.value}; Path=/; Samesite=Lax`; location.reload();">
     {% for slug, title in landscapes %}
     <option value="{{ slug }}" {% if slug == landscape.slug %}selected{% endif %}>
       {{ title }}
