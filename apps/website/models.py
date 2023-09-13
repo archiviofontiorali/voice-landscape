@@ -6,6 +6,7 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Q, Sum
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from .fields import UniqueBooleanField
@@ -257,6 +258,10 @@ class Landscape(TitledModel, LocationModel):
     def set_centroid(self):
         self.location = self.centroid
         self.save()
+
+    @classmethod
+    def get_default(cls) -> "Landscape":
+        return get_object_or_404(cls, default=True)
 
     class Meta:
         constraints = [

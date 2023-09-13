@@ -9,18 +9,14 @@ from . import forms, models
 
 
 class LandscapeTemplateView(TemplateView):
-    @staticmethod
-    def get_default_landscape():
-        return get_object_or_404(models.Landscape, default=True)
-
     def get_landscape(self):
         if (slug := self.request.COOKIES.get("landscape")) is None:
-            return self.get_default_landscape()
+            return models.Landscape.get_default()
 
         landscape = get_object_or_404(models.Landscape, slug=slug)
 
         if not landscape.default and not landscape.enabled:
-            landscape = self.get_default_landscape()
+            landscape = models.Landscape.get_default()
 
         return landscape
 
