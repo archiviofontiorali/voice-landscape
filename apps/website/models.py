@@ -110,6 +110,9 @@ class Place(LocationModel):
         max_ = frequencies.aggregate(Max("frequency"))["frequency__max"]
         return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
 
+    def as_json(self):
+        return {"coordinates": self.coordinates, "frequencies": self.get_frequencies()}
+
     def __str__(self):
         if self.title:
             return self.title

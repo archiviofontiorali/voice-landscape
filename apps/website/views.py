@@ -7,17 +7,16 @@ from django.views.generic import TemplateView
 from . import forms, models
 
 
-    @staticmethod
-    def get_landscape(slug: str = None):
-        if slug is None:
 class LandscapeTemplateView(TemplateView):
+    def get_landscape(self, default: str = None):
+        if (slug := self.request.COOKIES.get("landscape", default)) is None:
             return get_object_or_404(models.Landscape, default=True)
         return get_object_or_404(models.Landscape, slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        slug = context.setdefault("slug", None)
-        context["landscape"] = self.get_landscape(slug)
+        context["landscape"] = self.get_landscape()
+        context["landscapes"] = models.Landscape.objects.values_list("slug", "title")
         return context
 
 
@@ -31,6 +30,9 @@ class MapTemplateView(LandscapeTemplateView):
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault("zoom", landscape.zoom)
         context.setdefault("provider", landscape.provider.as_json())
+        context.setdefault(
+            "places", [place.as_json() for place in context["landscape"].places.all()]
+        )
 
         return context
 
@@ -38,7 +40,7 @@ class MapTemplateView(LandscapeTemplateView):
 class Share(LandscapeTemplateView):
     template_name = "share.html"
 
-    def post(self, request, slug: str = None):
+    def post(self, request):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -48,14 +50,14 @@ class Share(LandscapeTemplateView):
             longitude = float(form.cleaned_data["longitude"])
             location = Point(x=longitude, y=latitude)
 
-            landscape = self.get_landscape(slug)
+            landscape = self.get_landscape()
 
             share = models.Share(
                 message=message, location=location, landscape=landscape
             )
             share.save()
             messages.success(request, _("Grazie per la condivisione"))
-            return redirect("map_", slug=slug) if slug else redirect("map")
+            return redirect("website:map")
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -69,15 +71,3 @@ class Share(LandscapeTemplateView):
 
 class Map(MapTemplateView):
     template_name = "map.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        places = [
-            {
-                "coordinates": place.coordinates,
-                "frequencies": place.get_frequencies(),
-            }
-            for place in context["landscape"].places.all()
-        ]
-        context.setdefault("places", places)
-        return context
