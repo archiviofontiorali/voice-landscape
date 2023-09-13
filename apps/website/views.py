@@ -10,15 +10,14 @@ from . import forms, models
 class LandscapeTemplateView(generic.TemplateView):
     @staticmethod
     def get_landscape(slug: str = None):
-        query = dict(slug=slug) if slug else dict(default=True)
-        return get_object_or_404(models.Landscape, **query)
+        if slug is None:
+            return get_object_or_404(models.Landscape, default=True)
+        return get_object_or_404(models.Landscape, slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         slug = context.setdefault("slug", None)
         context["landscape"] = self.get_landscape(slug)
-
         return context
 
 
@@ -26,18 +25,12 @@ class LandscapeMapPage(LandscapeTemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        landscape = context["landscape"]
+        landscape: models.Landscape = context["landscape"]
         centroid = landscape.centroid
 
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault("zoom", landscape.zoom)
-        context.setdefault(
-            "provider",
-            {
-                "url": landscape.provider.url,
-                "name": landscape.provider.name,
-            },
-        )
+        context.setdefault("provider", landscape.provider.as_json())
 
         return context
 
@@ -79,16 +72,12 @@ class MapPage(LandscapeMapPage):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        landscape = context["landscape"]
-        context.setdefault(
-            "places",
-            [
-                {
-                    "coordinates": place.coordinates,
-                    "frequencies": place.get_frequencies(),
-                }
-                for place in landscape.places.all()
-            ],
-        )
+        places = [
+            {
+                "coordinates": place.coordinates,
+                "frequencies": place.get_frequencies(),
+            }
+            for place in context["landscape"].places.all()
+        ]
+        context.setdefault("places", places)
         return context

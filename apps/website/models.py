@@ -1,7 +1,6 @@
 import random
 import textwrap
 
-from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
@@ -73,6 +72,9 @@ class LeafletProvider(TitledModel):
         blank=True,
         help_text=_("The url for a generic leaflet provider"),
     )
+
+    def as_json(self) -> dict:
+        return {"url": self.url, "name": self.name}
 
     class Meta:
         constraints = [
