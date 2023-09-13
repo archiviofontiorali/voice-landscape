@@ -194,10 +194,14 @@ class Landscape(TitledModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
     domain = models.URLField(
         blank=True,
-        help_text="The domain to show. Leave blank to use the default one set in .env",
+        help_text=_("Domain in showcase page. Leave blank to use the one in .env"),
     )
 
     default = UniqueBooleanField(default=False)
+    enabled = models.BooleanField(
+        default=True,
+        help_text=_("Set to False to hide it in views, unless is chosen as default"),
+    )
 
     places = models.ManyToManyField(Place, blank=True)
 
