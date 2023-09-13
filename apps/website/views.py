@@ -1,16 +1,16 @@
 from django.contrib import messages
 from django.contrib.gis.geos import Point
-from django.shortcuts import HttpResponse, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import gettext as _
-from django.views import generic
+from django.views.generic import TemplateView
 
 from . import forms, models
 
 
-class LandscapeTemplateView(generic.TemplateView):
     @staticmethod
     def get_landscape(slug: str = None):
         if slug is None:
+class LandscapeTemplateView(TemplateView):
             return get_object_or_404(models.Landscape, default=True)
         return get_object_or_404(models.Landscape, slug=slug)
 
@@ -21,7 +21,7 @@ class LandscapeTemplateView(generic.TemplateView):
         return context
 
 
-class LandscapeMapPage(LandscapeTemplateView):
+class MapTemplateView(LandscapeTemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -35,7 +35,7 @@ class LandscapeMapPage(LandscapeTemplateView):
         return context
 
 
-class SharePage(LandscapeTemplateView):
+class Share(LandscapeTemplateView):
     template_name = "share.html"
 
     def post(self, request, slug: str = None):
@@ -67,7 +67,7 @@ class SharePage(LandscapeTemplateView):
         return context
 
 
-class MapPage(LandscapeMapPage):
+class Map(MapTemplateView):
     template_name = "map.html"
 
     def get_context_data(self, **kwargs):
