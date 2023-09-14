@@ -24,6 +24,7 @@ dependencies = [
     "openai-whisper",
     "Pillow",
     "pydub",
+    "PyYAML",
     "psycopg2",
     "python-decouple",
     "soundfile",
