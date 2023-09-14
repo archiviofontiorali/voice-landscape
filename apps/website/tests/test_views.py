@@ -45,7 +45,8 @@ def test_landscape_cookie(client: Client, landscape):
 
     client.cookies.load({"landscape": "prova"})
     response = client.get(url)
-    assert response.status_code == 404
+    assert response.status_code == 200
+    assert response.cookies.get("landscape").value == landscape.slug
 
     other_landscape = models.Landscape.objects.create(
         title="test",
