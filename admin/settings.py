@@ -248,9 +248,8 @@ SPACY_VALID_TOKENS = (
 log_setting("SPACY_MODEL", SPACY_MODEL_NAME)
 
 
-DEFAULT_POINT_LATITUDE = config("DEFAULT_POINT_LATITUDE", 44.6488366, cast=float)
-DEFAULT_POINT_LONGITUDE = config("DEFAULT_POINT_LONGITUDE", 10.9200867, cast=float)
-DEFAULT_POINT = Point(x=DEFAULT_POINT_LONGITUDE, y=DEFAULT_POINT_LATITUDE)
+_lat, _lon = config("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
+DEFAULT_POINT = Point.from_ewkt(f"POINT({float(_lat)} {float(_lon)})")
 
 BLACKLIST_PATH = config("BLACKLIST_PATH", default=None)
 
