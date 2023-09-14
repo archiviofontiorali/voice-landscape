@@ -51,7 +51,6 @@ django==4.2.5
     #   django-cors-headers
     #   django-extensions
     #   django-jazzmin
-    #   django-qr-code
     #   djangorestframework
     #   voice-landscape (pyproject.toml)
 django-appconf==1.0.5
@@ -64,15 +63,13 @@ django-extensions==3.2.3
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
-django-qr-code==3.1.1
-    # via voice-landscape (pyproject.toml)
 django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
 djangorestframework==3.14.0
     # via voice-landscape (pyproject.toml)
 ffmpeg-python==0.2.0
     # via openai-whisper
-filelock==3.12.3
+filelock==3.12.4
     # via
     #   torch
     #   triton
@@ -175,7 +172,6 @@ pycparser==2.21
 pydantic==2.3.0
     # via
     #   confection
-    #   django-qr-code
     #   spacy
     #   thinc
 pydantic-core==2.6.3
@@ -185,9 +181,7 @@ pydub==0.25.1
 python-decouple==3.8
     # via voice-landscape (pyproject.toml)
 pytz==2023.3.post1
-    # via
-    #   django-qr-code
-    #   djangorestframework
+    # via djangorestframework
 rcssmin==1.1.1
     # via django-compressor
 regex==2023.8.8
@@ -199,8 +193,6 @@ requests==2.31.0
     #   tiktoken
 rjsmin==1.2.1
     # via django-compressor
-segno==1.5.2
-    # via django-qr-code
 smart-open==6.4.0
     # via
     #   pathy

@@ -36,7 +36,6 @@ urlpatterns = [
     ),
     # Third party libraries
     path("admin/", admin.site.urls),
-    path("qr_code/", include("qr_code.urls", namespace="qr_code")),
 ]
 
 if settings.DEBUG:

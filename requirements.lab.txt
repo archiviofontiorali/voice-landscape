@@ -81,7 +81,7 @@ cymem==2.0.7
     #   preshed
     #   spacy
     #   thinc
-debugpy==1.7.0
+debugpy==1.8.0
     # via ipykernel
 decorator==5.1.1
     # via ipython
@@ -96,7 +96,6 @@ django==4.2.5
     #   django-cors-headers
     #   django-extensions
     #   django-jazzmin
-    #   django-qr-code
     #   djangorestframework
     #   voice-landscape (pyproject.toml)
 django-appconf==1.0.5
@@ -109,8 +108,6 @@ django-extensions==3.2.3
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
-django-qr-code==3.1.1
-    # via voice-landscape (pyproject.toml)
 django-sass-processor==1.2.2
     # via voice-landscape (pyproject.toml)
 djangorestframework==3.14.0
@@ -121,7 +118,7 @@ fastjsonschema==2.18.0
     # via nbformat
 ffmpeg-python==0.2.0
     # via openai-whisper
-filelock==3.12.3
+filelock==3.12.4
     # via
     #   torch
     #   triton
@@ -154,7 +151,7 @@ ipython==8.15.0
     #   ipywidgets
 ipython-genutils==0.2.0
     # via ipympl
-ipywidgets==8.1.0
+ipywidgets==8.1.1
     # via
     #   ipympl
     #   jupyter-bokeh
@@ -217,7 +214,7 @@ jupyterlab-pygments==0.2.2
     # via nbconvert
 jupyterlab-server==2.25.0
     # via jupyterlab
-jupyterlab-widgets==3.0.8
+jupyterlab-widgets==3.0.9
     # via ipywidgets
 kiwisolver==1.4.5
     # via matplotlib
@@ -375,7 +372,6 @@ pycparser==2.21
 pydantic==2.3.0
     # via
     #   confection
-    #   django-qr-code
     #   spacy
     #   thinc
 pydantic-core==2.6.3
@@ -400,7 +396,6 @@ python-json-logger==2.0.7
     # via jupyter-events
 pytz==2023.3.post1
     # via
-    #   django-qr-code
     #   djangorestframework
     #   pandas
 pyyaml==6.0.1
@@ -437,14 +432,12 @@ rfc3986-validator==0.1.1
     #   jupyter-events
 rjsmin==1.2.1
     # via django-compressor
-rpds-py==0.10.2
+rpds-py==0.10.3
     # via
     #   jsonschema
     #   referencing
 seaborn==0.12.2
     # via voice-landscape (pyproject.toml)
-segno==1.5.2
-    # via django-qr-code
 send2trash==1.8.2
     # via jupyter-server
 six==1.16.0
@@ -509,7 +502,7 @@ tqdm==4.66.1
     #   openai-whisper
     #   spacy
     #   voice-landscape (pyproject.toml)
-traitlets==5.9.0
+traitlets==5.10.0
     # via
     #   comm
     #   ipykernel
@@ -568,7 +561,7 @@ wheel==0.41.2
     #   nvidia-curand-cu11
     #   nvidia-cusparse-cu11
     #   nvidia-nvtx-cu11
-widgetsnbextension==4.0.8
+widgetsnbextension==4.0.9
     # via ipywidgets
 xyzservices==2023.7.0
     # via bokeh

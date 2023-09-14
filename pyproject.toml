@@ -16,7 +16,6 @@ dependencies = [
     "django-cors-headers",
     "django-extensions",
     "django-jazzmin",
-    "django-qr-code",
     "django-sass-processor",
     "dj-database-url",
     "gunicorn",

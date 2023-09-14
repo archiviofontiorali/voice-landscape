@@ -86,7 +86,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.gis",
     "django_extensions",
-    "qr_code",
     "rest_framework",
     "sass_processor",
 ]
