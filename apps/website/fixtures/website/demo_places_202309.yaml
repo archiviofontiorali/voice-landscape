@@ -1,0 +1,54 @@
+- model: website.place
+  pk: 1
+  fields:
+    slug: piazza-grande
+    title: Piazza grande
+    location: POINT(10.925769934995675 44.64604494715581)
+- model: website.place
+  pk: 2
+  fields:
+    slug: piazza-xx-settembre
+    title: Tenda di Piazza XX settembre
+    location: POINT(10.925991012882683 44.645175653606806)
+- model: website.place
+  pk: 3
+  fields:
+    slug: palazzo-dei-musei
+    title: Palazzo dei musei
+    location: POINT(10.921232945071093 44.648241144816545)
+- model: website.place
+  pk: 4
+  fields:
+    slug: fondazione-san-carlo
+    title: Fondazione Collegio San Carlo
+    location: POINT(10.9273205 44.6455219)
+- model: website.place
+  pk: 5
+  fields:
+    slug: cortile-ex-ospedale-estense
+    title: Cortile - ex Ospedale Estense
+    location: POINT(10.920523216326746 44.64722973596359)
+- model: website.place
+  pk: 6
+  fields:
+    slug: palazzo-santa-margherita
+    title: Palazzo Santa Margherita
+    location: POINT(10.930545790694076 44.64740808451235)
+- model: website.place
+  pk: 7
+  fields:
+    slug: ago-ex-ospedale-santagostino
+    title: AGO Modena Fabbriche Culturali (ex Ospedale sant’Agostino)
+    location: POINT(10.921451507539578 44.648664326670456)
+- model: website.place
+  pk: 8
+  fields:
+    slug: gate-26a-via-carteria
+    title: Gate 26a (via Carteria)
+    location: POINT(10.92289037770161 44.64705937566317)
+- model: website.place
+  pk: 9
+  fields:
+    slug: studio-tape-via-carteria
+    title: Studio Tape (via Carteria)
+    location: POINT(10.922701808460056 44.646526633529696)
