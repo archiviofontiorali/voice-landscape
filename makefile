@@ -50,6 +50,7 @@ production:
 .PHONY: lab serve test shell 
 
 serve:
+	@$(django) runscript show_settings
 	@$(django) runserver $(HOST):$(PORT)
 
 lab:

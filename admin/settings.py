@@ -17,11 +17,6 @@ from decouple import config  # noqa
 from django.contrib.gis.geos import Point
 from loguru import logger
 
-
-def log_setting(name, *values):
-    logger.info(f"{name:>15}: " + " | ".join(map(str, values)))
-
-
 # Project paths
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
@@ -33,9 +28,6 @@ DATA_ROOT.mkdir(exist_ok=True)
 
 DOMAIN = config("DOMAIN")
 
-log_setting("BASE_DIR", BASE_DIR)
-log_setting("DOMAIN", DOMAIN)
-
 
 # WebApp settings
 
@@ -45,8 +37,6 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 HTTPS = config("HTTPS", default=True, cast=bool)
-
-log_setting("DEBUG | HTTPS", DEBUG, HTTPS)
 
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
@@ -136,8 +126,6 @@ DATABASES = {
         conn_health_checks=True,
     ),
 }
-
-log_setting("DATABASE_URL", DATABASE_URL)
 
 
 # Password validation
@@ -245,7 +233,6 @@ SPACY_VALID_TOKENS = (
     spacy.symbols.PROPN,  # Proper noun
     spacy.symbols.VERB,
 )
-log_setting("SPACY_MODEL", SPACY_MODEL_NAME)
 
 
 _lat, _lon = config("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
@@ -262,7 +249,3 @@ WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
 
 DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
 DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)
-
-log_setting("SPEECH_SERVICE", SPEECH_RECOGNITION_SERVICE)
-if SPEECH_RECOGNITION_SERVICE == "whisper":
-    log_setting("WHISPER", WHISPER_MODEL, WHISPER_LANGUAGE)
