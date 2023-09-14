@@ -114,5 +114,5 @@ db-flush:
 db-demo: db-flush superuser
 	@echo -e $(bold)Loading demo data$(sgr0)
 	@$(django) loaddata website/demo
-	@$(django) loaddata website/demo_places_202109
+	@$(django) loaddata website/demo_places_202309
 	@LOGURU_LEVEL=INFO $(django) runscript add_demo_shares

@@ -52,3 +52,97 @@
     slug: studio-tape-via-carteria
     title: Studio Tape (via Carteria)
     location: POINT(10.922701808460056 44.646526633529696)
+- model: website.place
+  pk: 10
+  fields:
+    slug: ammagamma
+    title: Ammagamma
+    location: POINT(10.929116399735001 44.65069028311637)
+- model: website.place
+  pk: 11
+  fields:
+    slug: complesso-san-filippo-neri
+    title: Complesso San Filippo Neri
+    location: POINT(10.928798720374242 44.6512594042537)
+- model: website.place
+  pk: 12
+  fields:
+    slug: complesso-san-paolo
+    title: Complesso San Paolo
+    location: POINT(10.92419156444088 44.643096944329784)
+- model: website.place
+  pk: 13
+  fields:
+    slug: musei-del-duomo-sito-unesco
+    title: Musei del Duomo - Sito Unesco
+    location: POINT(10.92580447466881 44.6466076470187)
+- model: website.place
+  pk: 14
+  fields:
+    slug: museo-universitario-gemma
+    title: Museo Universitario GEMMA
+    location: POINT(10.9240598 44.6467957)
+- model: website.place
+  pk: 15
+  fields:
+    slug: palazzo-carandini
+    title: Palazzo Carandini
+    location: POINT(10.92647993234104 44.64402345)
+- model: website.place
+  pk: 16
+  fields:
+    slug: piazza-matteotti
+    title: Piazza Matteotti
+    location: POINT(10.9250483 44.6474859)
+- model: website.place
+  pk: 17
+  fields:
+    slug: sala-truffaut
+    title: Sala Truffaut
+    location: POINT(10.9215313 44.6456653)
+- model: website.place
+  pk: 18
+  fields:
+    slug: centro-culturale-g-alberione
+    title: Centro Culturale G. Alberione
+    location: POINT(10.928500837531905 44.64939939303573)
+- model: website.place
+  pk: 19
+  fields:
+    slug: foro-boario
+    title: Foro Boario
+    location: POINT(10.921780186469656 44.64985277623567)
+- model: website.place
+  pk: 20
+  fields:
+    slug: galleria-d406
+    title: Galleria D406
+    location: POINT(10.923755244088488 44.6492108433394)
+- model: website.place
+  pk: 21
+  fields:
+    slug: pomposa
+    title: Pomposa
+    location: POINT(10.924445809895433 44.64906705)
+- model: website.place
+  pk: 22
+  fields:
+    slug: teatro-storchi
+    title: Teatro Storchi
+    location: POINT(10.931095069563618 44.6435209)
+- model: website.landscape
+  pk: 1
+  fields:
+    slug: festivalfilosofia-parola-2023
+    title: festivalfilosofia parola (2023)
+    description: "Festival della Filosofia 2023, Modena. Tema: parola"
+    location: "POINT(10.925137942399118 44.647206699693065)"
+    default: true
+    enabled: true
+    provider: 1
+    zoom_min: 14
+    zoom_initial: 17
+    zoom_max: 19
+    places: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+
+    
