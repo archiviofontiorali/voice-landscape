@@ -15,30 +15,30 @@
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-  <link rel="stylesheet" href="{% sass_src 'website/css/main.scss' %}">
+  <link rel="stylesheet" href="{% sass_src 'css/alerts.scss' %}">
+  <link rel="stylesheet" href="{% sass_src 'css/main.scss' %}">
+  {% block stylesheet %}{% endblock %}
 
-  <link rel="icon" type="image/x-icon" href="{% static 'website/favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
 </head>
-<body class="flex flex-column min-vh-100 open-sans pa2">
+<body class="flex flex-column min-vh-100 pa2">
   
   {% block header %}
-    <header class="w-100 outline center mt0 ma1">{% include "_header.html" %}</header>
+    <header class="w-100 outline mb1">{% include "_header.html" %}</header>
   {% endblock %}
   
-  {% block alert %}
-    <header id="alert-box" class="w-100 center mh1">{% include "_alerts.html" %}</header>
+  {% block alerts %}
+    <header id="alert-box" class="w-100">{% include "_alerts.html" %}</header>
   {% endblock %}
 
   {% block main %}
-    <main class="w-100 outline mb0 ma1 pa1 center flex-grow">
+    <main class="w-100 outline mv1 flex-grow flex flex-center">
       {% block contents %}{% endblock %}
     </main>  
   {% endblock %}
 
   {% block footer %}
-    <footer class="w-100 outline mt2 mb0 mh1 center">
-      {% include "_footer.html" %}
-    </footer>
+    <footer class="w-100 outline mt1">{% include "_footer.html" %}</footer>
   {% endblock %}
 
   {% include "_scripts.html" %}

@@ -153,7 +153,7 @@ It assumes you clone this repository inside your user folder inside a `git` fold
 Remember to change `<YOUR USER>` with your effective user
 
 ```shell
-$ sudo sh -c "sed 's/$USER/USER/' system/voice-landscape.service > /etc/nginx/sites-available/vl"
+$ sudo sh -c "sed 's/USER/$USER/' system/voice-landscape.service > /usr/lib/systemd/system/voice-landscape.service"
 $ sudo cp system/nginx.conf /etc/nginx/sites-available/nginx.conf
 ```
 

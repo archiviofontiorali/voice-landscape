@@ -15,9 +15,14 @@ import dj_database_url
 import spacy.symbols
 from decouple import config  # noqa
 from django.contrib.gis.geos import Point
+from loguru import logger
+
+
+def log_setting(name, *values):
+    logger.info(f"{name:>15}: " + " | ".join(map(str, values)))
+
 
 # Project paths
-
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 LOG_ROOT = BASE_DIR / ".log"
@@ -26,6 +31,12 @@ DATA_ROOT = BASE_DIR / ".data"
 LOG_ROOT.mkdir(exist_ok=True)
 DATA_ROOT.mkdir(exist_ok=True)
 
+DOMAIN = config("DOMAIN")
+
+log_setting("BASE_DIR", BASE_DIR)
+log_setting("DOMAIN", DOMAIN)
+
+
 # WebApp settings
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -33,8 +44,10 @@ SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+HTTPS = config("HTTPS", default=True, cast=bool)
 
-DOMAIN = config("DOMAIN")
+log_setting("DEBUG | HTTPS", DEBUG, HTTPS)
+
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
 if DOMAIN not in ALLOWED_HOSTS:
@@ -47,7 +60,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-if DEBUG is False:
+if HTTPS is True and DEBUG is False:
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 300
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -64,6 +77,7 @@ INSTALLED_APPS = [
     "jazzmin",
     "apps.speech.apps.SpeechConfig",
     "apps.website.apps.WebsiteConfig",
+    "apps.showcase.apps.ShowcaseConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -72,7 +86,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.gis",
     "django_extensions",
-    "qr_code",
     "rest_framework",
     "sass_processor",
 ]
@@ -94,7 +107,9 @@ ROOT_URLCONF = "admin.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -114,7 +129,6 @@ WSGI_APPLICATION = "admin.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASE_URL = config("DATABASE_URL", default=f"spatialite:///{BASE_DIR}/db.sqlite3")
-
 DATABASES = {
     "default": dj_database_url.parse(
         DATABASE_URL,
@@ -122,6 +136,8 @@ DATABASES = {
         conn_health_checks=True,
     ),
 }
+
+log_setting("DATABASE_URL", DATABASE_URL)
 
 
 # Password validation
@@ -162,20 +178,25 @@ USE_TZ = True
 STATIC_ROOT: Path = config("STATIC_ROOT", default=BASE_DIR / ".static")
 STATIC_URL = "static/"
 
-MEDIA_ROOT: Path = config("MEDIA_ROOT", default=BASE_DIR / ".media")
-MEDIA_URL = "media/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "sass_processor.finders.CssFinder",
 ]
+
+MEDIA_ROOT: Path = config("MEDIA_ROOT", default=BASE_DIR / ".media")
+MEDIA_URL = "media/"
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # Logging
 LOG_ROOT.mkdir(exist_ok=True)
@@ -224,6 +245,7 @@ SPACY_VALID_TOKENS = (
     spacy.symbols.PROPN,  # Proper noun
     spacy.symbols.VERB,
 )
+log_setting("SPACY_MODEL", SPACY_MODEL_NAME)
 
 
 DEFAULT_POINT_LATITUDE = config("DEFAULT_POINT_LATITUDE", 44.6488366, cast=float)
@@ -235,10 +257,13 @@ BLACKLIST_PATH = config("BLACKLIST_PATH", default=None)
 SPEECH_RECOGNITION_SERVICE = config("SPEECH_RECOGNITION_SERVICE")
 SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
 
-WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
 # See https://github.com/openai/whisper#available-models-and-languages
+WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
 WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
-
 
 DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
 DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)
+
+log_setting("SPEECH_SERVICE", SPEECH_RECOGNITION_SERVICE)
+if SPEECH_RECOGNITION_SERVICE == "whisper":
+    log_setting("WHISPER", WHISPER_MODEL, WHISPER_LANGUAGE)

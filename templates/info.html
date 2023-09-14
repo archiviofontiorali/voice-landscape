@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block contents %}
+  <article class="w-100 pa2 pa0-l f4 tj tc-ns flex 
+                  flex-column items-center 
+                  flex-row-l flex-wrap-l justify-center-l items-start-l">
+    
+    <h1 class="w-100 f1">Paesaggio di Voci</h1>
+    
+    <section class="measure ph3-l">
+      <p class="f3 tl tc-ns cit">Come percepisci lo <b>spazio</b>?</p>
+      <p class="f3 tl tc-ns cit">Quali <b>parole</b> emergono da questa percezione?</p>
+      <p class="f3 tl tc-ns cit">In che modo le nostre <b>voci</b> contribuiscono a creare lo spazio che abitiamo?</p>
+            
+      <p class="f4">
+        <b>Paesaggio di Voci</b> è un esperimento collettivo di raccolta e analisi su come
+        le nostre parole definiscono lo spazio e ci aiutano a descriverlo.
+      </p>
+      
+      <p class="f4">
+        Attraverso questa semplice <a href="{% url 'website:share' %}">applicazione web</a> chiunque
+        può partecipare all’esperimento, condividendo - sotto forma di tracce digitali 
+        testuali e audio - frammenti del proprio <i>paesaggio linguistico</i> (parole e 
+        frasi, affetti e significati).
+      </p>
+      
+      <p class="f4">
+        Le voci raccolte vengono elaborate e visualizzate all’interno di una 
+        <a href="{% url 'website:map' %}">mappa</a> interattiva, i cui risultati verranno 
+        discussi il 17 Settembre durante l’evento 
+        <a href="https://www.festivalfilosofia.it/index.php?mod=ff_eventi&id=25253">
+          La parola come racconto collettivo
+        </a>
+      </p>
+      
+    </section>
+  
+    <section class="measure ph3-l">
+      <h2>Come partecipare?</h2>
+      
+      <ul class="list pl0 ba b--silver">
+        <li class="pa1 ba b--silver">Entra nella sezione <a href="{% url 'website:share' %}">PARTECIPA</a></li>
+        <li class="pa1 ba b--silver">Scrivi o registra un messaggio</li>
+        <li class="pa1 ba b--silver">Rileva la tua posizione GPS (dovrai consentire l'accesso)</li>
+        <li class="pa1 ba b--silver">Invia la tua <b>voce</b></li>
+        <li class="pa1 ba b--silver">
+          Entra nella <a href="{% url 'website:map' %}">MAPPA</a> per vedere come cambia il paesaggio
+        </li>
+      </ul>
+      
+      <h2>Per saperne di più!</h2>
+      <p class="f4">
+        La prima installazione di <b>Paesaggio di Voci</b>, è stata proposta come nostro 
+        contributo al <b>Festival Filosofia 2021</b> (tema: libertà).
+      </p>
+      <p>      
+        Il 17 Dicembre 2022 Paesaggio di Voci è stato riproposto durante l'evento:
+        <a href="https://afor.dev/events/riuso-creativo-2022/">
+          Riuso Creativo degli Archivi di Fonti Orali
+        </a> in occasione della geo-esplorazione dei luoghi del villaggio artigiano di 
+        modena ovest.
+      </p>
+
+    </section>
+  </article>
+{% endblock %}

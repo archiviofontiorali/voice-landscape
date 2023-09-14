@@ -1,12 +1,12 @@
 import random
 import textwrap
 
-from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Q, Sum
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from .fields import UniqueBooleanField
@@ -74,6 +74,9 @@ class LeafletProvider(TitledModel):
         help_text=_("The url for a generic leaflet provider"),
     )
 
+    def as_json(self) -> dict:
+        return {"url": self.url, "name": self.name}
+
     class Meta:
         constraints = [
             models.CheckConstraint(
@@ -107,6 +110,9 @@ class Place(LocationModel):
         ).order_by("-frequency")[:50]
         max_ = frequencies.aggregate(Max("frequency"))["frequency__max"]
         return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
+
+    def as_json(self):
+        return {"coordinates": self.coordinates, "frequencies": self.get_frequencies()}
 
     def __str__(self):
         if self.title:
@@ -189,10 +195,14 @@ class Landscape(TitledModel, LocationModel):
     description = models.TextField(max_length=500, blank=True)
     domain = models.URLField(
         blank=True,
-        help_text="The domain to show. Leave blank to use the default one set in .env",
+        help_text=_("Domain in showcase page. Leave blank to use the one in .env"),
     )
 
     default = UniqueBooleanField(default=False)
+    enabled = models.BooleanField(
+        default=True,
+        help_text=_("Set to False to hide it in views, unless is chosen as default"),
+    )
 
     places = models.ManyToManyField(Place, blank=True)
 
@@ -248,6 +258,20 @@ class Landscape(TitledModel, LocationModel):
     def set_centroid(self):
         self.location = self.centroid
         self.save()
+
+    @classmethod
+    def get_default(cls) -> "Landscape":
+        return get_object_or_404(cls, default=True)
+
+    class VisibleLandscapeManager(models.Manager):
+        def get_queryset(self):
+            return super().get_queryset().filter(Q(enabled=True) | Q(default=True))
+
+        def get_default(self):
+            return self.get(default=True)
+
+    objects = models.Manager()
+    visible_objects = VisibleLandscapeManager()
 
     class Meta:
         constraints = [

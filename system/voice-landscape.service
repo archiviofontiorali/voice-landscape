@@ -6,7 +6,7 @@ After=network.target
 User=USER
 Group=USER
 WorkingDirectory=/home/USER/git/voice-landscape
-ExecStart=/home/USER/git/voice-landscape/.venv/bin/gunicorn --workers=3 --bind 127.0.0.1:8001 admin.wsgi --access-logfile "/home/USER/git/voice-landscape/.log/gunicorn.access.log" --error-logfile "/home/USER/git/voice-landscape/.log/gunicorn.error.log" --log-level info
+ExecStart=/home/USER/git/voice-landscape/.venv/bin/gunicorn --workers=3 --bind 127.0.0.1:8000 admin.wsgi --access-logfile "/home/USER/git/voice-landscape/.log/gunicorn.access.log" --error-logfile "/home/USER/git/voice-landscape/.log/gunicorn.error.log" --log-level info
 
 [Install]
 WantedBy=multi-user.target

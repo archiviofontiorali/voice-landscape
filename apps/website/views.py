@@ -1,50 +1,58 @@
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
-from django.shortcuts import HttpResponse, get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import gettext as _
-from django.views import generic
+from django.views.generic import TemplateView
 
 from . import forms, models
 
 
-class LandscapeTemplateView(generic.TemplateView):
-    @staticmethod
-    def get_landscape(slug: str = None):
-        query = dict(slug=slug) if slug else dict(default=True)
-        return get_object_or_404(models.Landscape, **query)
+class LandscapeTemplateView(TemplateView):
+    def get_landscape(self):
+        try:
+            slug = self.request.COOKIES.get("landscape")
+            return models.Landscape.visible_objects.get(slug=slug)
+        except ObjectDoesNotExist:
+            return get_object_or_404(models.Landscape.visible_objects, default=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["slug"] = kwargs.pop("slug", None)
-        context["landscape"] = self.get_landscape(context["slug"])
+        context["landscape"] = self.get_landscape()
+        context["landscapes"] = models.Landscape.visible_objects.values_list(
+            "slug", "title"
+        )
         return context
 
+    def render_to_response(self, context, **response_kwargs):
+        response = super().render_to_response(context, **response_kwargs)
+        response.set_cookie(
+            "landscape", context["landscape"].slug, path="/", samesite="Lax"
+        )
+        return response
 
-class LandscapeMapPage(LandscapeTemplateView):
+
+class MapTemplateView(LandscapeTemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        landscape = context["landscape"]
+        landscape: models.Landscape = context["landscape"]
         centroid = landscape.centroid
 
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault("zoom", landscape.zoom)
+        context.setdefault("provider", landscape.provider.as_json())
         context.setdefault(
-            "provider", {"url": landscape.provider.url, "name": landscape.provider.name}
+            "places", [place.as_json() for place in context["landscape"].places.all()]
         )
 
         return context
 
 
-class HomePage(generic.TemplateView):
-    template_name = "home.html"
-
-
-class SharePage(LandscapeTemplateView):
+class Share(LandscapeTemplateView):
     template_name = "share.html"
 
-    def post(self, request, slug: str = None):
+    def post(self, request):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -54,15 +62,14 @@ class SharePage(LandscapeTemplateView):
             longitude = float(form.cleaned_data["longitude"])
             location = Point(x=longitude, y=latitude)
 
-            landscape = self.get_landscape(slug)
+            landscape = self.get_landscape()
 
             share = models.Share(
                 message=message, location=location, landscape=landscape
             )
             share.save()
-            messages.add_message(
-                request, messages.SUCCESS, _("Grazie per la condivisione")
-            )
+            messages.success(request, _("Grazie per la condivisione"))
+            return redirect("website:map")
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -74,42 +81,5 @@ class SharePage(LandscapeTemplateView):
         return context
 
 
-class MapPage(LandscapeMapPage):
+class Map(MapTemplateView):
     template_name = "map.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        landscape = context["landscape"]
-        context.setdefault(
-            "places",
-            [
-                {
-                    "coordinates": place.coordinates,
-                    "frequencies": place.get_frequencies(),
-                }
-                for place in landscape.places.all()
-            ],
-        )
-        return context
-
-
-class ShowcasePage(MapPage):
-    template_name = "showcase.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        reload_time = self.request.GET.get("reload", context["landscape"].reload_time)
-        context.setdefault("reload", reload_time)
-        context.setdefault("domain", settings.DOMAIN)
-        context.setdefault("qr_url", f"https://{settings.DOMAIN}")
-        return context
-
-
-class PrivacyPage(generic.TemplateView):
-    template_name = "privacy.html"
-
-
-def robots_txt(request):
-    lines = ["User-Agent: *"]
-    return HttpResponse("\n".join(lines), content_type="text/plain")

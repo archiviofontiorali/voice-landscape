@@ -24,9 +24,13 @@ def timestamp(t: dt.datetime = None):
 
 
 def read_audio_to_bytes(path) -> io.BytesIO:
-    sound = pydub.AudioSegment.from_file(path)
+    sound = pydub.AudioSegment.from_ogg(path)
     if settings.SPEECH_RECOGNITION_DEBUG:
-        sound.export(DATA_SPEECH_ROOT / f"sample_{timestamp()}.wav", format="wav")
+        sound.export(
+            DATA_SPEECH_ROOT / f"sample_{timestamp()}.ogg",
+            format="ogg",
+            codec="libopus",
+        )
     sound.export(audio := io.BytesIO(), format="wav")
 
     logger.debug(

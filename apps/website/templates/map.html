@@ -1,9 +1,16 @@
-{% extends "_base.html" %}
+{% extends "base.html" %}
 
 {% load static %}
+{% load sass_tags %}
+
+{% block stylesheet %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% sass_src 'css/website/map.scss' %}">
+{% endblock %}
+
 
 {% block contents %}
-  <div id="map" style="height: calc(100vh - 4rem - 2.5rem)"></div>
+  <div id="map" style="width: 100%; height: calc(100vh - 4rem - 2.5rem)"></div>
 {% endblock %}
 
 {% block scripts %}  
@@ -14,7 +21,7 @@
           integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA==" 
           crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
   
-  <script src="{% static 'website/js/map.js' %}" defer></script>
+  <script src="{% static 'js/website/map.js' %}" defer></script>
   <script defer>
     const options = {
       zoom: { 
@@ -30,8 +37,7 @@
       }
     }
     document.addEventListener('DOMContentLoaded', () => 
-        new LeafletMap("map", {{ center }}, options)
-            .addWordClouds({{ places | safe }})
+        new LeafletMap("map", {{ center }}, options).addWordClouds({{ places | safe }})
     );
   </script>
 {% endblock %}

@@ -1,0 +1,14 @@
+html {
+  /* Full HD 1920x1080 */ 
+  @media screen and (min-width: 1500px) {} 
+  
+  /* 2K 2560x1440 */
+  @media screen and (min-width: 2000px) {
+    font-size: 130%;
+  } 
+  
+  /* 4K 3840x2160 */
+  @media screen and (min-width: 3000px) {
+    font-size: 200%;
+  }
+}

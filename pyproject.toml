@@ -16,7 +16,6 @@ dependencies = [
     "django-cors-headers",
     "django-extensions",
     "django-jazzmin",
-    "django-qr-code",
     "django-sass-processor",
     "dj-database-url",
     "gunicorn",
@@ -59,6 +58,7 @@ DJANGO_SETTINGS_MODULE = "admin.settings"
 python_files = "tests.py test_*.py *_tests.py"
 filterwarnings = [
     "ignore::django.utils.deprecation.RemovedInDjango50Warning",
+    "ignore::django.utils.deprecation.RemovedInDjango51Warning",
     "ignore::DeprecationWarning",
     "ignore::pydantic.warnings.PydanticDeprecatedSince20",
     "ignore::numba.core.errors.NumbaDeprecationWarning"
@@ -67,5 +67,5 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
 addopts = [
-    "-m slow"
+    "-m not slow"
 ]

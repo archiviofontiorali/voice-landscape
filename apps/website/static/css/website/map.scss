@@ -1,0 +1,24 @@
+/* Leaflet map related styles */
+
+.canvas span {
+  /* Better solution only available in firefox 
+      -webkit-text-stroke: 2px white;    
+      paint-order: stroke fill; */
+  $size: 1px;
+  
+  $color: white;
+  text-shadow:  
+    $size  $size 0 $color,
+   -$size  $size 0 $color,
+   -$size -$size 0 $color,
+    $size -$size 0 $color;
+  
+  &:hover { 
+    $color: silver;
+    text-shadow:
+      $size  $size 0 $color,
+     -$size  $size 0 $color,
+     -$size -$size 0 $color,
+      $size -$size 0 $color;
+  }    
+}
