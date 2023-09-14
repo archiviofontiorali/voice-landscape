@@ -7,31 +7,31 @@
 - model: website.place
   pk: 2
   fields:
-    slug: san_cataldo
+    slug: san-cataldo
     title: "San Cataldo"
     location: "POINT(10.91090 44.65905)"   
 - model: website.place
   pk: 3
   fields:
-    slug: parco_vittime_utoya
+    slug: parco-vittime-utoya
     title: "Parco Vittime di Utoya"
     location: "POINT(10.93171 44.66201)"
 - model: website.place
   pk: 4
   fields:
-    slug: campo_cesana
+    slug: campo-cesana
     title: "Campo Cesana"
     location: "POINT(10.92692 44.66356)" 
 - model: website.place
   pk: 5
   fields:
-    slug: diagonale_verde_campo 
+    slug: diagonale-verde-campo 
     title: "Diagonale verde - campo"
     location: "POINT(10.89572 44.65292)"   
 - model: website.place
   pk: 6
   fields:
-    slug: fine_ciclabile
+    slug: fine-ciclabile
     title: "Fine ciclabile"
     location: "POINT(10.88912 44.65012)"
 - model: website.place
