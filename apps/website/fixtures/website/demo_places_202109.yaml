@@ -1,0 +1,173 @@
+- model: website.place
+  pk: 1
+  fields:
+    slug: afor-archivio-delle-fonti-orali
+    title: AFOr | Archivio delle Fonti Orali
+    location: POINT(10.901229167243947 44.65461615128406)
+- model: website.place
+  pk: 2
+  fields:
+    slug: teatro-storchi
+    title: Teatro Storchi
+    location: POINT(10.931416796520214 44.6440925628987)
+- model: website.place
+  pk: 3
+  fields:
+    slug: casa-del-mutilato
+    title: Casa del Mutilato
+    location: POINT(10.925855204224685 44.64076056627556)
+- model: website.place
+  pk: 4
+  fields:
+    slug: monastero-di-san-pietro
+    title: Monastero di San Pietro
+    location: POINT(10.927843757773337 44.64268450564671)
+- model: website.place
+  pk: 5
+  fields:
+    slug: piazzale-redecocca
+    title: Piazzale Redecocca
+    location: POINT(10.923000303364157 44.64378439331217)
+- model: website.place
+  pk: 6
+  fields:
+    slug: complesso-san-paolo
+    title: Complesso San Paolo
+    location: POINT(10.924562225569376 44.64320862552364)
+- model: website.place
+  pk: 7
+  fields:
+    slug: seminario-metropolitano
+    title: Seminario Metropolitano
+    location: POINT(10.920327858710017 44.64328724567016)
+- model: website.place
+  pk: 8
+  fields:
+    slug: chiesa-san-bartolomeo
+    title: Chiesa San Bartolomeo
+    location: POINT(10.925538865059846 44.64490308389011)
+- model: website.place
+  pk: 9
+  fields:
+    slug: centro-storico-via-selmi-27
+    title: Centro Storico Via Selmi 27
+    location: POINT(10.92474709775705 44.64538532829409)
+- model: website.place
+  pk: 10
+  fields:
+    slug: fondazione-collegio-san-carlo
+    title: Fondazione Collegio San Carlo
+    location: POINT(10.927300330551235 44.64637903460112)
+- model: website.place
+  pk: 11
+  fields:
+    slug: cantore-galleria-antiquaria
+    title: Cantore Galleria Antiquaria
+    location: POINT(10.928124802602303 44.64726495763729)
+- model: website.place
+  pk: 12
+  fields:
+    slug: piazza-roma
+    title: Piazza Roma
+    location: POINT(10.928913388481552 44.64895556021473)
+- model: website.place
+  pk: 13
+  fields:
+    slug: artesi-galleria-darte-contemporanea
+    title: ArteSì Galleria d'Arte Contemporanea
+    location: POINT(10.927779977375678 44.64851834986531)
+- model: website.place
+  pk: 14
+  fields:
+    slug: civico-planetario-f-martino
+    title: Civico Planetario F. Martino
+    location: POINT(10.917826093129312 44.64960205700249)
+- model: website.place
+  pk: 15
+  fields:
+    slug: palazzo-dei-musei
+    title: Palazzo dei Musei
+    location: POINT(10.921297460510141 44.64861168383042)
+- model: website.place
+  pk: 16
+  fields:
+    slug: palazzo-ferrari-moreni
+    title: Palazzo Ferrari Moreni
+    location: POINT(10.921629093093763 44.64756350976562)
+- model: website.place
+  pk: 17
+  fields:
+    slug: metronom
+    title: Metronom
+    location: POINT(10.923185909280745 44.64797936822664)
+- model: website.place
+  pk: 18
+  fields:
+    slug: musei-del-duomo
+    title: Musei del Duomo
+    location: POINT(10.925702430899005 44.64682739314981)
+- model: website.place
+  pk: 19
+  fields:
+    slug: dip-studi-linguistici-e-culturali
+    title: Dip. studi linguistici e culturali
+    location: POINT(10.924308814124794 44.64726632145061)
+- model: website.place
+  pk: 20
+  fields:
+    slug: grandezze-meraviglie
+    title: Grandezze & Meraviglie
+    location: POINT(10.924628946332877 44.64889538513829)
+- model: website.place
+  pk: 21
+  fields:
+    slug: chiesa-di-santa-maria-della-pomposa
+    title: Chiesa di Santa Maria della Pomposa
+    location: POINT(10.92411238719445 44.64960871352613)
+- model: website.place
+  pk: 22
+  fields:
+    slug: palestra-panaro
+    title: Palestra Panaro
+    location: POINT(10.919545596245719 44.65434953383291)
+- model: website.place
+  pk: 23
+  fields:
+    slug: fondazione-san-filippo-neri
+    title: Fondazione San Filippo Neri
+    location: POINT(10.928966300288407 44.65108757903913)
+- model: website.place
+  pk: 24
+  fields:
+    slug: giardini-ducali
+    title: Giardini Ducali
+    location: POINT(10.932770905604967 44.6497421887335)
+- model: website.place
+  pk: 25
+  fields:
+    slug: laboratorio-di-poesia
+    title: Laboratorio di Poesia
+    location: POINT(10.92991325127264 44.64571849202709)
+- model: website.place
+  pk: 26
+  fields:
+    slug: teatro-tempio
+    title: Teatro Tempio
+    location: POINT(10.933805225452874 44.65150093334555)
+- model: website.place
+  pk: 27
+  fields:
+    slug: consorzio-creativo
+    title: Consorzio Creativo
+    location: POINT(10.926580987228016 44.64514206766996)
+- model: website.landscape
+  pk: 1
+  fields:
+    slug: demo
+    title: demo
+    description: A demo Landscape with sample shares
+    location: "POINT(10.9200867 44.6488366)"
+    default: true
+    enabled: true
+    provider: 1
+    places: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]

@@ -24,3 +24,14 @@
     title: "Stamen Terrain"
     name: Stadia.StamenTerrain
     url: "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}"
+- model: website.landscape
+  pk: 1
+  fields:
+    slug: demo
+    title: demo
+    description: A demo Landscape with sample shares
+    location: "POINT(10.9200867 44.6488366)"
+    default: true
+    enabled: true
+    provider: 1
+    
