@@ -1,11 +1,9 @@
 @import 'palette';
 @import 'fonts';
 
-
 h1, h2, h3, h4, h5, h6, b, strong { 
     color: $palette-primary;
     font-weight: bold;
-    font-family: $titillium;
 }
 h1, h2, h3, b {}
 
@@ -21,7 +19,6 @@ a { color: $palette-primary; }
 
 .cit, .cit b {
   color: $mid-gray;
-  //color: color.scale($palette-primary, $lightness: 30%);
   font-style: italic;
 }
 
