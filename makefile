@@ -97,6 +97,7 @@ secret_key:
 	@$(python) scripts/generate_secret_key.py
 
 superuser:
+	@echo -e $(bold)Creating superuser account 'admin'$(sgr0)
 	@$(django) createsuperuser --username=admin --email=voci@afor.dev
 
 sqlite-bootstrap: 
@@ -104,3 +105,14 @@ sqlite-bootstrap:
 	# Temporary solution for https://code.djangoproject.com/ticket/32935 
 	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
+
+.PHONY: db-flush db-demo
+db-flush:
+	@echo -e $(bold)Deleting all data from database$(sgr0)
+	@$(django) flush
+
+db-demo: db-flush superuser
+	@echo -e $(bold)Loading demo data$(sgr0)
+	@$(django) loaddata website/demo
+	@$(django) loaddata website/demo_places_202109
+	@LOGURU_LEVEL=INFO $(django) runscript add_demo_shares
