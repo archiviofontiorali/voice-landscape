@@ -26,8 +26,10 @@ urlpatterns = [
     path("api/", include("apps.api.urls")),
     path("api/speech/", include("apps.speech.urls")),
     # Static pages
-    path("info", TemplateView.as_view(template_name="info.html"), name="info"),
-    path("privacy", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
+    path("info/", TemplateView.as_view(template_name="info.html"), name="info"),
+    path(
+        "privacy/", TemplateView.as_view(template_name="privacy.html"), name="privacy"
+    ),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
