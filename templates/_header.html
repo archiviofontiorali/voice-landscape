@@ -1,5 +1,17 @@
 <nav class="flex flex-row justify-around f6 fw6 ttu tracked overflow-x-auto pa1">
-  <a href="{% url 'map' %}" class="link black dim dib mr3 pa1">Mappa</a>
-  <a href="{% url 'share' %}" class="link black dim dib pa1">Partecipa</a>
+  <a href="{% url 'website:map' %}" class="link black dim dib mr3 pa1">Mappa</a>
+  <a href="{% url 'website:share' %}" class="link black dim dib pa1">Partecipa</a>
   <a href="{% url 'info' %}" class="link black dim dib mr3 pa1">Info</a>
+  
+  {% if landscapes and landscapes|length > 1 %}
+  <label for="landscape-select"></label>
+  <select id="landscape-select" name="landscape-select"
+          onchange="document.cookie = `landscape=${this.value}; Path=/; Samesite=Lax`; location.reload();">
+    {% for slug, title in landscapes %}
+    <option value="{{ slug }}" {% if slug == landscape.slug %}selected{% endif %}>
+      {{ title }}
+    </option>
+    {% endfor %}
+  </select>
+  {% endif %}
 </nav>

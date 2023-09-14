@@ -2,10 +2,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.utils.translation import gettext as _
 
-from ..website.views import MapPage
+from ..website.views import MapTemplateView
 
 
-class ReloadTemplateView(MapPage):
+class ReloadTemplateView(MapTemplateView):
     def get_reload_from_query(self) -> int | None:
         """Get Reload Time from GET query, convert to int if possible or return None"""
         if (reload := self.request.GET.get("reload")) is None:
@@ -31,7 +31,7 @@ class ReloadTemplateView(MapPage):
         return context
 
 
-class ShowcasePage(ReloadTemplateView):
+class Showcase(ReloadTemplateView):
     template_name = "showcase/showcase.html"
 
     def get_context_data(self, **kwargs):

@@ -33,6 +33,7 @@ MAP_PROVIDERS = [
 LANDSCAPE_DEMO = {
     "slug": "demo",
     "title": "demo",
+    "enabled": True,
     "location": settings.DEFAULT_POINT,
     "description": "A demo Landscape with sample shares",
 }

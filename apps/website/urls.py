@@ -1,12 +1,11 @@
 from django.urls import path
-from django.views.generic import RedirectView, TemplateView
+from django.views.generic import RedirectView
 
 from . import views
 
+app_name = "website"
 urlpatterns = [
     path("", RedirectView.as_view(url="map/")),
-    path("map/", views.MapPage.as_view(), name="map"),
-    path("map/<slug:slug>", views.MapPage.as_view(), name="map_"),
-    path("share/", views.SharePage.as_view(), name="share"),
-    path("share/<slug:slug>", views.SharePage.as_view(), name="share_"),
+    path("map/", views.Map.as_view(), name="map"),
+    path("share/", views.Share.as_view(), name="share"),
 ]

@@ -1,7 +1,7 @@
 import json
+from pathlib import Path
 
 import pytest
-from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.shortcuts import reverse
 
@@ -10,9 +10,7 @@ from apps.speech import views
 
 @pytest.fixture
 def audio_sample():
-    audio_io = views.read_audio_to_bytes(
-        settings.BASE_DIR / "tests" / "data" / "sample.ogg"
-    )
+    audio_io = views.read_audio_to_bytes(Path(__file__).parent / "data" / "sample.ogg")
     return InMemoryUploadedFile(
         audio_io,
         field_name="audio",
