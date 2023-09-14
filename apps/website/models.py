@@ -263,6 +263,16 @@ class Landscape(TitledModel, LocationModel):
     def get_default(cls) -> "Landscape":
         return get_object_or_404(cls, default=True)
 
+    class VisibleLandscapeManager(models.Manager):
+        def get_queryset(self):
+            return super().get_queryset().filter(Q(enabled=True) | Q(default=True))
+
+        def get_default(self):
+            return self.get(default=True)
+
+    objects = models.Manager()
+    visible_objects = VisibleLandscapeManager()
+
     class Meta:
         constraints = [
             models.CheckConstraint(
