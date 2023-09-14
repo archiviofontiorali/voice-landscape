@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.gis.geos import Point
-from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
@@ -10,22 +10,18 @@ from . import forms, models
 
 class LandscapeTemplateView(TemplateView):
     def get_landscape(self):
-        if (slug := self.request.COOKIES.get("landscape")) is None:
-            return models.Landscape.get_default()
-
-        landscape = get_object_or_404(models.Landscape, slug=slug)
-
-        if not landscape.default and not landscape.enabled:
-            landscape = models.Landscape.get_default()
-
-        return landscape
+        try:
+            slug = self.request.COOKIES.get("landscape")
+            return models.Landscape.visible_objects.get(slug=slug)
+        except ObjectDoesNotExist:
+            return get_object_or_404(models.Landscape.visible_objects, default=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["landscape"] = self.get_landscape()
-        context["landscapes"] = models.Landscape.objects.filter(
-            Q(enabled=True) | Q(default=True)
-        ).values_list("slug", "title")
+        context["landscapes"] = models.Landscape.visible_objects.values_list(
+            "slug", "title"
+        )
         return context
 
     def render_to_response(self, context, **response_kwargs):
