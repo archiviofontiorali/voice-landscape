@@ -4,21 +4,25 @@
   /* Better solution only available in firefox 
       -webkit-text-stroke: 2px white;    
       paint-order: stroke fill; */
-  $size: 1px;
+  $size: .25rem;
+  $blur: 0;
   
   $color: white;
   text-shadow:  
-    $size  $size 0 $color,
-   -$size  $size 0 $color,
-   -$size -$size 0 $color,
-    $size -$size 0 $color;
+    $size  $size $blur $color,
+   -$size  $size $blur $color,
+   -$size -$size $blur $color,
+    $size -$size $blur $color,
+    $size  $size $blur $color;
+  
   
   &:hover { 
     $color: silver;
     text-shadow:
-      $size  $size 0 $color,
-     -$size  $size 0 $color,
-     -$size -$size 0 $color,
-      $size -$size 0 $color;
+      $size  $size $blur $color,
+     -$size  $size $blur $color,
+     -$size -$size $blur $color,
+      $size -$size $blur $color,
+      $size  $size $blur $color;
   }    
 }
