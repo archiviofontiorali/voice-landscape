@@ -25,43 +25,49 @@
 {% block main %}
 <main class="w-100 flex-grow flex flex-row">
   <section id="description" 
-           class="w-third tc mr1 pa2 flex flex-column justify-around items-center">
-    <h1 class="f1 ttu measure-wide">Paesaggio di Voci</h1>
-    <p class="f3 mid-gray ttu measure-narrow">
-      Come percepisci lo spazio?<br>
-      Come si declina la libertà che hai nel muoverti in questo spazio?
-    </p>
+           class="w-third tc mr1 pa2 flex flex-column justify-center items-center">
+  
+    <section class="measure">
+      <h1 class="f1 ttu mt0">Paesaggio di Voci</h1>
+      
+      <p class="f3 cit">Come percepisci lo <b>spazio</b>?</p>
+      <p class="f3 cit">Quali <b>parole</b> emergono da questa percezione?</p>
+      <p class="f3 cit">
+        In che modo le nostre <b>voci</b> contribuiscono a creare lo spazio che abitiamo?
+      </p>
+    </section>
+ 
+    <section class="measure">
+      <p class="f3 ttu">Partecipa anche tu all'esperimento collettivo</p>      
+      <p class="title f1">{{ landscape.domain|default:domain }}</p>
+    </section>     
     
-    <p class="b f3 lh-copy ttu measure-narrow">Partecipa anche tu all'esperimento collettivo</p>
-    <p class="b f2 measure">{{ landscape.domain|default:domain }}</p>  
+    <section class="measure flex flex-rows flex-wrap justify-between">
     
-    {# <img class="w-100 mh1" src="{% qr_url_from_text qr_url %}" alt="{{ qr_url }}"> #}
-
-    <section id="logos-description" class="flex justify-center flex-wrap">
       {% if landscape.logo_event %}
-      <figure class="w-third tc">
-        <figcaption>In occasione di</figcaption>
-        <img class="b mt2 w-100" src="{{ landscape.logo_event.url }}" 
+      <figure class="w-40 ma0 pa0">
+        <figcaption class="tl mv3">In occasione di</figcaption>
+        <img src="{{ landscape.logo_event.url }}" 
              alt="{{ landscape.logo_event.name }}">
       </figure>
       {% endif %}
     
       {% if landscape.logo_organizer %}
-      <figure class="w-third tc">
-        <figcaption>Un progetto di</figcaption>
-        <img class="b mt2 w-100" src="{{ landscape.logo_organizer.url }}" 
+      <figure class="w-40 ma0 pa0">
+        <figcaption class="tr mv3">Un progetto di</figcaption>
+        <img src="{{ landscape.logo_organizer.url }}" 
              alt="{{ landscape.logo_organizer.name }}">
       </figure>
       {% endif %}
-    
+  
       {% if landscape.logo_partners.count %}
-      <p class="w-100">Rete del gruppo di lavoro</p>
+      
+      <p class="w-100 mv3">Rete del gruppo di lavoro</p>
     
       {% for logo in landscape.logo_partners.all %}
-      <figure class="w3 flex flex-center">
-        <img class="b" src="{{ logo.url }}" alt="{{ logo.name }}">
-      </figure>
+      <img class="h3" src="{{ logo.url }}" alt="{{ logo.name }}">
       {% endfor %}
+      
       {% endif %}
     
     </section>
