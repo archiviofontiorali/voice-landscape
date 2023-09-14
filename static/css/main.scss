@@ -19,6 +19,12 @@ a { color: $palette-primary; }
   justify-content: center;
 }
 
+.cit, .cit b {
+  color: $mid-gray;
+  //color: color.scale($palette-primary, $lightness: 30%);
+  font-style: italic;
+}
+
 
 /* Icon related styles */
 $icon-sizes: (1: 1rem, 2: 2rem, 3: 4rem, 4: 8rem, 5: 16rem);
