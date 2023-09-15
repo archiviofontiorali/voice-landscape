@@ -155,22 +155,15 @@
     });
   </script>
   
-  <script src="{% static 'js/speech/record.js' %}" defer></script>
+  <script src="{% static 'js/speech/speech.js' %}" defer></script>
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-        axios.defaults.xsrfCookieName = "csrftoken";
-
-        const recorder = new AudioRecorder();
-        new RecordWidget(
-            $('#record-button'),
-            $('#stop-button'),
-            $('#wait-button'),
-            $('#text-container > textarea'),
-            recorder,
-            "{% url "stt" %}"
+        const stt = new SpeechToText(
+            $("a#record-button"),
+            $("#text-container > textarea"),
+            "{% url "stt" %}",
         );
-    });
+    })
   </script>
   
 {% endblock %}
