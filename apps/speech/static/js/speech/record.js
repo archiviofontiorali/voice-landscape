@@ -139,7 +139,15 @@ class RecordWidget {
         let formData = new FormData();
         formData.append("audio", blob, filename);
         try {
-            let response =  await axios.post(url, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            let response = await axios.post(
+                url, 
+                formData, 
+                {
+                    headers: {'Content-Type': 'multipart/form-data'},
+                    signal: AbortSignal.timeout(3000),
+                    timeout: 10000,
+                }
+            );
             this.setText(response.data.text);
             this.setDefault();
         }
