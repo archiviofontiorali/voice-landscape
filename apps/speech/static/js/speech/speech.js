@@ -130,8 +130,8 @@ class SpeechToText {
         
         const options = {
             headers: {'Content-Type': 'multipart/form-data'},
-            signal: AbortSignal.timeout(5000),
-            timeout: 30000,
+            signal: AbortSignal.timeout(60000),
+            timeout: 60000,
         };
         
         try {
