@@ -16,8 +16,12 @@ class SpeechToText {
     }
     
     async _openStream() {
-        if(!window.navigator || !window.navigator.mediaDevices)
-            throw "mediaDevices not available on your device"
+        if(!window.navigator || !window.navigator.mediaDevices) {
+            showErrorAlert("Il tuo dispositivo non è compatibile con la funzione di " +
+                           "trascrizione automatica")
+            this.setDisabled();
+            throw Error("mediaDevices not available on your device");
+        }   
         
         console.info("Starting MediaStream with getUserMedia")
         return await window.navigator.mediaDevices.getUserMedia(
@@ -27,7 +31,7 @@ class SpeechToText {
     
     setIdle() {
         this.button.attr("data-speech", "idle");
-        this.button.off("click"); this.button.click(() => this.record());
+        this.button.off("click").click(() => this.record());
     }
     
     setRecording() {
@@ -37,6 +41,11 @@ class SpeechToText {
         const timeout = setTimeout(() => this.stop(), this.timeout);
         this.button.off(); 
         this.button.click(async () => { clearTimeout(timeout); await this.stop(); });
+    }
+    
+    setDisabled() {
+        this.button.attr("data-speech", "disabled").removeClass("grow")
+        this.button.off("click")
     }
     
     async record() {
@@ -54,7 +63,7 @@ class SpeechToText {
             this.recorder.onstop = async () => {
                 this.closeStreams();
                 
-                console.log("Hanfling audio data with `ondataready`");
+                console.log("Transcribe audio data from server");
                 let blob = new Blob(this.chunks, { type: this.mimeType });
                 await this.transcribe(blob);
                 

@@ -9,7 +9,7 @@
   &[data-state="error"] { color: red }
 }
 
-$animation-colors: ("red": rgb(255, 65, 54), "gray": DimGray);
+$animation-colors: ("red": var(--palette-red), "gray": var(--palette-gray));
 
 @each $name, $color in $animation-colors {
   @keyframes color-animation--#{$name} {
@@ -32,8 +32,20 @@ $animation-colors: ("red": rgb(255, 65, 54), "gray": DimGray);
 
 
 a#record-button {
-  background-color: var(--palette-black);
+  background-color: var(--palette-white);
   
-  &[data-speech=recording] { background-color: var(--palette-red); }
-  &[data-speech=idle] { background-color: var(--palette-black); }
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  
+  &[data-speech=recording] { 
+    background-color: var(--palette-red);
+    animation-name: color-animation--red;
+  }
+  &[data-speech=idle] { 
+    background-color: var(--palette-black); 
+  }
+  &[data-speech=disabled] { 
+    background-color: var(--palette-gray); 
+  }
 }
