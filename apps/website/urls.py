@@ -5,7 +5,7 @@ from . import views
 
 app_name = "website"
 urlpatterns = [
-    path("", RedirectView.as_view(url="map/")),
+    path("", views.Map.as_view()),
     path("map/", views.Map.as_view(), name="map"),
     path("share/", views.Share.as_view(), name="share"),
 ]
