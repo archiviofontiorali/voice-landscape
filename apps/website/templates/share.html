@@ -11,10 +11,10 @@
 
 {% block main %}
   <main class="w-100 outline mv1 flex-grow 
-               flex flex-column justify-start justify-center-ns items-center">
-    <p class="f4 cit tc">Quale frase emerge nella tua mente attraversando questo spazio?</p>
+               flex flex-column justify-center justify-center-ns items-center">
+    <p class="f4 mb4 cit tc">Quale frase emerge nella tua mente attraversando questo spazio?</p>
     <form action="" method="post" 
-          class="flex flex-column flex-center w-100 measure-wide pa2">
+          class="flex flex-column flex-center w-100 mw7 pa2">
       {% csrf_token %}
     
       {% for error in form.non_field_errors %}
@@ -71,14 +71,14 @@
             Seleziona un punto di interesse
           </label>
           <div class="h-100 flex flex-column justify-center">
-            <select name="place" id="place" class="">
+            <select name="place" id="place" class="tc">
               <option selected></option>
               
               {% for place in places %}
-                <option class="tc" value="{{ place.id }}"
+                <option class="tc" value="{{ place.id }}" title="{{ place.title }}"
                         data-latitude="{{ place.latitude | floatformat:'7u' }}"
                         data-longitude="{{ place.longitude | floatformat:'7u' }}">
-                  {{ place.title }}
+                  {{ place.title|truncatewords:5 }}
                 </option>
               {% endfor %}
             </select>
