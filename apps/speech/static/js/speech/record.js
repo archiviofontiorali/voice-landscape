@@ -64,8 +64,8 @@ class AudioRecorder {
         recorder.ondataavailable = (event) => this.chunks.push(event.data)
         recorder.onstop = async () => {
             let blob = new Blob(this.chunks, {type: 'audio/ogg;codecs=opus'});
-            await onBlobReady(blob);            
             this.closeMediaRecorder();
+            await onBlobReady(blob);
         }
         return recorder
     }
@@ -147,15 +147,15 @@ class RecordWidget {
     }
     
     async start() {
-        await this.recorder.start(blob => this.sendAudio(blob, "/api/speech/stt", "audio.ogg"));
         this.setRecording();
         this.timeout = setTimeout(() => this.stop(), 30000);
+        await this.recorder.start(blob => this.sendAudio(blob, this.url, "audio.ogg"));
     }
     
     async stop() {
         await this.recorder.stop();
-        this.setWaiting();
         clearTimeout(this.timeout);
+        this.setWaiting();
     }
 }
 
