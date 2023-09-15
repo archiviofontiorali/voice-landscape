@@ -5,7 +5,7 @@
 
 {% block stylesheet %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% sass_src 'css/website/share.scss' %}">
+  <link rel="stylesheet" href="{% sass_src 'website/css/share.scss' %}">
 {% endblock %}
 
 
@@ -136,7 +136,7 @@
   </script>
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
-  <script src="{% static 'js/website/share.js' %}" defer></script>
+  <script src="{% static 'website/js/share.js' %}" defer></script>
   
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
