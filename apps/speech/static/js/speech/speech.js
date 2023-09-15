@@ -1,14 +1,18 @@
 class SpeechToText {    
-    constructor(button, output, url = "/api/speech/stt", timeout = 5000) {
+    constructor(
+        button, output, 
+        url = "/api/speech/stt", mimeType = "audio/webm", timeout = 5000
+    ) {
         this.button = $(button);
         this.output = $(output);
         this.url = url;
         
         this.chunks = []
         this.timeout = timeout;
-        this.options = {type: "audio", mimeType: 'audio/webm'};
         
-        this.setIdle();        
+        this.mimeType = mimeType;
+        
+        this.setIdle();
     }
     
     async _openStream() {
@@ -44,14 +48,14 @@ class SpeechToText {
         try {
             // Open stream and create recorder
             const stream = await this._openStream();
-            this.recorder = new MediaRecorder(stream, this.options);
+            this.recorder = new MediaRecorder(stream, { mimeType: this.mimeType });
             this.recorder.ondataavailable = (e) => this.chunks.push(e.data)
             
             this.recorder.onstop = async () => {
                 this.closeStreams();
                 
                 console.log("Hanfling audio data with `ondataready`");
-                let blob = new Blob(this.chunks, { type: this.options.mimeType });
+                let blob = new Blob(this.chunks, { type: this.mimeType });
                 await this.transcribe(blob);
                 
                 this.clean();
@@ -61,8 +65,8 @@ class SpeechToText {
             this.recorder.start();
             this.setRecording();
         } 
-        catch ({name, message}) { 
-            console.error(`${name}:${message}`);
+        catch (error) { 
+            console.error(error);
             this.closeStreams();
             this.clean();
         }
@@ -80,13 +84,16 @@ class SpeechToText {
     
     async transcribe(blob) {
         const request = new FormData();
+        
         request.append("audio", blob);
+        request.append("media_type", this.mimeType);
         
         const options = {
             headers: {'Content-Type': 'multipart/form-data'},
-            signal: AbortSignal.timeout(1000),
+            signal: AbortSignal.timeout(5000),
             timeout: 30000,
         };
+        
         try {
             const response = await axios.post(this.url, request, options);
             
