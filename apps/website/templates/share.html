@@ -35,7 +35,7 @@
         </div>
         
         <a id="record-button" type="button" 
-           class="link flex flex-center w3 h3 white ma1 br4 bg-dark-gray">
+           class="link flex flex-center w3 h3 white ma1 br4 bg-dark-gray grow">
           <i data-feather="mic" class="w2 h2"></i>
         </a>
         <a id="wait-button" type="button" 
@@ -43,30 +43,32 @@
           <i data-feather="more-horizontal" class="w2 h2"></i>
         </a>
         <a id="stop-button" type="button" 
-           class="link dn flex-center w3 h3 white ma1 br4 animated--red">
+           class="link dn flex-center w3 h3 white ma1 br4 animated--red grow">
           <i data-feather="circle" class="w2 h2"></i>
         </a>  
         <a id="reset-button" type="button" 
-           class="link flex flex-center w3 h3 white ma1 br4 bg-gray">
+           class="link flex flex-center w3 h3 white ma1 br4 bg-gray grow">
           <i data-feather="trash-2" class="w2 h2"></i>
         </a>
 
       </section>
     
-      <section id="location-section" class="widget-tab flex flex-row flex-wrap">
+      <section id="location-section" class="widget-tab flex flex-row justify-center flex-wrap">
       
-        <div id="text-preview" class="tc outline w-100 pa2 mv2 mb4 dark-gray"></div>
+        <div id="text-preview" class="tc w-100 measure-wide pa2 mv2 mb4 mid-gray"></div>
       
-        <div id="location-auto-icon" class="w-100 w-50-ns h4 pa3 br-ns bw1 b--black gray flex flex-column items-center justify-between">
+        <div id="location-auto-icon" 
+             class="w-100 w-50-l h4 pa3 br-l bw1 b--black gray
+                    flex flex-column items-center justify-between">
           <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label> 
           <div class="w-100 tc">
             <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting"></i>
           </div>
         </div>
         
-        <p class="w-100 ttu gray tc dn-ns">Oppure</p>
+        <p class="w-100 ttu gray tc dn-l">Oppure</p>
       
-        <div id="location-place" class="w-100 w-50-ns pa3 h4 tc flex flex-column items-center justify-between">
+        <div id="location-place" class="w-100 w-50-l pa3 h4 tc flex flex-column items-center justify-between">
           <label for="place" class="gray b w-100 tc ttu">
             Seleziona un punto di interesse
           </label>
