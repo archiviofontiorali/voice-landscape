@@ -6,7 +6,7 @@ include = ["admin", "voices"]
 
 [project]
 name = "voice-landscape"
-version = "0.8.2"
+version = "0.8.3"
 requires-python = ">=3.10"
 dependencies = [
     "aiohttp",
