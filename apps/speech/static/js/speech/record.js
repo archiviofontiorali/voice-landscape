@@ -100,7 +100,7 @@ class AudioRecorder {
 
 
 class RecordWidget {    
-    constructor(recordButton, stopButton, waitButton, textElement, recorder) { 
+    constructor(recordButton, stopButton, waitButton, textElement, recorder, url) { 
         this.recordButton = $(recordButton);
         this.stopButton = $(stopButton);
         this.waitButton = $(waitButton);
@@ -111,6 +111,8 @@ class RecordWidget {
         
         this.recordButton.click(() => this.start());
         this.stopButton.click(() => this.stop());
+        
+        this.url = url
     }
     
     setText(text) { this.textElement.val(text); }
