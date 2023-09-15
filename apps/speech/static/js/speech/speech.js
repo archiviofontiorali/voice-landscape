@@ -112,6 +112,18 @@ class SpeechToText {
         this.button.attr("data-speech", "disabled")
         this.button.removeClass("grow").off("click")
     }
+    
+    handleResponse(text) {
+        if (!text) {
+            alert(`Non siamo riusciti a trascrivere la tua voce, riprova!`);
+            return;
+        }
+        
+        if(!this.output.val() ||
+           confirm(`Trascrizione:\n\n${text}\n\nVuoi sostituirlo al messaggio attuale?`)) 
+            this.output.val(text);
+            
+    }
 
     async transcribe(blob) {
         const request = new FormData();
@@ -127,15 +139,16 @@ class SpeechToText {
         
         try {
             const response = await axios.post(this.url, request, options);
-            
-            if (response.status === 200 && response.data)             
-                this.output.val(response.data.text);
+            this.handleResponse(response.data.text);
         } 
-        catch (error) { console.error(error) }    
-        finally {
-            this.clean()
-            this.setIdle()
+        catch (error) { 
+            alert("Trascrizione fallita");
+            console.error(error);
         }
+        finally { 
+            this.clean(); 
+            this.setIdle(); 
+        }        
     }
     
     async stop() {
