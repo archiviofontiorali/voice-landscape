@@ -32,7 +32,7 @@ $animation-colors: ("red": var(--palette-red), "gray": var(--palette-gray));
 
 
 a#record-button {
-  background-color: var(--palette-white);
+  background-color: var(--palette-gray);
   
   animation-iteration-count: infinite;
   animation-duration: 1s;
@@ -48,4 +48,9 @@ a#record-button {
   &[data-speech=disabled] { 
     background-color: var(--palette-gray); 
   }
+  &[data-speech=waiting] { 
+    background-color: var(--palette-gray); 
+    animation-name: color-animation--gray;
+  }
+  
 }

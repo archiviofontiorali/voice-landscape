@@ -1,7 +1,7 @@
 class SpeechToText {    
     constructor(
         button, output, 
-        url = "/api/speech/stt", mimeType = "audio/webm", timeout = 5000
+        url = "/api/speech/stt", mimeType = "audio/webm", timeout = 30000
     ) {
         this.button = $(button);
         this.output = $(output);
@@ -34,6 +34,11 @@ class SpeechToText {
         this.button.off("click").click(() => this.record());
     }
     
+    setWaiting() {
+        this.button.attr("data-speech", "waiting").removeClass("grow")
+        this.button.off("click")
+    }
+    
     setRecording() {
         console.log("Start recording")
         this.button.attr("data-speech", "recording")
@@ -62,6 +67,7 @@ class SpeechToText {
             
             this.recorder.onstop = async () => {
                 this.closeStreams();
+                this.setWaiting();
                 
                 console.log("Transcribe audio data from server");
                 let blob = new Blob(this.chunks, { type: this.mimeType });
@@ -120,7 +126,11 @@ class SpeechToText {
         this.recorder.stream.getTracks().forEach(track => track.stop());    
     }
     
-    clean() { this.recorder = undefined; this.chunks = []; }
+    clean() { 
+        this.recorder = undefined; this.chunks = [];
+        if (this.button.attr("data-speech") !== "disabled")
+            this.setIdle();
+    }
 }
 
 
