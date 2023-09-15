@@ -70,11 +70,8 @@ class SpeechToText {
     }
     
     async openStream() {
-        if(!window.navigator || !window.navigator.mediaDevices) {
-            showErrorAlert("Il tuo dispositivo non è compatibile con la funzione di " +
-                           "trascrizione automatica")
-            throw MediaDeviceNotAvailableError("navigator.mediaDevice not available")
-        }   
+        if(!window.navigator || !window.navigator.mediaDevices)
+            throw new MediaDeviceNotAvailableError("navigator.mediaDevice not available")        
         
         console.info("Starting MediaStream with getUserMedia")
         return await window.navigator.mediaDevices.getUserMedia(
