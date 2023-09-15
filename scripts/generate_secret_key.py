@@ -4,7 +4,7 @@ import re
 from django.core.management.utils import get_random_secret_key
 
 DOTENV_PATH = pathlib.Path(".env")
-SECRET_KEY_REGEX = re.compile(r"SECRET_KEY=\"?(?P<key>[^\"]+)\"?")
+SECRET_KEY_REGEX = re.compile(r"#?SECRET_KEY=\"?(?P<key>[^\"]+)\"?")
 
 
 def read_dotenv():
