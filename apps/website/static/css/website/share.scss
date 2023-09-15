@@ -29,3 +29,11 @@ $animation-colors: ("red": rgb(255, 65, 54), "gray": DimGray);
     animation-direction: alternate;
   }
 }
+
+
+a#record-button {
+  background-color: var(--palette-black);
+  
+  &[data-speech=recording] { background-color: var(--palette-red); }
+  &[data-speech=idle] { background-color: var(--palette-black); }
+}
