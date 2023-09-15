@@ -10,8 +10,8 @@ class LocationGISModel(admin.GISModelAdmin):
     gis_widget_kwargs = {
         "attrs": {
             "default_zoom": 11,
-            "default_lon": settings.DEFAULT_POINT_LONGITUDE,
-            "default_lat": settings.DEFAULT_POINT_LATITUDE,
+            "default_lon": settings.DEFAULT_POINT.y,
+            "default_lat": settings.DEFAULT_POINT.x,
         },
     }
 

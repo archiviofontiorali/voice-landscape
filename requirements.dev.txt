@@ -240,6 +240,8 @@ python-decouple==3.8
     # via voice-landscape (pyproject.toml)
 pytz==2023.3.post1
     # via djangorestframework
+pyyaml==6.0.1
+    # via voice-landscape (pyproject.toml)
 rcssmin==1.1.1
     # via django-compressor
 regex==2023.8.8

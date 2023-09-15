@@ -1,0 +1,37 @@
+- model: website.leafletprovider
+  pk: 1
+  fields:
+    slug: stamen_toner_background
+    title: "Stamen Toner Background"
+    name: Stadia.StamenTonerBackground
+- model: website.leafletprovider
+  pk: 2
+  fields:
+    slug: stamen_toner_basic
+    title: "Stamen Toner (Basic)" 
+    name: Stadia.StamenToner
+- model: website.leafletprovider
+  pk: 3
+  fields:
+    slug: watercolor
+    title: Watercolor
+    name: Stadia.StamenWatercolor
+    url: "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}"
+- model: website.leafletprovider
+  pk: 4
+  fields:
+    slug: stamen_terrain
+    title: "Stamen Terrain"
+    name: Stadia.StamenTerrain
+    url: "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.{ext}"
+- model: website.landscape
+  pk: 1
+  fields:
+    slug: demo
+    title: demo
+    description: A demo Landscape with sample shares
+    location: "POINT(10.9200867 44.6488366)"
+    default: true
+    enabled: true
+    provider: 1
+    
