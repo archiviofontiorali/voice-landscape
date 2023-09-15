@@ -1,3 +1,11 @@
+class MediaDeviceNotAvailableError extends Error {
+    constructor(message) {
+        super(message)
+        this.name = "MediaDeviceNotAvailableError"
+    }
+}
+
+
 class SpeechToText {    
     constructor(
         button, output, 
@@ -15,44 +23,6 @@ class SpeechToText {
         this.setIdle();
     }
     
-    async _openStream() {
-        if(!window.navigator || !window.navigator.mediaDevices) {
-            showErrorAlert("Il tuo dispositivo non è compatibile con la funzione di " +
-                           "trascrizione automatica")
-            this.setDisabled();
-            throw Error("mediaDevices not available on your device");
-        }   
-        
-        console.info("Starting MediaStream with getUserMedia")
-        return await window.navigator.mediaDevices.getUserMedia(
-            {audio: true, video: false}
-        );
-    }
-    
-    setIdle() {
-        this.button.attr("data-speech", "idle");
-        this.button.off("click").click(() => this.record());
-    }
-    
-    setWaiting() {
-        this.button.attr("data-speech", "waiting").removeClass("grow")
-        this.button.off("click")
-    }
-    
-    setRecording() {
-        console.log("Start recording")
-        this.button.attr("data-speech", "recording")
-        
-        const timeout = setTimeout(() => this.stop(), this.timeout);
-        this.button.off(); 
-        this.button.click(async () => { clearTimeout(timeout); await this.stop(); });
-    }
-    
-    setDisabled() {
-        this.button.attr("data-speech", "disabled").removeClass("grow")
-        this.button.off("click")
-    }
-    
     async record() {
         if (this.recorder instanceof MediaRecorder) {
             console.warn(`Recorder is not ready to take other audio`)
@@ -61,7 +31,8 @@ class SpeechToText {
         
         try {
             // Open stream and create recorder
-            const stream = await this._openStream();
+            const stream = await this.openStream();
+
             this.recorder = new MediaRecorder(stream, { mimeType: this.mimeType });
             this.recorder.ondataavailable = (e) => this.chunks.push(e.data)
             
@@ -74,29 +45,74 @@ class SpeechToText {
                 await this.transcribe(blob);
                 
                 this.clean();
+                this.setIdle();
             }
                         
             // Start recording
             this.recorder.start();
             this.setRecording();
         } 
-        catch (error) { 
-            console.error(error);
+        catch (error) {            
             this.closeStreams();
             this.clean();
-        }
-    }
-    
-    async stop() {
-        if (!(this.recorder instanceof MediaRecorder)) {
-            console.error(`this.recorder is not a valid MediaRecorder`);
-            return
-        }
             
-        this.recorder.stop(); 
-        this.setIdle(); 
+            if(error.name === "NotAllowedError"|| error.name === "NotFoundError" ||
+               error.name === "MediaDeviceNotAvailableError") {
+                this.setIdle();  
+                showErrorAlert("Il tuo dispositivo non è supportato o devi abilitare " +
+                               "i permessi per la geolocalizzazione")
+                return;
+            }
+            
+            this.setIdle(); 
+            showErrorAlert(error);
+        }
     }
     
+    async openStream() {
+        if(!window.navigator || !window.navigator.mediaDevices) {
+            showErrorAlert("Il tuo dispositivo non è compatibile con la funzione di " +
+                           "trascrizione automatica")
+            throw MediaDeviceNotAvailableError("navigator.mediaDevice not available")
+        }   
+        
+        console.info("Starting MediaStream with getUserMedia")
+        return await window.navigator.mediaDevices.getUserMedia(
+            {audio: true, video: false}
+        );
+    }
+    
+    closeStreams() {
+        if (!(this.recorder instanceof MediaRecorder)) return;
+        
+        console.info("Closing MediaStream");
+        this.recorder.stream.getTracks().forEach(track => track.stop());    
+    }
+    
+    setRecording() {
+        console.log("Start recording")
+        this.button.attr("data-speech", "recording")
+        
+        const timeout = setTimeout(() => this.stop(), this.timeout);
+        this.button.off("click"); 
+        this.button.click(async () => { clearTimeout(timeout); await this.stop(); });
+    }
+    
+    setWaiting() {
+        this.button.attr("data-speech", "waiting")
+        this.button.removeClass("grow").off("click")
+    }
+    
+    setIdle() {
+        this.button.attr("data-speech", "idle");
+        this.button.off("click").click(() => this.record());
+    }
+    
+    setDisabled() {
+        this.button.attr("data-speech", "disabled")
+        this.button.removeClass("grow").off("click")
+    }
+
     async transcribe(blob) {
         const request = new FormData();
         
@@ -116,21 +132,23 @@ class SpeechToText {
                 this.output.val(response.data.text);
         } 
         catch (error) { console.error(error) }    
-        finally { this.setIdle() }
-    }
-        
-    closeStreams() {
-        if (!(this.recorder instanceof MediaRecorder)) return;
-        
-        console.info("Closing MediaStream");
-        this.recorder.stream.getTracks().forEach(track => track.stop());    
+        finally {
+            this.clean()
+            this.setIdle()
+        }
     }
     
-    clean() { 
-        this.recorder = undefined; this.chunks = [];
-        if (this.button.attr("data-speech") !== "disabled")
-            this.setIdle();
+    async stop() {
+        if (!(this.recorder instanceof MediaRecorder)) {
+            console.error(`this.recorder is not a valid MediaRecorder`);
+            return;
+        }
+            
+        this.recorder.stop();
+        this.setIdle();
     }
+    
+    clean() { this.recorder = undefined; this.chunks = []; }
 }
 
 
