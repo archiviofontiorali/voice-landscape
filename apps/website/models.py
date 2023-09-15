@@ -103,7 +103,7 @@ class Place(LocationModel):
             .first()
         )
 
-    def get_frequencies(self, min_frequency: int = 3) -> list[list[str, float]]:
+    def get_frequencies(self, min_frequency: int = 2) -> list[list[str, float]]:
         """Return a list of [word, frequency] with the latest normalized"""
         frequencies = self.word_frequencies.filter(
             frequency__gte=min_frequency, word__visible=True
