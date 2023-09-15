@@ -134,7 +134,7 @@
   </script>
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
-  <script src="{% static 'js/website/share.js' %}"></script>
+  <script src="{% static 'js/website/share.js' %}" defer></script>
   
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
@@ -154,5 +154,20 @@
   </script>
   
   <script src="{% static 'js/speech/record.js' %}" defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+        axios.defaults.xsrfCookieName = "csrftoken";
+
+        const recorder = new AudioRecorder();
+        new RecordWidget(
+            $('#record-button'),
+            $('#stop-button'),
+            $('#wait-button'),
+            $('#text-container > textarea'),
+            recorder
+        );
+    });
+  </script>
   
 {% endblock %}

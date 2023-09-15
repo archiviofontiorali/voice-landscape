@@ -148,25 +148,14 @@ class RecordWidget {
     
     async start() {
         await this.recorder.start(blob => this.sendAudio(blob, "/api/speech/stt", "audio.ogg"));
-        button.setRecording();
+        this.setRecording();
         this.timeout = setTimeout(() => this.stop(), 30000);
     }
     
     async stop() {
         await this.recorder.stop();
-        button.setWaiting();
+        this.setWaiting();
         clearTimeout(this.timeout);
     }
 }
 
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-axios.defaults.xsrfCookieName = "csrftoken";
-
-const recorder = new AudioRecorder();
-const button = new RecordWidget(
-    $('#record-button'), 
-    $('#stop-button'),
-    $('#wait-button'),
-    $('#text-container > textarea'),
-    recorder
-);
