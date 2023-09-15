@@ -1,6 +1,7 @@
 import datetime as dt
 import io
 import pathlib
+import re
 
 import pydub
 import speech_recognition
@@ -16,6 +17,8 @@ from .forms import UploadAudioForm
 DATA_SPEECH_ROOT: pathlib.Path = settings.DATA_ROOT / "speech"
 DATA_SPEECH_ROOT.mkdir(exist_ok=True, parents=True)
 
+MEDIA_TYPE_REGEX = re.compile(r"audio/(?P<format>\w+)(?:;\s?codecs=(?P<codecs>\w+))?")
+
 
 def timestamp(t: dt.datetime = None):
     if t is None:
@@ -23,14 +26,12 @@ def timestamp(t: dt.datetime = None):
     return t.isoformat(timespec="seconds")
 
 
-def read_audio_to_bytes(path) -> io.BytesIO:
-    sound = pydub.AudioSegment.from_ogg(path)
+def read_audio_to_bytes(path, mtype, codec) -> io.BytesIO:
+    sound = pydub.AudioSegment.from_file(path, format=mtype, codec=codec)
     if settings.SPEECH_RECOGNITION_DEBUG:
-        sound.export(
-            DATA_SPEECH_ROOT / f"sample_{timestamp()}.ogg",
-            format="ogg",
-            codec="libopus",
-        )
+        path = DATA_SPEECH_ROOT / f"sample_{timestamp()}.{mtype}"
+        sound.export(path, format=mtype, codec=codec)
+
     sound.export(audio := io.BytesIO(), format="wav")
 
     logger.debug(
@@ -77,7 +78,8 @@ class SpeechToText(View):
         if not form.is_valid():
             return JsonErrorResponse("Invalid audio request", status=400)
 
-        audio = read_audio_to_bytes(request.FILES["audio"])
+        mtype, codec = MEDIA_TYPE_REGEX.match(form.cleaned_data["media_type"]).groups()
+        audio = read_audio_to_bytes(request.FILES["audio"], mtype=mtype, codec=codec)
 
         try:
             text = self.transcribe_audio(audio)

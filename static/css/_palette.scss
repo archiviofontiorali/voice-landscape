@@ -6,17 +6,24 @@ $mid-gray: #555555;   /* tachyons: mid-gray   */
 $gray:  #777777;      /* tachyons: gray       */ 
 $white: white;
 
+$red: DarkRed;
+$green: DarkGreen;
+$orange: DarkOrange;
+
 $palette-primary: $black;
 
-$palette-alert-success: DarkGreen;
-$palette-alert-error: DarkRed;
-$palette-alert-warning: DarkOrange;
+$palette-alert-success: $green;
+$palette-alert-error: $red;
+$palette-alert-warning: $orange;
 $palette-alert-info: inherit;
 $palette-alert-debug: Gray;
 
 $palette: (
         black: $black,
-        white: $white,
+        "gray": $gray,
+        "white": $white,
+        
+        "red": $red,
         
         primary: $black,
         
@@ -27,8 +34,3 @@ $palette: (
         alert-debug: $palette-alert-debug
 );
 
-:root {
-  @each $key, $color in $palette {
-    --palette-#{key}: $color  
-  }  
-}

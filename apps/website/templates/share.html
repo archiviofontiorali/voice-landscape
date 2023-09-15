@@ -5,7 +5,7 @@
 
 {% block stylesheet %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% sass_src 'css/website/share.scss' %}">
+  <link rel="stylesheet" href="{% sass_src 'website/css/share.scss' %}">
 {% endblock %}
 
 
@@ -35,19 +35,11 @@
         </div>
         
         <a id="record-button" type="button" 
-           class="link flex flex-center w3 h3 white ma1 br4 bg-dark-gray grow">
+           class="link flex flex-center w3 h3 white mv3 mh4 br4 grow">
           <i data-feather="mic" class="w2 h2"></i>
         </a>
-        <a id="wait-button" type="button" 
-           class="link dn flex-center w3 h3 white ma1 br4 animated--gray">
-          <i data-feather="more-horizontal" class="w2 h2"></i>
-        </a>
-        <a id="stop-button" type="button" 
-           class="link dn flex-center w3 h3 white ma1 br4 animated--red grow">
-          <i data-feather="circle" class="w2 h2"></i>
-        </a>  
         <a id="reset-button" type="button" 
-           class="link flex flex-center w3 h3 white ma1 br4 bg-gray grow">
+           class="link flex flex-center w3 h3 black mv3 mh4 br4 ba bw2 b--black bg-white grow">
           <i data-feather="trash-2" class="w2 h2"></i>
         </a>
 
@@ -136,7 +128,7 @@
   </script>
   
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
-  <script src="{% static 'js/website/share.js' %}" defer></script>
+  <script src="{% static 'website/js/share.js' %}" defer></script>
   
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
@@ -155,21 +147,15 @@
     });
   </script>
   
-  <script src="{% static 'js/speech/record.js' %}" defer></script>
+  <script src="{% static 'js/speech/speech.js' %}" defer></script>
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-        axios.defaults.xsrfCookieName = "csrftoken";
-
-        const recorder = new AudioRecorder();
-        new RecordWidget(
-            $('#record-button'),
-            $('#stop-button'),
-            $('#wait-button'),
-            $('#text-container > textarea'),
-            recorder
+        const stt = new SpeechToText(
+            $("a#record-button"),
+            $("#text-container > textarea"),
+            "{% url "stt" %}",
         );
-    });
+    })
   </script>
   
 {% endblock %}
