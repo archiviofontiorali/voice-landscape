@@ -60,11 +60,13 @@
   
       {% if landscape.logo_partners.count %}
       
-      <p class="w-100 mv3">Rete del gruppo di lavoro</p>
-    
-      {% for logo in landscape.logo_partners.all %}
-      <img class="h3" src="{{ logo.url }}" alt="{{ logo.name }}">
-      {% endfor %}
+      <p class="w-100 mt5">Rete del gruppo di lavoro</p>
+      
+      <section class="flex flex-row flex-wrap justify-around">
+        {% for logo in landscape.logo_partners.all %}
+        <img class="h3 ma3" src="{{ logo.url }}" alt="{{ logo.name }}">
+        {% endfor %}
+      </section>
       
       {% endif %}
     
