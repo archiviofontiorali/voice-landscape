@@ -55,6 +55,13 @@ class Share(LocationModel):
     message = models.TextField(max_length=500)
     landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
 
+    place = models.ForeignKey(
+        "Place",
+        related_name="place",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
     words = models.ManyToManyField("Word", related_name="shares", blank=True)
 
     def __str__(self):
