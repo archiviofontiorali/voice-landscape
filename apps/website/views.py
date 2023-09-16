@@ -50,7 +50,7 @@ class MapTemplateView(LandscapeTemplateView):
 
 
 class Share(LandscapeTemplateView):
-    template_name = "share.html"
+    template_name = "website/share.html"
 
     def post(self, request):
         form = forms.ShareForm(request.POST)
@@ -82,4 +82,4 @@ class Share(LandscapeTemplateView):
 
 
 class Map(MapTemplateView):
-    template_name = "map.html"
+    template_name = "website/map.html"
