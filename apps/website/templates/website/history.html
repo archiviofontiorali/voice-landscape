@@ -1,0 +1,36 @@
+{% extends "website/map.html" %}
+
+{% load sass_tags %}
+{% load static %}
+
+{% block main %}
+<main class="w-100 flex-grow flex flex-row">
+  <section id="description" 
+           class="w-third tc mv1 mr1 pa2 flex flex-column justify-center items-center outline">
+    <label for="date">Date</label>
+    <select name="date" id="date">
+      {% for date, _ in datetimes %}
+        <option value="{{ date }}">{{ date }}</option>
+      {% endfor %}
+    </select>
+    
+    {% for date, times in datetimes %}
+      <div class="_dn" data-date="{{ date|date:"Y-m-d" }}">
+        <label for="time">Time {{ date }}</label>
+        <select name="time" id="time" onchange="window.location.href = `{% url "website:history" %}${this.value}`">
+          
+            {% for time in times %}
+              <option value="{{ time | date:"Y-m-d\TH:i:s" }}">{{ time | time }}</option>
+            {% endfor %}
+        </select>  
+      </div>
+   {% endfor %}
+
+  
+  </section>
+    
+  <section id="full-map" class="w-two-thirds mv1 ml1 pa2 outline">
+    <div id="map" style="height: 100%;"></div>  
+  </section>
+</main>
+{% endblock %}

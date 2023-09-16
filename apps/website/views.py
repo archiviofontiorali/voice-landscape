@@ -1,7 +1,13 @@
+import datetime as dt
+from collections import defaultdict
+from typing import Iterable
+
 from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Max, Min
 from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
 
@@ -83,3 +89,61 @@ class Share(LandscapeTemplateView):
 
 class Map(MapTemplateView):
     template_name = "website/map.html"
+
+
+class HistoryMap(MapTemplateView):
+    template_name = "website/history.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        timestamp = kwargs.get("timestamp", timezone.now())
+        counters = {
+            place: defaultdict(lambda: 0) for place in models.Place.objects.all()
+        }
+
+        for share in models.Share.objects.filter(timestamp__lt=timestamp):
+            for word in share.words.all():
+                counters[share.place][word] += 1
+
+        output = []
+        for place, counter in counters.items():
+            if not counter:
+                continue
+            max_value = max(counter.values())
+            frequencies = [
+                [word.text, count / max_value] for word, count in counter.items()
+            ]
+            output.append(
+                {"coordinates": place.coordinates, "frequencies": frequencies}
+            )
+
+        context["places"] = output
+
+        context["timestamp"] = timestamp
+
+        query = models.Share.objects.aggregate(
+            min=Min("timestamp"), max=Max("timestamp")
+        )
+
+        context["datetimes"] = [
+            [date, list(time_range(date))]
+            for date in date_range(query["min"].date(), query["max"].date())
+        ]
+
+        return context
+
+
+def date_range(first_date: dt.date, last_date: dt.date) -> Iterable[dt.date]:
+    date = first_date
+    while date <= last_date:
+        yield date
+        date += timezone.timedelta(days=1)
+
+
+def time_range(date):
+    time = current = timezone.datetime.combine(date, timezone.datetime.min.time())
+    time += timezone.timedelta(days=1)
+    while current <= time:
+        yield current
+        current += timezone.timedelta(hours=1)
