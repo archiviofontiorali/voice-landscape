@@ -42,16 +42,13 @@ def run():
         shares = fp.readlines()
 
     landscape = models.Landscape.visible_objects.get_default()
-    places = list(landscape.places.all())
+    places = [p.coordinates for p in landscape.places.all()]
 
     for message in tqdm(shares):
         if not TEXT_ROW_RE.match(message):
             continue
 
-        point = random.choice(places).location
-
-        lat = point.x + random.gauss(0, 0.5)
-        lon = point.y + random.gauss(0, 0.5)
+        lat, lon = random.choice(places)
         location = Point(x=lon, y=lat)
 
         save_share(location, message, landscape)
