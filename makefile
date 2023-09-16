@@ -106,7 +106,7 @@ sqlite-bootstrap:
 	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
 
-.PHONY: db-flush db-demo
+.PHONY: db-flush db-demo pg-dump
 db-flush:
 	@echo -e $(bold)Deleting all data from database$(sgr0)
 	@$(django) flush
@@ -116,3 +116,10 @@ db-demo: db-flush superuser
 	@$(django) loaddata website/demo
 	@$(django) loaddata website/demo_places_202309
 	@LOGURU_LEVEL=INFO $(django) runscript add_demo_shares
+
+PG_USER?=$(USER)
+PG_NAME?=landscapes
+
+pg-dump:
+	@mkdir -p .backup/
+	@pg_dump -U $(PG_USER) $(PG_NAME) | gzip -9 > .backup/landscapes."$(shell date --iso-8601=seconds)".sql.gz
