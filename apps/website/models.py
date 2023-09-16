@@ -51,25 +51,6 @@ class TitledModel(models.Model):
         abstract = True
 
 
-class Share(LocationModel):
-    timestamp = models.DateTimeField(default=timezone.now)
-    message = models.TextField(max_length=500)
-    landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
-
-    place = models.ForeignKey(
-        "Place",
-        related_name="place",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-    )
-    words = models.ManyToManyField("Word", related_name="shares", blank=True)
-
-    def __str__(self):
-        message = textwrap.shorten(self.message, width=20, placeholder="...")
-        return f"{super().__str__()} [{message}]"
-
-
 class LeafletProvider(TitledModel):
     name = models.CharField(
         max_length=100,
@@ -141,6 +122,25 @@ class Word(models.Model):
 
     def __str__(self):
         return ("🚩 " if not self.visible else "") + self.text
+
+
+class Share(LocationModel):
+    timestamp = models.DateTimeField(default=timezone.now)
+    message = models.TextField(max_length=500)
+    landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
+
+    place = models.ForeignKey(
+        Place,
+        related_name="shares",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    words = models.ManyToManyField(Word, related_name="shares", blank=True)
+
+    def __str__(self):
+        message = textwrap.shorten(self.message, width=20, placeholder="...")
+        return f"{super().__str__()} [{message}]"
 
 
 class WordFrequency(models.Model):
