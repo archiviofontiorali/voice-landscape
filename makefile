@@ -75,12 +75,7 @@ collectstatic:
 
 
 # Django database commands
-.PHONY: bootstrap-django clean-django demo migrate migrations secret_key superuser sqlite-bootstrap 
-
-bootstrap-django: clean-django secret_key sqlite-bootstrap migrate superuser 
-
-clean-django:
-	@rm -rf db.sqlite3 .media .static
+.PHONY: demo migrate migrations secret_key superuser 
 
 demo:
 	@LOGURU_LEVEL=INFO $(django) runscript init_demo
@@ -100,13 +95,12 @@ superuser:
 	@echo -e $(bold)Creating superuser account 'admin'$(sgr0)
 	@$(django) createsuperuser --username=admin --email=voci@afor.dev
 
-sqlite-bootstrap: 
-	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
-	# Temporary solution for https://code.djangoproject.com/ticket/32935 
-	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
+# Database related commands
+.PHONY: bootstrap-sqlite db-flush db-demo pg-dump sqlite-reset
 
-.PHONY: db-flush db-demo pg-dump
+bootstrap-sqlite: sqlite-reset migrate superuser
+
 db-flush:
 	@echo -e $(bold)Deleting all data from database$(sgr0)
 	@$(django) flush
@@ -123,3 +117,9 @@ PG_NAME?=landscapes
 pg-dump:
 	@mkdir -p .backup/
 	@pg_dump -U $(PG_USER) $(PG_NAME) | gzip -9 > .backup/landscapes."$(shell date --iso-8601=seconds)".sql.gz
+	
+sqlite-reset:
+	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
+	@rm -rf db.sqlite3 .media .static	
+	# Temporary solution for https://code.djangoproject.com/ticket/32935 
+	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
