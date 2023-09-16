@@ -7,6 +7,7 @@ from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Q, Sum
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from .fields import UniqueBooleanField
@@ -51,7 +52,7 @@ class TitledModel(models.Model):
 
 
 class Share(LocationModel):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
     message = models.TextField(max_length=500)
     landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
 
