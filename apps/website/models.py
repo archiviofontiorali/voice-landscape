@@ -55,6 +55,8 @@ class Share(LocationModel):
     message = models.TextField(max_length=500)
     landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
 
+    words = models.ManyToManyField("Word", related_name="shares", blank=True)
+
     def __str__(self):
         message = textwrap.shorten(self.message, width=20, placeholder="...")
         return f"{super().__str__()} [{message}]"

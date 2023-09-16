@@ -59,6 +59,8 @@ def on_share_creation_update_frequencies(
         word.full_clean()
         word.save()
 
+        instance.words.add(word)
+
         wf, _ = models.WordFrequency.objects.get_or_create(place=place, word=word)
         wf.frequency = F("frequency") + 1
         wf.save()
