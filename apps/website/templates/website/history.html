@@ -73,17 +73,21 @@
     
     function selectDate(button) {
         $("section#date-range > a.link")
-            .removeClass("near-black b--near-black")
-            .addClass("grow pointer gray b--gray");
+            .addClass("grow pointer gray b--gray")
+            .removeClass("near-black b--near-black");
+            
         $(button)
-            .removeClass('grow pointer gray b--gray')
-            .addClass("near-black b--near-black");
+            .addClass("near-black b--near-black")
+            .removeClass('grow pointer gray b--gray');
+            
         $("input#date").val($(button).attr("data-date"));
     }
     
     function selectTime(button) {
         $("section#time-range > a.link")
             .removeClass("b near-black b--near-black").addClass("gray b--gray");
+        
+        if($(button).length <= 0) return; 
         $(button)
             .removeClass('gray b--gray').addClass("b near-black b--near-black");
         $("input#time").val($(button).attr("data-time"));
@@ -94,8 +98,10 @@
             date: "{{ timestamp.current | date:"Y-m-d" }}",
             time: "{{ timestamp.current | time }}",
         };
+                
         selectDate($(`section#date-range > a.link[data-date='${current.date}']`));
-        selectTime($(`section#time-range > a.link[data-time='${current.time}']`));
+        selectTime($(`section#time-range > a.link[data-time='${current.time.substring(0, 2)}:00']`));
+        $("input#time").val(current.time);
     });
   </script>
 {% endblock %}

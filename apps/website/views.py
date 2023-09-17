@@ -98,11 +98,28 @@ class HistoryMap(MapTemplateView):
         context = super().get_context_data(**kwargs)
 
         timestamp = kwargs.get("timestamp", timezone.now())
+        timestamp_range = models.Share.objects.aggregate(
+            min=Min("timestamp"), max=Max("timestamp")
+        )
+        timestamp_min = timestamp_range["min"].date()
+        timestamp_max = timestamp_range["max"].date()
+        # if timestamp.date() > timestamp_max:
+        #     timestamp = timezone.datetime.combine(timestamp_max, dt.time(23, 00))
+
+        context["timestamp"] = {
+            "current": timestamp,
+            "first_date": timestamp_min,
+            "last_date": timestamp_max,
+        }
+        context["date_range"] = list(date_range(timestamp_min, timestamp_max))
+        context["time_range"] = [dt.time(h, 0) for h in range(24)]
+
         counters = {
             place: defaultdict(lambda: 0) for place in models.Place.objects.all()
         }
 
-        for share in models.Share.objects.filter(timestamp__lt=timestamp):
+        timestamp_limit = timestamp + dt.timedelta(hours=1)
+        for share in models.Share.objects.filter(timestamp__lt=timestamp_limit):
             for word in share.words.all():
                 counters[share.place][word] += 1
 
@@ -119,17 +136,6 @@ class HistoryMap(MapTemplateView):
             )
 
         context["places"] = output
-
-        timestamp_range = models.Share.objects.aggregate(
-            min=Min("timestamp"), max=Max("timestamp")
-        )
-        context["timestamp"] = {
-            "current": timestamp,
-            "first_date": (d_min := timestamp_range["min"].date()),
-            "last_date": (d_max := timestamp_range["max"].date()),
-        }
-        context["date_range"] = list(date_range(d_min, d_max))
-        context["time_range"] = [dt.time(h, 0) for h in range(24)]
 
         return context
 
