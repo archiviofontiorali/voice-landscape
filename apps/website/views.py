@@ -103,8 +103,8 @@ class HistoryMap(MapTemplateView):
         )
         timestamp_min = timestamp_range["min"].date()
         timestamp_max = timestamp_range["max"].date()
-        # if timestamp.date() > timestamp_max:
-        #     timestamp = timezone.datetime.combine(timestamp_max, dt.time(23, 00))
+        if timestamp.date() > timestamp_max:
+            timestamp = timezone.datetime.combine(timestamp_max, dt.time(23, 00))
 
         context["timestamp"] = {
             "current": timestamp,
