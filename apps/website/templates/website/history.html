@@ -4,33 +4,98 @@
 {% load static %}
 
 {% block main %}
-<main class="w-100 flex-grow flex flex-row">
+<main id="history-page" class="w-100 flex-grow flex flex-row">
   <section id="description" 
-           class="w-third tc mv1 mr1 pa2 flex flex-column justify-center items-center outline">
-    <label for="date">Date</label>
-    <select name="date" id="date">
-      {% for date, _ in datetimes %}
-        <option value="{{ date }}">{{ date }}</option>
-      {% endfor %}
-    </select>
+           class="w-20 tc mv1 mr1 pa2 flex flex-column justify-around items-center outline">
     
-    {% for date, times in datetimes %}
-      <div class="_dn" data-date="{{ date|date:"Y-m-d" }}">
-        <label for="time">Time {{ date }}</label>
-        <select name="time" id="time" onchange="window.location.href = `{% url "website:history" %}${this.value}`">
-          
-            {% for time in times %}
-              <option value="{{ time | date:"Y-m-d\TH:i:s" }}">{{ time | time }}</option>
-            {% endfor %}
-        </select>  
-      </div>
-   {% endfor %}
-
-  
+    <section class="flex flex-column justify-center">
+      <section id="date-range" class="flex flex-row flex-wrap justify-center mv3">
+        {% for date in date_range %}
+          <a type="button" data-date="{{ date | date:"Y-m-d" }}"  
+             onclick="selectDate(this)" href="javascript:void(0)"
+             class="link f5 b ma2 pa2 br-pill ba bw2 gray b--gray">
+            {{ date | date:"d M" }}
+          </a>
+        {% endfor %}
+      </section>
+        
+      <section id="time-range" class="flex flex-row flex-wrap justify-center ma3">
+        {% for time in time_range %}
+          <a type="button" data-time="{{ time | time }}"  
+             onclick="selectTime(this); update();" href="javascript:void(0)"
+             class="link f6 ma1 pa1 br-pill ba bw1 gray b--gray grow pointer">
+            {{ time | time }}
+          </a>
+        {% endfor %}
+      </section>
+    </section>
+    
+    <section class="flex flex-row flex-wrap justify-around items-center ma3">
+      <section class="flex flex-column ma3">
+        <label for="date">Seleziona il giorno</label>
+        <input id="date" type="date" 
+               value="{{ timestamp.current | date:"Y-m-d" }}"
+               min="{{ timestamp.first_date | date:"Y-m-d" }}"
+               max="{{ timestamp.last_date | date:"Y-m-d" }}">  
+      </section>
+      
+      <section class="flex flex-column ma3">
+        <label for="time">Seleziona l'orario</label>
+        <input id="time" type="time" class="tc" 
+               value="{{ timestamp.current | time }}">
+      </section>
+      
+      <section class="w-100 ma3 flex flex-center">
+        <a class="link grow pa2 ba bw2 b--black br4 pointer" 
+           type="button" onclick="update()">
+          Aggiorna
+        </a>
+      </section>
+      
+    </section>
   </section>
     
-  <section id="full-map" class="w-two-thirds mv1 ml1 pa2 outline">
+  <section id="full-map" class="w-80 mv1 ml1 pa2 outline">
     <div id="map" style="height: 100%;"></div>  
   </section>
 </main>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  
+  <script defer>  
+    function update() {
+        const date = $("input#date").val();
+        const time = $("input#time").val();
+        window.location.href = `{% url "website:history" %}${date}T${time}:00`;
+    }
+    
+    function selectDate(button) {
+        $("section#date-range > a.link")
+            .removeClass("near-black b--near-black")
+            .addClass("grow pointer gray b--gray");
+        $(button)
+            .removeClass('grow pointer gray b--gray')
+            .addClass("near-black b--near-black");
+        $("input#date").val($(button).attr("data-date"));
+    }
+    
+    function selectTime(button) {
+        $("section#time-range > a.link")
+            .removeClass("b near-black b--near-black").addClass("gray b--gray");
+        $(button)
+            .removeClass('gray b--gray').addClass("b near-black b--near-black");
+        $("input#time").val($(button).attr("data-time"));
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const current = {
+            date: "{{ timestamp.current | date:"Y-m-d" }}",
+            time: "{{ timestamp.current | time }}",
+        };
+        selectDate($(`section#date-range > a.link[data-date='${current.date}']`));
+        selectTime($(`section#time-range > a.link[data-time='${current.time}']`));
+    });
+  </script>
 {% endblock %}

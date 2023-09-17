@@ -120,16 +120,16 @@ class HistoryMap(MapTemplateView):
 
         context["places"] = output
 
-        context["timestamp"] = timestamp
-
-        query = models.Share.objects.aggregate(
+        timestamp_range = models.Share.objects.aggregate(
             min=Min("timestamp"), max=Max("timestamp")
         )
-
-        context["datetimes"] = [
-            [date, list(time_range(date))]
-            for date in date_range(query["min"].date(), query["max"].date())
-        ]
+        context["timestamp"] = {
+            "current": timestamp,
+            "first_date": (d_min := timestamp_range["min"].date()),
+            "last_date": (d_max := timestamp_range["max"].date()),
+        }
+        context["date_range"] = list(date_range(d_min, d_max))
+        context["time_range"] = [dt.time(h, 0) for h in range(24)]
 
         return context
 
@@ -139,11 +139,3 @@ def date_range(first_date: dt.date, last_date: dt.date) -> Iterable[dt.date]:
     while date <= last_date:
         yield date
         date += timezone.timedelta(days=1)
-
-
-def time_range(date):
-    time = current = timezone.datetime.combine(date, timezone.datetime.min.time())
-    time += timezone.timedelta(days=1)
-    while current <= time:
-        yield current
-        current += timezone.timedelta(hours=1)
