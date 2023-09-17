@@ -11,7 +11,7 @@ import re
 
 from django.conf import settings
 from django.contrib.gis.geos import Point
-from loguru import logger
+from django.utils import timezone
 from tqdm import tqdm
 
 from .. import models
@@ -21,12 +21,20 @@ SHARE_PATH = settings.BASE_DIR / ".data" / "shares.txt"
 TEXT_ROW_RE = re.compile(r"[A-Za-z]")
 
 
+def random_timestamp(delta=1440):
+    minutes = round(random.gauss(0, delta))
+    return timezone.now() + timezone.timedelta(minutes=minutes)
+
+
 def save_share(location: Point, message: str, landscape: models.Landscape):
-    defaults = {"location": location, "message": message, "landscape": landscape}
-    share = models.Share(**defaults)
+    share = models.Share(
+        location=location,
+        message=message,
+        landscape=landscape,
+        timestamp=random_timestamp(),
+    )
     share.full_clean()
     share.save()
-    logger.debug(f"Created Share: {share}")
     return share
 
 

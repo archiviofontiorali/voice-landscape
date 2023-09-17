@@ -38,6 +38,9 @@ def on_share_creation_update_frequencies(
         .first()
     )
 
+    instance.place = place
+    instance.save()
+
     logger.debug(
         f"Receive share near [{place}], update WordFrequency "
         f"(message: {instance.message})"
@@ -58,6 +61,8 @@ def on_share_creation_update_frequencies(
             word.visible = False
         word.full_clean()
         word.save()
+
+        instance.words.add(word)
 
         wf, _ = models.WordFrequency.objects.get_or_create(place=place, word=word)
         wf.frequency = F("frequency") + 1
