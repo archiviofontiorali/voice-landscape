@@ -121,7 +121,12 @@ pg-dump:
 	
 pg-load:
 	@echo -e $(bold)Load latest backup inside folder '.backup'$(sgr0)
+	@gzip -dk $(shell ls .backup/landscapes.*.gz | tail -1) || true
 	@psql -U $(PG_USER) $(PG_NAME) < $(shell ls .backup/landscapes.* | tail -1)
+
+pg-reset:
+	@dropdb -U $(PG_USER) $(PG_NAME)
+	@createdb -U $(PG_USER) $(PG_NAME)
 
 sqlite-reset:
 	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
