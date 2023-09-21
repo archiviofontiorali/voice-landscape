@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "django_extensions",
     "rest_framework",
-    "compressor",
+    "sass_processor",
 ]
 
 
@@ -173,7 +173,7 @@ STATICFILES_DIRS = [
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
+    "sass_processor.finders.CssFinder",
 ]
 
 MEDIA_ROOT: Path = config("MEDIA_ROOT", default=BASE_DIR / ".media")
@@ -249,10 +249,3 @@ WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
 
 DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
 DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)
-
-
-COMPRESS_PRECOMPILERS = (
-    # ("text/coffeescript", "coffee --compile --stdio"),
-    ("text/x-sass", "sass --embed-source-map {infile} {outfile}"),
-    ("text/x-scss", "sass --embed-source-map {infile} {outfile}"),
-)

@@ -108,6 +108,8 @@ django-extensions==3.2.3
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
     # via voice-landscape (pyproject.toml)
+django-sass-processor==1.2.2
+    # via voice-landscape (pyproject.toml)
 djangorestframework==3.14.0
     # via voice-landscape (pyproject.toml)
 executing==1.2.0
@@ -214,6 +216,8 @@ kiwisolver==1.4.5
     # via matplotlib
 langcodes==3.3.0
     # via spacy
+libsass==0.22.0
+    # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
 llvmlite==0.41.0
