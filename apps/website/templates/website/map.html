@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% load static %}
-{% load sass_tags %}
+{% load compile_static %}
 
 {% block stylesheet %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% sass_src 'website/css/map.scss' %}">
+  <link rel="stylesheet" href="{% static 'website/css/map.scss'|compile %}">
 {% endblock %}
 
 

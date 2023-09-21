@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "django_extensions",
     "rest_framework",
-    "sass_processor",
+    "static_precompiler",
 ]
 
 
@@ -173,7 +173,7 @@ STATICFILES_DIRS = [
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "sass_processor.finders.CssFinder",
+    "static_precompiler.finders.StaticPrecompilerFinder",
 ]
 
 MEDIA_ROOT: Path = config("MEDIA_ROOT", default=BASE_DIR / ".media")
@@ -249,3 +249,11 @@ WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
 
 DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
 DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)
+
+STATIC_PRECOMPILER_COMPILERS = (
+    ("static_precompiler.compilers.dart_sass.SCSS", {"sourcemap_enabled": True}),
+    (
+        "static_precompiler.compilers.dart_sass.SASS",
+        {"sourcemap_enabled": True, "output_style": "compressed"},
+    ),
+)

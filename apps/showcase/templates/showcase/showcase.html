@@ -1,7 +1,7 @@
 {% extends "website/map.html" %}
 
-{% load sass_tags %}
 {% load static %}
+{% load compile_static %}
 
 {% block custom_meta %}
   {% if reload and reload > 0 %}
@@ -11,7 +11,7 @@
 
 {% block stylesheet %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% sass_src 'showcase/css/scaling.scss' %}">
+  <link rel="stylesheet" href="{% static 'showcase/css/scaling.scss'|compile %}">
 {% endblock %}
 
 
