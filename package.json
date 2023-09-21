@@ -1,0 +1,6 @@
+{
+  "name": "voice-landscapes",
+  "dependencies": {
+    "sass": "^1.68.0"
+  }
+}

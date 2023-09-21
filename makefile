@@ -26,6 +26,7 @@ venv: clean
 	@echo -e $(bold)Create virtualenv$(sgr0)
 	@python3 -m venv $(VENV)
 	@$(pip) install --upgrade pip pip-tools
+	@npm install
 
 requirements:
 	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
