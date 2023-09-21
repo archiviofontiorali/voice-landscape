@@ -1,12 +1,5 @@
 @import 'palette';
 
-$color-alert-success: $green;
-$color-alert-error: $red;
-$color-alert-warning: $orange;
-$color-alert-info: inherit;
-$color-alert-debug: $gray;
-
-
 .alert { outline: 1px solid; }
 .alert:hover { outline-width: 2px; }
 
