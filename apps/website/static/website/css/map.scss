@@ -1,13 +1,15 @@
 /* Leaflet map related styles */
 
+@import "../../../../../static/css/palette";
+
 .canvas span {
   /* Better solution only available in firefox 
       -webkit-text-stroke: 2px white;    
       paint-order: stroke fill; */
-  $size: 2px;
+  $size: 1px;
   $blur: 0;
   
-  $color: white;
+  $color: $color-background;
   text-shadow:  
     $size  $size $blur $color,
    -$size  $size $blur $color,
@@ -17,7 +19,7 @@
   
   
   &:hover { 
-    $color: silver;
+    $color: var(--color-gray, Gray);
     text-shadow:
       $size  $size $blur $color,
      -$size  $size $blur $color,
