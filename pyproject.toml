@@ -18,7 +18,7 @@ dependencies = [
     "django-static-precompiler",
     "dj-database-url",
     "gunicorn",
-    "libsass",
+    "lesscpy",
     "loguru",
     "openai-whisper",
     "Pillow",

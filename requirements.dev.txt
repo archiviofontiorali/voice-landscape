@@ -106,7 +106,7 @@ jinja2==3.1.2
     #   torch
 langcodes==3.3.0
     # via spacy
-libsass==0.22.0
+lesscpy==0.15.1
     # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
@@ -197,6 +197,8 @@ platformdirs==3.10.0
     # via black
 pluggy==1.3.0
     # via pytest
+ply==3.11
+    # via lesscpy
 preshed==3.0.9
     # via
     #   spacy

@@ -83,7 +83,7 @@ jinja2==3.1.2
     #   torch
 langcodes==3.3.0
     # via spacy
-libsass==0.22.0
+lesscpy==0.15.1
     # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
@@ -153,6 +153,8 @@ pathy==0.10.2
     # via spacy
 pillow==10.0.1
     # via voice-landscape (pyproject.toml)
+ply==3.11
+    # via lesscpy
 preshed==3.0.9
     # via
     #   spacy
