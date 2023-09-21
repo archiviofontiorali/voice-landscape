@@ -92,19 +92,21 @@ dj-database-url==2.1.0
 django==4.2.5
     # via
     #   dj-database-url
+    #   django-appconf
     #   django-cors-headers
     #   django-extensions
     #   django-jazzmin
-    #   django-static-precompiler
     #   djangorestframework
     #   voice-landscape (pyproject.toml)
+django-appconf==1.0.5
+    # via django-compressor
+django-compressor==4.4
+    # via voice-landscape (pyproject.toml)
 django-cors-headers==4.2.0
     # via voice-landscape (pyproject.toml)
 django-extensions==3.2.3
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
-    # via voice-landscape (pyproject.toml)
-django-static-precompiler==2.4
     # via voice-landscape (pyproject.toml)
 djangorestframework==3.14.0
     # via voice-landscape (pyproject.toml)
@@ -212,8 +214,6 @@ kiwisolver==1.4.5
     # via matplotlib
 langcodes==3.3.0
     # via spacy
-lesscpy==0.15.1
-    # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
 llvmlite==0.41.0
@@ -341,8 +341,6 @@ pillow==10.0.1
     #   voice-landscape (pyproject.toml)
 platformdirs==3.10.0
     # via jupyter-core
-ply==3.11
-    # via lesscpy
 preshed==3.0.9
     # via
     #   spacy
@@ -402,6 +400,8 @@ pyzmq==25.1.1
     #   ipykernel
     #   jupyter-client
     #   jupyter-server
+rcssmin==1.1.1
+    # via django-compressor
 referencing==0.30.2
     # via
     #   jsonschema
@@ -423,6 +423,8 @@ rfc3986-validator==0.1.1
     # via
     #   jsonschema
     #   jupyter-events
+rjsmin==1.2.1
+    # via django-compressor
 rpds-py==0.10.3
     # via
     #   jsonschema

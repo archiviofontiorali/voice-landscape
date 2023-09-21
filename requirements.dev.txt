@@ -60,19 +60,21 @@ dj-database-url==2.1.0
 django==4.2.5
     # via
     #   dj-database-url
+    #   django-appconf
     #   django-cors-headers
     #   django-extensions
     #   django-jazzmin
-    #   django-static-precompiler
     #   djangorestframework
     #   voice-landscape (pyproject.toml)
+django-appconf==1.0.5
+    # via django-compressor
+django-compressor==4.4
+    # via voice-landscape (pyproject.toml)
 django-cors-headers==4.2.0
     # via voice-landscape (pyproject.toml)
 django-extensions==3.2.3
     # via voice-landscape (pyproject.toml)
 django-jazzmin==2.6.0
-    # via voice-landscape (pyproject.toml)
-django-static-precompiler==2.4
     # via voice-landscape (pyproject.toml)
 djangorestframework==3.14.0
     # via voice-landscape (pyproject.toml)
@@ -106,8 +108,6 @@ jinja2==3.1.2
     #   torch
 langcodes==3.3.0
     # via spacy
-lesscpy==0.15.1
-    # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
 llvmlite==0.41.0
@@ -197,8 +197,6 @@ platformdirs==3.10.0
     # via black
 pluggy==1.3.0
     # via pytest
-ply==3.11
-    # via lesscpy
 preshed==3.0.9
     # via
     #   spacy
@@ -236,6 +234,8 @@ pytz==2023.3.post1
     # via djangorestframework
 pyyaml==6.0.1
     # via voice-landscape (pyproject.toml)
+rcssmin==1.1.1
+    # via django-compressor
 regex==2023.8.8
     # via tiktoken
 requests==2.31.0
@@ -243,6 +243,8 @@ requests==2.31.0
     #   spacy
     #   speechrecognition
     #   tiktoken
+rjsmin==1.2.1
+    # via django-compressor
 six==1.16.0
     # via asttokens
 smart-open==6.4.0
