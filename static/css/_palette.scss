@@ -6,22 +6,18 @@ $white: White;        // tachyons: white
 $dark-gray: #333333;  // tachyons: dark-gray
 $gray: #777777;       // tachyons: gray
 $mid-gray: #555555;   // tachyons: mid-gray
+$light-gray: lightgray;
 
 $red: DarkRed;
 $green: DarkGreen;
 $orange: DarkOrange;
 
-$palette-primary: $black;
-$palette-secondary: $mid-gray;
-$palette-background: $white;
-$palette-text: $black;
+$color-primary: $black;
+$color-secondary: $mid-gray;
+$color-background: $white;
+$color-text: $black;
+$color-debug: purple;
 
-$palette: (
-  primary: $palette-primary,
-  secondary: $palette-secondary,
-  background: $palette-background,
-  text: $palette-text,
-);
 $color-alert-success: $green;
 $color-alert-error: $red;
 $color-alert-warning: $orange;
@@ -33,9 +29,9 @@ $color-alert-debug: $gray;
   --color-white: #{$white};
   --color-gray: #{$gray};
   
-  --color-primary: #{$palette-primary};
-  --color-secondary: #{$palette-secondary};
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
   
-  --color-text: #{$palette-text};
-  --color-background: #{$palette-background};
+  --color-text: #{$color-text};
+  --color-background: #{$color-background};
 }

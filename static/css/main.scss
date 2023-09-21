@@ -2,12 +2,12 @@
 @import 'fonts';
 
 h1, h2, h3, h4, h5, h6, b, strong { 
-    color: $palette-primary;
+    color: $color-primary;
     font-weight: bold;
 }
 h1, h2, h3, b {}
 
-a { color: $palette-text; }
+a { color: $color-text; }
 
 /* Flex related styles */
 .flex-grow { flex-grow: 1; }
@@ -18,7 +18,7 @@ a { color: $palette-text; }
 }
 
 .cit, .cit b {
-  color: $palette-secondary;
+  color: $color-secondary;
   font-style: italic;
 }
 
@@ -31,7 +31,7 @@ $font-sizes: (1rem, 2rem, 4rem, 8rem, 16rem);
 
 /* Various */
 .text-shadow {
-  $color: $palette-text;
+  $color: $color-text;
   $size: 1px;
   text-shadow:
       $size $size 0 $color,
