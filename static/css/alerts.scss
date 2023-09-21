@@ -1,11 +1,18 @@
 @import 'palette';
 
+$color-alert-success: $green;
+$color-alert-error: $red;
+$color-alert-warning: $orange;
+$color-alert-info: inherit;
+$color-alert-debug: $gray;
+
+
 .alert { outline: 1px solid; }
 .alert:hover { outline-width: 2px; }
 
-.alert-error    { outline-color: $palette-alert-error; color: $palette-alert-error; }
-.alert-warning  { outline-color: $palette-alert-warning; }
-.alert-info     { outline-color: $palette-alert-info; }
-.alert-success  { outline-color: $palette-alert-success; color: $palette-alert-success; }
-.alert-debug    { outline-color: $palette-alert-debug; }
+.alert-error    { outline-color: $color-alert-error; color: $color-alert-error; }
+.alert-warning  { outline-color: $color-alert-warning; }
+.alert-info     { outline-color: $color-alert-info; }
+.alert-success  { outline-color: $color-alert-success; color: $color-alert-success; }
+.alert-debug    { outline-color: $color-alert-debug; }
 

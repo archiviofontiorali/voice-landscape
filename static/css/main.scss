@@ -7,7 +7,7 @@ h1, h2, h3, h4, h5, h6, b, strong {
 }
 h1, h2, h3, b {}
 
-a { color: $palette-primary; }
+a { color: $palette-text; }
 
 /* Flex related styles */
 .flex-grow { flex-grow: 1; }
@@ -18,22 +18,20 @@ a { color: $palette-primary; }
 }
 
 .cit, .cit b {
-  color: $mid-gray;
+  color: $palette-secondary;
   font-style: italic;
 }
 
-
 /* Icon related styles */
-$icon-sizes: (1: 1rem, 2: 2rem, 3: 4rem, 4: 8rem, 5: 16rem);
-
-@each $key, $size in $icon-sizes {
-  .i#{$key} { height: $size; width: $size; }  
+$font-sizes: (1rem, 2rem, 4rem, 8rem, 16rem);
+@each $i, $size in $font-sizes {
+  .i#{$i} { width: $size; height: $size; }
 }
 
 
 /* Various */
 .text-shadow {
-  $color: black;
+  $color: $palette-text;
   $size: 1px;
   text-shadow:
       $size $size 0 $color,

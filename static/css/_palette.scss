@@ -1,36 +1,38 @@
 /* Color palette */ 
 
-$black: black;
-$dark-gray: #333333;  /* tachyons: dark-gray  */
-$mid-gray: #555555;   /* tachyons: mid-gray   */
-$gray:  #777777;      /* tachyons: gray       */ 
-$white: white;
+@use "sass:map";
+
+$black: Black;        // tachyons: black 
+$white: White;        // tachyons: white
+
+$dark-gray: #333333;  // tachyons: dark-gray
+$gray: #777777;       // tachyons: gray
+$mid-gray: #555555;   // tachyons: mid-gray
 
 $red: DarkRed;
 $green: DarkGreen;
 $orange: DarkOrange;
 
 $palette-primary: $black;
-
-$palette-alert-success: $green;
-$palette-alert-error: $red;
-$palette-alert-warning: $orange;
-$palette-alert-info: inherit;
-$palette-alert-debug: Gray;
+$palette-secondary: $mid-gray;
+$palette-background: $white;
+$palette-text: $black;
 
 $palette: (
-        black: $black,
-        "gray": $gray,
-        "white": $white,
-        
-        "red": $red,
-        
-        primary: $black,
-        
-        alert-success: $palette-alert-success,
-        alert-error: $palette-alert-error, 
-        alert-warning: $palette-alert-warning, 
-        alert-info: $palette-alert-info, 
-        alert-debug: $palette-alert-debug
+  primary: $palette-primary,
+  secondary: $palette-secondary,
+  background: $palette-background,
+  text: $palette-text,
 );
 
+:root {
+  --color-black: #{$black};
+  --color-white: #{$white};
+  --color-gray: #{$gray};
+  
+  --color-primary: #{$palette-primary};
+  --color-secondary: #{$palette-secondary};
+  
+  --color-text: #{$palette-text};
+  --color-background: #{$palette-background};
+}
