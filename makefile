@@ -19,17 +19,17 @@ bootstrap: venv develop
 bootstrap-prod: venv production
 
 clean:
-	@echo -e $(bold)Clean up old virtualenv and cache$(sgr0)
+	@echo -e $(bold)Clean up virtualenv and cache directories$(sgr0)
 	@rm -rf $(VENV) *.egg-info .pytest_cache
 
 venv: clean
-	@echo -e $(bold)Create virtualenv$(sgr0)
+	@echo -e $(bold)Create a new virtualenv$(sgr0)
 	@python3 -m venv $(VENV)
 	@$(pip) install --upgrade pip pip-tools
 	@npm install
 
 requirements:
-	@echo -e $(bold)Create requirements with pip-tools$(sgr0)
+	@echo -e $(bold)Update requirements with pip-tools$(sgr0)
 	@$(VENV)/bin/pip-compile -vU --resolver backtracking -o requirements.txt pyproject.toml
 	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra dev -o requirements.dev.txt pyproject.toml
 	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra lab -o requirements.lab.txt pyproject.toml
@@ -51,6 +51,7 @@ production:
 .PHONY: lab serve test shell 
 
 serve:
+	@echo -e $(bold)Launch Django development server$(sgr0)
 	@$(django) runscript show_settings
 	@$(django) runserver $(HOST):$(PORT)
 
@@ -78,9 +79,6 @@ collectstatic:
 # Django database commands
 .PHONY: demo migrate migrations secret_key superuser 
 
-demo:
-	@LOGURU_LEVEL=INFO $(django) runscript init_demo
-
 migrate:
 	@echo -e $(bold)Apply migration to database$(sgr0)
 	@$(django) migrate
@@ -96,9 +94,15 @@ superuser:
 	@echo -e $(bold)Creating superuser account 'admin'$(sgr0)
 	@$(django) createsuperuser --username=admin --email=voci@afor.dev
 
+demo: db-flush superuser
+	@echo -e $(bold)Loading demo data$(sgr0)
+	@$(django) loaddata website/demo
+	@$(django) loaddata website/demo_places_202309
+	@LOGURU_LEVEL=INFO $(django) runscript add_demo_shares
+
 
 # Database related commands
-.PHONY: bootstrap-sqlite db-flush db-demo pg-dump sqlite-reset
+.PHONY: bootstrap-sqlite db-flush pg-dump sqlite-reset
 
 bootstrap-sqlite: sqlite-reset migrate superuser
 
@@ -106,11 +110,6 @@ db-flush:
 	@echo -e $(bold)Deleting all data from database$(sgr0)
 	@$(django) flush
 
-db-demo: db-flush superuser
-	@echo -e $(bold)Loading demo data$(sgr0)
-	@$(django) loaddata website/demo
-	@$(django) loaddata website/demo_places_202309
-	@LOGURU_LEVEL=INFO $(django) runscript add_demo_shares
 
 PG_USER?=$(USER)
 PG_NAME?=landscapes
