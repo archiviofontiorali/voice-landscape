@@ -25,5 +25,6 @@ $ cat .backup/BACKUP_NAME.sql | docker exec -i CONTAINER_NAME psql -U DB_USER DB
 ## Tips and tricks
 Restore the latest backup starting with landscapes
 ```shell
+gzip -dk $(ls .backup/landscapes.*.gz | tail -1)
 psql voci < $(ls .backup/landscapes.* | tail -1)
 ```

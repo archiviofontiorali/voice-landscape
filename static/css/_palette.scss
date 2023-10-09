@@ -1,36 +1,48 @@
 /* Color palette */ 
 
-$black: black;
-$dark-gray: #333333;  /* tachyons: dark-gray  */
-$mid-gray: #555555;   /* tachyons: mid-gray   */
-$gray:  #777777;      /* tachyons: gray       */ 
-$white: white;
+
+$palette-seashell: #fbf4ee;
+$palette-timberwolf: #d9d5d1;
+$palette-silver: #b7b5b3;
+$palette-battleship-gray: #8f8d87;
+$palette-dim-gray: #66645a;
+$palette-black-olive: #3d3c2e;
+$palette-smoke-black: #141301;
+
+
+$black: $palette-smoke-black; 
+$near-black: $palette-black-olive;
+$dark-gray: $palette-dim-gray;
+$gray: $palette-dim-gray;
+$silver-gray: $palette-silver;
+$light-gray: $palette-timberwolf;
+$white: $palette-seashell;
 
 $red: DarkRed;
 $green: DarkGreen;
 $orange: DarkOrange;
 
-$palette-primary: $black;
+$color-primary: $black;
+$color-secondary: $gray;
+$color-background: $white;
+$color-text: $black;
+$color-link: $gray;
+$color-debug: purple;
 
-$palette-alert-success: $green;
-$palette-alert-error: $red;
-$palette-alert-warning: $orange;
-$palette-alert-info: inherit;
-$palette-alert-debug: Gray;
+$color-alert-success: $green;
+$color-alert-error: $red;
+$color-alert-warning: $orange;
+$color-alert-info: inherit;
+$color-alert-debug: #929aab;
 
-$palette: (
-        black: $black,
-        "gray": $gray,
-        "white": $white,
-        
-        "red": $red,
-        
-        primary: $black,
-        
-        alert-success: $palette-alert-success,
-        alert-error: $palette-alert-error, 
-        alert-warning: $palette-alert-warning, 
-        alert-info: $palette-alert-info, 
-        alert-debug: $palette-alert-debug
-);
-
+:root {
+  --color-black: #{$black};
+  --color-white: #{$white};
+  --color-gray: #{$gray};
+  
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
+  
+  --color-text: #{$color-text};
+  --color-background: #{$color-background};
+}

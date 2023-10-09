@@ -3,11 +3,10 @@ import re
 import spacy.symbols
 from django.conf import settings
 from django.contrib.gis.db.models.functions import Distance
-from django.db.models import F
 from loguru import logger
+from tqdm import tqdm
 
-from . import models
-from .tools.blacklist import BlackList
+from .. import models
 
 # For more info see:
 # https://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
@@ -20,17 +19,8 @@ except IOError:
     spacy.cli.download(settings.SPACY_MODEL_NAME)
     nlp = spacy.load(settings.SPACY_MODEL_NAME)
 
-blacklist = BlackList()
-if path := settings.BLACKLIST_PATH:
-    blacklist.load_file(path)
 
-
-def on_share_creation_update_frequencies(
-    sender, instance: models.Share, created, **kwargs
-):
-    if not created:
-        return
-
+def recalculate_share(instance: models.Share):
     place = (
         models.Place.objects.filter(landscape=instance.landscape)
         .annotate(distance=Distance("location", instance.location))
@@ -41,34 +31,16 @@ def on_share_creation_update_frequencies(
     instance.place = place
     instance.save()
 
-    logger.debug(
-        f"Receive share near [{place}], update WordFrequency "
-        f"(message: {instance.message})"
-    )
-
     for token in nlp(instance.message):
         if token.pos not in settings.SPACY_VALID_TOKENS:
-            logger.debug(
-                f"Skip token {token} with pos ({token.pos}) "
-                f"'{spacy.explain(token.pos_)}'"
-            )
             continue
 
         text = HTML_TAG_RE.sub("", token.lemma_).strip().lower()
 
         word, created = models.Word.objects.get_or_create(text=text)
-        if created and word.text in blacklist:
-            word.visible = False
-        word.full_clean()
-        word.save()
-
         instance.words.add(word)
 
-        wf, _ = models.WordFrequency.objects.get_or_create(place=place, word=word)
-        wf.frequency = F("frequency") + 1
-        wf.save()
 
-        if created:
-            logger.debug(f"Create counter for {word}")
-        else:
-            logger.debug(f"Increment counter for {word}")
+def run():
+    for share in tqdm(models.Share.objects.all()):
+        recalculate_share(share)

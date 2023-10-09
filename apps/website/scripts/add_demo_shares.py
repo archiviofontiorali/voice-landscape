@@ -11,7 +11,7 @@ import re
 
 from django.conf import settings
 from django.contrib.gis.geos import Point
-from loguru import logger
+from django.utils import timezone
 from tqdm import tqdm
 
 from .. import models
@@ -21,12 +21,20 @@ SHARE_PATH = settings.BASE_DIR / ".data" / "shares.txt"
 TEXT_ROW_RE = re.compile(r"[A-Za-z]")
 
 
+def random_timestamp(delta=1440):
+    minutes = round(random.gauss(0, delta))
+    return timezone.now() + timezone.timedelta(minutes=minutes)
+
+
 def save_share(location: Point, message: str, landscape: models.Landscape):
-    defaults = {"location": location, "message": message, "landscape": landscape}
-    share = models.Share(**defaults)
+    share = models.Share(
+        location=location,
+        message=message,
+        landscape=landscape,
+        timestamp=random_timestamp(),
+    )
     share.full_clean()
     share.save()
-    logger.debug(f"Created Share: {share}")
     return share
 
 
@@ -42,16 +50,13 @@ def run():
         shares = fp.readlines()
 
     landscape = models.Landscape.visible_objects.get_default()
-    places = list(landscape.places.all())
+    places = [p.coordinates for p in landscape.places.all()]
 
     for message in tqdm(shares):
         if not TEXT_ROW_RE.match(message):
             continue
 
-        point = random.choice(places).location
-
-        lat = point.x + random.gauss(0, 0.5)
-        lon = point.y + random.gauss(0, 0.5)
+        lat, lon = random.choice(places)
         location = Point(x=lon, y=lat)
 
         save_share(location, message, landscape)

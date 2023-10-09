@@ -1,12 +1,12 @@
 /* Share page custom style rules */ 
 
-@import "palette";
+@import "../../../../../static/css/palette";
 
 
 #location-auto-icon svg{
-  color: gray;
+  color: $gray;
   
-  &[data-state="disabled"] { color: lightgray; }
+  &[data-state="disabled"] { color: $light-gray; }
   &[data-state="processing"] { color: $orange; }
   &[data-state="success"] { color: $green; }
   &[data-state="error"] { color: $red; }
@@ -17,7 +17,7 @@ $animation-colors: ("red": $red, "gray": $gray);
 @each $name, $color in $animation-colors {
   @keyframes color-animation--#{$name} {
     from {
-      color: $white;
+      color: $color-background;
     }
     to {
       color: $color;
@@ -55,5 +55,4 @@ a#record-button {
     background-color: $gray; 
     animation-name: color-animation--gray;
   }
-  
 }

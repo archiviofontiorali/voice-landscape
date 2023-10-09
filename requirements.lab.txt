@@ -62,7 +62,7 @@ charset-normalizer==3.2.0
     #   requests
 click==8.1.7
     # via typer
-cmake==3.27.4.1
+cmake==3.27.5
     # via triton
 comm==0.1.4
     # via
@@ -70,13 +70,13 @@ comm==0.1.4
     #   ipywidgets
 confection==0.1.3
     # via thinc
-contourpy==1.1.0
+contourpy==1.1.1
     # via
     #   bokeh
     #   matplotlib
 cycler==0.11.0
     # via matplotlib
-cymem==2.0.7
+cymem==2.0.8
     # via
     #   preshed
     #   spacy
@@ -116,8 +116,6 @@ executing==1.2.0
     # via stack-data
 fastjsonschema==2.18.0
     # via nbformat
-ffmpeg-python==0.2.0
-    # via openai-whisper
 filelock==3.12.4
     # via
     #   torch
@@ -130,8 +128,6 @@ frozenlist==1.4.0
     # via
     #   aiohttp
     #   aiosignal
-future==0.18.3
-    # via ffmpeg-python
 gunicorn==21.2.0
     # via voice-landscape (pyproject.toml)
 idna==3.4
@@ -173,7 +169,7 @@ json5==0.9.14
     # via jupyterlab-server
 jsonpointer==2.4
     # via jsonschema
-jsonschema[format-nongpl]==4.19.0
+jsonschema[format-nongpl]==4.19.1
     # via
     #   jupyter-events
     #   jupyterlab-server
@@ -208,7 +204,7 @@ jupyter-server==2.7.3
     #   notebook-shim
 jupyter-server-terminals==0.4.4
     # via jupyter-server
-jupyterlab==4.0.5
+jupyterlab==4.0.6
     # via voice-landscape (pyproject.toml)
 jupyterlab-pygments==0.2.2
     # via nbconvert
@@ -224,7 +220,7 @@ libsass==0.22.0
     # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
-llvmlite==0.40.1
+llvmlite==0.41.0
     # via numba
 loguru==0.7.2
     # via voice-landscape (pyproject.toml)
@@ -232,7 +228,7 @@ markupsafe==2.1.3
     # via
     #   jinja2
     #   nbconvert
-matplotlib==3.7.3
+matplotlib==3.8.0
     # via
     #   ipympl
     #   seaborn
@@ -251,7 +247,7 @@ multidict==6.0.4
     # via
     #   aiohttp
     #   yarl
-murmurhash==1.0.9
+murmurhash==1.0.10
     # via
     #   preshed
     #   spacy
@@ -265,15 +261,15 @@ nbformat==5.9.2
     #   jupyter-server
     #   nbclient
     #   nbconvert
-nest-asyncio==1.5.7
+nest-asyncio==1.5.8
     # via ipykernel
 networkx==3.1
     # via torch
 notebook-shim==0.2.3
     # via jupyterlab
-numba==0.57.1
+numba==0.58.0
     # via openai-whisper
-numpy==1.24.4
+numpy==1.25.2
     # via
     #   blis
     #   bokeh
@@ -311,7 +307,7 @@ nvidia-nccl-cu11==2.14.3
     # via torch
 nvidia-nvtx-cu11==11.7.91
     # via torch
-openai-whisper==20230314
+openai-whisper==20230918
     # via voice-landscape (pyproject.toml)
 overrides==7.4.0
     # via jupyter-server
@@ -327,7 +323,7 @@ packaging==23.1
     #   nbconvert
     #   spacy
     #   thinc
-pandas==2.1.0
+pandas==2.1.1
     # via
     #   bokeh
     #   seaborn
@@ -341,7 +337,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==10.0.0
+pillow==10.0.1
     # via
     #   bokeh
     #   ipympl
@@ -349,7 +345,7 @@ pillow==10.0.0
     #   voice-landscape (pyproject.toml)
 platformdirs==3.10.0
     # via jupyter-core
-preshed==3.0.8
+preshed==3.0.9
     # via
     #   spacy
     #   thinc
@@ -482,7 +478,7 @@ terminado==0.17.1
     #   jupyter-server-terminals
 thinc==8.1.12
     # via spacy
-tiktoken==0.3.1
+tiktoken==0.3.3
     # via openai-whisper
 tinycss2==1.2.1
     # via nbconvert
@@ -527,7 +523,7 @@ typer==0.9.0
     # via
     #   pathy
     #   spacy
-typing-extensions==4.7.1
+typing-extensions==4.8.0
     # via
     #   dj-database-url
     #   pydantic
@@ -538,7 +534,7 @@ tzdata==2023.3
     # via pandas
 uri-template==1.3.0
     # via jsonschema
-urllib3==2.0.4
+urllib3==2.0.5
     # via requests
 wasabi==1.1.2
     # via

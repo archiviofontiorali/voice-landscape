@@ -7,6 +7,7 @@ from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Q, Sum
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from .fields import UniqueBooleanField
@@ -48,16 +49,6 @@ class TitledModel(models.Model):
 
     class Meta:
         abstract = True
-
-
-class Share(LocationModel):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    message = models.TextField(max_length=500)
-    landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
-
-    def __str__(self):
-        message = textwrap.shorten(self.message, width=20, placeholder="...")
-        return f"{super().__str__()} [{message}]"
 
 
 class LeafletProvider(TitledModel):
@@ -131,6 +122,25 @@ class Word(models.Model):
 
     def __str__(self):
         return ("🚩 " if not self.visible else "") + self.text
+
+
+class Share(LocationModel):
+    timestamp = models.DateTimeField(default=timezone.now)
+    message = models.TextField(max_length=500)
+    landscape = models.ForeignKey("Landscape", on_delete=models.CASCADE)
+
+    place = models.ForeignKey(
+        Place,
+        related_name="shares",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    words = models.ManyToManyField(Word, related_name="shares", blank=True)
+
+    def __str__(self):
+        message = textwrap.shorten(self.message, width=20, placeholder="...")
+        return f"{super().__str__()} [{message}]"
 
 
 class WordFrequency(models.Model):

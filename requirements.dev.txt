@@ -44,11 +44,11 @@ click==8.1.7
     #   black
     #   pip-tools
     #   typer
-cmake==3.27.4.1
+cmake==3.27.5
     # via triton
 confection==0.1.3
     # via thinc
-cymem==2.0.7
+cymem==2.0.8
     # via
     #   preshed
     #   spacy
@@ -82,8 +82,6 @@ djangorestframework==3.14.0
     # via voice-landscape (pyproject.toml)
 executing==1.2.0
     # via stack-data
-ffmpeg-python==0.2.0
-    # via openai-whisper
 filelock==3.12.4
     # via
     #   torch
@@ -92,8 +90,6 @@ frozenlist==1.4.0
     # via
     #   aiohttp
     #   aiosignal
-future==0.18.3
-    # via ffmpeg-python
 gunicorn==21.2.0
     # via voice-landscape (pyproject.toml)
 idna==3.4
@@ -118,7 +114,7 @@ libsass==0.22.0
     # via voice-landscape (pyproject.toml)
 lit==16.0.6
     # via triton
-llvmlite==0.40.1
+llvmlite==0.41.0
     # via numba
 loguru==0.7.2
     # via voice-landscape (pyproject.toml)
@@ -134,7 +130,7 @@ multidict==6.0.4
     # via
     #   aiohttp
     #   yarl
-murmurhash==1.0.9
+murmurhash==1.0.10
     # via
     #   preshed
     #   spacy
@@ -143,9 +139,9 @@ mypy-extensions==1.0.0
     # via black
 networkx==3.1
     # via torch
-numba==0.57.1
+numba==0.58.0
     # via openai-whisper
-numpy==1.24.4
+numpy==1.25.2
     # via
     #   blis
     #   numba
@@ -177,7 +173,7 @@ nvidia-nccl-cu11==2.14.3
     # via torch
 nvidia-nvtx-cu11==11.7.91
     # via torch
-openai-whisper==20230314
+openai-whisper==20230918
     # via voice-landscape (pyproject.toml)
 packaging==23.1
     # via
@@ -197,7 +193,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==10.0.0
+pillow==10.0.1
     # via voice-landscape (pyproject.toml)
 pip-tools==7.3.0
     # via voice-landscape (pyproject.toml)
@@ -205,7 +201,7 @@ platformdirs==3.10.0
     # via black
 pluggy==1.3.0
     # via pytest
-preshed==3.0.8
+preshed==3.0.9
     # via
     #   spacy
     #   thinc
@@ -282,7 +278,7 @@ sympy==1.12
     # via torch
 thinc==8.1.12
     # via spacy
-tiktoken==0.3.1
+tiktoken==0.3.3
     # via openai-whisper
 torch==2.0.1
     # via
@@ -305,14 +301,14 @@ typer==0.9.0
     # via
     #   pathy
     #   spacy
-typing-extensions==4.7.1
+typing-extensions==4.8.0
     # via
     #   dj-database-url
     #   pydantic
     #   pydantic-core
     #   torch
     #   typer
-urllib3==2.0.4
+urllib3==2.0.5
     # via requests
 wasabi==1.1.2
     # via
