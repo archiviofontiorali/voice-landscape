@@ -25,7 +25,7 @@ dependencies = [
     "Pillow",
     "pydub",
     "PyYAML",
-    "psycopg",
+    "psycopg2-binary",
     "python-decouple",
     "soundfile",
     "spacy",

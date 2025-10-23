@@ -190,7 +190,7 @@ propcache==0.4.1
     # via
     #   aiohttp
     #   yarl
-psycopg==3.2.11
+psycopg2-binary==2.9.11
     # via voice-landscape (pyproject.toml)
 pycparser==2.23
     # via cffi
