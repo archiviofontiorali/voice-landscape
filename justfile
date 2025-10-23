@@ -12,7 +12,7 @@ alias upgrade := update
 venv:
     @echo "Create virtualenv"
     rm -rf .venv *.egg-info .pytest_cache
-    uv venv {{VENV}}
+    uv venv --python ">=3.13" {{VENV}}
     uv add pip
     npm install
 
