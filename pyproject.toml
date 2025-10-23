@@ -31,7 +31,6 @@ dependencies = [
     "spacy",
     "SpeechRecognition",
     "tqdm",
-    "pip>=25.2",
 ]
 
 [project.optional-dependencies]
