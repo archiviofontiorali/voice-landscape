@@ -13,75 +13,75 @@ HOST?=localhost
 PORT?=8000
 
 
-.PHONY: bootstrap clean venv requirements develop develop-lab production
+# .PHONY: bootstrap clean venv requirements develop develop-lab production
 
-bootstrap: venv develop
-bootstrap-prod: venv production
+# bootstrap: venv develop
+# bootstrap-prod: venv production
 
-clean:
-	@echo -e $(bold)Clean up virtualenv and cache directories$(sgr0)
-	@rm -rf $(VENV) *.egg-info .pytest_cache
+# clean:
+# 	@echo -e $(bold)Clean up virtualenv and cache directories$(sgr0)
+# 	@rm -rf $(VENV) *.egg-info .pytest_cache
 
-venv: clean
-	@echo -e $(bold)Create a new virtualenv$(sgr0)
-	@python3 -m venv $(VENV)
-	@$(pip) install --upgrade pip pip-tools
-	@npm install
+# venv: clean
+# 	@echo -e $(bold)Create a new virtualenv$(sgr0)
+# 	@python3 -m venv $(VENV)
+# 	@$(pip) install --upgrade pip pip-tools
+# 	@npm install
 
-requirements:
-	@echo -e $(bold)Update requirements with pip-tools$(sgr0)
-	@$(VENV)/bin/pip-compile -vU --resolver backtracking -o requirements.txt pyproject.toml
-	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra dev -o requirements.dev.txt pyproject.toml
-	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra lab -o requirements.lab.txt pyproject.toml
-	
-develop:
-	@echo -e $(bold)Install and update development requirements$(sgr0)
-	@$(pip) install -r requirements.dev.txt
+# requirements:
+# 	@echo -e $(bold)Update requirements with pip-tools$(sgr0)
+# 	@$(VENV)/bin/pip-compile -vU --resolver backtracking -o requirements.txt pyproject.toml
+# 	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra dev -o requirements.dev.txt pyproject.toml
+# 	@$(VENV)/bin/pip-compile -vU --resolver backtracking --extra lab -o requirements.lab.txt pyproject.toml
 
-develop-lab:
-	@echo -e $(bold)Install and update jupyter requirements$(sgr0)
-	@$(pip) install -r requirements.lab.txt
+# develop:
+# 	@echo -e $(bold)Install and update development requirements$(sgr0)
+# 	@$(pip) install -r requirements.dev.txt
 
-production:
-	@echo -e $(bold)Install and update production requirements$(sgr0)
-	@$(pip) install -r requirements.txt
+# develop-lab:
+# 	@echo -e $(bold)Install and update jupyter requirements$(sgr0)
+# 	@$(pip) install -r requirements.lab.txt
+
+# production:
+# 	@echo -e $(bold)Install and update production requirements$(sgr0)
+# 	@$(pip) install -r requirements.txt
 
 
 # Django development commands
-.PHONY: lab serve test shell 
+# .PHONY: lab serve test shell
 
-serve:
-	@echo -e $(bold)Launch Django development server$(sgr0)
-	@$(django) runscript show_settings
-	@$(django) runserver $(HOST):$(PORT)
+# serve:
+# 	@echo -e $(bold)Launch Django development server$(sgr0)
+# 	@$(django) runscript show_settings
+# 	@$(django) runserver $(HOST):$(PORT)
 
 lab:
 	@# see: https://docs.djangoproject.com/en/4.2/topics/async/
 	@DJANGO_ALLOW_ASYNC_UNSAFE=1 $(django) shell_plus --lab
 
-test:
-	@$(python) -m pytest
+# test:
+# 	@$(python) -m pytest
 
-shell:
-	@$(django) shell
+# shell:
+# 	@$(django) shell
 
 
 
 # Django production commands
-.PHONY: collectstatic
+# .PHONY: collectstatic
 
-collectstatic:
-	@$(django) collectstatic --ignore=*.scss
-	@$(django) compilescss --use-storage
+# collectstatic:
+# 	@$(django) collectstatic --ignore=*.scss
+# 	@$(django) compilescss --use-storage
 
 
 
 # Django database commands
-.PHONY: demo migrate migrations secret_key superuser 
+.PHONY: demo migrate migrations secret_key superuser
 
-migrate:
-	@echo -e $(bold)Apply migration to database$(sgr0)
-	@$(django) migrate
+# migrate:
+# 	@echo -e $(bold)Apply migration to database$(sgr0)
+# 	@$(django) migrate
 
 migrations:
 	@echo -e $(bold)Create migration files$(sgr0)
@@ -118,7 +118,7 @@ pg-dump:
 	@echo -e $(bold)Save backup inside folder '.backup'$(sgr0)
 	@mkdir -p .backup/
 	@pg_dump -U $(PG_USER) $(PG_NAME) | gzip -9 > .backup/landscapes."$(shell date --iso-8601=seconds)".sql.gz
-	
+
 pg-load:
 	@echo -e $(bold)Load latest backup inside folder '.backup'$(sgr0)
 	@gzip -dk $(shell ls .backup/landscapes.*.gz | tail -1) || true
@@ -130,6 +130,6 @@ pg-reset:
 
 sqlite-reset:
 	@echo -e $(bold)Prepare SQLite db with GeoDjango enabled$(sgr0)
-	@rm -rf db.sqlite3 .media .static	
-	# Temporary solution for https://code.djangoproject.com/ticket/32935 
+	@rm -rf db.sqlite3 .media .static
+	# Temporary solution for https://code.djangoproject.com/ticket/32935
 	@$(django) shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
