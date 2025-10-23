@@ -180,6 +180,8 @@ packaging==25.0
     #   weasel
 pillow==12.0.0
     # via voice-landscape (pyproject.toml)
+pip==25.2
+    # via voice-landscape (pyproject.toml)
 preshed==3.0.10
     # via
     #   spacy

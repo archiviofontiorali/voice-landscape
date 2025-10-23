@@ -13,7 +13,6 @@ venv:
     @echo "Create virtualenv"
     rm -rf .venv *.egg-info .pytest_cache
     uv venv --python ">=3.13" {{VENV}}
-    uv add pip
     npm install
 
 freeze:
