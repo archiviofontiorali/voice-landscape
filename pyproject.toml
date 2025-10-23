@@ -10,7 +10,7 @@ version = "0.8.4"
 requires-python = ">=3.10"
 dependencies = [
     "aiohttp",
-    "django>=4",
+    "django~=4.2.0",
     "djangorestframework",
     "django-compressor",
     "django-cors-headers",
@@ -25,21 +25,21 @@ dependencies = [
     "Pillow",
     "pydub",
     "PyYAML",
-    "psycopg2",
+    "psycopg",
     "python-decouple",
     "soundfile",
     "spacy",
     "SpeechRecognition",
     "tqdm",
+    "pip>=25.2",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "black", 
-    "ipython", 
-    "isort", 
-    "pip-tools", 
-    "pytest-django", 
+    "black",
+    "ipython",
+    "isort",
+    "pytest-django",
 ]
 lab = [
     "ipympl",

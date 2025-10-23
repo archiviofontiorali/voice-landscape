@@ -4,25 +4,26 @@ A project by [AFOr, Archivio delle Fonti Orali](https://afor.dev)
 
 ## System dependencies installation (either development and production)
 Require at least `python>=3.10`, `pip` and `venv` to work.
-To simplify installation `make` is suggested
+To simplify installation `just` is suggested
 
 ```shell
 # Ubuntu/debian
 $ sudo apt update
 $ sudo apt install python3 python3-pip python3-venv make
+$ curl -LsSf https://astral.sh/uv/install.sh | sh  # Install UV
 
 # Archlinux
-$ sudo pacman -S python python-pip python-virtualenv make
+$ sudo pacman -S python python-pip python-virtualenv uv
 ```
 
 ## Database instructions
 This Django app uses [GeoDjango](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/tutorial/) to handle spatial features like coordinates.
-You can chose between using sqlite3 (with spatialite) and postgres (with postgis). 
-For postgis a docker-compose file is available in `system/` folder 
-Note that MySQL/mariadb is not supported or tested at the moment 
+You can chose between using sqlite3 (with spatialite) and postgres (with postgis).
+For postgis a docker-compose file is available in `system/` folder
+Note that MySQL/mariadb is not supported or tested at the moment
 
 Some additional package are required to use database:
-- [GDAL](https://gdal.org/) 
+- [GDAL](https://gdal.org/)
 - [spatiallite](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/spatialite/) if using sqlite db
 - [PostGIS](https://docs.djangoproject.com/en/4.1/ref/contrib/gis/install/postgis/) if using PostgreSQL
 
@@ -45,10 +46,10 @@ $ sudo apt install libsqlite3-mod-spatialite
 $ sudo pacman -S libspatialite
 ```
 
-Set a valid SQLite path (of type spatialite) in `.env` file 
+Set a valid SQLite path (of type spatialite) in `.env` file
 (default: spatialite:///db.sqlite3)
 
-Enable Spatialite and apply migrations by executing 
+Enable Spatialite and apply migrations by executing
 ```shell
 # via makefile
 $ make bootstrap-sqlite
@@ -62,7 +63,7 @@ $ source .venv/bin/activate
 Install PostGIS dependencies
 ```shell
 # On ubuntu (<x> is the postgres version, libpq-dev is required to have a valid licence)
-$ sudo apt install libpq-dev postgresql-<x>-postgis-3  
+$ sudo apt install libpq-dev postgresql-<x>-postgis-3
 # NOTE: With postgresql-11 and postgis 2.5
 $ sudo apt install postgresql-11-postgis-2.5 postgresql-11-postgis-2.5-scripts
 
@@ -94,18 +95,18 @@ $ make migrate
 ```
 
 ### Prepare PostgreSQL with docker-compose
-Inside `system/` subfolder you can find a docker-compose.yml to automatically install a 
+Inside `system/` subfolder you can find a docker-compose.yml to automatically install a
 postgis database with adminer
 
 ```shell
 $ docker compose -f system/docker-compose.yml up
 ```
 
-db is available at `postgis://postgres:lv-password@localhost:54320/landscapes` so 
-remember to add `DATABASE_URL=postgis://postgres:lv-password@localhost:54320/landscapes` 
-inside .env file 
+db is available at `postgis://postgres:lv-password@localhost:54320/landscapes` so
+remember to add `DATABASE_URL=postgis://postgres:lv-password@localhost:54320/landscapes`
+inside .env file
 
-db is linked to a docker volume to preserve data. To reset data you can use: 
+db is linked to a docker volume to preserve data. To reset data you can use:
 ```shell
 $ python manage.py flush --no-input
 ```
@@ -143,10 +144,10 @@ $ source .venv/bin/activate
 (venv)$ gunicorn -w 4 admin.wsgi
 ```
 
-To enable `nginx` and `gunicorn` on boot, create a systemd unit file and apply HTTPS via 
-certbot, following this 
+To enable `nginx` and `gunicorn` on boot, create a systemd unit file and apply HTTPS via
+certbot, following this
 [tutorial](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04)
-(ubuntu 20.04) 
+(ubuntu 20.04)
 
 An example systemd service file is located in [voice-landscape.service](/system/voice-landscape.service)
 It assumes you clone this repository inside your user folder inside a `git` folder
@@ -158,7 +159,7 @@ $ sudo cp system/nginx.conf /etc/nginx/sites-available/nginx.conf
 ```
 
 ```shell
-$ cd ~ && mkdir -p git 
+$ cd ~ && mkdir -p git
 $ git clone https://github.com/archiviofontiorali/voice-landscape ~/git/
 ```
 
