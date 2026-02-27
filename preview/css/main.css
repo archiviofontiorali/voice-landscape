@@ -1,0 +1,16 @@
+.canvas span {
+    color: black !important;
+    text-shadow:
+        1px 1px 0 white,
+        -1px -1px 0 white,
+        1px -1px 0 white,
+        -1px 1px 0 white;
+}
+.canvas span:hover {
+    color: white !important;
+    text-shadow:
+        2px 2px 0 black,
+        -2px -2px 0 black,
+        2px -2px 0 black,
+        -2px 2px 0 black;
+}
