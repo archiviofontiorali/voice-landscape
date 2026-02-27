@@ -12,12 +12,13 @@ def _():
     import polars as pl
     from io import StringIO
 
-    return StringIO, pl
+    return StringIO, mo, pl
 
 
 @app.cell(hide_code=True)
 def _():
     import struct
+
 
     def ewkb_point_to_tuple(hex_wkb: str) -> tuple[float, float]:
         """
@@ -40,8 +41,8 @@ def _():
 
         # 2️⃣  Determine endianness
         #    First byte: 0 = big‑endian, 1 = little‑endian (PostGIS always uses little)
-        endian_char = '<' if raw[0] == 1 else '>'
-    
+        endian_char = "<" if raw[0] == 1 else ">"
+
         # 3️⃣  Geometry type (4 bytes after the endian byte)
         #    If the high bit 0x20000000 is set the EWKB contains an SRID field.
         geom_type = struct.unpack(endian_char + "I", raw[1:5])[0]
@@ -51,8 +52,8 @@ def _():
         #    • 4 bytes for geometry type
         #    • optional 4‑byte SRID (present when 0x20000000 flag is set)
         offset = 1 + 4
-        if geom_type & 0x20000000:               # SRID flag present
-            offset += 4                          # skip the SRID integer
+        if geom_type & 0x20000000:  # SRID flag present
+            offset += 4  # skip the SRID integer
 
         # 5️⃣  Unpack the two little‑endian double‑precision numbers (8 bytes each)
         x, y = struct.unpack(endian_char + "dd", raw[offset : offset + 16])
@@ -94,9 +95,13 @@ def _(StringIO, ewkb_point_to_tuple, pl):
     22	teatro-storchi	Teatro Storchi		0101000020E6100000347C327EB8DC254070E591E45E524640
     """
 
-    places = pl.read_csv(StringIO(_data.strip()), separator="\t", has_header=False, new_columns=_header)
+    places = pl.read_csv(
+        StringIO(_data.strip()), separator="\t", has_header=False, new_columns=_header
+    )
     places = places.with_columns(
-        pl.col("location").map_elements(ewkb_point_to_tuple, return_dtype=list[float]).alias("coordinates"),
+        pl.col("location")
+        .map_elements(ewkb_point_to_tuple, return_dtype=list[float])
+        .alias("coordinates"),
     ).with_columns(
         pl.col("coordinates").list.get(0).alias("longitude"),
         pl.col("coordinates").list.get(1).alias("latitude"),
@@ -110,6 +115,7 @@ def _(StringIO, pl):
     """
     Data for Name: website_word; Type: TABLE DATA; Schema: public; Owner: postgres
     """
+
     _header = "id, text, visible".split(", ")
     _data = """
     50	sorpresa	t
@@ -251,7 +257,9 @@ def _(StringIO, pl):
     137	armonico	t
     138	bellezza	t
     """
-    words = pl.read_csv(StringIO(_data.strip()), separator="\t", has_header=False, new_columns=_header)
+    words = pl.read_csv(
+        StringIO(_data.strip()), separator="\t", has_header=False, new_columns=_header
+    )
     return (words,)
 
 
@@ -260,6 +268,7 @@ def _(StringIO, pl):
     """
     Data for Name: website_wordfrequency; Type: TABLE DATA; Schema: public; Owner: postgres
     """
+
     _header = "id, word_id, frequency, place_id".split(", ")
     _data = """
     51	50	1	5
@@ -414,14 +423,18 @@ def _(StringIO, pl):
     150	138	1	12
     """
 
-    frequencies = pl.read_csv(StringIO(_data.strip()), separator="\t", has_header=False, new_columns=_header)
+    frequencies = pl.read_csv(
+        StringIO(_data.strip()), separator="\t", has_header=False, new_columns=_header
+    )
     return (frequencies,)
 
 
 @app.cell
 def _(frequencies, pl, places, words):
     _frequencies = frequencies.with_columns(
-        pl.col("word_id").map_elements(lambda v: words.filter(pl.col("id") == v)["text"].item()).alias("word")
+        pl.col("word_id")
+        .map_elements(lambda v: words.filter(pl.col("id") == v)["text"].item())
+        .alias("word")
     ).select("place_id", "word", "frequency")
 
     out = []
