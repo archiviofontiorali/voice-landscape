@@ -430,7 +430,7 @@ def _(StringIO, pl):
 
 
 @app.cell
-def _(frequencies, pl, places, words):
+def _(frequencies, pl, places, titled, words):
     _frequencies = frequencies.with_columns(
         pl.col("word_id")
         .map_elements(lambda v: words.filter(pl.col("id") == v)["text"].item())
@@ -439,16 +439,27 @@ def _(frequencies, pl, places, words):
 
     out = []
     for _id, _lat, _lon in places.select("id", "latitude", "longitude").iter_rows():
-    
-        out.append({
-            "coordinates": [_lat, _lon],
-            "frequencies": [
-                [_word, _freq] for _, _word, _freq in _frequencies.filter(pl.col("place_id") == _id).iter_rows()
-            ]
-        })
+        out.append(
+            {
+                "coordinates": [_lat, _lon],
+                "frequencies": [
+                    [_word.title() if titled.value else _word, _freq]
+                    for _, _word, _freq in _frequencies.filter(
+                        pl.col("place_id") == _id
+                    ).iter_rows()
+                ],
+            }
+        )
 
     out
     return
+
+
+@app.cell
+def _(mo):
+    titled = mo.ui.checkbox(label="title words", value=False)
+    titled
+    return (titled,)
 
 
 @app.cell
