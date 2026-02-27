@@ -79,6 +79,23 @@
     <script src="/js/map.js" defer></script>
     <script defer>
       const center = [44.647206699693065, 10.92513794239912];
+
+      let places = [];
+
+      fetch("/data/ff2023.json")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          places = data;
+        })
+        .catch((err) => console.error("Failed to load places JSON:", err));
+
+      console.log(places);
+
       const options = {
         zoom: { initial: 16, min: 14, max: 18 },
         map: {
@@ -88,9 +105,8 @@
           },
         },
       };
-      document.addEventListener(
-        "DOMContentLoaded",
-        () => new LeafletMap("map", center, options), //.addWordClouds({{ places | safe }})
+      document.addEventListener("DOMContentLoaded", () =>
+        new LeafletMap("map", center, options).addWordClouds(places),
       );
     </script>
   </body>

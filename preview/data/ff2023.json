@@ -1,0 +1,250 @@
+[
+  {
+    "coordinates": [44.64604494715581, 10.925769934995675],
+    "frequencies": [
+      ["2023", 1],
+      ["luogo", 1],
+      ["scoprire", 1],
+      ["piazza", 1],
+      ["racchiudere", 1],
+      ["nsieme", 1],
+      ["cominciare", 1],
+      ["festival", 3],
+      ["comunità", 1],
+      ["sembrare", 1],
+      ["tuffo", 1],
+      ["altro", 1],
+      ["tempo", 1],
+      ["anima", 1],
+      ["architetto", 1],
+      ["esaltare", 1],
+      ["partecipazione", 2],
+      ["cultura", 1],
+      ["condivisione", 1],
+      ["comunicare", 1],
+      ["tristezza", 1],
+      ["dare", 1],
+      ["voce", 1],
+      ["musica", 1],
+      ["parola", 5],
+      ["storia", 3],
+      ["culturo", 1],
+      ["abitare", 1],
+      ["vivere", 1],
+      ["consapevolezza", 1],
+      ["rinnovato", 1],
+      ["presente", 1],
+      ["circondare", 1],
+      ["volere", 1],
+      ["esserci", 1],
+      ["sveva", 1],
+      ["risuonare", 1],
+      ["mente", 1],
+      ["attivo", 1],
+      ["guglie", 1],
+      ["bianco", 1],
+      ["sole", 2],
+      ["splendere", 2],
+      ["filosofia", 5],
+      ["musi", 1],
+      ["pietra", 1],
+      ["testa", 1],
+      ["reclinato", 1],
+      ["tendere", 1],
+      ["orecchia", 1],
+      ["fratellanza", 1],
+      ["spazio", 2],
+      ["civile", 1]
+    ]
+  },
+  {
+    "coordinates": [44.645175653606806, 10.925991012882683],
+    "frequencies": [
+      ["comunicazione", 1],
+      ["equo", 1],
+      ["sostenibile", 1]
+    ]
+  },
+  {
+    "coordinates": [44.648241144816545, 10.921232945071093],
+    "frequencies": [
+      ["sacro", 1],
+      ["precisione", 1],
+      ["geometria", 1],
+      ["stupendo", 1],
+      ["confine", 1],
+      ["giulia", 1],
+      ["napoleone", 1],
+      ["fantastico", 1],
+      ["libri", 1],
+      ["simpatia", 1]
+    ]
+  },
+  {
+    "coordinates": [44.6455219, 10.9273205],
+    "frequencies": [
+      ["stanchezza", 1],
+      ["attesa", 1],
+      ["curioso", 1]
+    ]
+  },
+  {
+    "coordinates": [44.64722973596359, 10.920523216326746],
+    "frequencies": [
+      ["sorpresa", 1],
+      ["giardino", 1],
+      ["segreto", 1],
+      ["pieno", 1],
+      ["meraviglia", 1],
+      ["cesarini", 1],
+      ["misura", 1],
+      ["tempo", 2],
+      ["metafisico", 1],
+      ["collettivo", 1],
+      ["melodia", 1],
+      ["misterioso", 1],
+      ["profondo", 1],
+      ["passione", 1],
+      ["muro", 1],
+      ["graffito", 1],
+      ["arte", 1],
+      ["effimero", 1],
+      ["architetturo", 1],
+      ["lettura", 1],
+      ["semiotico", 1],
+      ["vita", 1],
+      ["parola", 1],
+      ["crociato", 1]
+    ]
+  },
+  {
+    "coordinates": [44.64740808451235, 10.930545790694076],
+    "frequencies": [
+      ["fotografia", 1],
+      ["arte", 1],
+      ["vita", 1],
+      ["quotidiano", 1]
+    ]
+  },
+  {
+    "coordinates": [44.648664326670456, 10.921451507539578],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.64705937566317, 10.92289037770161],
+    "frequencies": [
+      ["stampa", 1],
+      ["trascrizione", 1],
+      ["ricerca", 1],
+      ["confort", 1],
+      ["zona", 1],
+      ["via", 1],
+      ["carteria", 1]
+    ]
+  },
+  {
+    "coordinates": [44.646526633529696, 10.922701808460056],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.65069028311637, 10.929116399735001],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.6512594042537, 10.928798720374242],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.643096944329784, 10.92419156444088],
+    "frequencies": [
+      ["imponente", 1],
+      ["magia", 1],
+      ["apparizione", 1],
+      ["dissolvenza", 1],
+      ["polvere", 1],
+      ["miracolo", 1],
+      ["desidero", 1],
+      ["avverare", 1],
+      ["luce", 1],
+      ["tempo", 1],
+      ["attesa", 1],
+      ["strada", 1],
+      ["sedere", 1],
+      ["camminare", 1],
+      ["rifugio", 1],
+      ["voce", 1],
+      ["allegro", 1],
+      ["comunità", 1],
+      ["armonico", 1],
+      ["bellezza", 1]
+    ]
+  },
+  {
+    "coordinates": [44.6466076470187, 10.92580447466881],
+    "frequencies": [
+      ["essere", 1],
+      ["rumore", 1],
+      ["solito", 1],
+      ["riesco", 1],
+      ["sentire", 1],
+      ["connessione", 1],
+      ["città", 1],
+      ["cuore", 1]
+    ]
+  },
+  {
+    "coordinates": [44.6467957, 10.9240598],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.64402345, 10.92647993234104],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.6474859, 10.9250483],
+    "frequencies": [
+      ["abitare", 1],
+      ["sentimento", 1],
+      ["accoglienza", 1],
+      ["avere", 1],
+      ["bisogno", 1],
+      ["informazione", 1],
+      ["capire", 1],
+      ["tecnologia", 1],
+      ["piacere", 1],
+      ["pensare", 1],
+      ["essere", 1],
+      ["ritorno", 1],
+      ["semplicità", 1]
+    ]
+  },
+  {
+    "coordinates": [44.6456653, 10.9215313],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.64939939303573, 10.928500837531905],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.64985277623567, 10.921780186469656],
+    "frequencies": [
+      ["luogo", 1],
+      ["accoglienza", 1],
+      ["lentezza", 1],
+      ["riposo", 1]
+    ]
+  },
+  {
+    "coordinates": [44.6492108433394, 10.923755244088488],
+    "frequencies": []
+  },
+  {
+    "coordinates": [44.64906705, 10.924445809895433],
+    "frequencies": [["suv", 1]]
+  },
+  {
+    "coordinates": [44.6435209, 10.931095069563618],
+    "frequencies": []
+  }
+]
