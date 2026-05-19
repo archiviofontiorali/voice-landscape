@@ -13,10 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 import dj_database_url
-import spacy.symbols
 from decouple import config  # noqa
 from django.contrib.gis.geos import Point
-from loguru import logger
 
 # Project paths
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
@@ -201,16 +199,6 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 NOTEBOOK_ARGUMENTS = ["--notebook-dir", "notebooks"]
-
-SPACY_MODEL_NAME = config("SPACY_MODEL_NAME", default="it_core_news_lg")
-SPACY_VALID_TOKENS = (
-    spacy.symbols.ADJ,
-    # spacy.symbols.ADV,
-    spacy.symbols.NOUN,
-    spacy.symbols.NUM,
-    spacy.symbols.PROPN,  # Proper noun
-    spacy.symbols.VERB,
-)
 
 
 _lat, _lon = config("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()

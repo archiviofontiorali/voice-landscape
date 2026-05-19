@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from typing import Any
 
+import spacy.symbols
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -136,3 +137,14 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+SPACY_MODEL_NAME = env("SPACY_MODEL_NAME", default="it_core_news_lg")
+SPACY_VALID_TOKENS = (
+    spacy.symbols.ADJ,
+    # spacy.symbols.ADV,
+    spacy.symbols.NOUN,
+    spacy.symbols.NUM,
+    spacy.symbols.PROPN,  # Proper noun
+    spacy.symbols.VERB,
+)

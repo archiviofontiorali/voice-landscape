@@ -5,9 +5,11 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.2",
+    "loguru>=0.7.3",
     "numpy>=2.4.6",
     "pillow>=12.2.0",
     "python-dotenv>=1.2.2",
+    "spacy>=3.8.14",
 ]
 
 [dependency-groups]
