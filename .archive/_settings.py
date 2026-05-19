@@ -29,17 +29,6 @@ DATA_ROOT.mkdir(exist_ok=True)
 
 DOMAIN = config("DOMAIN")
 
-
-# WebApp settings
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
-HTTPS = config("HTTPS", default=True, cast=bool)
-
-
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
 if DOMAIN not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(DOMAIN)
@@ -148,18 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
-LANGUAGE_CODE = config("LANGUAGE_CODE", "it")
-
-TIME_ZONE = config("TIME_ZONE", "Europe/Rome")
-
-USE_I18N = True
-
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

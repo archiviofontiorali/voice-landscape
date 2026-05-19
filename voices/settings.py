@@ -10,7 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from typing import Any
+
+
+def env(name: str, default: Any = None) -> Any | None:
+    value = os.getenv(name, default)
+    if value is None and default is None:
+        raise ValueError(
+            f"No value specified for {name}, either set in .env or set a default"
+        )
+    return value
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +32,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-fe5_qf4t(*q5xo&nd)i^i7bo8k11a#&0wv=poyc1x8k(h^vw@7"
+SECRET_KEY = str(env("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(env("DEBUG", default=True))
+HTTPS = bool(env("HTTPS", default=True))
+
 
 ALLOWED_HOSTS = []
 
@@ -102,12 +116,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
+LANGUAGE_CODE = env("LANGUAGE_CODE", default="en")
+TIME_ZONE = env("TIME_ZONE", default="UTC")
 USE_I18N = True
-
 USE_TZ = True
 
 
