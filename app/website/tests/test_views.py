@@ -2,11 +2,10 @@ import json
 from pathlib import Path
 
 import pytest
-from django.shortcuts import reverse
 from django.test import Client
+from django.urls import reverse
 from django.utils.text import slugify
-
-from apps.website import models
+from website import models
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures"
 
@@ -41,12 +40,12 @@ def test_landscape_cookie(client: Client, landscape):
     response = client.get(url := reverse("website:map"))
 
     assert response.status_code == 200
-    assert response.cookies.get("landscape").value == landscape.slug
+    assert (c := response.cookies.get("landscape")) and c.value == landscape.slug
 
     client.cookies.load({"landscape": "prova"})
     response = client.get(url)
     assert response.status_code == 200
-    assert response.cookies.get("landscape").value == landscape.slug
+    assert (c := response.cookies.get("landscape")) and c.value == landscape.slug
 
     other_landscape = models.Landscape.objects.create(
         title="test",
@@ -59,4 +58,4 @@ def test_landscape_cookie(client: Client, landscape):
     client.cookies.load({"landscape": "test"})
     response = client.get(url)
     assert response.status_code == 200
-    assert response.cookies.get("landscape").value == other_landscape.slug
+    assert (c := response.cookies.get("landscape")) and c.value == other_landscape.slug
