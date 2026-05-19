@@ -16,6 +16,7 @@ dependencies = [
 dev = [
     "django-debug-toolbar>=6.3.0",
     "django-types>=0.24.0",
+    "pytest>=9.0.3",
 ]
 lab = [
     "marimo>=0.23.6",
