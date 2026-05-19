@@ -14,6 +14,10 @@ import os
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def env(name: str, default: Any = None) -> Any | None:
     value = os.getenv(name, default)
