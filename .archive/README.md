@@ -36,29 +36,6 @@ $ sudo apt install gdal-bin
 $ sudo pacman -S gdal
 ```
 
-### Prepare SQLite (manually)
-Install GDAL and Spatialite dependencies
-```shell
-# On ubuntu
-$ sudo apt install libsqlite3-mod-spatialite
-
-# On archlinux
-$ sudo pacman -S libspatialite
-```
-
-Set a valid SQLite path (of type spatialite) in `.env` file
-(default: spatialite:///db.sqlite3)
-
-Enable Spatialite and apply migrations by executing
-```shell
-# via makefile
-$ make bootstrap-sqlite
-
-# Manually
-$ source .venv/bin/activate
-(.venv)$ python app/manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
-```
-
 ### Prepare PostgreSQL manually
 Install PostGIS dependencies
 ```shell

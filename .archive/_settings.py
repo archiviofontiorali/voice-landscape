@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-import dj_database_url
 from decouple import config  # noqa
 from django.contrib.gis.geos import Point
 
@@ -99,22 +98,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = "admin.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASE_URL = config("DATABASE_URL", default=f"spatialite:///{BASE_DIR}/db.sqlite3")
-DATABASES = {
-    "default": dj_database_url.parse(
-        DATABASE_URL,
-        conn_max_age=600,
-        conn_health_checks=True,
-    ),
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
