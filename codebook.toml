@@ -1,0 +1,4 @@
+words = ["inlines"]
+ignore_patterns = [
+    '_\(".*"\)'
+]
