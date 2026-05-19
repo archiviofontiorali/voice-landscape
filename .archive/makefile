@@ -9,16 +9,9 @@ django=$(python) manage.py
 bold := '\033[1m'
 sgr0 := '\033[0m'
 
-HOST?=localhost
-PORT?=8000
 
 # Django development commands
 # .PHONY: lab serve test shell
-
-# serve:
-# 	@echo -e $(bold)Launch Django development server$(sgr0)
-# 	@$(django) runscript show_settings
-# 	@$(django) runserver $(HOST):$(PORT)
 
 lab:
 	@# see: https://docs.djangoproject.com/en/4.2/topics/async/

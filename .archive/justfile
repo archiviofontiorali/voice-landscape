@@ -3,14 +3,6 @@ VENV := ".venv"
 python := VENV / "bin/python3"
 django := python + " manage.py"
 database := 'db.sqlite3'
-host := 'localhost'
-port := '8000'
-
-[default]
-serve:
-    @echo "Launch Django development server"
-    {{ django }} runscript show_settings
-    {{ django }} runserver {{ host }}:{{ port }}
 
 django-shell:
     @{{ django }} shell

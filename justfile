@@ -18,7 +18,15 @@ update:
     @echo "Update dependencies"
     uv sync --update
 
-# serve:
+# --- Development commands --- #
+host := 'localhost'
+port := '8000'
+
+[default]
+serve:
+    @echo "Launch Django development server"
+    uv run manage.py runserver {{ host }}:{{ port }}
+
 # migrate:
 # makemigrations:
 
