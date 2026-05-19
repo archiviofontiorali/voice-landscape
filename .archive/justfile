@@ -16,19 +16,8 @@ backup:
     mkdir -p .backup
     sqlite3 {{ database }} ".backup .backup/$(date -u +'%FT%TZ').db"
 
-[confirm('This will delete all data inside db.sqlite3. Are you sure? [y/N]')]
-reset-sqlite:
-    @echo Prepare SQLite db with GeoDjango enabled
-    @rm -rf db.sqlite3 .media .static
-    # Temporary solution for https://code.djangoproject.com/ticket/32935
-    @{{ django }} shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
-
-superuser:
-    @echo Creating superuser account 'admin'
-    @{{ django }} createsuperuser --username=admin --email=voci@afor.dev
-
-demo: reset-sqlite django-migrate superuser
-    @echo Loading demo data
-    @{{ django }} loaddata website/demo
-    @{{ django }} loaddata website/demo_places_202309
-    @LOGURU_LEVEL=INFO {{ django }} runscript add_demo_shares
+# demo: reset-sqlite django-migrate superuser
+#     @echo Loading demo data
+#     @{{ django }} loaddata website/demo
+#     @{{ django }} loaddata website/demo_places_202309
+#     @LOGURU_LEVEL=INFO {{ django }} runscript add_demo_shares

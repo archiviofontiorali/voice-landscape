@@ -21,6 +21,11 @@ $ uv run python app/manage.py shell -c "import django;django.db.connection.curso
 ```sh
 # Create virtualenv, install dependencies
 $ uv sync  
+
+# Create superuser
+$ uv run app/manage.py createsuperuser --username=admin
+# Create new migrations
+$ uv run app/manage.py makemigrations
 ```
 
 
