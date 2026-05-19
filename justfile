@@ -5,6 +5,7 @@ init: clean install
 
 [confirm('Do you want to remove existing venv? [y/N]')]
 clean:
+    find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete
     rm -rf .venv *.egg-info .pytest_cache
 
 install:
