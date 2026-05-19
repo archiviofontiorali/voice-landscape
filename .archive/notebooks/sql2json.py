@@ -19,7 +19,6 @@ def _():
 def _():
     import struct
 
-
     def ewkb_point_to_tuple(hex_wkb: str) -> tuple[float, float]:
         """
         Convert a PostGIS EWKB hex string that represents a POINT into a tuple of
