@@ -34,10 +34,6 @@ lab:
 # Django database commands
 .PHONY: demo migrate migrations secret_key superuser
 
-# migrate:
-# 	@echo -e $(bold)Apply migration to database$(sgr0)
-# 	@$(django) migrate
-
 migrations:
 	@echo -e $(bold)Create migration files$(sgr0)
 	@$(django) makemigrations

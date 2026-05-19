@@ -21,13 +21,17 @@ update:
 # --- Development commands --- #
 host := 'localhost'
 port := '8000'
+django := "app/manage.py"
 
 [default]
 serve:
     @echo "Launch Django development server"
-    uv run manage.py runserver {{ host }}:{{ port }}
+    uv run {{ django }} runserver {{ host }}:{{ port }}
 
-# migrate:
+[confirm('Apply migrations? [y/N]')]
+migrate:
+    uv run {{ django }} migrate
+
 # makemigrations:
 
 # shell:

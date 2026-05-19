@@ -7,10 +7,6 @@ database := 'db.sqlite3'
 django-shell:
     @{{ django }} shell
 
-[confirm('Apply migrations? [y/N]')]
-django-migrate:
-    @{{ django }} migrate
-
 django-collect:
     {{ django }} collectstatic --ignore=*.scss
     {{ django }} compilescss --use-storage
