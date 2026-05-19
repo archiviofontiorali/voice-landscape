@@ -20,10 +20,12 @@ class DateTimeConverter:
 register_converter(DateTimeConverter, "datetime")
 
 app_name = "website"
+
 urlpatterns = [
-    path("", views.Map.as_view()),
-    path("map/", views.Map.as_view(), name="map"),
-    path("share/", views.Share.as_view(), name="share"),
-    path("history/", views.HistoryMap.as_view(), name="history"),
-    path("history/<datetime:timestamp>/", views.HistoryMap.as_view(), name="history"),
+    path("", views.index),
+    # path("", views.Map.as_view()),
+    # path("map/", views.Map.as_view(), name="map"),
+    # path("share/", views.Share.as_view(), name="share"),
+    # path("history/", views.HistoryMap.as_view(), name="history"),
+    # path("history/<datetime:timestamp>/", views.HistoryMap.as_view(), name="history"),
 ]
