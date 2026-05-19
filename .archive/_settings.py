@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 from decouple import config  # noqa
-from django.contrib.gis.geos import Point
 
 # Project paths
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
@@ -53,15 +52,15 @@ INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
     "apps.speech.apps.SpeechConfig",
-    "apps.website.apps.WebsiteConfig",
+    # "apps.website.apps.WebsiteConfig",
     "apps.showcase.apps.ShowcaseConfig",
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django.contrib.gis",
+    # "django.contrib.admin",
+    # "django.contrib.auth",
+    # "django.contrib.contenttypes",
+    # "django.contrib.sessions",
+    # "django.contrib.messages",
+    # "django.contrib.staticfiles",
+    # "django.contrib.gis",
     "django_extensions",
     "rest_framework",
     "sass_processor",
@@ -147,8 +146,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Logging
 LOG_ROOT.mkdir(exist_ok=True)
-LOGURU_LOG_LEVEL = config("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
-DJANGO_LOG_LEVEL = config("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -183,11 +180,6 @@ JAZZMIN_UI_TWEAKS = {
 
 NOTEBOOK_ARGUMENTS = ["--notebook-dir", "notebooks"]
 
-
-_lat, _lon = config("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
-DEFAULT_POINT = Point.from_ewkt(f"POINT({float(_lat)} {float(_lon)})")
-
-BLACKLIST_PATH = config("BLACKLIST_PATH", default=None)
 
 SPEECH_RECOGNITION_SERVICE = config("SPEECH_RECOGNITION_SERVICE")
 SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)

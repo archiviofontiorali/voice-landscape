@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 import spacy.symbols
+from django.contrib.gis.geos import Point
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -137,6 +138,13 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
+LOGURU_LOG_LEVEL = env("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
+
+_lat, _lon = str(env("DEFAULT_POINT", default="44.6488366 10.9200867")).strip().split()
+DEFAULT_POINT = Point.from_ewkt(f"POINT({float(_lat)} {float(_lon)})")
+
+BLACKLIST_PATH = env("BLACKLIST_PATH", default="")
 
 SPACY_MODEL_NAME = env("SPACY_MODEL_NAME", default="it_core_news_lg")
 SPACY_VALID_TOKENS = (
