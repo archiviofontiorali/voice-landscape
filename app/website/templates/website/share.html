@@ -13,7 +13,7 @@
   class="w-100 outline mv1 flex-grow flex flex-column justify-center justify-center-ns items-center"
 >
   <p class="f4 mb4 cit tc">
-    Quale frase emerge nella tua mente attraversando questo spazio?
+    {{ phrase }}
   </p>
   <form action="" method="post" class="flex flex-column flex-center w-100 mw7 pa2">
     {% csrf_token %} {% for error in form.non_field_errors %}

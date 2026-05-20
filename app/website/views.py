@@ -1,7 +1,7 @@
-# Create your views here.
 import datetime as dt
+import random
 from collections import Counter, defaultdict
-from typing import Iterable
+from typing import Iterable, Optional
 
 from django.contrib import messages
 from django.contrib.gis.geos import Point
@@ -64,6 +64,14 @@ class Map(MapTemplateView):
 
 class Share(LandscapeTemplateView):
     template_name = "website/share.html"
+    phrases = [
+        _("Rendi la tua voce parte dell'esperienza che stai vivendo adesso."),
+        _("Quale frase emerge nella tua mente attraversando questo spazio?"),
+        _("A cosa stai pensando?"),
+        _("Fermati... respira... Cosa vedi di fronte a te?"),
+        _("Parole... Parole... Parole..."),
+        _("Raccogli l'essenza dell'attimo presente in una frase..."),
+    ]
 
     def post(self, request):
         form = forms.ShareForm(request.POST)
@@ -89,6 +97,7 @@ class Share(LandscapeTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context.setdefault("phrase", random.choice(self.phrases))
         context.setdefault("form", forms.ShareForm())
         context.setdefault("places", context["landscape"].places.all())
         return context
