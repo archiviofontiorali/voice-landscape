@@ -1,8 +1,10 @@
-from rest_framework import permissions, viewsets
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework import viewsets
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
+from website.models import Place, Share, WordFrequency
 
-from ..website.models import Place, Share, WordFrequency
-from .serializers import PlaceSerializer, ShareSerializer, WordFrequencySerializer
+from .serializers import (PlaceSerializer, ShareSerializer,
+                          WordFrequencySerializer)
 
 
 class PlaceViewSet(viewsets.ModelViewSet):

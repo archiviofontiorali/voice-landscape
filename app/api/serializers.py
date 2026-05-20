@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from ..website.models import Place, Share, WordFrequency
+from website.models import Place, Share, WordFrequency
 
 
 class PlaceSerializer(serializers.ModelSerializer):

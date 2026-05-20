@@ -28,8 +28,8 @@ def template_view(template_name: str, **kwargs):
 
 urlpatterns = [
     path("", include("website.urls", namespace="website")),
-    # path("showcase/", include("apps.showcase.urls", namespace="showcase")),
-    # path("api/", include("apps.api.urls")),
+    # path("showcase/", include("showcase.urls", namespace="showcase")),
+    path("api/", include("api.urls")),
     path("api/speech/", include("speech.urls")),
     # Static pages
     path("info/", template_view("info.html"), name="info"),
