@@ -295,6 +295,11 @@ WHISPER_LANGUAGE = env("WHISPER_LANGUAGE", default="it")
 WHISPER_MODEL = env("WHISPER_MODEL", default="base")
 
 
+# --- Website Features --- #
+VOICES_ENABLE_SHARING = env("VOICES_ENABLE_SHARING", True, cast=_bool)
+VOICES_ENABLE_GPS = env("VOICES_ENABLE_GPS", True, cast=_bool)
+
+
 # --- DEMO Configuration --- #
 # DEMO_PLACES_REFERENCE = env("DEMO_REFERENCE", default="sso_2023")
 # DEMO_SHARES_PATH = env("DEMO_SHARES_PATH", default=None)

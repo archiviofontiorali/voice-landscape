@@ -3,6 +3,7 @@ import random
 from collections import Counter, defaultdict
 from typing import Iterable, Optional
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ObjectDoesNotExist
@@ -73,7 +74,7 @@ class Share(LandscapeTemplateView):
         _("Raccogli l'essenza dell'attimo presente in una frase..."),
     ]
 
-    def post(self, request):
+    def post(self, request, place: Optional[str] = None):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -103,7 +104,8 @@ class Share(LandscapeTemplateView):
         context.setdefault("places", places := context["landscape"].places.all())
         context.setdefault("selected", places.filter(slug=place).first())
 
-        print(places)
+        context.setdefault("enable_sharing", settings.VOICES_ENABLE_SHARING)
+        context.setdefault("enable_gps", settings.VOICES_ENABLE_GPS)
 
         return context
 
