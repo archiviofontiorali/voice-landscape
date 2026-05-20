@@ -98,7 +98,7 @@ CORS_ALLOWED_ORIGINS = [
 INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
-    # "django_extensions",
+    "django_extensions",
     "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
     "showcase.apps.ShowcaseConfig",

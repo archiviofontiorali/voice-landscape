@@ -23,8 +23,11 @@ host := 'localhost'
 port := '8000'
 django := "app/manage.py"
 
+show:
+    uv run {{ django }} runscript show_settings
+
 [default]
-serve:
+serve: show
     @echo "Launch Django development server"
     uv run {{ django }} runserver {{ host }}:{{ port }}
 
