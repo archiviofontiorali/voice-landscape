@@ -900,18 +900,6 @@ wheels = [
 ]
 
 [[package]]
-name = "django-jazzmin"
-version = "3.0.4"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e0/70/a652284cd612bcd45da3cc18715db391c6cdeafd1ec9af60f4a3a243c74e/django_jazzmin-3.0.4.tar.gz", hash = "sha256:e8aef8b75edd8792408a69407c22ece924ab7a3d5c9d6f84d7a4eb57e06e7a44", size = 2423027, upload-time = "2026-03-13T11:29:18.821Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/1c/42d37c90bec6f6763206b966252dabe019f0c0197a6aaebafa5b213b78f1/django_jazzmin-3.0.4-py3-none-any.whl", hash = "sha256:70935a17604cc530e99be68d3d2b8c576095e1dac4af50464c827d66646f40fa", size = 2495119, upload-time = "2026-03-13T11:29:20.447Z" },
-]
-
-[[package]]
 name = "django-sass-processor"
 version = "1.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -4659,7 +4647,6 @@ dependencies = [
     { name = "django" },
     { name = "django-compressor" },
     { name = "django-cors-headers" },
-    { name = "django-jazzmin" },
     { name = "django-sass-processor" },
     { name = "djangorestframework" },
     { name = "libsass" },
@@ -4698,7 +4685,6 @@ requires-dist = [
     { name = "django", specifier = ">=5.2" },
     { name = "django-compressor", specifier = ">=4.6.0" },
     { name = "django-cors-headers", specifier = ">=4.9.0" },
-    { name = "django-jazzmin", specifier = ">=3.0.4" },
     { name = "django-sass-processor", specifier = ">=1.4.2" },
     { name = "djangorestframework", specifier = ">=3.17.1" },
     { name = "libsass", specifier = ">=0.23.0" },
