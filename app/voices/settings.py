@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import datetime as dt
 import os
 from pathlib import Path
 from typing import Callable, Optional
@@ -54,6 +55,7 @@ DATA_PATH.mkdir(exist_ok=True)
 LOGGING_PATH = PROJECT_PATH / ".log"
 LOGGING_PATH.mkdir(exist_ok=True)
 
+# --- HTTPS, CORS and Security --- #
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
@@ -72,8 +74,17 @@ if HTTPS is True and DEBUG is False:
     CSRF_COOKIE_SECURE = True
 
 
+# --- Domain and hosts --- #
 DOMAIN = env("DOMAIN", "voci.afor.dev")
 ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env(
+    "ALLOWED_HOSTS",
+    default=["localhost", "127.0.0.1", "[::1]"],
+    cast=list,
+)
+
+if DOMAIN not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(DOMAIN)
 
 CORS_ALLOWED_ORIGINS = [
     f"https://{DOMAIN}",
@@ -81,11 +92,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
 
-# Application definition
+
+# --- Application, templates, middlewares --- #
 
 INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
+    # "django_extensions",
     "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
     "showcase.apps.ShowcaseConfig",
@@ -132,7 +145,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "voices.wsgi.application"
 
 
-# Database
+# --- Database --- #
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASE_ENGINE = env("DATABASE_ENGINE", "django.contrib.gis.db.backends.spatialite")
@@ -141,7 +154,7 @@ DATABASE_NAME = env("DATABASE_NAME", PROJECT_PATH / "db.sqlite3")
 DATABASES = {"default": {"ENGINE": DATABASE_ENGINE, "NAME": DATABASE_NAME}}
 
 
-# Password validation
+# --- Password validation --- #
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -160,7 +173,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# --- Internationalization --- #
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = env("LANGUAGE_CODE", default="en")
@@ -169,7 +182,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# --- Static files (CSS, JavaScript, Images) --- #
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
@@ -193,7 +206,7 @@ MEDIA_ROOT = env("MEDIA_ROOT", default=PROJECT_PATH / ".media", cast=Path)
 MEDIA_URL = "media/"
 
 
-# Default primary key field type
+# --- Default primary key field type --- #
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -229,7 +242,7 @@ LOGGING = {
     },
 }
 
-# Additional plugins
+# --- Additional plugins --- #
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -242,7 +255,7 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 
-# Voice Landscape specific configurations
+# --- Project specific configurations --- #
 
 _lat, _lon = env("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
 DEFAULT_POINT = Point.from_ewkt(f"POINT({float(_lat)} {float(_lon)})")
@@ -272,3 +285,8 @@ SPEECH_RECOGNITION_DATA_PATH.mkdir(exist_ok=True, parents=True)
 # See https://github.com/openai/whisper#available-models-and-languages
 WHISPER_LANGUAGE = env("WHISPER_LANGUAGE", default="it")
 WHISPER_MODEL = env("WHISPER_MODEL", default="base")
+
+
+# --- DEMO Configuration --- #
+# DEMO_PLACES_REFERENCE = env("DEMO_REFERENCE", default="sso_2023")
+# DEMO_SHARES_PATH = env("DEMO_SHARES_PATH", default=None)
