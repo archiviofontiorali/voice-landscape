@@ -16,6 +16,12 @@ class LocationGISModel(admin.GISModelAdmin):
     }
 
 
+@admin.register(models.LeafletProvider)
+class LeafletProviderAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("title",)}
+    list_display = ("__str__", "title", "slug", "name", "url")
+
+
 @admin.register(models.Share)
 class ShareAdmin(LocationGISModel):
     list_display = ("timestamp", "location", "message")
