@@ -22,6 +22,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _bool(value: str) -> bool:
+    if value in {"False", "false", "0"}:
+        return False
+    return bool(value)
+
+
 def env[T](
     name: str,
     default: Optional[T] = None,
@@ -60,15 +66,15 @@ LOGGING_PATH.mkdir(exist_ok=True)
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", default=True, cast=bool)
-HTTPS = env("HTTPS", default=True, cast=bool)
+DEBUG = env("DEBUG", default=True, cast=_bool)
+HTTPS = env("HTTPS", default=True, cast=_bool)
 
 if HTTPS is True and DEBUG is False:
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 300
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-    SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=True, cast=bool)
+    SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=True, cast=_bool)
 
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -275,9 +281,9 @@ SPACY_VALID_TOKENS = (
 )
 
 # TODO: handle disabling Speech Recognition
-SPEECH_RECOGNITION_ENABLE = env("SPEECH_RECOGNITION_ENABLE", True, cast=bool)
+SPEECH_RECOGNITION_ENABLE = env("SPEECH_RECOGNITION_ENABLE", True, cast=_bool)
 SPEECH_RECOGNITION_SERVICE = env("SPEECH_RECOGNITION_SERVICE", default="whisper")
-SPEECH_RECOGNITION_DEBUG = env("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
+SPEECH_RECOGNITION_DEBUG = env("SPEECH_RECOGNITION_DEBUG", cast=_bool, default=False)
 
 SPEECH_RECOGNITION_DATA_PATH = env(
     "SPEECH_RECOGNITION_DATA_PATH", DATA_PATH / "speech", Path
