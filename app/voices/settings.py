@@ -57,6 +57,7 @@ DEBUG = env("DEBUG", default=True, cast=bool)
 HTTPS = env("HTTPS", default=True, cast=bool)
 
 
+DOMAIN = env("DOMAIN", "voci.afor.dev")
 ALLOWED_HOSTS = []
 
 

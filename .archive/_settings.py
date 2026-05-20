@@ -20,7 +20,6 @@ BASE_DIR: Path = Path(__file__).resolve().parent.parent
 LOG_ROOT = BASE_DIR / ".log"
 LOG_ROOT.mkdir(exist_ok=True)
 
-DOMAIN = config("DOMAIN")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
 if DOMAIN not in ALLOWED_HOSTS:
