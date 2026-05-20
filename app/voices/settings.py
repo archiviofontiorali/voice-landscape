@@ -56,14 +56,30 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG", default=True, cast=bool)
 HTTPS = env("HTTPS", default=True, cast=bool)
 
+if HTTPS is True and DEBUG is False:
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 300
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+    SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=True, cast=bool)
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 
 DOMAIN = env("DOMAIN", "voci.afor.dev")
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    f"https://{DOMAIN}",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     "jazzmin",
     "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
@@ -80,6 +96,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

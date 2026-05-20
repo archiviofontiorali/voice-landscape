@@ -11,11 +11,11 @@ requires-python = ">=3.13"
 dependencies = [
     "aiohttp",
     # "django~=4.2.0",
-    "djangorestframework",
+    # "djangorestframework",
     "django-compressor",
     "django-cors-headers",
     "django-extensions",
-    "django-jazzmin",
+    # "django-jazzmin",
     # "django-sass-processor",
     # "dj-database-url",
     # "gunicorn",
@@ -26,7 +26,7 @@ dependencies = [
     # "pydub",
     "PyYAML",
     "psycopg2-binary",
-    "python-decouple",
+    # "python-decouple",
     "soundfile",
     # "spacy",
     # "SpeechRecognition",
@@ -36,9 +36,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "ipython",
-    "isort",
+    # "black",
+    # "ipython",
+    # "isort",
     "pytest-django",
 ]
 lab = [

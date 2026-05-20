@@ -12,16 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 # Application definition
 INSTALLED_APPS = [
-    "corsheaders",
     ...,
     "django_extensions",
 ]
-
-MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    ...,
-]
-
 
 # --- LOG --- #
 
@@ -55,23 +48,6 @@ LOGGING = {
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
 if DOMAIN not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(DOMAIN)
-
-CORS_ALLOWED_ORIGINS = [
-    f"https://{DOMAIN}",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-
-
-if HTTPS is True and DEBUG is False:
-    SECURE_HSTS_PRELOAD = True
-    SECURE_HSTS_SECONDS = 300
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-    SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=True, cast=bool)
-
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
 
 
 # --- DEMO --- #
