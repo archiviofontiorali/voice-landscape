@@ -2,6 +2,7 @@ import datetime as dt
 import io
 import pathlib
 import re
+from typing import Optional
 
 import pydub
 import speech_recognition
@@ -20,7 +21,7 @@ DATA_SPEECH_ROOT.mkdir(exist_ok=True, parents=True)
 MEDIA_TYPE_REGEX = re.compile(r"audio/(?P<format>\w+)(?:;\s?codecs=(?P<codecs>\w+))?")
 
 
-def timestamp(t: dt.datetime = None):
+def timestamp(t: Optional[dt.datetime] = None):
     if t is None:
         t = dt.datetime.now()
     return t.isoformat(timespec="seconds")
@@ -78,7 +79,13 @@ class SpeechToText(View):
         if not form.is_valid():
             return JsonErrorResponse("Invalid audio request", status=400)
 
-        mtype, codec = MEDIA_TYPE_REGEX.match(form.cleaned_data["media_type"]).groups()
+        if not (match := MEDIA_TYPE_REGEX.match(form.cleaned_data["media_type"])):
+            return JsonErrorResponse(
+                _(f"Invalid audio format: {form.cleaned_data['media_type']}"),
+                status=400,
+            )
+
+        mtype, codec = match.groups()
         audio = read_audio_to_bytes(request.FILES["audio"], mtype=mtype, codec=codec)
 
         try:
