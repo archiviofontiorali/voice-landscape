@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
-from typing import Any
+from typing import Callable, Optional
 
 import spacy.symbols
 from django.contrib.gis.geos import Point
@@ -21,28 +21,38 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def env(name: str, default: Any = None) -> Any | None:
-    value = os.getenv(name, default)
-    if value is None and default is None:
+def env[T](
+    name: str,
+    default: Optional[T] = None,
+    cast: Callable[[str], T] = str,
+):
+    value = os.getenv(name)
+
+    if value is not None:
+        return cast(value)
+
+    if default is None:
         raise ValueError(
             f"No value specified for {name}, either set in .env or set a default"
         )
-    return value
+
+    return default
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+APP_PATH = Path(__file__).resolve().parent.parent
+PROJECT_PATH = APP_PATH.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = str(env("SECRET_KEY"))
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(env("DEBUG", default=True))
-HTTPS = bool(env("HTTPS", default=True))
+DEBUG = env("DEBUG", default=True, cast=bool)
+HTTPS = env("HTTPS", default=True, cast=bool)
 
 
 ALLOWED_HOSTS = []
@@ -77,10 +87,11 @@ ROOT_URLCONF = "voices.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [APP_PATH / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -96,7 +107,7 @@ WSGI_APPLICATION = "voices.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASE_ENGINE = env("DATABASE_ENGINE", "django.contrib.gis.db.backends.spatialite")
-DATABASE_NAME = env("DATABASE_NAME", BASE_DIR / "db.sqlite3")
+DATABASE_NAME = env("DATABASE_NAME", PROJECT_PATH / "db.sqlite3")
 
 DATABASES = {"default": {"ENGINE": DATABASE_ENGINE, "NAME": DATABASE_NAME}}
 
@@ -134,6 +145,21 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = env("STATIC_ROOT", PROJECT_PATH / ".static", cast=Path)
+STATIC_URL = "static/"
+
+STATICFILES_DIRS = [APP_PATH / "static"]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
+]
+
+MEDIA_ROOT = env("MEDIA_ROOT", default=PROJECT_PATH / ".media", cast=Path)
+MEDIA_URL = "media/"
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -142,7 +168,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
 LOGURU_LOG_LEVEL = env("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
 
-_lat, _lon = str(env("DEFAULT_POINT", default="44.6488366 10.9200867")).strip().split()
+_lat, _lon = env("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
 DEFAULT_POINT = Point.from_ewkt(f"POINT({float(_lat)} {float(_lon)})")
 
 BLACKLIST_PATH = env("BLACKLIST_PATH", default="")
