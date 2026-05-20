@@ -64,6 +64,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
     "showcase.apps.ShowcaseConfig",
@@ -186,6 +187,11 @@ LOGURU_LOG_LEVEL = env("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 1000,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    # "dark_mode_theme": "darkly",  # Not working at the moment
 }
 
 
