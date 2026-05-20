@@ -1,5 +1,8 @@
 words = [
+    "JAZZMIN",
+    "afor",
     "inlines",
     "stt",
+    "voci",
 ]
 ignore_patterns = ['_\(".*"\)']
