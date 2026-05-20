@@ -1,4 +1,5 @@
-words = ["inlines"]
-ignore_patterns = [
-    '_\(".*"\)'
+words = [
+    "inlines",
+    "stt",
 ]
+ignore_patterns = ['_\(".*"\)']
