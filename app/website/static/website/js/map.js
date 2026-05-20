@@ -90,7 +90,11 @@ class LeafletMap {
   _addBackground() {
     const { zoom } = this.options;
     const { name, url } = this.options.map.provider;
-    const opts = { minZoom: zoom.min, maxZoom: zoom.max };
+    const opts = {
+      minZoom: zoom.min,
+      maxZoom: zoom.max,
+      referrerPolicy: "strict-origin-when-cross-origin",
+    };
 
     if (name) return L.tileLayer.provider(name, opts).addTo(this.map);
     else if (url) return L.tileLayer(url, opts).addTo(this.map);
