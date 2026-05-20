@@ -43,6 +43,8 @@ def env[T](
 APP_PATH = Path(__file__).resolve().parent.parent
 PROJECT_PATH = APP_PATH.parent
 
+DATA_PATH = PROJECT_PATH / ".data"
+DATA_PATH.mkdir(exist_ok=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -198,6 +200,11 @@ SPACY_VALID_TOKENS = (
 SPEECH_RECOGNITION_ENABLE = env("SPEECH_RECOGNITION_ENABLE", True, cast=bool)
 SPEECH_RECOGNITION_SERVICE = env("SPEECH_RECOGNITION_SERVICE", default="whisper")
 SPEECH_RECOGNITION_DEBUG = env("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
+
+SPEECH_RECOGNITION_DATA_PATH = env(
+    "SPEECH_RECOGNITION_DATA_PATH", DATA_PATH / "speech", Path
+)
+SPEECH_RECOGNITION_DATA_PATH.mkdir(exist_ok=True, parents=True)
 
 # See https://github.com/openai/whisper#available-models-and-languages
 WHISPER_LANGUAGE = env("WHISPER_LANGUAGE", default="it")

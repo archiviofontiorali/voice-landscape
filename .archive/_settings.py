@@ -18,10 +18,7 @@ from pathlib import Path
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 LOG_ROOT = BASE_DIR / ".log"
-DATA_ROOT = BASE_DIR / ".data"
-
 LOG_ROOT.mkdir(exist_ok=True)
-DATA_ROOT.mkdir(exist_ok=True)
 
 DOMAIN = config("DOMAIN")
 

@@ -1,6 +1,5 @@
 import datetime as dt
 import io
-import pathlib
 import re
 from typing import Optional
 
@@ -15,9 +14,6 @@ from loguru import logger
 from .errors import SpeechRecognitionError, UnsupportedSpeechRecognitionError
 from .forms import UploadAudioForm
 
-DATA_SPEECH_ROOT: pathlib.Path = settings.DATA_ROOT / "speech"
-DATA_SPEECH_ROOT.mkdir(exist_ok=True, parents=True)
-
 MEDIA_TYPE_REGEX = re.compile(r"audio/(?P<format>\w+)(?:;\s?codecs=(?P<codecs>\w+))?")
 
 
@@ -30,7 +26,7 @@ def timestamp(t: Optional[dt.datetime] = None):
 def read_audio_to_bytes(path, mtype, codec) -> io.BytesIO:
     sound = pydub.AudioSegment.from_file(path, format=mtype, codec=codec)
     if settings.SPEECH_RECOGNITION_DEBUG:
-        path = DATA_SPEECH_ROOT / f"sample_{timestamp()}.{mtype}"
+        path = settings.SPEECH_RECOGNITION_DATA_PATH / f"sample_{timestamp()}.{mtype}"
         sound.export(path, format=mtype, codec=codec)
 
     sound.export(audio := io.BytesIO(), format="wav")
