@@ -30,18 +30,21 @@
 <script defer>
   const center = {{ center }};
   const options = {
+    map: { provider: {} },
     zoom: {
       initial: {{ zoom.initial }},
       min: {{ zoom.min }},
       max: {{ zoom.max }}
     },
-    map: {
-      provider: {
-        name: "{{provider.name}}",
-        url: "{{ provider.url }}"
-      }
-    }
-  }
+  };
+
+  {% if provider %}
+  options.map.provider = {
+    name: "{{ provider.name }}",
+    url: "{{ provider.url }}",
+  };
+  {% endif %}
+
   document.addEventListener('DOMContentLoaded', () =>
       new LeafletMap("map", center, options).addWordClouds({{ places | safe }})
   );

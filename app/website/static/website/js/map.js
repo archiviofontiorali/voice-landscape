@@ -17,7 +17,7 @@ const DEFAULT_LEAFLET_MAP_OPTIONS = {
   zoom: { initial: 15, min: 13, max: 20 },
   map: {
     provider: {
-      url: "https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
+      // url: "https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
     },
   },
   markers: { minWidth: 100, maxWidth: 200, minHeight: 50, maxHeight: 200 },
@@ -93,7 +93,7 @@ class LeafletMap {
     const opts = { minZoom: zoom.min, maxZoom: zoom.max };
 
     if (name) return L.tileLayer.provider(name, opts).addTo(this.map);
-    else return L.tileLayer(url, opts).addTo(this.map);
+    else if (url) return L.tileLayer(url, opts).addTo(this.map);
   }
 
   _addWordCloud(index, coordinates, frequencies, width, height) {

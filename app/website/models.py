@@ -227,6 +227,8 @@ class Landscape(TitledModel, LocationModel):
 
     provider = models.ForeignKey(
         LeafletProvider,
+        null=True,
+        blank=True,
         on_delete=models.PROTECT,
         help_text="The map provider to use with leaflet map",
     )

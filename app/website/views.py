@@ -48,7 +48,9 @@ class MapTemplateView(LandscapeTemplateView):
 
         context.setdefault("center", [centroid.y, centroid.x])
         context.setdefault("zoom", landscape.zoom)
-        context.setdefault("provider", landscape.provider.as_json())
+        context.setdefault(
+            "provider", landscape.provider.as_json() if landscape.provider else None
+        )
         context.setdefault(
             "places", [place.as_json() for place in context["landscape"].places.all()]
         )
