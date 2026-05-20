@@ -153,7 +153,7 @@
       class="w-100 flex flex-row justify-between items-center pa2"
     >
       <a id="prev-tab-button" type="button" class="link dim flex flex-center w2 h2">
-        <i data-feather="arrow-left-circle" class="w2 h2"></i>
+        <i data-feather="arrow-left-circle" class="dn w2 h2"></i>
       </a>
 
       {% if enable_sharing %}
@@ -169,7 +169,7 @@
       {% endif %}
 
       <a id="next-tab-button" type="button" class="link dim flex flex-center w2 h2">
-        <i data-feather="arrow-right-circle" class="w2 h2"></i>
+        <i data-feather="arrow-right-circle" class="dn w2 h2"></i>
       </a>
     </div>
   </form>
@@ -188,7 +188,7 @@
 
 <script defer>
   document.addEventListener("DOMContentLoaded", () => {
-    new TabWidget($("#prev-tab-button > svg"), $("#next-tab-button > svg"));
+    // new TabWidget($("#prev-tab-button > svg"), $("#next-tab-button > svg"));
     const widget = new ShareWidget(
       $("input#{{ form.latitude.id_for_label }}"),
       $("input#{{ form.longitude.id_for_label }}"),
