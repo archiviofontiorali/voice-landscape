@@ -3,6 +3,7 @@
 ## Requirements
 - A `python>=3.12` environment
 - `uv` available in `PATH`
+- Package `ffmpeg` available on the system (for transcription feature)
 - A [spatialite](https://docs.djangoproject.com/en/5.2/ref/contrib/gis/install/spatialite/) or [postgis](https://docs.djangoproject.com/en/6.0/ref/contrib/gis/install/postgis/) ready database 
 
 ### Spatialite

@@ -5,7 +5,7 @@ import re
 from typing import Optional
 
 import pydub
-import speech_recognition
+import speech_recognition as sr
 from django.conf import settings
 from django.http import HttpRequest, JsonResponse
 from django.utils.translation import gettext as _
@@ -50,27 +50,27 @@ class JsonErrorResponse(JsonResponse):
 
 
 class SpeechToText(View):
-    recognizer = speech_recognition.Recognizer()
+    recognizer = sr.Recognizer()
 
-    def transcribe_with_whisper(self, data: speech_recognition.audio.AudioData):
-        return self.recognizer.recognize_whisper(
+    def transcribe_with_whisper(self, data: sr.audio.AudioData):
+        return self.recognizer.recognize_whisper(  # type: ignore
             data,
             language=settings.WHISPER_LANGUAGE,
             model=settings.WHISPER_MODEL,
         )
 
-    def transcribe_with_google(self, data: speech_recognition.audio.AudioData):
-        return self.recognizer.recognize_google(data, language="it-IT")
+    # def transcribe_with_google(self, data: speech_recognition.audio.AudioData):
+    #     return self.recognizer.recognize_google(data, language="it-IT")
 
     def transcribe_audio(self, audio: io.BytesIO) -> str:
-        with speech_recognition.AudioFile(audio) as source:
+        with sr.AudioFile(audio) as source:
             data = self.recognizer.record(source)
 
         match settings.SPEECH_RECOGNITION_SERVICE.lower():
             case "whisper":
                 return self.transcribe_with_whisper(data)
-            case "google":
-                return self.transcribe_with_google(data)
+            # case "google":
+            #     return self.transcribe_with_google(data)
             case _:
                 raise UnsupportedSpeechRecognitionError
 
@@ -90,7 +90,7 @@ class SpeechToText(View):
 
         try:
             text = self.transcribe_audio(audio)
-        except speech_recognition.exceptions.UnknownValueError:
+        except sr.exceptions.UnknownValueError:
             return JsonErrorResponse(_("Audio non comprensibile, riprova"), status=400)
         except SpeechRecognitionError as err:
             return JsonErrorResponse(err.message, status=500)

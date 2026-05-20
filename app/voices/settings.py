@@ -193,3 +193,12 @@ SPACY_VALID_TOKENS = (
     spacy.symbols.PROPN,  # Proper noun
     spacy.symbols.VERB,
 )
+
+# TODO: handle disabling Speech Recognition
+SPEECH_RECOGNITION_ENABLE = env("SPEECH_RECOGNITION_ENABLE", True, cast=bool)
+SPEECH_RECOGNITION_SERVICE = env("SPEECH_RECOGNITION_SERVICE", default="whisper")
+SPEECH_RECOGNITION_DEBUG = env("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
+
+# See https://github.com/openai/whisper#available-models-and-languages
+WHISPER_LANGUAGE = env("WHISPER_LANGUAGE", default="it")
+WHISPER_MODEL = env("WHISPER_MODEL", default="base")

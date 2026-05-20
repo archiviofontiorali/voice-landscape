@@ -98,15 +98,6 @@ JAZZMIN_UI_TWEAKS = {
     # "dark_mode_theme": "darkly",  # Not working at the moment
 }
 
-NOTEBOOK_ARGUMENTS = ["--notebook-dir", "notebooks"]
-
-
-SPEECH_RECOGNITION_SERVICE = config("SPEECH_RECOGNITION_SERVICE")
-SPEECH_RECOGNITION_DEBUG = config("SPEECH_RECOGNITION_DEBUG", cast=bool, default=False)
-
-# See https://github.com/openai/whisper#available-models-and-languages
-WHISPER_LANGUAGE = config("WHISPER_LANGUAGE", default="it")
-WHISPER_MODEL = config("WHSIPER_MODEL", default="base")
 
 DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
 DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)

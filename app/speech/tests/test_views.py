@@ -3,14 +3,15 @@ from pathlib import Path
 
 import pytest
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.shortcuts import reverse
-
-from apps.speech import views
+from django.urls import reverse
+from speech import views
 
 
 @pytest.fixture
 def audio_sample():
-    audio_io = views.read_audio_to_bytes(Path(__file__).parent / "data" / "sample.ogg")
+    sample_path = Path(__file__).parent / "data" / "sample.ogg"
+    media_type = "audio/ogg"
+    audio_io = views.read_audio_to_bytes(sample_path, mtype=media_type, codec=None)
     return InMemoryUploadedFile(
         audio_io,
         field_name="audio",

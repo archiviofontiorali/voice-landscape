@@ -30,7 +30,7 @@ urlpatterns = [
     path("", include("website.urls", namespace="website")),
     # path("showcase/", include("apps.showcase.urls", namespace="showcase")),
     # path("api/", include("apps.api.urls")),
-    # path("api/speech/", include("apps.speech.urls")),
+    path("api/speech/", include("speech.urls")),
     # Static pages
     path("info/", template_view("info.html"), name="info"),
     path("privacy/", template_view("privacy.html"), name="privacy"),
