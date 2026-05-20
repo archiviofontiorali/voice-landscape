@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load sass_tags %}
+
+{% block stylesheet %}
+{{ block.super }}
+<link type="text/css" rel="stylesheet" href="{% sass_src 'website/css/share.scss' %}" />
+{% endblock %}
+
+{% block main %}
+<main
+  class="w-100 outline mv1 flex-grow flex flex-column justify-center justify-center-ns items-center"
+>
+  <p class="f4 mb4 cit tc">
+    Quale frase emerge nella tua mente attraversando questo spazio?
+  </p>
+  <form action="" method="post" class="flex flex-column flex-center w-100 mw7 pa2">
+    {% csrf_token %} {% for error in form.non_field_errors %}
+    <span class="w-100 f6 red b">{{ error }}</span>
+    {% endfor %}
+
+    <section
+      id="message-section"
+      class="widget-tab w-100 flex flex-row flex-wrap justify-center"
+    >
+      <label for="{{ form.message.id_for_label }}" class="w-100 mt2 mb2 tc">
+        {{ form.message.label }}
+      </label>
+      <div id="text-container" class="w-100 flex flex-row flex-wrap">
+        <textarea
+          id="{{ form.message.id_for_label }}"
+          name="{{ form.message.html_name }}"
+          rows="7"
+          cols="10"
+          placeholder="{{ form.message.help_text }}"
+          class="tc w-100"
+          maxlength="500"
+          required
+        >
+            {{ form.message.value | default:'' }}
+        </textarea>
+
+        {% for error in form.message.errors %}
+        <span class="w-100 f6 red b">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <a
+        id="record-button"
+        type="button"
+        class="link flex flex-center w3 h3 white mv3 mh4 br4 grow"
+      >
+        <i data-feather="mic" class="w2 h2"></i>
+      </a>
+      <a
+        id="reset-button"
+        type="button"
+        class="link flex flex-center w3 h3 black mv3 mh4 br4 ba bw2 b--black bg-white grow"
+      >
+        <i data-feather="trash-2" class="w2 h2"></i>
+      </a>
+    </section>
+
+    <section
+      id="location-section"
+      class="widget-tab flex flex-row justify-center flex-wrap"
+    >
+      <div id="text-preview" class="tc w-100 measure-wide pa2 mv2 mb4 mid-gray"></div>
+
+      <div
+        id="location-auto-icon"
+        class="w-100 w-50-l h4 pa3 br-l bw1 b--black gray flex flex-column items-center justify-between"
+      >
+        <label class="b w-100 tc ttu">Clicca per ottenere la posizione</label>
+        <div class="w-100 tc">
+          <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting"></i>
+        </div>
+      </div>
+
+      <p class="w-100 ttu gray tc dn-l">Oppure</p>
+
+      <div
+        id="location-place"
+        class="w-100 w-50-l pa3 h4 tc flex flex-column items-center justify-between"
+      >
+        <label for="place" class="gray b w-100 tc ttu">
+          Seleziona un punto di interesse
+        </label>
+        <div class="h-100 flex flex-column justify-center">
+          <select name="place" id="place" class="tc">
+            <option selected></option>
+
+            {% for place in places %}
+            <option
+              class="tc"
+              value="{{ place.id }}"
+              title="{{ place.title }}"
+              data-latitude="{{ place.latitude | floatformat:'7u' }}"
+              data-longitude="{{ place.longitude | floatformat:'7u' }}"
+            >
+              {{ place.title|truncatewords:5 }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div hidden class="pa1 w-50-ns">
+        <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+        <input
+          id="{{ form.latitude.id_for_label }}"
+          name="{{ form.latitude.html_name }}"
+          type="number"
+          step="any"
+          class="w-100"
+          required
+          readonly
+        />
+      </div>
+      <div hidden class="pa1 w-50-ns">
+        <label for="{{ form.longitude.id_for_label }}"
+          >{{ form.longitude.label }}</label
+        >
+        <input
+          id="{{ form.longitude.id_for_label }}"
+          name="{{ form.longitude.html_name }}"
+          type="number"
+          step="any"
+          class="w-100"
+          required
+          readonly
+        />
+      </div>
+    </section>
+
+    <div id="location-display" class="gray w-100 tc mv2 pa2">
+      <p id="location-display-title">&nbsp;</p>
+      <p id="location-display-coordinates"></p>
+
+      {% for error in form.latitude.errors %}
+      <p class="w-100 f6 red b">{{ error }}</p>
+      {% endfor %} {% for error in form.longitude.errors %}
+      <p class="w-100 f6 red b">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <div
+      id="share-section"
+      class="w-100 flex flex-row justify-between items-center pa2"
+    >
+      <a id="prev-tab-button" type="button" class="link dim flex flex-center w2 h2">
+        <i data-feather="arrow-left-circle" class="w2 h2"></i>
+      </a>
+
+      <input
+        id="submit-button"
+        type="submit"
+        class="pa1 grow"
+        value="Partecipa!"
+        disabled
+      />
+
+      <a id="next-tab-button" type="button" class="link dim flex flex-center w2 h2">
+        <i data-feather="arrow-right-circle" class="w2 h2"></i>
+      </a>
+    </div>
+  </form>
+</main>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://unpkg.com/feather-icons" defer></script>
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => feather.replace());
+</script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+<script src="{% static 'website/js/share.js' %}" defer></script>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    new TabWidget($("#prev-tab-button > svg"), $("#next-tab-button > svg"));
+    const widget = new ShareWidget(
+      $("input#{{ form.latitude.id_for_label }}"),
+      $("input#{{ form.longitude.id_for_label }}"),
+      $("textarea#{{ form.message.id_for_label }}"),
+      $("#text-preview"),
+    );
+
+    $(`section#message-section a#reset-button`).click(() => widget.resetMessage());
+  });
+</script>
+
+<script src="{% static 'js/speech/speech.js' %}" defer></script>
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    const stt = new SpeechToText(
+      $("a#record-button"),
+      $("#text-container > textarea"),
+      "{% url 'stt' %}",
+    );
+  });
+</script>
+
+{% endblock %}

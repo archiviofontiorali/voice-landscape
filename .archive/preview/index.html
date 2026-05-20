@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="it" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1"
+    />
+
+    <title>AFOr | Paesaggio di Voci</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <!--<link rel="stylesheet" href="{% sass_src 'css/alerts.scss' %}" />-->
+    <!--<link rel="stylesheet" href="{% sass_src 'css/main.scss' %}" />-->
+    <!--<link rel="stylesheet" href="{% sass_src 'website/css/map.scss' %}" />-->
+
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+  </head>
+  <body class="flex flex-column min-vh-100 pa2">
+    <header class="w-100 outline mb1">
+      <nav class="flex flex-row justify-around f6 fw6 ttu tracked overflow-x-auto pa1">
+        <a href="" class="link black dim dib mr3 pa1">Mappa</a>
+        <a href="" class="link gray _black dim dib pa1">Partecipa</a>
+        <a href="" class="link gray _black dim dib mr3 pa1">Info</a>
+      </nav>
+    </header>
+
+    <header id="alert-box" class="w-100">
+      <section id="alert-list" class="flex flex-column"></section>
+    </header>
+
+    <main class="w-100 outline mv1 flex-grow flex flex-center">
+      <div id="map" style="width: 100%; height: calc(100vh - 4rem - 2.5rem)"></div>
+    </main>
+
+    <footer class="w-100 outline mt1">
+      <section class="flex flex-row flex-wrap justify-around w-100">
+        <a href="https://afor.dev" class="link b black dim dib mr3 pa1">afor.dev</a>
+        <a href="" class="link gray _black dim dib mr3 pa1">Privacy</a>
+        <a
+          href="https://github.com/archiviofontiorali/voice-landscape"
+          class="link b black dim dib mr3 pa1"
+          >github</a
+        >
+      </section>
+    </footer>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+      defer
+    ></script>
+
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js" defer></script>
+    <script
+      src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"
+      defer
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.2/wordcloud2.min.js"
+      integrity="sha512-f1TzI0EVjfhwKkLEFZnu8AgzzzuUBE9X4YY61EoQJhjH8m+25VKdWmEfTJjmtnm0TEP8q9h+J061kCHvx3NJDA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
+
+    <script src="/js/map.js" defer></script>
+    <script defer>
+      const center = [44.647206699693065, 10.92513794239912];
+      let places = [];
+
+      const options = {
+        zoom: { initial: 16, min: 14, max: 18 },
+        map: {
+          provider: {
+            name: "Stadia.StamenTonerBackground",
+            url: "https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}@2x.png",
+          },
+        },
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const map = new LeafletMap("map", center, options);
+
+        fetch("/data/ff2023_titled.json")
+          .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+          })
+          .then((places) => map.addWordClouds(places))
+          .catch((err) => console.error("Failed to load places JSON:", err));
+      });
+    </script>
+  </body>
+</html>

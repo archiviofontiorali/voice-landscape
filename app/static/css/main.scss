@@ -1,0 +1,73 @@
+@import "palette";
+@import "fonts";
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong {
+    color: $color-primary;
+    font-weight: bold;
+}
+h1,
+h2,
+h3,
+b {
+}
+
+a,
+.link {
+    color: $color-link;
+    opacity: 1;
+    transition: opacity 0.15s ease-in;
+
+    &:hover,
+    &:focus {
+        opacity: 0.5;
+        transition: opacity 0.15s ease-in;
+    }
+
+    &:active {
+        opacity: 0.8;
+        transition: opacity 0.15s ease-out;
+    }
+}
+
+/* Flex related styles */
+.flex-grow {
+    flex-grow: 1;
+}
+.flex-center {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cit,
+.cit b {
+    color: $color-secondary;
+    font-style: italic;
+}
+
+/* Icon related styles */
+$font-sizes: (1rem, 2rem, 4rem, 8rem, 16rem);
+@each $i, $size in $font-sizes {
+    .i#{$i} {
+        width: $size;
+        height: $size;
+    }
+}
+
+/* Various */
+.text-shadow {
+    $color: $color-text;
+    $size: 1px;
+    text-shadow:
+        $size $size 0 $color,
+        -$size -$size 0 $color,
+        $size -$size 0 $color,
+        -$size $size 0 $color;
+}

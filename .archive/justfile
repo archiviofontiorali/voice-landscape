@@ -1,0 +1,23 @@
+VENV := ".venv"
+
+python := VENV / "bin/python3"
+django := python + " manage.py"
+database := 'db.sqlite3'
+
+django-shell:
+    @{{ django }} shell
+
+django-collect:
+    {{ django }} collectstatic --ignore=*.scss
+    {{ django }} compilescss --use-storage
+
+[confirm]
+backup:
+    mkdir -p .backup
+    sqlite3 {{ database }} ".backup .backup/$(date -u +'%FT%TZ').db"
+
+# demo: reset-sqlite django-migrate superuser
+#     @echo Loading demo data
+#     @{{ django }} loaddata website/demo
+#     @{{ django }} loaddata website/demo_places_202309
+#     @LOGURU_LEVEL=INFO {{ django }} runscript add_demo_shares
