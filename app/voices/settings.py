@@ -76,12 +76,14 @@ if HTTPS is True and DEBUG is False:
 
 # --- Domain and hosts --- #
 DOMAIN = env("DOMAIN", "voci.afor.dev")
-ALLOWED_HOSTS = []
+
 ALLOWED_HOSTS = env(
     "ALLOWED_HOSTS",
     default=["localhost", "127.0.0.1", "[::1]"],
     cast=list,
 )
+if ADDITIONAL_HOSTS := env("ADDITIONAL_HOSTS", "").split(" "):
+    ALLOWED_HOSTS.extend(ADDITIONAL_HOSTS)
 
 if DOMAIN not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(DOMAIN)
