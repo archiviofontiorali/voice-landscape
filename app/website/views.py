@@ -99,7 +99,12 @@ class Share(LandscapeTemplateView):
         context = super().get_context_data(**kwargs)
         context.setdefault("phrase", random.choice(self.phrases))
         context.setdefault("form", forms.ShareForm())
-        context.setdefault("places", context["landscape"].places.all())
+
+        context.setdefault("places", places := context["landscape"].places.all())
+        context.setdefault("selected", places.filter(slug=place).first())
+
+        print(places)
+
         return context
 
 

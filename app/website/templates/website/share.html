@@ -89,7 +89,7 @@
         </label>
         <div class="h-100 flex flex-column justify-center">
           <select name="place" id="place" class="tc">
-            <option selected></option>
+            <option {% if not selected %}selected{% endif %}></option>
 
             {% for place in places %}
             <option
@@ -98,6 +98,7 @@
               title="{{ place.title }}"
               data-latitude="{{ place.latitude | floatformat:'7u' }}"
               data-longitude="{{ place.longitude | floatformat:'7u' }}"
+              {% if selected.slug == place.slug %}selected{% endif %}
             >
               {{ place.title|truncatewords:5 }}
             </option>
