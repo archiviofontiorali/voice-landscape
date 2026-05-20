@@ -61,7 +61,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
+    # "showcase.apps.ShowcaseConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -169,8 +171,13 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Logging configurations
+
 DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
 LOGURU_LOG_LEVEL = env("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
+
+
+# Voice Landscape specific configurations
 
 _lat, _lon = env("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
 DEFAULT_POINT = Point.from_ewkt(f"POINT({float(_lat)} {float(_lon)})")

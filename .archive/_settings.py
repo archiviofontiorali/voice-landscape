@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-from decouple import config  # noqa
+# from decouple import config  # noqa
 
 # Project paths
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
@@ -51,38 +51,17 @@ if HTTPS is True and DEBUG is False:
 INSTALLED_APPS = [
     "corsheaders",
     "jazzmin",
-    "apps.speech.apps.SpeechConfig",
-    # "apps.website.apps.WebsiteConfig",
-    "apps.showcase.apps.ShowcaseConfig",
-    # "django.contrib.admin",
-    # "django.contrib.auth",
-    # "django.contrib.contenttypes",
-    # "django.contrib.sessions",
-    # "django.contrib.messages",
-    # "django.contrib.staticfiles",
-    # "django.contrib.gis",
+    ...,
     "django_extensions",
     "rest_framework",
-    "sass_processor",
+    # "sass_processor",
 ]
 
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    ...,
 ]
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Logging
