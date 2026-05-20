@@ -1,9 +1,17 @@
-{% extends "base.html" %} {% load static %} {% load sass_tags %} {% block stylesheet %}
+{% extends "base.html" %}
+{% load static %}
+{% load sass_tags %}
+
+{% block stylesheet %}
 {{ block.super }}
 <link type="text/css" rel="stylesheet" href="{% sass_src 'website/css/map.scss' %}" />
-{% endblock %} {% block contents %}
+{% endblock %}
+
+{% block contents %}
 <div id="map" style="width: 100%; height: calc(100vh - 4rem - 2.5rem)"></div>
-{% endblock %} {% block scripts %}
+{% endblock %}
+
+{% block scripts %}
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js" defer></script>
 <script
   src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"
