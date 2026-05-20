@@ -95,7 +95,7 @@ class Share(LandscapeTemplateView):
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, place: Optional[str] = None, **kwargs):
         context = super().get_context_data(**kwargs)
         context.setdefault("phrase", random.choice(self.phrases))
         context.setdefault("form", forms.ShareForm())
@@ -160,3 +160,7 @@ def date_range(first_date: dt.date, last_date: dt.date) -> Iterable[dt.date]:
     while date <= last_date:
         yield date
         date += timezone.timedelta(days=1)
+
+
+def qr_code_redirect(request, place: str):
+    return redirect("website:share", place=place)
