@@ -32,9 +32,7 @@ serve:
 migrate:
     uv run {{ django }} migrate
 
-# makemigrations:
-
-# shell:
-# marimo:
-
-# db stuff
+# --- Notebook (marimo) --- #
+marimo:
+    uv sync --group lab
+    uv run marimo edit
