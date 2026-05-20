@@ -10,17 +10,48 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
+# Application definition
+INSTALLED_APPS = [
+    "corsheaders",
+    ...,
+    "django_extensions",
+]
 
-# from decouple import config  # noqa
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    ...,
+]
 
-# Project paths
-BASE_DIR: Path = Path(__file__).resolve().parent.parent
+
+# --- LOG --- #
+
 
 LOG_ROOT = BASE_DIR / ".log"
 LOG_ROOT.mkdir(exist_ok=True)
 
+LOG_ROOT.mkdir(exist_ok=True)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": str(LOG_ROOT / "voices.log"),
+        },
+    },
+    "root": {"handlers": ["file"], "level": DJANGO_LOG_LEVEL},
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": DJANGO_LOG_LEVEL,
+            "propagate": False,
+        }
+    },
+}
 
+
+# --- ALLOWED HOSTS, CORS e HTTPS --- #
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=f"localhost 127.0.0.1 [::1]").split()
 if DOMAIN not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(DOMAIN)
@@ -43,56 +74,6 @@ if HTTPS is True and DEBUG is False:
     CSRF_COOKIE_SECURE = True
 
 
-# Application definition
-INSTALLED_APPS = [
-    "corsheaders",
-    "jazzmin",
-    ...,
-    "django_extensions",
-    # "sass_processor",
-]
-
-
-MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    ...,
-]
-
-
-# Logging
-LOG_ROOT.mkdir(exist_ok=True)
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {"class": "logging.StreamHandler"},
-        "file": {
-            "class": "logging.FileHandler",
-            "filename": str(LOG_ROOT / "voices.log"),
-        },
-    },
-    "root": {"handlers": ["file"], "level": DJANGO_LOG_LEVEL},
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": DJANGO_LOG_LEVEL,
-            "propagate": False,
-        }
-    },
-}
-
-# Additional Modules
-
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 1000,
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "theme": "flatly",
-    # "dark_mode_theme": "darkly",  # Not working at the moment
-}
-
-
+# --- DEMO --- #
 DEMO_PLACES_REFERENCE = config("DEMO_REFERENCE", default="sso_2023")
 DEMO_SHARES_PATH = config("DEMO_SHARES_PATH", default=None)
