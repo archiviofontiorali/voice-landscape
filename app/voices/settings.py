@@ -39,15 +39,20 @@ def env[T](
     return default
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+
+
+# --- Project and apps paths and directories --- #
+
 APP_PATH = Path(__file__).resolve().parent.parent
 PROJECT_PATH = APP_PATH.parent
 
 DATA_PATH = PROJECT_PATH / ".data"
 DATA_PATH.mkdir(exist_ok=True)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+LOGGING_PATH = PROJECT_PATH / ".log"
+LOGGING_PATH.mkdir(exist_ok=True)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
@@ -193,11 +198,36 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Logging configurations
+
+# --- Logging configurations --- #
 
 DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
 LOGURU_LOG_LEVEL = env("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
 
+_now = (
+    dt.datetime.now(dt.timezone.utc)
+    .isoformat(timespec="minutes")
+    .replace("+00:00", "Z")
+)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": str(LOGGING_PATH / f"voices.{_now}.log"),
+        },
+    },
+    "root": {"handlers": ["file"], "level": DJANGO_LOG_LEVEL},
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": DJANGO_LOG_LEVEL,
+            "propagate": False,
+        }
+    },
+}
 
 # Additional plugins
 
