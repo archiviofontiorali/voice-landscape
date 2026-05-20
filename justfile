@@ -19,8 +19,8 @@ update:
     uv sync --update
 
 # --- Development commands --- #
-host := 'localhost'
-port := '8000'
+host := env("HOST", 'localhost')
+port := env("PORT", '8000')
 django := "app/manage.py"
 
 show:
