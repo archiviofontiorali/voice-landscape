@@ -181,6 +181,14 @@ DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", "WARNING" if not DEBUG else "INFO")
 LOGURU_LOG_LEVEL = env("LOGURU_LEVEL", "WARNING" if not DEBUG else "INFO")
 
 
+# Additional plugins
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 1000,
+}
+
+
 # Voice Landscape specific configurations
 
 _lat, _lon = env("DEFAULT_POINT", default="44.6488366 10.9200867").strip().split()
