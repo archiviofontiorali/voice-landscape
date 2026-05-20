@@ -5,6 +5,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.2",
+    "django-compressor>=4.6.0",
+    "django-sass-processor>=1.4.2",
+    "libsass>=0.23.0",
     "loguru>=0.7.3",
     "numpy>=2.4.6",
     "pillow>=12.2.0",
