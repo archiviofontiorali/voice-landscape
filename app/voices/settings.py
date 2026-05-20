@@ -145,16 +145,20 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Used by collectstatic
 STATIC_ROOT = env("STATIC_ROOT", PROJECT_PATH / ".static", cast=Path)
-STATIC_URL = "static/"
+
 
 STATICFILES_DIRS = [APP_PATH / "static"]
-
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "sass_processor.finders.CssFinder",
 ]
+
+SASS_PROCESSOR_ROOT = STATIC_ROOT  # default is STATIC_ROOT
+SASS_PROCESSOR_ENABLED = True
+SASS_OUTPUT_STYLE = "compressed"  # or "expanded"
 
 MEDIA_ROOT = env("MEDIA_ROOT", default=PROJECT_PATH / ".media", cast=Path)
 MEDIA_URL = "media/"
