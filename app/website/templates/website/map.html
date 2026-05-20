@@ -28,6 +28,7 @@
 
 <script src="{% static 'website/js/map.js' %}" defer></script>
 <script defer>
+  const center = {{ center }};
   const options = {
     zoom: {
       initial: {{ zoom.initial }},
@@ -42,7 +43,7 @@
     }
   }
   document.addEventListener('DOMContentLoaded', () =>
-      new LeafletMap("map", {{ center }}, options).addWordClouds({{ places | safe }})
+      new LeafletMap("map", center, options).addWordClouds({{ places | safe }})
   );
 </script>
 {% endblock %}

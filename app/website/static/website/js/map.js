@@ -1,11 +1,15 @@
 const DEFAULT_WORDCLOUD_OPTIONS = {
   backgroundColor: "rgba(255, 255, 255, 0)",
+  gridSize: 5,
   shrinkToFit: true,
+  drawOutOfBound: true,
   minSize: "2rem",
-  weightFactor: (size) => Math.floor(6 + size * (30 - 6)),
+  // weightFactor: (w) => 6 + 20 * Math.tanh(w),
+  // weightFactor: (size) => Math.floor(5 + size * (30 - 5)),
+  weightFactor: (size) => 10 + Math.pow(size, 2.3),
   fontWeight: "700",
   fontFamily: "Open Sans, Consolas, monaco, monospace",
-  color: "black",
+  color: "inherit",
   shape: "circle",
 };
 

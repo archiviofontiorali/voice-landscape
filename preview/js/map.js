@@ -1,6 +1,5 @@
 const DEFAULT_WORDCLOUD_OPTIONS = {
   backgroundColor: "rgba(255, 255, 255, 0)",
-  shape: "circle",
   gridSize: 5,
   shrinkToFit: false,
   drawOutOfBound: true,
