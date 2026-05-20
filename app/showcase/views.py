@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.utils.translation import gettext as _
-
-from ..website.views import MapTemplateView
+from website.views import MapTemplateView
 
 
 class ReloadTemplateView(MapTemplateView):

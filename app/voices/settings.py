@@ -65,7 +65,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "speech.apps.SpeechConfig",
     "website.apps.WebsiteConfig",
-    # "showcase.apps.ShowcaseConfig",
+    "showcase.apps.ShowcaseConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
