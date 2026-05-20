@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "jazzmin",
     ...,
     "django_extensions",
-    "rest_framework",
     # "sass_processor",
 ]
 
