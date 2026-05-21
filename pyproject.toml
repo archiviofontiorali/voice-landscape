@@ -24,6 +24,7 @@ dependencies = [
 dev = [
     "django-debug-toolbar>=6.3.0",
     "django-extensions>=4.1",
+    "django-stubs~=5.2",
     "django-types>=0.24.0",
     "pytest>=9.0.3",
 ]
