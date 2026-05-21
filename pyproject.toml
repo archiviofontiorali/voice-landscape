@@ -41,3 +41,7 @@ lab = [
 prod = [
     "gunicorn>=26.0.0",
 ]
+
+[tool.basedpyright]
+typeCheckingMode="standard"
+reportIncompatibleVariableOverride=false

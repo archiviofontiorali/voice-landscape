@@ -37,7 +37,7 @@ class LocationModel(models.Model):
     def __str__(self):
         return f"({self.latitude:.4f}, {self.longitude:.4f})"
 
-    class Meta:
+    class Meta(TypedModelMeta):
         abstract = True
 
 
@@ -69,7 +69,7 @@ class LeafletProvider(TitledModel):
     def as_json(self) -> dict:
         return {"url": self.url, "name": self.name}
 
-    class Meta:  # type: ignore
+    class Meta:
         constraints = [
             models.CheckConstraint(
                 condition=Q(name__isnull=False) | Q(url__isnull=False),
@@ -113,6 +113,9 @@ class Place(LocationModel):
         if self.slug:
             return self.slug
         return LocationModel.__str__(self)
+
+    class Meta(TypedModelMeta):
+        abstract = False
 
 
 class Word(models.Model):
