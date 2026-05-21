@@ -7,9 +7,10 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.db.models import F, Max, Q, Sum
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, resolve_url
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django_stubs_ext.db.models import TypedModelMeta
 
 from .fields import UniqueBooleanField
 from .tools.geo import coordinates, mercator_coordinates
@@ -48,7 +49,19 @@ class TitledModel(models.Model):
     def __str__(self):
         return self.title
 
-    class Meta:
+    class Meta(TypedModelMeta):
+        abstract = True
+
+
+class QRModel(TitledModel):
+    qr_title = models.CharField(max_length=50, null=True, blank=True)
+    qr_subtitle = models.CharField(max_length=100, null=True, blank=True)
+
+    @property
+    def qr_url(self) -> str:
+        return resolve_url("website:qr-code", place=self.slug)
+
+    class Meta(TypedModelMeta):
         abstract = True
 
 
@@ -84,10 +97,7 @@ class LeafletProvider(TitledModel):
 type JSONFrequency = list[str | float]
 
 
-class Place(LocationModel):
-    slug = models.SlugField(unique=True, null=True, blank=True)
-    title = models.CharField(max_length=100, blank=True)
-
+class Place(LocationModel, QRModel):
     description = models.TextField(max_length=500, blank=True)
 
     @classmethod
@@ -106,6 +116,9 @@ class Place(LocationModel):
 
     def as_json(self):
         return {"coordinates": self.coordinates, "frequencies": self.get_frequencies()}
+
+    def get_absolute_url(self):
+        return resolve_url("website:share", place=self.slug)
 
     def __str__(self):
         if self.title:

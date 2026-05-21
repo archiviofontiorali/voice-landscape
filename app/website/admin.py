@@ -30,7 +30,8 @@ class ShareAdmin(LocationGISModel):
 @admin.register(models.Place)
 class PlaceAdmin(LocationGISModel):
     prepopulated_fields = {"slug": ("title",)}
-    list_display = ("__str__", "title", "location", "description")
+    list_display = ("__str__", "title", "location", "description", "id")
+    ordering = ["title"]
 
 
 class WordFrequencyInline(admin.TabularInline):
