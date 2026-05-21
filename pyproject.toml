@@ -33,6 +33,7 @@ lab = [
     "polars>=1.40.1",
     "pydantic>=2.13.4",
     "pydantic-ai>=1.99.0",
+    "qrcode[pil]>=8.2",
     "ruff>=0.15.13",
     "traitlets>=5.15.0",
 ]
