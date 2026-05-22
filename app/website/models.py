@@ -8,14 +8,14 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
-from django.db.models import F, Max, Q, Sum
+from django.db.models import Avg, F, Max, Q, Sum
 from django.shortcuts import get_object_or_404, resolve_url
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django_stubs_ext.db.models import TypedModelMeta
 
 from .fields import UniqueBooleanField
-from .tools.geo import coordinates, mercator_coordinates
+from .tools.geo import Coordinates, coordinates
 
 
 class LocationModel(models.Model):
@@ -28,27 +28,28 @@ class LocationModel(models.Model):
         if settings.VOICES_ENABLE_GEODJANGO and not self.location:
             raise ValidationError("In GeoDjango mode, location must be filled")
 
-        if not settings.VOICES_ENABLE_GEODJANGO and (not self.x or not self.y):
+        if not settings.VOICES_ENABLE_GEODJANGO and (self.x is None or self.y is None):
             raise ValidationError("In GeoDjango mode, X and Y must be filled")
 
     @property
     def latitude(self) -> float:
-        return self.location.y
+        return self.location.y if settings.VOICES_ENABLE_GEODJANGO else self.y
 
     @property
     def longitude(self) -> float:
-        return self.location.x
+        return self.location.x if settings.VOICES_ENABLE_GEODJANGO else self.x
 
     @property
-    def coordinates(self):
-        return coordinates(self.location)
-
-    @property
-    def mercator_coordinates(self):
-        return mercator_coordinates(self.latitude, self.longitude)
+    def coordinates(self) -> Coordinates:
+        if settings.VOICES_ENABLE_GEODJANGO:
+            return coordinates(self.location)
+        else:
+            return [float(self.y), float(self.x)]
 
     def __str__(self):
-        return f"({self.latitude:.4f}, {self.longitude:.4f})"
+        lat = f"{self.latitude:7.4f}" if self.latitude is not None else "?"
+        lon = f"{self.longitude:7.4f}" if self.longitude is not None else "?"
+        return f"{self.__class__.__name__}({lat}, {lon})"
 
     class Meta(TypedModelMeta):
         abstract = True
@@ -121,9 +122,15 @@ class Place(LocationModel, QRModel):
 
     @classmethod
     def get_nearest(cls, location: Point):
+        if not settings.VOICES_ENABLE_GEODJANGO:
+            raise NotImplementedError("get_nearest implemented only in GeoDjango mode")
+
         distance = Distance("location", location)
         query = cls.objects.annotate(distance=distance)
-        return query.order_by("distance").first()
+        nearest = query.order_by("distance").first()
+        if nearest is None:
+            raise Exception("Cannot find the nearest place, is at least one set?")
+        return nearest
 
     def get_frequencies(self, min_frequency: int = 2) -> list[JSONFrequency]:
         """Return a list of [word, frequency] with the latest normalized"""
@@ -140,11 +147,7 @@ class Place(LocationModel, QRModel):
         return resolve_url("website:share", place=self.slug)
 
     def __str__(self):
-        if self.title:
-            return self.title
-        if self.slug:
-            return self.slug
-        return LocationModel.__str__(self)
+        return f"{self.__class__.__name__}<{self.title}>"
 
     class Meta(TypedModelMeta):
         abstract = False
@@ -291,10 +294,18 @@ class Landscape(TitledModel, LocationModel):
     logo_partners = models.ManyToManyField(to=Logo, related_name="+", blank=True)
 
     @property
-    def centroid(self) -> Point:
+    def centroid(self) -> Coordinates:
         if self.places.count() <= 1:
-            return self.location
-        return self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
+            return self.coordinates
+
+        if settings.VOICES_ENABLE_GEODJANGO:
+            p = self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
+            return coordinates(p)
+
+        return [
+            float(self.places.aggregate(mean=Avg("y"))["mean"]),
+            float(self.places.aggregate(mean=Avg("x"))["mean"]),
+        ]
 
     @property
     def zoom(self):
@@ -305,7 +316,11 @@ class Landscape(TitledModel, LocationModel):
         }
 
     def set_centroid(self):
-        self.location = self.centroid
+        if settings.VOICES_ENABLE_GEODJANGO:
+            self.location = Point(*self.centroid)
+        else:
+            self.y, self.x = self.centroid
+
         self.save()
 
     @classmethod

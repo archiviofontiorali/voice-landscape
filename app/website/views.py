@@ -45,9 +45,8 @@ class MapTemplateView(LandscapeTemplateView):
         context = super().get_context_data(**kwargs)
 
         landscape: models.Landscape = context["landscape"]
-        centroid = landscape.centroid
 
-        context.setdefault("center", [centroid.y, centroid.x])
+        context.setdefault("center", landscape.centroid)
         context.setdefault("zoom", landscape.zoom)
         context.setdefault(
             "provider", landscape.provider.as_json() if landscape.provider else None

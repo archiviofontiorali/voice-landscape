@@ -34,3 +34,7 @@ $ uv run app/manage.py makemigrations
 As this project uses a non standard Django Structure some additional care are needed
 - manage.py, apps and main app are all inside the app/ folder
 - before creating a new app with manage.py is required to enter the app folder otherwise `startapp` command will error out over a module name conflict
+
+## TODO:
+- [ ] Ensure that when GPS location is retrieved, place is deselected
+- [ ] Implement get_nearest for GeoDjango mode disabled

@@ -1,8 +1,9 @@
 import numpy as np
 from django.contrib.gis.geos import Point
 
-type MercatorCoordinates = tuple[float, float]
+# Remember that coordinates are in order (latitude (Y), longitude (X))
 type Coordinates = list[float]
+type MercatorCoordinates = tuple[float, float]
 
 
 def mercator_longitude(longitude: float):
