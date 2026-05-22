@@ -7,6 +7,8 @@ from . import models
 
 
 class LocationGISModel(admin.GISModelAdmin):
+    list_display = ("location",) if settings.VOICES_ENABLE_GEODJANGO else ("x", "y")
+    # gis_widget = OSMWidget|OpenLayersWidget
     gis_widget_kwargs = {
         "attrs": {
             "default_zoom": 11,
@@ -24,13 +26,19 @@ class LeafletProviderAdmin(admin.ModelAdmin):
 
 @admin.register(models.Share)
 class ShareAdmin(LocationGISModel):
-    list_display = ("timestamp", "location", "message")
+    list_display = ("timestamp", *LocationGISModel.list_display, "message")
 
 
 @admin.register(models.Place)
 class PlaceAdmin(LocationGISModel):
     prepopulated_fields = {"slug": ("title",)}
-    list_display = ("__str__", "title", "location", "description", "id")
+    list_display = (
+        "__str__",
+        "title",
+        *LocationGISModel.list_display,
+        "description",
+        "id",
+    )
     ordering = ["title"]
 
 
@@ -63,7 +71,7 @@ class LandscapeAdmin(LocationGISModel):
         "title",
         "slug",
         "domain",
-        "location",
+        *LocationGISModel.list_display,
         "default",
         "provider",
     )

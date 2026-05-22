@@ -2,10 +2,12 @@ import random
 import textwrap
 from typing import Optional
 
+from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
+from django.core.exceptions import ValidationError
 from django.db.models import F, Max, Q, Sum
 from django.shortcuts import get_object_or_404, resolve_url
 from django.utils import timezone
@@ -17,7 +19,17 @@ from .tools.geo import coordinates, mercator_coordinates
 
 
 class LocationModel(models.Model):
-    location = models.PointField()
+    location = models.PointField(blank=True, null=True)
+
+    x = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
+    y = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
+
+    def clean(self):
+        if settings.VOICES_ENABLE_GEODJANGO and not self.location:
+            raise ValidationError("In GeoDjango mode, location must be filled")
+
+        if not settings.VOICES_ENABLE_GEODJANGO and (not self.x or not self.y):
+            raise ValidationError("In GeoDjango mode, X and Y must be filled")
 
     @property
     def latitude(self) -> float:
@@ -40,6 +52,13 @@ class LocationModel(models.Model):
 
     class Meta(TypedModelMeta):
         abstract = True
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(location__isnull=False)
+                | (Q(x__isnull=False) & Q(y__isnull=False)),
+                name="location_set",
+            ),
+        ]
 
 
 class TitledModel(models.Model):
