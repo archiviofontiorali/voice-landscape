@@ -67,8 +67,17 @@ class WordCloudMarker {
 }
 
 class LeafletMap {
-  constructor(id = "map", center = [0, 0], useSimpleCRS = false, overlay, options) {
+  constructor(
+    id = "map",
+    center = [0, 0],
+    useSimpleCRS = false,
+    scale = 1,
+    overlay = {},
+    options = {},
+  ) {
     this.center = center;
+    this.overlay = overlay;
+    this.scale = scale;
 
     this.options = {
       zoom: { ...DEFAULT_LEAFLET_MAP_OPTIONS.zoom, ...options.zoom },
@@ -89,14 +98,21 @@ class LeafletMap {
       this.center = [overlay.height / scale / 2, overlay.width / scale / 2];
       opts.maxBounds = [
         [0, 0],
-        [overlay.height / scale, overlay.width / scale],
+        [overlay.height / this.scale, overlay.width / this.scale],
       ];
     }
 
     this.map = L.map(id, opts).setView(this.center, this.options.zoom.initial);
     this._addBackground();
 
-    if (overlay.url) this._addOverlay(overlay, scale);
+    // Enable to see axis and border
+    // L.marker([0, 0], { icon: buildCircleMarker() }).addTo(this.map);
+    // L.marker([30, 0], { icon: buildCircleMarker() }).addTo(this.map);
+    // L.marker([0, 30], { icon: buildCircleMarker() }).addTo(this.map);
+    // L.marker([0, overlay.width], { icon: buildCircleMarker() }).addTo(this.map);
+    // L.marker([overlay.height, 0], { icon: buildCircleMarker() }).addTo(this.map);
+
+    if (overlay.url) this._addOverlay(overlay, this.scale);
 
     this.markers = {};
 

@@ -41,6 +41,7 @@
 <script defer>
   const center = {{ center }};
   const useSimpleCRS = {{ use_simple_crs|yesno:"true,false" }};
+  const scale = 2;
 
   const overlay = {
   {% if overlay %}
@@ -66,7 +67,7 @@
   {% endif %}
 
   document.addEventListener('DOMContentLoaded', () =>
-      new LeafletMap("map", center, useSimpleCRS, overlay, options).addWordClouds({{ places | safe }})
+      new LeafletMap("map", center, useSimpleCRS, scale, overlay, options).addWordClouds({{ places | safe }})
   );
 </script>
 {% endblock %}
