@@ -1,3 +1,5 @@
+import datetime as dt
+
 from django.urls import path, register_converter
 from django.utils import timezone
 
@@ -9,7 +11,7 @@ class DateTimeConverter:
 
     @staticmethod
     def to_python(value):
-        time = timezone.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+        time = dt.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
         return timezone.make_aware(time)
 
     @staticmethod
