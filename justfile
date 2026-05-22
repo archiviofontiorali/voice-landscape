@@ -31,9 +31,16 @@ serve: show
     @echo "Launch Django development server"
     uv run {{ django }} runserver {{ host }}:{{ port }}
 
+# --- Database Management --- #
 [confirm('Apply migrations? [y/N]')]
 migrate:
     uv run {{ django }} migrate
+
+[confirm('This will DELETE your sqlite database, are you sure? [y/N]')]
+db-reset:
+    rm -f db.sqlite3
+    uv run {{ django }} migrate
+    uv run {{ django }} loaddata website
 
 # --- Notebook (marimo) --- #
 marimo:

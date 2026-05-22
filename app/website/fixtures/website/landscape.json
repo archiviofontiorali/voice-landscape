@@ -1,0 +1,37 @@
+[
+  {
+    "model": "website.landscape",
+    "pk": 1,
+    "fields": {
+      "slug": "paesaggio-di-voci",
+      "title": "Paesaggio di Voci",
+      "description": "",
+      "domain": "voci.for.dev",
+      "reload_time": 300,
+      "provider": null,
+      "default": true,
+      "enabled": true,
+      "logo_event": null,
+      "logo_organizer": null,
+      "logo_partners": []
+    }
+  },
+  {
+    "model": "website.Map",
+    "pk": 1,
+    "fields": {
+      "slug": "modena",
+      "title": "Modena",
+      "location": "SRID=4326;POINT (10.9200867 44.6488366)",
+      "x": 0,
+      "y": 0,
+      "landscape": 1,
+      "places": [],
+      "default": true,
+      "enabled": true,
+      "zoom_initial": 15,
+      "zoom_min": 13,
+      "zoom_max": 20
+    }
+  }
+]
