@@ -95,7 +95,6 @@
             <option
               class="tc"
               value="{{ place.slug }}"
-              title="{{ place.title }}"
               data-latitude="{{ place.latitude | floatformat:'7u' }}"
               data-longitude="{{ place.longitude | floatformat:'7u' }}"
               {% if selected.slug == place.slug %}selected{% endif %}

@@ -77,22 +77,17 @@ class LeafletMap {
       useDOM: options.useDOM ? options.useDOM : DEFAULT_LEAFLET_MAP_OPTIONS.useDOM,
     };
 
-    const crsOptions = {};
-    if (useSimpleCRS) crsOptions["crs"] = L.CRS.Simple;
+    const opts = {
+      minZoom: this.options.zoom.min,
+      maxZoom: this.options.zoom.max,
+      referrerPolicy: "strict-origin-when-cross-origin",
+    };
+    if (useSimpleCRS) opts["crs"] = L.CRS.Simple;
 
-    this.map = L.map(id, crsOptions);
-
-    this.map.setView(this.center, this.options.zoom.initial);
+    this.map = L.map(id, opts).setView(this.center, this.options.zoom.initial);
     this._addBackground();
 
-    if (overlay.url) {
-      const bounds = [
-        [0, 0],
-        [overlay.height, overlay.width],
-      ];
-      L.imageOverlay(overlay.url, bounds, { opacity: 0.5 }).addTo(this.map);
-      this.map.fitBounds(bounds);
-    }
+    if (overlay.url) this._addOverlay(overlay);
 
     this.markers = {};
 
@@ -114,8 +109,13 @@ class LeafletMap {
     else if (url) return L.tileLayer(url, opts).addTo(this.map);
   }
 
-  _addOverlay(image_url, bounds) {
-    return L.imageOverlay(image_url, bounds).addTo(this.map);
+  _addOverlay(overlay) {
+    const bounds = [
+      [0, 0],
+      [overlay.height, overlay.width],
+    ];
+    L.imageOverlay(overlay.url, bounds).addTo(this.map);
+    this.map.fitBounds(bounds);
   }
 
   _addWordCloud(index, coordinates, frequencies, width, height) {
