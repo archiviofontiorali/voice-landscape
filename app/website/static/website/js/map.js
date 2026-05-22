@@ -37,7 +37,13 @@ class WordCloudMarker {
       className: `word-cloud word-cloud-${this.index}`,
       iconSize: null,
     });
-    this.marker = L.marker(this.coordinates, { icon: icon }).addTo(map);
+    this.marker = L.marker(this.coordinates, { icon: icon, url: place.url })
+      .addTo(map)
+      .on("click", function (e) {
+        // e.target is the marker; you can store the URL on the marker options
+        var url = e.target.options.url; // e.g. set when you create it
+        window.location.href = url; // navigate like a normal link
+      });
     this.canvas = $(`#map .word-cloud.word-cloud-${this.index} .canvas`);
     return this;
   }
@@ -64,6 +70,15 @@ class WordCloudMarker {
     WordCloud(this.canvas[0], { list: frequencies, ...this.options });
     return this;
   }
+}
+
+function buildCircleMarker(size = 24, color = "red") {
+  return L.divIcon({
+    className: "circle-marker",
+    html: `<div style="background:${color};width:20px;height:20px;border-radius:50%;border:2px solid #fff;"></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
 }
 
 class LeafletMap {
@@ -165,8 +180,28 @@ class LeafletMap {
     this.places = places;
     const width = this.markerWidth,
       height = this.markerHeight;
-    for (const [index, { coordinates, frequencies }] of this.places.entries()) {
-      this._addWordCloud(index, coordinates, frequencies, width, height);
+    for (const [index, place] of this.places.entries()) {
+      const { coordinates, frequencies, url, title } = place;
+      const scaledCoordinates = [
+        (this.overlay.height - coordinates[0]) / this.scale,
+        coordinates[1] / this.scale,
+      ];
+      L.marker(scaledCoordinates, { icon: buildCircleMarker("blue"), url: url })
+        .addTo(this.map)
+        .on("click", function (e) {
+          // e.target is the marker; you can store the URL on the marker options
+          var url = e.target.options.url; // e.g. set when you create it
+          window.location.href = url; // navigate like a normal link
+        });
+      // .bindPopup(title)
+      // .on("mouseover", function (e) {
+      //   this.openPopup();
+      // })
+      // .on("mouseout", function (e) {
+      //   this.closePopup();
+      // });
+
+      this._addWordCloud(index, scaledCoordinates, frequencies, width, height, place);
     }
 
     this.map.on("zoomend", () => this.updateWordClouds());
