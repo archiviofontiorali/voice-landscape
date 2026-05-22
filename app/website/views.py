@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max, Min, Q
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
@@ -109,7 +109,11 @@ class Share(LandscapeTemplateView):
             share.save()
 
             messages.success(request, _("Grazie per la condivisione"))
-            return redirect("website:map")
+
+            map_ = place_.maps.filter(landscape__pk=self.get_landscape().pk).first()
+            # map_ = place_.maps.first()
+            url = resolve_url("website:map", slug=map_.slug if map_ else None)
+            return redirect(url)
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
