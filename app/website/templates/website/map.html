@@ -40,7 +40,15 @@
 <script src="{% static 'website/js/map.js' %}" defer></script>
 <script defer>
   const center = {{ center }};
-  const useSimpleCRS = {{ use_simple_crs|yesno:"true,false" }}
+  const useSimpleCRS = {{ use_simple_crs|yesno:"true,false" }};
+
+  const overlay = {
+  {% if overlay %}
+    url: "{{ overlay.url }}",
+    width: {{overlay.width}},
+    height: {{overlay.height}},
+  {% endif %}
+  };
   const options = {
     map: { provider: {} },
     zoom: {
@@ -58,7 +66,7 @@
   {% endif %}
 
   document.addEventListener('DOMContentLoaded', () =>
-      new LeafletMap("map", center, useSimpleCRS, options).addWordClouds({{ places | safe }})
+      new LeafletMap("map", center, useSimpleCRS, overlay, options).addWordClouds({{ places | safe }})
   );
 </script>
 {% endblock %}

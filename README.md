@@ -40,3 +40,4 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] Implement get_nearest for GeoDjango mode disabled
 - [ ] Make default field in Map admits one for each landscape instead of one for all
 - [ ] Simplify the get_landscape() approach in general
+- [ ] Use a more robust way to pass configuration from Map view and map.(html|js)

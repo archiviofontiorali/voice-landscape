@@ -52,9 +52,13 @@ class MapTemplateView(LandscapeTemplateView):
 
         context["map"] = map_
         context["maps"] = landscape.maps.all()
+
+        context.setdefault("overlay", map_.overlay)
         context.setdefault("center", map_.centroid)
         context.setdefault("zoom", map_.zoom)
+
         context.setdefault("use_simple_crs", not settings.VOICES_ENABLE_GEODJANGO)
+
         context.setdefault(
             "provider", landscape.provider.as_json() if landscape.provider else None
         )

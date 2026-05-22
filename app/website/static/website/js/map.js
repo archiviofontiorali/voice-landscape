@@ -67,7 +67,7 @@ class WordCloudMarker {
 }
 
 class LeafletMap {
-  constructor(id = "map", center = [0, 0], useSimpleCRS = false, options) {
+  constructor(id = "map", center = [0, 0], useSimpleCRS = false, overlay, options) {
     this.center = center;
 
     this.options = {
@@ -77,13 +77,22 @@ class LeafletMap {
       useDOM: options.useDOM ? options.useDOM : DEFAULT_LEAFLET_MAP_OPTIONS.useDOM,
     };
 
-    crsOptions = {};
+    const crsOptions = {};
     if (useSimpleCRS) crsOptions["crs"] = L.CRS.Simple;
 
     this.map = L.map(id, crsOptions);
 
     this.map.setView(this.center, this.options.zoom.initial);
     this._addBackground();
+
+    if (overlay.url) {
+      const bounds = [
+        [0, 0],
+        [overlay.height, overlay.width],
+      ];
+      L.imageOverlay(overlay.url, bounds, { opacity: 0.5 }).addTo(this.map);
+      this.map.fitBounds(bounds);
+    }
 
     this.markers = {};
 
@@ -103,6 +112,10 @@ class LeafletMap {
 
     if (name) return L.tileLayer.provider(name, opts).addTo(this.map);
     else if (url) return L.tileLayer(url, opts).addTo(this.map);
+  }
+
+  _addOverlay(image_url, bounds) {
+    return L.imageOverlay(image_url, bounds).addTo(this.map);
   }
 
   _addWordCloud(index, coordinates, frequencies, width, height) {
