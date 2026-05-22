@@ -45,7 +45,7 @@ db-superuser:
     uv run {{ django }} createsuperuser
 
 db-reset: db-clean db-superuser
-    uv run {{ django }} loaddata fixtures/demo_minimal.json
+    uv run {{ django }} loaddata fixtures/demo_musei.json
 
 # --- Notebook (marimo) --- #
 marimo:

@@ -1,0 +1,144 @@
+[
+  {
+    "model": "website.leafletprovider",
+    "pk": 1,
+    "fields": {
+      "slug": "stadia-stamen-toner",
+      "title": "Stadia Stamen Toner",
+      "name": "Stadia.StamenTonerBackground",
+      "url": null
+    }
+  },
+  {
+    "model": "website.leafletprovider",
+    "pk": 2,
+    "fields": {
+      "slug": "stadia-stamen-toner-lite",
+      "title": "Stadia Stamen Toner Lite",
+      "name": "Stadia.StamenTonerLite",
+      "url": null
+    }
+  },
+  {
+    "model": "website.leafletprovider",
+    "pk": 3,
+    "fields": {
+      "slug": "osm-mapnik",
+      "title": "OpenStreetMap Mapnik",
+      "name": "OpenStreetMap.Mapnik",
+      "url": null
+    }
+  },
+  {
+    "model": "website.landscape",
+    "pk": 1,
+    "fields": {
+      "slug": "palazzo-dei-musei",
+      "title": "Palazzo dei Musei — Notte dei Musei (2026)",
+      "description": "",
+      "default": true,
+      "enabled": true,
+      "domain": "",
+      "reload_time": 300,
+      "provider": null,
+      "logo_event": null,
+      "logo_organizer": null,
+      "logo_partners": []
+    }
+  },
+  {
+    "model": "website.map",
+    "pk": 1,
+    "fields": {
+      "location": null,
+      "x": "0.000000",
+      "y": "0.000000",
+      "slug": "piano-terra",
+      "title": "Piano Terra",
+      "landscape": 1,
+      "default": true,
+      "enabled": true,
+      "overlay": "overlays/01-piano-terra.png",
+      "zoom_initial": 0,
+      "zoom_min": 0,
+      "zoom_max": 5,
+      "places": []
+    }
+  },
+  {
+    "model": "website.map",
+    "pk": 2,
+    "fields": {
+      "location": null,
+      "x": "0.000000",
+      "y": "0.000000",
+      "slug": "archivio-storico",
+      "title": "Archivio Storico",
+      "landscape": 1,
+      "default": false,
+      "enabled": true,
+      "overlay": "overlays/02-archivio-storico.png",
+      "zoom_initial": 0,
+      "zoom_min": 0,
+      "zoom_max": 5,
+      "places": []
+    }
+  },
+  {
+    "model": "website.map",
+    "pk": 3,
+    "fields": {
+      "location": null,
+      "x": "0.000000",
+      "y": "0.000000",
+      "slug": "biblioteca-estense",
+      "title": "Biblioteca Estense",
+      "landscape": 1,
+      "default": false,
+      "enabled": true,
+      "overlay": "overlays/03-biblioteca-estense.png",
+      "zoom_initial": 0,
+      "zoom_min": 0,
+      "zoom_max": 5,
+      "places": []
+    }
+  },
+  {
+    "model": "website.map",
+    "pk": 4,
+    "fields": {
+      "location": null,
+      "x": "0.000000",
+      "y": "0.000000",
+      "slug": "museo-civico",
+      "title": "Museo Civico",
+      "landscape": 1,
+      "default": false,
+      "enabled": true,
+      "overlay": "overlays/04-museo-civico.png",
+      "zoom_initial": 0,
+      "zoom_min": 0,
+      "zoom_max": 5,
+      "places": []
+    }
+  },
+  {
+    "model": "website.map",
+    "pk": 5,
+    "fields": {
+      "location": null,
+      "x": "0.000000",
+      "y": "0.000000",
+      "slug": "galleria-estense",
+      "title": "Galleria Estense",
+      "landscape": 1,
+      "default": false,
+      "enabled": true,
+      "overlay": "overlays/05-galleria-estense.png",
+      "zoom_initial": 0,
+      "zoom_min": 0,
+      "zoom_max": 5,
+      "places": []
+    }
+  }
+]
