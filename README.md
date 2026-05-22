@@ -41,3 +41,5 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] Make default field in Map admits one for each landscape instead of one for all
 - [ ] Simplify the get_landscape() approach in general
 - [ ] Use a more robust way to pass configuration from Map view and map.(html|js)
+- [ ] Set default x and y value to 0, 0
+- [ ] Evaluate if making x,y the lat and lon value, remove blank/null from them with a default of (0, 0), in GEODJANGO mode sync the values with location, otherwise leave them indipendent
