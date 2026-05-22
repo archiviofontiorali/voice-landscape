@@ -136,7 +136,7 @@ class HistoryMap(MapTemplateView):
         timestamp_min = timestamp_range["min"].date()
         timestamp_max = timestamp_range["max"].date()
         if timestamp.date() > timestamp_max:
-            timestamp = timezone.datetime.combine(timestamp_max, dt.time(23, 00))
+            timestamp = dt.datetime.combine(timestamp_max, dt.time(23, 00))
 
         context["timestamp"] = {
             "current": timestamp,
@@ -179,7 +179,7 @@ def date_range(first_date: dt.date, last_date: dt.date) -> Iterable[dt.date]:
     date = first_date
     while date <= last_date:
         yield date
-        date += timezone.timedelta(days=1)
+        date += dt.timedelta(days=1)
 
 
 def qr_code_redirect(request, place: str):
