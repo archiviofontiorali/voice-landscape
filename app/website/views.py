@@ -73,7 +73,7 @@ class Share(LandscapeTemplateView):
         _("Raccogli l'essenza dell'attimo presente in una frase..."),
     ]
 
-    def post(self, request, place: Optional[str] = None):
+    def post(self, request, place_slug: Optional[str] = None):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -81,14 +81,24 @@ class Share(LandscapeTemplateView):
 
             latitude = float(form.cleaned_data["latitude"])
             longitude = float(form.cleaned_data["longitude"])
-            location = Point(x=longitude, y=latitude)
+            place_slug = form.cleaned_data.get("place")
 
-            landscape = self.get_landscape()
+            if not place_slug:
+                location = Point(x=longitude, y=latitude)
+                place = models.Place.get_nearest(location)
+            else:
+                place = models.Place.objects.get(slug=place_slug)
 
             share = models.Share(
-                message=message, location=location, landscape=landscape
+                message=message, place=place, landscape=self.get_landscape()
             )
+            if settings.VOICES_ENABLE_GEODJANGO:
+                share.location = Point(x=longitude, y=latitude)
+            else:
+                share.x, share.y = longitude, latitude
+
             share.save()
+
             messages.success(request, _("Grazie per la condivisione"))
             return redirect("website:map")
 

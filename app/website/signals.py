@@ -2,7 +2,6 @@ import re
 
 import spacy
 from django.conf import settings
-from django.contrib.gis.db.models.functions import Distance
 from django.db.models import F
 from loguru import logger
 from spacy.cli.download import download
@@ -32,20 +31,7 @@ def on_share_creation_update_frequencies(
     if not created:
         return
 
-    place = (
-        models.Place.objects.filter(landscape=instance.landscape)
-        .annotate(distance=Distance("location", instance.location))
-        .order_by("distance")
-        .first()
-    )
-
-    instance.place = place
-    instance.save()
-
-    logger.debug(
-        f"Receive share near [{place}], update WordFrequency "
-        f"(message: {instance.message})"
-    )
+    logger.debug(f"Received share, update WordFrequency (message: {instance.message})")
 
     for token in nlp(instance.message):
         if token.pos not in settings.SPACY_VALID_TOKENS:
@@ -65,7 +51,9 @@ def on_share_creation_update_frequencies(
 
         instance.words.add(word)
 
-        wf, _ = models.WordFrequency.objects.get_or_create(place=place, word=word)
+        wf, _ = models.WordFrequency.objects.get_or_create(
+            place=instance.place, word=word
+        )
         wf.frequency = F("frequency") + 1
         wf.save()
 

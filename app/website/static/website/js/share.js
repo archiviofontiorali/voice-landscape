@@ -60,7 +60,13 @@ class TabWidget {
 }
 
 class ShareWidget {
-  constructor(latitudeElement, longitudeElement, messageElement, previewElement) {
+  constructor(
+    latitudeElement,
+    longitudeElement,
+    placeElement,
+    messageElement,
+    previewElement,
+  ) {
     this.inputLatitude = $(latitudeElement);
     this.inputLongitude = $(longitudeElement);
     this.inputMessage = $(messageElement);
@@ -69,8 +75,9 @@ class ShareWidget {
     this.buttonSubmit = $("input#submit-button");
 
     this.autoLocationIcon = $("#location-auto-icon svg");
-    this.selectPlaceLocation = $(`#location-place select#place`);
+    this.selectPlaceLocation = $(placeElement);
 
+    this.selectPlaceLocation.ready(() => this.getPlacePosition());
     this.inputMessage.on("change", () => this.updatePreview());
     this.autoLocationIcon.click(() => this.getAutoPosition());
     this.selectPlaceLocation.on("change", (o) => this.getPlacePosition(o.value));

@@ -14,5 +14,6 @@ class ShareForm(django.forms.Form):
         max_length=500,  # TODO: find a way to use same value in form and model
     )
 
+    place = CharField(label=_("Seleziona un punto di interesse"))
     latitude = DecimalField(label=_("Latitudine"))
     longitude = DecimalField(label=_("Longitudine"))

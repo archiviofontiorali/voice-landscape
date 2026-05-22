@@ -64,7 +64,7 @@
       id="location-section"
       class="widget-tab flex flex-row justify-center flex-wrap"
     >
-      <div id="text-preview" class="tc w-100 measure-wide pa2 mv2 mb4 mid-gray"></div>
+      <!--<div id="text-preview" class="tc w-100 measure-wide pa2 mv2 mb4 mid-gray"></div>-->
 
       {% if enable_gps %}
       <div
@@ -84,17 +84,17 @@
         id="location-place"
         class="w-100 {% if enable_gps %}w-50-l{% endif %} pa3 h4 tc flex flex-column items-center justify-between"
       >
-        <label for="place" class="gray b w-100 tc ttu">
-          Seleziona un punto di interesse
+        <label for="{{ form.place.id_for_label }}" class="gray b w-100 tc ttu">
+          {{ form.place.label }}
         </label>
         <div class="h-100 flex flex-column justify-center">
-          <select name="place" id="place" class="tc">
-            <option {% if not selected %}selected{% endif %}></option>
+          <select name="{{ form.place.html_name }}" id="{{ form.place.id_for_label }}" class="tc">
+            <option value="" {% if not selected %}selected{% endif %}></option>
 
             {% for place in places %}
             <option
               class="tc"
-              value="{{ place.id }}"
+              value="{{ place.slug }}"
               title="{{ place.title }}"
               data-latitude="{{ place.latitude | floatformat:'7u' }}"
               data-longitude="{{ place.longitude | floatformat:'7u' }}"
@@ -192,11 +192,11 @@
     const widget = new ShareWidget(
       $("input#{{ form.latitude.id_for_label }}"),
       $("input#{{ form.longitude.id_for_label }}"),
+      $("select#{{ form.place.id_for_label }}"),
       $("textarea#{{ form.message.id_for_label }}"),
       $("#text-preview"),
     );
 
-    $(`#location-place select#place`).ready(() => widget.getPlacePosition());
     $(`section#message-section a#reset-button`).click(() => widget.resetMessage());
   });
 </script>
