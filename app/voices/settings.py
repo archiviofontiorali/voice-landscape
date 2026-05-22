@@ -295,6 +295,7 @@ WHISPER_MODEL = env("WHISPER_MODEL", default="base")
 
 
 # --- Website Features --- #
+VOICES_ENABLE_GEODJANGO = env("VOICES_ENABLE_GEODJANGO", True, cast=_bool)
 VOICES_ENABLE_SHARING = env("VOICES_ENABLE_SHARING", True, cast=_bool)
 VOICES_ENABLE_GPS = env("VOICES_ENABLE_GPS", True, cast=_bool)
 
