@@ -31,7 +31,7 @@ class WordCloudMarker {
     this.options = { ...DEFAULT_WORDCLOUD_OPTIONS, ...options };
   }
 
-  addMarker(map) {
+  addMarker(map, place) {
     const icon = L.divIcon({
       html: '<div class="canvas relative"></div>',
       className: `word-cloud word-cloud-${this.index}`,
@@ -127,13 +127,13 @@ class LeafletMap {
     // this.map.fitBounds(bounds);
   }
 
-  _addWordCloud(index, coordinates, frequencies, width, height) {
+  _addWordCloud(index, coordinates, frequencies, width, height, place) {
     if ($.isEmptyObject(frequencies)) return;
     if (!width) width = this.markerWidth;
     if (!height) height = this.markerHeight;
 
     this.markers[index] = new WordCloudMarker(index, coordinates)
-      .addMarker(this.map)
+      .addMarker(this.map, place)
       .updateCanvas(width, height)
       .updateWords(frequencies);
   }

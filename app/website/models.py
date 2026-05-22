@@ -147,7 +147,13 @@ class Place(LocationModel, QRModel):
         return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
 
     def as_json(self):
-        return {"coordinates": self.coordinates, "frequencies": self.get_frequencies()}
+        return {
+            "slug": self.slug,
+            "url": resolve_url("website:share", slug=self.slug),
+            "title": self.title,
+            "coordinates": self.coordinates,
+            "frequencies": self.get_frequencies(),
+        }
 
     def get_absolute_url(self):
         return resolve_url("website:share", place=self.slug)
