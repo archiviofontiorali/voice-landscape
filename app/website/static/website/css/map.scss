@@ -2,6 +2,10 @@
 
 @import "../../../../static/css/palette";
 
+.leaflet-container {
+    background: none !important;
+}
+
 .canvas span {
     /* Better solution only available in firefox
       -webkit-text-stroke: 2px white;
