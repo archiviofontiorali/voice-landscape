@@ -84,10 +84,19 @@ class LeafletMap {
     };
     if (useSimpleCRS) opts["crs"] = L.CRS.Simple;
 
+    const scale = 4;
+    if (overlay.url) {
+      this.center = [overlay.height / scale / 2, overlay.width / scale / 2];
+      opts.maxBounds = [
+        [0, 0],
+        [overlay.height / scale, overlay.width / scale],
+      ];
+    }
+
     this.map = L.map(id, opts).setView(this.center, this.options.zoom.initial);
     this._addBackground();
 
-    if (overlay.url) this._addOverlay(overlay);
+    if (overlay.url) this._addOverlay(overlay, scale);
 
     this.markers = {};
 
@@ -109,13 +118,13 @@ class LeafletMap {
     else if (url) return L.tileLayer(url, opts).addTo(this.map);
   }
 
-  _addOverlay(overlay) {
+  _addOverlay(overlay, scale) {
     const bounds = [
       [0, 0],
-      [overlay.height, overlay.width],
+      [Math.floor(overlay.height / scale), Math.floor(overlay.width / scale)],
     ];
     L.imageOverlay(overlay.url, bounds).addTo(this.map);
-    this.map.fitBounds(bounds);
+    // this.map.fitBounds(bounds);
   }
 
   _addWordCloud(index, coordinates, frequencies, width, height) {
