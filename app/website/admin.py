@@ -33,7 +33,6 @@ class ShareAdmin(LocationGISModel):
 class PlaceAdmin(LocationGISModel):
     prepopulated_fields = {"slug": ("title",)}
     list_display = (
-        "__str__",
         "title",
         *LocationGISModel.list_display,
         "description",

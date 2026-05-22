@@ -6,7 +6,7 @@ const DEFAULT_WORDCLOUD_OPTIONS = {
   minSize: "2rem",
   // weightFactor: (w) => 6 + 20 * Math.tanh(w),
   // weightFactor: (size) => Math.floor(5 + size * (30 - 5)),
-  weightFactor: (size) => 10 + Math.pow(size, 2.3),
+  weightFactor: (size) => 12 + Math.pow(size, 2.3),
   fontWeight: "700",
   fontFamily: "Open Sans, Consolas, monaco, monospace",
   color: "inherit",
@@ -108,9 +108,7 @@ class LeafletMap {
     };
     if (useSimpleCRS) opts["crs"] = L.CRS.Simple;
 
-    const scale = 4;
     if (overlay.url) {
-      this.center = [overlay.height / scale / 2, overlay.width / scale / 2];
       opts.maxBounds = [
         [0, 0],
         [overlay.height / this.scale, overlay.width / this.scale],
