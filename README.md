@@ -38,3 +38,5 @@ As this project uses a non standard Django Structure some additional care are ne
 ## TODO:
 - [ ] Ensure that when GPS location is retrieved, place is deselected
 - [ ] Implement get_nearest for GeoDjango mode disabled
+- [ ] Make default field in Map admits one for each landscape instead of one for all
+- [ ] Simplify the get_landscape() approach in general
