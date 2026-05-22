@@ -40,6 +40,7 @@
 <script src="{% static 'website/js/map.js' %}" defer></script>
 <script defer>
   const center = {{ center }};
+  const useSimpleCRS = {{ use_simple_crs|yesno:"true,false" }}
   const options = {
     map: { provider: {} },
     zoom: {
@@ -57,7 +58,7 @@
   {% endif %}
 
   document.addEventListener('DOMContentLoaded', () =>
-      new LeafletMap("map", center, options).addWordClouds({{ places | safe }})
+      new LeafletMap("map", center, useSimpleCRS, options).addWordClouds({{ places | safe }})
   );
 </script>
 {% endblock %}

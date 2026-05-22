@@ -67,7 +67,7 @@ class WordCloudMarker {
 }
 
 class LeafletMap {
-  constructor(id = "map", center = [0, 0], options) {
+  constructor(id = "map", center = [0, 0], useSimpleCRS = false, options) {
     this.center = center;
 
     this.options = {
@@ -77,7 +77,12 @@ class LeafletMap {
       useDOM: options.useDOM ? options.useDOM : DEFAULT_LEAFLET_MAP_OPTIONS.useDOM,
     };
 
-    this.map = L.map(id).setView(this.center, this.options.zoom.initial);
+    crsOptions = {};
+    if (useSimpleCRS) crsOptions["crs"] = L.CRS.Simple;
+
+    this.map = L.map(id, crsOptions);
+
+    this.map.setView(this.center, this.options.zoom.initial);
     this._addBackground();
 
     this.markers = {};
