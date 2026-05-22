@@ -163,15 +163,15 @@ def _(add_info_qr_code, landscape, settings):
     qr_codes = []
 
     for place in landscape.places.all():
-        title = place.title
-        subtitle = getattr(place, "subtitle", None)
+        title = place.qr_title
+        subtitle = place.qr_subtitle
         url = f"https://{settings.DOMAIN}/qr/{place.slug}"
         print(len(url))
 
         box_size = 14 if len(url) < 45 else 12
         qr_code = create_qr_code(url, box_size=box_size)
         qr_code = add_info_qr_code(
-            qr_code, title, url, width=width, height=height, font_size=20
+            qr_code, title, url, subtitle=subtitle, width=width, height=height, font_size=20
         )
 
         qr_codes.append(mo.image(qr_code, height=400))
