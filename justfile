@@ -37,10 +37,15 @@ migrate:
     uv run {{ django }} migrate
 
 [confirm('This will DELETE your sqlite database, are you sure? [y/N]')]
-db-reset:
+db-clean:
     rm -f db.sqlite3
     uv run {{ django }} migrate
-    uv run {{ django }} loaddata website
+
+db-superuser:
+    uv run {{ django }} createsuperuser
+
+db-reset: db-clean db-superuser
+    uv run {{ django }} loaddata fixtures/demo_minimal.json
 
 # --- Notebook (marimo) --- #
 marimo:
