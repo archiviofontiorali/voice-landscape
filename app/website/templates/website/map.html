@@ -10,6 +10,7 @@
 {% block header %}
 {{block.super}}
 <div id="map-menu" class="outline mv1 w-100 flex flex-row justify-center items-center h2">
+    <span class="b dark-gray ml3 mr4">{{ landscape.title }}</span>
     {% for map_ in maps %}
         <a class="{% if map == map_ %}b {% endif %}link black mh3" href="{% url 'website:map' map_.slug %}">
               {{ map_.title }}
