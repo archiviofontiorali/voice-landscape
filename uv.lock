@@ -910,7 +910,7 @@ wheels = [
 
 [[package]]
 name = "django-stubs"
-version = "5.2.9"
+version = "6.0.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
@@ -918,9 +918,9 @@ dependencies = [
     { name = "types-pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/01/86c921e0e19c9fa7e705bf795998dbf55eb183e7be0342a3027dc1bcbc9f/django_stubs-5.2.9.tar.gz", hash = "sha256:c192257120b08785cfe6f2f1c91f1797aceae8e9daa689c336e52c91e8f6a493", size = 257970, upload-time = "2026-01-20T23:59:27.018Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/82/ccf2a2dc9cdb4bd9cbe91f11e887589bf2da7609506db00ccbc73bd8a6da/django_stubs-6.0.4.tar.gz", hash = "sha256:7aee77e8de9c14c0d9cf84988befe826d93cbc15a87e0ade2943f14d553451cf", size = 280019, upload-time = "2026-05-09T21:24:30.436Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/05/4c9c419b7051eb4b350100b086be6df487f968ab672d3d370f8ccf7c3746/django_stubs-5.2.9-py3-none-any.whl", hash = "sha256:2317a7130afdaa76f6ff7f623650d7f3bf1b6c86a60f95840e14e6ec6de1a7cd", size = 508656, upload-time = "2026-01-20T23:59:25.12Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/e7/5128914ada94dd6277626ef5a4a5680a4def7d2f9366214d26c1cd86723b/django_stubs-6.0.4-py3-none-any.whl", hash = "sha256:e991c68f77239663577a5f4fc75e99c84f867f378cafc97cbf4acc5aff378279", size = 543791, upload-time = "2026-05-09T21:24:28.218Z" },
 ]
 
 [[package]]
@@ -4702,6 +4702,7 @@ dependencies = [
     { name = "django-compressor" },
     { name = "django-cors-headers" },
     { name = "django-sass-processor" },
+    { name = "django-stubs" },
     { name = "djangorestframework" },
     { name = "libsass" },
     { name = "loguru" },
@@ -4718,7 +4719,6 @@ dependencies = [
 dev = [
     { name = "django-debug-toolbar" },
     { name = "django-extensions" },
-    { name = "django-stubs" },
     { name = "django-types" },
     { name = "pytest" },
 ]
@@ -4742,6 +4742,7 @@ requires-dist = [
     { name = "django-compressor", specifier = ">=4.6.0" },
     { name = "django-cors-headers", specifier = ">=4.9.0" },
     { name = "django-sass-processor", specifier = ">=1.4.2" },
+    { name = "django-stubs", specifier = ">=6.0.4" },
     { name = "djangorestframework", specifier = ">=3.17.1" },
     { name = "libsass", specifier = ">=0.23.0" },
     { name = "loguru", specifier = ">=0.7.3" },
@@ -4758,7 +4759,6 @@ requires-dist = [
 dev = [
     { name = "django-debug-toolbar", specifier = ">=6.3.0" },
     { name = "django-extensions", specifier = ">=4.1" },
-    { name = "django-stubs", specifier = "~=5.2" },
     { name = "django-types", specifier = ">=0.24.0" },
     { name = "pytest", specifier = ">=9.0.3" },
 ]
