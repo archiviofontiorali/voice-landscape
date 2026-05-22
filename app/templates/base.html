@@ -32,6 +32,10 @@
   </head>
   <body class="flex flex-column min-vh-100 pa2">
     {% block header %}
+    <header class="w-100 outline mb1 b h2 flex flex-row justify-around items-center">
+      <span>Paesaggio di Voci</span>
+      <span>{{ landscape.title }}</span>
+    </header>
     <header class="w-100 outline mb1">{% include "_header.html" %}</header>
     {% endblock %}
 
