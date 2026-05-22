@@ -7,15 +7,18 @@
 <link type="text/css" rel="stylesheet" href="{% sass_src 'website/css/map.scss' %}" />
 {% endblock %}
 
-{% block header %}
+{% block navs %}
 {{block.super}}
-<div id="map-menu" class="outline mv1 w-100 flex flex-row justify-center items-center ttu tc h3 overflow-x-auto">
-    {% for map_ in maps %}
-        <a class="{% if map == map_ %}b {% endif %}link f6 black mh2" href="{% url 'website:map' map_.slug %}">
-              {{ map_.title }}
-          </a>
-    {% endfor %}
-</div>
+
+<nav id="map-menu"
+     class="outline h2 mv1 flex flex-row justify-around items-center f6 ttu tracked tc overflow-x-auto dark-gray">
+  {% for map_ in maps %}
+  <a class="{% if map == map_ %}b {% endif %}link mh2"
+      href="{% url 'website:map' map_.slug %}">
+    {{ map_.title }}
+  </a>
+  {% endfor %}
+</nav>
 {% endblock %}
 
 {% block contents %}
