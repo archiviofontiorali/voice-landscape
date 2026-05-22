@@ -41,13 +41,13 @@ class LandscapeTemplateView(TemplateView):
 
 
 class MapTemplateView(LandscapeTemplateView):
-    def get_context_data(self, map: Optional[str] = None, **kwargs):
+    def get_context_data(self, slug: Optional[str] = None, **kwargs):
         context = super().get_context_data(**kwargs)
 
         landscape: models.Landscape = context["landscape"]
 
         map_ = get_object_or_404(
-            landscape.maps, Q(slug=map) if map else Q(default=True)
+            landscape.maps, Q(slug=slug) if slug else Q(default=True)
         )
 
         context["map"] = map_
@@ -82,7 +82,7 @@ class Share(LandscapeTemplateView):
         _("Raccogli l'essenza dell'attimo presente in una frase..."),
     ]
 
-    def post(self, request, place: Optional[str] = None):
+    def post(self, request, slug: Optional[str] = None):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -90,13 +90,13 @@ class Share(LandscapeTemplateView):
 
             latitude = float(form.cleaned_data["latitude"])
             longitude = float(form.cleaned_data["longitude"])
-            place = form.cleaned_data.get("place")
+            slug = form.cleaned_data.get("place")
 
-            if not place:
+            if not slug:
                 location = Point(x=longitude, y=latitude)
                 place_ = models.Place.get_nearest(location)
             else:
-                place_ = models.Place.objects.get(slug=place)
+                place_ = models.Place.objects.get(slug=slug)
 
             share = models.Share(
                 message=message, place=place_, landscape=self.get_landscape()
@@ -114,13 +114,13 @@ class Share(LandscapeTemplateView):
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
 
-    def get_context_data(self, place: Optional[str] = None, **kwargs):
+    def get_context_data(self, slug: Optional[str] = None, **kwargs):
         context = super().get_context_data(**kwargs)
         context.setdefault("phrase", random.choice(self.phrases))
         context.setdefault("form", forms.ShareForm())
 
         context.setdefault("places", places := context["landscape"].places.all())
-        context.setdefault("selected", places.filter(slug=place).first())
+        context.setdefault("selected", places.filter(slug=slug).first())
 
         context.setdefault("enable_sharing", settings.VOICES_ENABLE_SHARING)
         context.setdefault("enable_gps", settings.VOICES_ENABLE_GPS)
@@ -131,8 +131,8 @@ class Share(LandscapeTemplateView):
 class HistoryMap(MapTemplateView):
     template_name = "website/history.html"
 
-    def get_context_data(self, map: Optional[str] = None, **kwargs):
-        context = super().get_context_data(map_slug=map, **kwargs)
+    def get_context_data(self, slug: Optional[str] = None, **kwargs):
+        context = super().get_context_data(slug=slug, **kwargs)
 
         timestamp = kwargs.get("timestamp", timezone.now())
         timestamp_range = models.Share.objects.aggregate(

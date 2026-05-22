@@ -123,6 +123,7 @@ type JSONFrequency = list[str | float]
 
 
 class Place(LocationModel, QRModel):
+    maps: QuerySet["Map"]
     description = models.TextField(max_length=500, blank=True)
 
     @classmethod
@@ -296,7 +297,7 @@ class Landscape(TitledModel):
 
     @property
     def places(self):
-        return Place.objects.filter(map__landscape=self).distinct()
+        return Place.objects.filter(maps__landscape=self).distinct()
 
     @classmethod
     def get_default(cls) -> "Landscape":
@@ -320,7 +321,7 @@ class Map(TitledModel, OptionalLocationModel):
         on_delete=models.PROTECT,
         help_text="The landscape this map belongs to",
     )
-    places = models.ManyToManyField(Place, blank=True)
+    places = models.ManyToManyField(Place, blank=True, related_name="maps")
     default = UniqueBooleanField(
         default=False,
         help_text=_("If selected this is the default map to show for this landscape"),
