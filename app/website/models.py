@@ -18,18 +18,11 @@ from .fields import UniqueBooleanField
 from .tools.geo import Coordinates, coordinates
 
 
-class LocationModel(models.Model):
+class OptionalLocationModel(models.Model):
     location = models.PointField(blank=True, null=True)
 
     x = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
     y = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
-
-    def clean(self):
-        if settings.VOICES_ENABLE_GEODJANGO and not self.location:
-            raise ValidationError("In GeoDjango mode, location must be filled")
-
-        if not settings.VOICES_ENABLE_GEODJANGO and (self.x is None or self.y is None):
-            raise ValidationError("In GeoDjango mode, X and Y must be filled")
 
     @property
     def latitude(self) -> float:
@@ -50,6 +43,18 @@ class LocationModel(models.Model):
         lat = f"{self.latitude:7.4f}" if self.latitude is not None else "?"
         lon = f"{self.longitude:7.4f}" if self.longitude is not None else "?"
         return f"{self.__class__.__name__}({lat}, {lon})"
+
+    class Meta(TypedModelMeta):
+        abstract = True
+
+
+class LocationModel(OptionalLocationModel):
+    def clean(self):
+        if settings.VOICES_ENABLE_GEODJANGO and not self.location:
+            raise ValidationError("In GeoDjango mode, location must be filled")
+
+        if not settings.VOICES_ENABLE_GEODJANGO and (self.x is None or self.y is None):
+            raise ValidationError("In GeoDjango mode, X and Y must be filled")
 
     class Meta(TypedModelMeta):
         abstract = True
