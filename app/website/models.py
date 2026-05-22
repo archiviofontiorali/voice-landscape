@@ -8,7 +8,7 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.contrib.gis.db.models.functions import Centroid, Distance
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
-from django.db.models import Avg, F, Max, Q, Sum
+from django.db.models import Avg, F, Max, Q, QuerySet, Sum
 from django.shortcuts import get_object_or_404, resolve_url
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -246,21 +246,21 @@ class Logo(models.Model):
         return self.name if self.name else super().__str__()
 
 
-class Landscape(TitledModel, LocationModel):
+class Landscape(TitledModel):
+    maps: QuerySet["Map"]
+
     description = models.TextField(max_length=500, blank=True)
-    domain = models.URLField(
-        blank=True,
-        help_text=_("Domain in showcase page. Leave blank to use the one in .env"),
-    )
 
     default = UniqueBooleanField(default=False)
     enabled = models.BooleanField(
         default=True,
-        help_text=_("Set to False to hide it in views, unless is chosen as default"),
+        help_text=_("Set to False to hide it in views, ignore if default=True"),
     )
 
-    places = models.ManyToManyField(Place, blank=True)
-
+    domain = models.URLField(
+        blank=True,
+        help_text=_("Domain in showcase page. Leave blank to use the one in .env"),
+    )
     reload_time = models.PositiveIntegerField(
         null=False,
         blank=False,
@@ -275,10 +275,6 @@ class Landscape(TitledModel, LocationModel):
         on_delete=models.PROTECT,
         help_text="The map provider to use with leaflet map",
     )
-
-    zoom_initial = models.PositiveSmallIntegerField(default=15)
-    zoom_min = models.PositiveSmallIntegerField(default=13)
-    zoom_max = models.PositiveSmallIntegerField(default=20)
 
     logo_event = models.ForeignKey(
         Logo,
@@ -299,34 +295,8 @@ class Landscape(TitledModel, LocationModel):
     logo_partners = models.ManyToManyField(to=Logo, related_name="+", blank=True)
 
     @property
-    def centroid(self) -> Coordinates:
-        if self.places.count() <= 1:
-            return self.coordinates
-
-        if settings.VOICES_ENABLE_GEODJANGO:
-            p = self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
-            return coordinates(p)
-
-        return [
-            float(self.places.aggregate(mean=Avg("y"))["mean"]),
-            float(self.places.aggregate(mean=Avg("x"))["mean"]),
-        ]
-
-    @property
-    def zoom(self):
-        return {
-            "initial": self.zoom_initial,
-            "min": self.zoom_min,
-            "max": self.zoom_max,
-        }
-
-    def set_centroid(self):
-        if settings.VOICES_ENABLE_GEODJANGO:
-            self.location = Point(*self.centroid)
-        else:
-            self.y, self.x = self.centroid
-
-        self.save()
+    def places(self):
+        return Place.objects.filter(map__landscape=self).distinct()
 
     @classmethod
     def get_default(cls) -> "Landscape":
@@ -342,7 +312,59 @@ class Landscape(TitledModel, LocationModel):
     objects = models.Manager()
     visible_objects = VisibleLandscapeManager()
 
-    class Meta:  # type: ignore
+
+class Map(TitledModel, OptionalLocationModel):
+    landscape = models.ForeignKey(
+        Landscape,
+        related_name="maps",
+        on_delete=models.PROTECT,
+        help_text="The landscape this map belongs to",
+    )
+    places = models.ManyToManyField(Place, blank=True)
+    default = UniqueBooleanField(
+        default=False,
+        help_text=_("If selected this is the default map to show for this landscape"),
+    )
+    enabled = models.BooleanField(
+        default=True,
+        help_text=_("Set to False to hide it in views, ignore if default=True"),
+    )
+
+    zoom_initial = models.PositiveSmallIntegerField(default=15)
+    zoom_min = models.PositiveSmallIntegerField(default=13)
+    zoom_max = models.PositiveSmallIntegerField(default=20)
+
+    @property
+    def centroid(self) -> Coordinates:
+        if self.places.count() <= 1:
+            return self.coordinates
+
+        if settings.VOICES_ENABLE_GEODJANGO:
+            p = self.places.aggregate(centroid=Centroid(Union("location")))["centroid"]
+            return coordinates(p)
+
+        return [
+            float(self.places.aggregate(mean=Avg("y"))["mean"]),
+            float(self.places.aggregate(mean=Avg("x"))["mean"]),
+        ]
+
+    def set_centroid(self):
+        if settings.VOICES_ENABLE_GEODJANGO:
+            self.location = Point(*self.centroid)
+        else:
+            self.y, self.x = self.centroid
+
+        self.save()
+
+    @property
+    def zoom(self):
+        return {
+            "initial": self.zoom_initial,
+            "min": self.zoom_min,
+            "max": self.zoom_max,
+        }
+
+    class Meta:
         constraints = [
             models.CheckConstraint(
                 name="zoom_min <= zoom_initial",

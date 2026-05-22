@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Q
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -17,7 +17,7 @@ from . import forms, models
 
 
 class LandscapeTemplateView(TemplateView):
-    def get_landscape(self):
+    def get_landscape(self) -> models.Landscape:
         try:
             slug = self.request.COOKIES.get("landscape")
             return models.Landscape.visible_objects.get(slug=slug)
@@ -41,19 +41,23 @@ class LandscapeTemplateView(TemplateView):
 
 
 class MapTemplateView(LandscapeTemplateView):
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, map: Optional[str] = None, **kwargs):
         context = super().get_context_data(**kwargs)
 
         landscape: models.Landscape = context["landscape"]
 
-        context.setdefault("center", landscape.centroid)
-        context.setdefault("zoom", landscape.zoom)
+        map_ = get_object_or_404(
+            landscape.maps, Q(slug=map) if map else Q(default=True)
+        )
+
+        context["map"] = map_
+        context["maps"] = landscape.maps.all()
+        context.setdefault("center", map_.centroid)
+        context.setdefault("zoom", map_.zoom)
         context.setdefault(
             "provider", landscape.provider.as_json() if landscape.provider else None
         )
-        context.setdefault(
-            "places", [place.as_json() for place in context["landscape"].places.all()]
-        )
+        context.setdefault("places", [place.as_json() for place in map_.places.all()])
 
         return context
 
@@ -73,7 +77,7 @@ class Share(LandscapeTemplateView):
         _("Raccogli l'essenza dell'attimo presente in una frase..."),
     ]
 
-    def post(self, request, place_slug: Optional[str] = None):
+    def post(self, request, place: Optional[str] = None):
         form = forms.ShareForm(request.POST)
 
         if form.is_valid():
@@ -81,16 +85,16 @@ class Share(LandscapeTemplateView):
 
             latitude = float(form.cleaned_data["latitude"])
             longitude = float(form.cleaned_data["longitude"])
-            place_slug = form.cleaned_data.get("place")
+            place = form.cleaned_data.get("place")
 
-            if not place_slug:
+            if not place:
                 location = Point(x=longitude, y=latitude)
-                place = models.Place.get_nearest(location)
+                place_ = models.Place.get_nearest(location)
             else:
-                place = models.Place.objects.get(slug=place_slug)
+                place_ = models.Place.objects.get(slug=place)
 
             share = models.Share(
-                message=message, place=place, landscape=self.get_landscape()
+                message=message, place=place_, landscape=self.get_landscape()
             )
             if settings.VOICES_ENABLE_GEODJANGO:
                 share.location = Point(x=longitude, y=latitude)
@@ -122,8 +126,8 @@ class Share(LandscapeTemplateView):
 class HistoryMap(MapTemplateView):
     template_name = "website/history.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, map: Optional[str] = None, **kwargs):
+        context = super().get_context_data(map_slug=map, **kwargs)
 
         timestamp = kwargs.get("timestamp", timezone.now())
         timestamp_range = models.Share.objects.aggregate(

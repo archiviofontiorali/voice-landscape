@@ -64,16 +64,28 @@ class LogoAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Landscape)
-class LandscapeAdmin(LocationGISModel):
+class LandscapeAdmin(admin.ModelAdmin):
+
     prepopulated_fields = {"slug": ("title",)}
     list_display = (
         "__str__",
         "title",
         "slug",
         "domain",
-        *LocationGISModel.list_display,
         "default",
         "provider",
+    )
+
+
+@admin.register(models.Map)
+class MapAdmin(LocationGISModel):
+    prepopulated_fields = {"slug": ("title",)}
+    list_display = (
+        "__str__",
+        "title",
+        "slug",
+        *LocationGISModel.list_display,
+        "default",
     )
     actions = ["set_centroid_as_location"]
 
