@@ -330,6 +330,8 @@ class Map(TitledModel, OptionalLocationModel):
         help_text=_("Set to False to hide it in views, ignore if default=True"),
     )
 
+    overlay = models.ImageField(upload_to="overlays/", blank=True, null=True)
+
     zoom_initial = models.PositiveSmallIntegerField(default=15)
     zoom_min = models.PositiveSmallIntegerField(default=13)
     zoom_max = models.PositiveSmallIntegerField(default=20)
