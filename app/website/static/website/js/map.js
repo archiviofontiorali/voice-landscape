@@ -4,14 +4,16 @@ const DEFAULT_WORDCLOUD_OPTIONS = {
   // shrinkToFit: true,
   drawOutOfBound: true,
   // minSize: "2rem",
-  weightFactor: (size) => 16 * size,
+  weightFactor: (size) => 20 * size,
   // weightFactor: (w) => 6 + 20 * Math.tanh(w),
   // weightFactor: (size) => Math.floor(5 + size * (30 - 5)),
   // weightFactor: (size) => 12 + Math.pow(size, 2.3),
   // fontWeight: "700",
   fontFamily: "Open Sans, Consolas, monaco, monospace",
   color: "inherit",
-  // shape: "circle",
+  shape: "circle",
+  // shape: "square",
+  rotateRatio: 0,
 };
 
 const DEFAULT_LEAFLET_MAP_OPTIONS = {
@@ -21,7 +23,7 @@ const DEFAULT_LEAFLET_MAP_OPTIONS = {
       // url: "https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
     },
   },
-  markers: { minWidth: 100, maxWidth: 200, minHeight: 50, maxHeight: 200 },
+  markers: { minWidth: 150, maxWidth: 550, minHeight: 150, maxHeight: 450 },
   useDOM: false,
 };
 

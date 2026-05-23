@@ -78,3 +78,4 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] Make min_frequency a property adjustable in admin page (an attribute for each place or for the map, or either ones)
 - [ ] WC canvas (and a sort of filter on frequency) must scale with zoom (maybe not by factor of 2, but a value lesser like 1.1)
 - [ ] Map, Overlay and WordCloud settings must be set in django admin page (maybe with a json fields?) and passed to frontend either via axios o fetch()
+- [ ] Make options like minWidth for WC more obvious and settable from admin
