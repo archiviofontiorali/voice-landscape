@@ -81,7 +81,11 @@ def create_qr_code(url: str, box_size: int = 10, padding: int = 4) -> Image.Imag
 @app.cell(hide_code=True)
 def _():
     def _font(font_size: int = 10, multiplier: float = 1.0):
-        return ImageFont.load_default(int(font_size * multiplier))
+        size = int(font_size * multiplier)
+        return ImageFont.truetype(
+            "/usr/share/fonts/TTF/FiraCodeNerdFontMono-Regular.ttf", size=size
+        )
+        # return ImageFont.load_default(size=size)
 
 
     def _text_size(draw: ImageDraw, text: str, font) -> tuple[int, int]:
@@ -110,14 +114,16 @@ def _():
         dummy = ImageDraw.Draw(qr_img)
 
         title_font = _font(font_size, 2.0)
-        title_width, title_height = _text_size(dummy, title, title_font)
+        title_width, title_height = _text_size(dummy, title.upper(), title_font)
 
-        url_font = _font(font_size, 1.0)
+        url_font = _font(font_size, 0.75)
         url_width, url_height = _text_size(dummy, url, url_font)
 
-        subtitle_font = _font(font_size, 1.5)
+        subtitle_font = _font(font_size, 1.75)
         if subtitle:
-            subtitle_width, subtitle_height = _text_size(dummy, subtitle, subtitle_font)
+            subtitle_width, subtitle_height = _text_size(
+                dummy, subtitle.upper(), subtitle_font
+            )
         else:
             subtitle_width = subtitle_height = 0
 
@@ -140,13 +146,13 @@ def _():
 
         xs, ys = ((width - subtitle_width) // 2, yi - padding - subtitle_font.size)
         if subtitle:
-            _add_text(img, subtitle, xs, ys, fill="gray", font=subtitle_font)
+            _add_text(img, subtitle.upper(), xs, ys, fill="gray", font=subtitle_font)
 
         xt, yt = (
             (width - title_width) // 2,
             (ys if subtitle else yi) - padding // 2 - title_font.size,
         )
-        _add_text(img, title, xt, yt, fill="black", font=title_font)
+        _add_text(img, title.upper(), xt, yt, fill="black", font=title_font)
 
         return img
 
@@ -166,7 +172,6 @@ def _(add_info_qr_code, landscape, settings):
         title = place.qr_title
         subtitle = place.qr_subtitle
         url = f"https://{settings.DOMAIN}/qr/{place.slug}"
-        print(len(url))
 
         box_size = 14 if len(url) < 45 else 12
         qr_code = create_qr_code(url, box_size=box_size)
@@ -174,9 +179,26 @@ def _(add_info_qr_code, landscape, settings):
             qr_code, title, url, subtitle=subtitle, width=width, height=height, font_size=20
         )
 
-        qr_codes.append(mo.image(qr_code, height=400))
+        qr_codes.append((place.slug, qr_code))
 
-    mo.hstack(qr_codes, justify="center")
+    mo.hstack([mo.image(q[1], height=400) for q in qr_codes], justify="center")
+    return (qr_codes,)
+
+
+@app.cell
+def _():
+    save = mo.ui.run_button("success", label="Save in .data")
+    save
+    return (save,)
+
+
+@app.cell
+def _(qr_codes, save):
+    mo.stop(not save.value)
+    QR_CODE_PATH = Path(".data/qr_codes")
+    QR_CODE_PATH.mkdir(exist_ok=True, parents=True)
+    for slug, qr in qr_codes:
+        qr.save(Path(f".data/qr_codes/{slug}.png"))
     return
 
 
