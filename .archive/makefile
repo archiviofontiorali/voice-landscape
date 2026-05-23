@@ -10,21 +10,11 @@ bold := '\033[1m'
 sgr0 := '\033[0m'
 
 
-# Django production commands
-# .PHONY: collectstatic
-
-# collectstatic:
-# 	@$(django) collectstatic --ignore=*.scss
-# 	@$(django) compilescss --use-storage
-
-
-
 # Django database commands
 .PHONY: demo migrate migrations secret_key superuser
 
 secret_key:
 	@$(python) scripts/generate_secret_key.py
-
 
 demo: db-flush
 	@echo -e $(bold)Loading demo data$(sgr0)

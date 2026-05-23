@@ -31,6 +31,11 @@ serve: show
     @echo "Launch Django development server"
     uv run {{ django }} runserver {{ host }}:{{ port }}
 
+# --- Production utilities --- #
+django-collect:
+    uv run {{ django }} collectstatic --ignore=*.scss
+    uv run {{ django }} compilescss --use-storage
+
 # --- Database Management --- #
 [confirm('Apply migrations? [y/N]')]
 migrate:
@@ -46,6 +51,11 @@ db-superuser:
 
 db-reset: db-clean db-superuser
     uv run {{ django }} loaddata fixtures/demo_musei.json
+
+[confirm]
+db-backup:
+    mkdir -p .backup
+    sqlite3 db.sqlite3 ".backup .backup/$(date -u +'%FT%TZ').db"
 
 # --- Notebook (marimo) --- #
 marimo:
