@@ -29,6 +29,36 @@ $ uv run app/manage.py createsuperuser --username=admin
 $ uv run app/manage.py makemigrations
 ```
 
+## Going in production
+```sh
+# (0) install dependencies
+$ uv sync --group prod
+
+# (1) Set environment variables inside .env 
+$ echo "DEBUG=False" >> .env
+$ echo "STATIC_ROOT=/usr/share/nginx/voice-landscape/static" >> .env
+$ echo "MEDIA_ROOT=/usr/share/nginx/voice-landscape/media" >> .env
+
+# (2) Setup database and migrations
+$ uv run app/manage.py migrate
+$ uv run app/manage.py createsuperuser --username=admin
+$ uv run app/manage.py loaddata fixtures/demo_[...].json
+# NOTE: remember to add in MEDIA_ROOT file and images needed by fixtures
+
+# (2) Generate static files
+$ sudo .venv/bin/python app/manage.py collectstatic
+$ sudo .venv/bin/python app/manage.py compress --force
+
+# (3) Set gunicorn systemctl file and enable it
+$ sudo cp system/voice-landscape.(socket|service) /etc/systemd/system/
+# NOTE: remember to edit the service file to setup user and folders
+$ sudo systemctl enable voice-landscape.socket
+$ sudo systemctl start voice-landscape.socket
+
+# (4) Configure nginx
+$ 
+```
+
 
 ## Note for developer
 As this project uses a non standard Django Structure some additional care are needed

@@ -8,20 +8,7 @@ $ sudo nginx -s reload
 $ sudo mkdir -p /usr/share/nginx/voice-landscape /usr/share/nginx/voice-landscape/static 
 ```
 
-Set .env configurations
-```dotenv
-DEBUG=1
-STATIC_ROOT=/usr/share/nginx/voice-landscape/static
-# MEDIA_ROOT= 
-```
 
-Install dependencies and collect static and css files
-```shell
-$ make production
-$ make migrate
-$ sudo .venv/bin/python manage.py collectstatic
-$ sudo .venv/bin/python manage.py compress --force
-```
 
 ## YUNoHost (redirect + nginx configuration)
 Install `redirect` app in YUNoHost `administration > applications > install`
