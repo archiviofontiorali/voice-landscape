@@ -144,7 +144,7 @@ class Place(LocationModel, QRModel):
         frequencies = self.word_frequencies.filter(**filters)  # type: ignore
         frequencies = frequencies.order_by("-frequency")[:50]
         max_ = frequencies.aggregate(Max("frequency"))["frequency__max"]
-        return [[wf.word.text, wf.frequency / max_] for wf in frequencies]
+        return [[wf.word.text.upper(), wf.frequency / max_] for wf in frequencies]
 
     def as_json(self):
         return {

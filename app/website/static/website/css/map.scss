@@ -11,23 +11,26 @@
       -webkit-text-stroke: 2px white;
       paint-order: stroke fill; */
     $size: 1px;
+    $hsize: 1px;
     $blur: 0;
 
     $color: $color-background;
+    color: $color-text !important;
     text-shadow:
-        $size $size $blur $color,
-        -$size $size $blur $color,
-        -$size -$size $blur $color,
-        $size -$size $blur $color,
-        $size $size $blur $color;
+        $size $size $blur $color-background,
+        -$size $size $blur $color-background,
+        -$size -$size $blur $color-background,
+        $size -$size $blur $color-background,
+        $size $size $blur $color-background;
 
     &:hover {
-        $color: var(--color-gray, Gray);
+        $color: $color-text;
+        color: $color-background !important;
         text-shadow:
-            $size $size $blur $color,
-            -$size $size $blur $color,
-            -$size -$size $blur $color,
-            $size -$size $blur $color,
-            $size $size $blur $color;
+            $hsize $hsize $blur $color,
+            -$hsize $hsize $blur $color,
+            -$hsize -$hsize $blur $color,
+            $hsize -$hsize $blur $color,
+            $hsize $hsize $blur $color;
     }
 }
