@@ -138,7 +138,7 @@ class Place(LocationModel, QRModel):
             raise Exception("Cannot find the nearest place, is at least one set?")
         return nearest
 
-    def get_frequencies(self, min_frequency: int = 2) -> list[JSONFrequency]:
+    def get_frequencies(self, min_frequency: int = 1) -> list[JSONFrequency]:
         """Return a list of [word, frequency] with the latest normalized"""
         filters = dict(frequency__gte=min_frequency, word__visible=True)
         frequencies = self.word_frequencies.filter(**filters)  # type: ignore
