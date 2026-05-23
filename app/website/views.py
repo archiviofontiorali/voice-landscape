@@ -191,5 +191,5 @@ def date_range(first_date: dt.date, last_date: dt.date) -> Iterable[dt.date]:
         date += dt.timedelta(days=1)
 
 
-def qr_code_redirect(request, place: str):
-    return redirect("website:share", place=place)
+def qr_code_redirect(request, slug: str):
+    return redirect("website:share", slug=slug)

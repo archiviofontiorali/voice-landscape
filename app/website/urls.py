@@ -31,5 +31,5 @@ urlpatterns = [
     path("share/<slug:slug>", views.Share.as_view(), name="share"),
     path("history/", views.HistoryMap.as_view(), name="history"),
     path("history/<datetime:timestamp>/", views.HistoryMap.as_view(), name="history"),
-    path("qr/<place>/", views.qr_code_redirect, name="qr-code"),
+    path("qr/<slug:slug>/", views.qr_code_redirect, name="qr-code"),
 ]
