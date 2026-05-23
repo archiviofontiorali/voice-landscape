@@ -900,6 +900,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-libsass"
+version = "0.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django-compressor" },
+    { name = "libsass" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d2/6c/fe7c95536eed569960daf139726c8f83eaf8c4ae01d908c22d94d60f31c2/django-libsass-0.9.tar.gz", hash = "sha256:bfbbb55a8950bb40fa04dd416605f92da34ad1f303b10a41abc3232386ec27b5", size = 6754, upload-time = "2021-07-08T14:16:55.346Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1b/ee/65935acc5a36c418fa17d5190a4aeb339cfdf98b6a93ca1c59134cf1e6aa/django_libsass-0.9-py3-none-any.whl", hash = "sha256:5234d29100889cac79e36a0f44207ec6d275adfd2da1acb6a94b55c89fe2bd97", size = 6572, upload-time = "2021-07-08T14:16:53.501Z" },
+]
+
+[[package]]
 name = "django-sass-processor"
 version = "1.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -4701,6 +4714,7 @@ dependencies = [
     { name = "django" },
     { name = "django-compressor" },
     { name = "django-cors-headers" },
+    { name = "django-libsass" },
     { name = "django-sass-processor" },
     { name = "django-stubs" },
     { name = "djangorestframework" },
@@ -4741,6 +4755,7 @@ requires-dist = [
     { name = "django", specifier = ">=5.2" },
     { name = "django-compressor", specifier = ">=4.6.0" },
     { name = "django-cors-headers", specifier = ">=4.9.0" },
+    { name = "django-libsass", specifier = ">=0.9" },
     { name = "django-sass-processor", specifier = ">=1.4.2" },
     { name = "django-stubs", specifier = ">=6.0.4" },
     { name = "djangorestframework", specifier = ">=3.17.1" },
