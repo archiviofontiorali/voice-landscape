@@ -21,12 +21,20 @@
 
 
 {% block main %}
-<main class="w-100 flex-grow flex flex-row">
+<main class="w-100 flex-grow flex flex-row pa6">
+
+  <section id="full-map" class="w-two-thirds ml1 pa2 flex flex-column justify-center items-center">
+    <h2 class="f1 tc w-100 ttu tracked">{{ map.title }}</h2>
+    <div class="_outline map-wrapper w-100 aspect-ratio aspect-ratio--8x5">
+      <div id="map" class="aspect-ratio--object cover _w-100" style="_height: 50%;"></div>
+    </div>
+  </section>
+
   <section id="description"
            class="w-third tc mr1 pa2 flex flex-column justify-center items-center">
 
     <section class="measure">
-      <h1 class="f1 ttu mt0">Paesaggio di Voci</h1>
+      <h1 class="f2 ttu tracked mt0">Paesaggio di Voci</h1>
 
       <p class="f3 cit">Come percepisci lo <b>spazio</b>?</p>
       <p class="f3 cit">Quali <b>parole</b> emergono da questa percezione?</p>
@@ -36,8 +44,10 @@
     </section>
 
     <section class="measure">
-      <p class="f3 ttu">Partecipa anche tu all'esperimento collettivo</p>
-      <p class="title f1">{{ landscape.domain|default:domain }}</p>
+      <p class="title f2">{{ landscape.domain|default:domain }}</p>
+      <!-- WORKAROUND: QR-Code should be constructed by backend based on DOMAIN value -->
+      <img class="w-50" src="{% static 'showcase/images/qr-code.png' %}" alt="qr-code">
+      <p class="f4 ttu ma1">Partecipa anche tu <br/>all'esperimento collettivo</p>
     </section>
 
     <section class="measure flex flex-rows flex-wrap justify-between">
@@ -74,8 +84,5 @@
 
   </section>
 
-  <section id="full-map" class="w-two-thirds ml1 pa2">
-    <div id="map" style="height: 100%;"></div>
-  </section>
 </main>
 {% endblock %}
