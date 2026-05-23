@@ -51,6 +51,8 @@
     url: "{{ overlay.url }}",
     width: {{overlay.width}},
     height: {{overlay.height}},
+    // WORKAROUND for NdM26: remove it and add opacity option to Map model
+    opacity: ({{ map.id }} == 1) ? 0.50 : 0.90,
   {% endif %}
   };
   const options = {

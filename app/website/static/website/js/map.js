@@ -152,8 +152,8 @@ class LeafletMap {
       [0, 0],
       [Math.floor(overlay.height / scale), Math.floor(overlay.width / scale)],
     ];
-    L.imageOverlay(overlay.url, bounds).addTo(this.map);
-    // this.map.fitBounds(bounds);
+    L.imageOverlay(overlay.url, bounds, { opacity: overlay.opacity }).addTo(this.map);
+    // if (this.showcase) this.map.fitBounds(bounds); // WORKAROUND: and it's not working
   }
 
   _addWordCloud(index, coordinates, frequencies, width, height, place) {
