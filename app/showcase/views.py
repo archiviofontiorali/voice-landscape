@@ -1,6 +1,9 @@
+import random
+
 from django.conf import settings
 from django.contrib import messages
 from django.utils.translation import gettext as _
+from website.models import Map
 from website.views import MapTemplateView
 
 
@@ -34,6 +37,11 @@ class Showcase(ReloadTemplateView):
     template_name = "showcase/showcase.html"
 
     def get_context_data(self, **kwargs):
+        if kwargs.get("slug") is None:
+            landscape = self.get_landscape()
+            map = random.choice(landscape.maps.filter(enabled=True).all())
+            kwargs["slug"] = map.slug
+
         context = super().get_context_data(**kwargs)
         context.setdefault("domain", settings.DOMAIN)
         context.setdefault("showcase", True)

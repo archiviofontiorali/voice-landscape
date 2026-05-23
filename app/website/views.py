@@ -41,11 +41,12 @@ class LandscapeTemplateView(TemplateView):
 
 
 class MapTemplateView(LandscapeTemplateView):
-    def get_context_data(self, slug: Optional[str] = None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         landscape: models.Landscape = context["landscape"]
 
+        slug = kwargs.get("slug", None)
         map_ = get_object_or_404(
             landscape.maps, Q(slug=slug) if slug else Q(default=True)
         )
