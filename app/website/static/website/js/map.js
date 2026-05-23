@@ -1,16 +1,17 @@
 const DEFAULT_WORDCLOUD_OPTIONS = {
   backgroundColor: "rgba(255, 255, 255, 0)",
-  gridSize: 5,
-  shrinkToFit: true,
+  // gridSize: 5,
+  // shrinkToFit: true,
   drawOutOfBound: true,
-  minSize: "2rem",
+  // minSize: "2rem",
+  weightFactor: (size) => 16 * size,
   // weightFactor: (w) => 6 + 20 * Math.tanh(w),
   // weightFactor: (size) => Math.floor(5 + size * (30 - 5)),
-  weightFactor: (size) => 12 + Math.pow(size, 2.3),
-  fontWeight: "700",
+  // weightFactor: (size) => 12 + Math.pow(size, 2.3),
+  // fontWeight: "700",
   fontFamily: "Open Sans, Consolas, monaco, monospace",
   color: "inherit",
-  shape: "circle",
+  // shape: "circle",
 };
 
 const DEFAULT_LEAFLET_MAP_OPTIONS = {
