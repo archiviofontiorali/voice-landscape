@@ -160,6 +160,12 @@ def _():
 
 
 @app.cell
+def _():
+    create_qr_code("https://voci.afor.dev")
+    return
+
+
+@app.cell
 def _(add_info_qr_code, landscape, settings):
     INCH2CM = 2.54
     DPI = 300
