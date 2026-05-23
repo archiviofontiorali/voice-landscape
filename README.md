@@ -40,6 +40,8 @@ $ echo "STATIC_ROOT=/usr/share/nginx/voice-landscape/static" >> .env
 $ echo "MEDIA_ROOT=/usr/share/nginx/voice-landscape/media" >> .env
 
 # (2) Setup database and migrations
+# Needed for compatibility with spatialite 3.36 to 5.0
+$ uv run app/manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";  
 $ uv run app/manage.py migrate
 $ uv run app/manage.py createsuperuser --username=admin
 $ uv run app/manage.py loaddata fixtures/demo_[...].json
