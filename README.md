@@ -77,3 +77,4 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] Evaluate if making x,y the lat and lon value, remove blank/null from them with a default of (0, 0), in GEODJANGO mode sync the values with location, otherwise leave them indipendent
 - [ ] Make min_frequency a property adjustable in admin page (an attribute for each place or for the map, or either ones)
 - [ ] WC canvas (and a sort of filter on frequency) must scale with zoom (maybe not by factor of 2, but a value lesser like 1.1)
+- [ ] Map, Overlay and WordCloud settings must be set in django admin page (maybe with a json fields?) and passed to frontend either via axios o fetch()
