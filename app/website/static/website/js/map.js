@@ -87,12 +87,14 @@ class LeafletMap {
     center = [0, 0],
     useSimpleCRS = false,
     scale = 1,
+    showcase = false,
     overlay = {},
     options = {},
   ) {
     this.center = center;
     this.overlay = overlay;
     this.scale = scale;
+    this.showcase = showcase;
 
     this.options = {
       zoom: { ...DEFAULT_LEAFLET_MAP_OPTIONS.zoom, ...options.zoom },
@@ -104,6 +106,8 @@ class LeafletMap {
     const opts = {
       minZoom: this.options.zoom.min,
       maxZoom: this.options.zoom.max,
+      zoomControl: !showcase,
+      attributionControl: !showcase,
       referrerPolicy: "strict-origin-when-cross-origin",
     };
     if (useSimpleCRS) opts["crs"] = L.CRS.Simple;
