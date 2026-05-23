@@ -75,3 +75,5 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] Use a more robust way to pass configuration from Map view and map.(html|js)
 - [ ] Set default x and y value to 0, 0
 - [ ] Evaluate if making x,y the lat and lon value, remove blank/null from them with a default of (0, 0), in GEODJANGO mode sync the values with location, otherwise leave them indipendent
+- [ ] Make min_frequency a property adjustable in admin page (an attribute for each place or for the map, or either ones)
+- [ ] WC canvas (and a sort of filter on frequency) must scale with zoom (maybe not by factor of 2, but a value lesser like 1.1)
