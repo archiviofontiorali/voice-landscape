@@ -1,5 +1,6 @@
 [Unit]
 Description=Gunicorn instance to run Voice Landscape local instance
+Requires=gunicorn.socket
 After=network.target
 
 [Service]
@@ -8,15 +9,11 @@ Group=USER
 WorkingDirectory=/home/USER/git/voice-landscape
 ExecStart=/home/USER/git/voice-landscape/.venv/bin/gunicorn \
             --workers=3 \
-            --bind 127.0.0.1:8000 \
+            --bind unix:/run/gunicorn.sock \
             --access-logfile "/home/USER/git/voice-landscape/.log/gunicorn.access.log" \
             --error-logfile "/home/USER/git/voice-landscape/.log/gunicorn.error.log" \
             --log-level info \
-            admin.wsgi
-
-# Automatically restart if it crashes.
-Restart=on-failure
-RestartSec=5s
+            admin.wsgi:application
 
 [Install]
 WantedBy=multi-user.target

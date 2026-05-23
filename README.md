@@ -48,17 +48,17 @@ $ uv run app/manage.py loaddata fixtures/demo_[...].json
 # NOTE: remember to add in MEDIA_ROOT file and images needed by fixtures
 
 # (2) Generate static files
-$ sudo .venv/bin/python app/manage.py collectstatic
-$ sudo .venv/bin/python app/manage.py compress --force
+$ sudo .venv/bin/python app/manage.py collectstatic --ignore=*.scss
+$ sudo .venv/bin/python app/manage.py compilescss --use-storage
 
 # (3) Set gunicorn systemctl file and enable it
-$ sudo cp system/voice-landscape.(socket|service) /etc/systemd/system/
+$ sudo cp system/voice-landscape.service /etc/systemd/system/
 # NOTE: remember to edit the service file to setup user and folders
-$ sudo systemctl enable voice-landscape.socket
-$ sudo systemctl start voice-landscape.socket
+$ sudo systemctl enable voice-landscape.service
+$ sudo systemctl start voice-landscape.service
 
 # (4) Configure nginx
-$ 
+TBD
 ```
 
 
