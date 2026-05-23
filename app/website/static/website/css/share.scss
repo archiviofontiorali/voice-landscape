@@ -44,7 +44,7 @@ $animation-colors: (
 }
 
 a#record-button {
-    background-color: $gray;
+    background-color: $white;
 
     animation-iteration-count: infinite;
     animation-duration: 1s;
@@ -55,7 +55,7 @@ a#record-button {
         animation-name: color-animation--red;
     }
     &[data-speech="idle"] {
-        background-color: $black;
+        background-color: $white;
     }
     &[data-speech="disabled"] {
         background-color: $gray;

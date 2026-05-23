@@ -12,19 +12,26 @@
 <main
   class="w-100 outline mv1 flex-grow flex flex-column justify-center justify-center-ns items-center"
 >
-  <p class="f4 mb4 cit tc">
-    {{ phrase }}
-  </p>
+  <section class="measure tc">
+    <h2 class="ttu">Partecipa a Paesaggio di Voci</h2>
+
+    <p class="cit tc f4">{{ phrase }}</p>
+
+    <p class="f4 black-70">Racconta quello che vedi, esprimi un parere, condividi la tua impressione sugli spazi del Palazzo dei Musei, poi guarda sulla mappa e ritrova la tua voce nella restituzine collettiva</h3>
+  </section>
   <form action="" method="post" class="flex flex-column flex-center w-100 mw7 pa2">
-    {% csrf_token %} {% for error in form.non_field_errors %}
+    {% csrf_token %}
+
+    {% for error in form.non_field_errors %}
     <span class="w-100 f6 red b">{{ error }}</span>
     {% endfor %}
 
     <section
       id="message-section"
-      class="widget-tab w-100 flex flex-row flex-wrap justify-center"
+      class="widget-tab mv3 measure flex flex-row flex-wrap justify-center"
     >
-      <label for="{{ form.message.id_for_label }}" class="w-100 mt2 mb2 tc">
+      <label for="{{ form.message.id_for_label }}"
+        class="w-100 mt2 ml4 mb2 tl black-70">
         {{ form.message.label }}
       </label>
       <div id="text-container" class="w-100 flex flex-row flex-wrap">
@@ -34,7 +41,7 @@
           rows="7"
           cols="10"
           placeholder="{{ form.message.help_text }}"
-          class="tc w-100"
+        class="tc pa2 w-100 ba bw1 br4 b--black"
           maxlength="500"
           required
         >{{ form.message.value | default:'' }}</textarea>
@@ -47,14 +54,14 @@
       <a
         id="record-button"
         type="button"
-        class="link flex flex-center w3 h3 white mv3 mh4 br4 grow"
+        class="link flex flex-center w3 h3 ba bw1 b--black bg-white mv3 mh4 br4 grow"
       >
         <i data-feather="mic" class="w2 h2"></i>
       </a>
       <a
         id="reset-button"
         type="button"
-        class="link flex flex-center w3 h3 black mv3 mh4 br4 ba bw2 b--black bg-white grow"
+        class="link flex flex-center w3 h3 ba bw1 b--black bg-white mv3 mh4 br4 grow"
       >
         <i data-feather="trash-2" class="w2 h2"></i>
       </a>
@@ -62,7 +69,7 @@
 
     <section
       id="location-section"
-      class="widget-tab flex flex-row justify-center flex-wrap"
+      class="widget-tab mv3 flex flex-row justify-center flex-wrap"
     >
       <!--<div id="text-preview" class="tc w-100 measure-wide pa2 mv2 mb4 mid-gray"></div>-->
 
@@ -76,19 +83,25 @@
           <i data-feather="map-pin" class="b i3 gray grow" data-state="waiting"></i>
         </div>
       </div>
-      {% endif %}
 
       <p class="w-100 ttu gray tc dn-l">Oppure</p>
 
+      {% endif %}
+
       <div
         id="location-place"
-        class="w-100 {% if enable_gps %}w-50-l{% endif %} pa3 h4 tc flex flex-column items-center justify-between"
+        class="w-100 {% if enable_gps %}w-50-l{% endif %} tc flex flex-column items-center justify-center"
       >
+
         <label for="{{ form.place.id_for_label }}" class="gray b w-100 tc ttu">
           {{ form.place.label }}
         </label>
-        <div class="h-100 flex flex-column justify-center">
-          <select name="{{ form.place.html_name }}" id="{{ form.place.id_for_label }}" class="tc">
+
+        <div class="measure h-100 flex flex-column justify-center ma3 ">
+          <select
+            class="tc w-100 b bg-white ba bw1 b--black br4 pa3 ph3"
+            name="{{ form.place.html_name }}"
+            id="{{ form.place.id_for_label }}" >
             <option value="" {% if not selected %}selected{% endif %}></option>
 
             {% for place in places %}
@@ -134,6 +147,32 @@
       </div>
     </section>
 
+    <div
+      id="share-section"
+      class="w-100 flex flex-row justify-between items-center pa2"
+    >
+      <a id="prev-tab-button" type="button" class="link dim flex flex-center w2 h2">
+        <i data-feather="arrow-left-circle" class="dn w2 h2"></i>
+      </a>
+
+      {% if enable_sharing %}
+      <input
+        id="submit-button"
+        type="submit"
+        class="ba bw1 br4 b--black pa3 grow ttu b black"
+        value="Partecipa!"
+        disabled
+      />
+      {% else %}
+        Evento terminato, non è più possibile inviare contribuzioni
+      {% endif %}
+
+      <a id="next-tab-button" type="button" class="link dim flex flex-center w2 h2">
+        <i data-feather="arrow-right-circle" class="dn w2 h2"></i>
+      </a>
+    </div>
+
+
     <div id="location-display" class="gray w-100 tc mv2 pa2">
       <p id="location-display-title">&nbsp;</p>
       <p id="location-display-coordinates"></p>
@@ -147,30 +186,7 @@
       {% endfor %}
     </div>
 
-    <div
-      id="share-section"
-      class="w-100 flex flex-row justify-between items-center pa2"
-    >
-      <a id="prev-tab-button" type="button" class="link dim flex flex-center w2 h2">
-        <i data-feather="arrow-left-circle" class="dn w2 h2"></i>
-      </a>
 
-      {% if enable_sharing %}
-      <input
-        id="submit-button"
-        type="submit"
-        class="pa1 grow"
-        value="Partecipa!"
-        disabled
-      />
-      {% else %}
-        Evento terminato, non è più possibile inviare contribuzioni
-      {% endif %}
-
-      <a id="next-tab-button" type="button" class="link dim flex flex-center w2 h2">
-        <i data-feather="arrow-right-circle" class="dn w2 h2"></i>
-      </a>
-    </div>
   </form>
 </main>
 {% endblock %}
