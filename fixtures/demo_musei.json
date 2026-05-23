@@ -206,8 +206,8 @@
       "y": "1032.000000",
       "slug": "museo-civico-ferro-e-fuoco",
       "title": "Museo Civico (Ferro e Fuoco)",
-      "qr_title": "Museo Civico",
-      "qr_subtitle": "Sala 6 ­– Ferro e Fuoco",
+      "qr_title": "Museo Civico (Sala 6)",
+      "qr_subtitle": "Ferro e Fuoco",
       "description": ""
     }
   },
@@ -220,8 +220,8 @@
       "y": "780.000000",
       "slug": "museo-civico-archeologia",
       "title": "Museo Civico (Archeologia)",
-      "qr_title": "Museo Civico",
-      "qr_subtitle": "Sala 9 – Sala dell'Archeologia",
+      "qr_title": "Museo Civico (Sala 9)",
+      "qr_subtitle": "Sala dell'Archeologia",
       "description": ""
     }
   },
@@ -234,8 +234,8 @@
       "y": "656.000000",
       "slug": "museo-civico-america-asia-africa",
       "title": "Museo Civico (America Sud, Asia, Africa)",
-      "qr_title": "Museo Civico",
-      "qr_subtitle": "Sala 12 – America Sud, Asia, Africa",
+      "qr_title": "Museo Civico (Sala 12)",
+      "qr_subtitle": "America Sud, Asia, Africa",
       "description": ""
     }
   },
@@ -248,8 +248,8 @@
       "y": "716.000000",
       "slug": "museo-civico-collezionisti",
       "title": "Museo Civico (Collezionisti si Diventa)",
-      "qr_title": "Museo Civico",
-      "qr_subtitle": "Sala 16 – Collezionisti Si Diventa",
+      "qr_title": "Museo Civico (Sala 16)",
+      "qr_subtitle": "Collezionisti Si Diventa",
       "description": ""
     }
   },
@@ -276,8 +276,8 @@
       "y": "752.000000",
       "slug": "galleria-estense-seicento",
       "title": "Galleria Estense (Il Seicento tra Roma e l’Emilia)",
-      "qr_title": "Galleria Estense",
-      "qr_subtitle": "Sala 21 – Il Seicento tra Roma e l'Emilia",
+      "qr_title": "Galleria Estense (Sala 21)",
+      "qr_subtitle": "Il Seicento tra Roma e l'Emilia",
       "description": ""
     }
   },
@@ -290,8 +290,8 @@
       "y": "359.000000",
       "slug": "galleria-estense-dipinti-veneti",
       "title": "Galleria Estense (Dipinti Veneti tra 400 e 600)",
-      "qr_title": "Galleria Estense",
-      "qr_subtitle": "Sala 19 – Dipinti Veneti tra 400 e 600",
+      "qr_title": "Galleria Estense (Sala 19)",
+      "qr_subtitle": "Dipinti Veneti tra 400 e 600",
       "description": ""
     }
   },
