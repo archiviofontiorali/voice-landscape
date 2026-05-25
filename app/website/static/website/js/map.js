@@ -8,7 +8,7 @@ const DEFAULT_WORDCLOUD_OPTIONS = {
   // weightFactor: (w) => 6 + 20 * Math.tanh(w),
   // weightFactor: (size) => Math.floor(5 + size * (30 - 5)),
   // weightFactor: (size) => 12 + Math.pow(size, 2.3),
-  // fontWeight: "700",
+  fontWeight: "700",
   fontFamily: "Open Sans, Consolas, monaco, monospace",
   color: "inherit",
   shape: "circle",

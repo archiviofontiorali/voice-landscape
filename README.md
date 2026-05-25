@@ -87,3 +87,5 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] Report/Showcase: show the connections between words
 - [ ] Report/Map/Showcase: use attention and clustering mechanisms to associates words with common meanings, an alternative metric to frequencies can be developed from these concept
 - [ ] Gamification: QR-Code on showcase must redirect to the TV stand, a tutorial can be developed for this place or for a custom qr-code in showcase
+- [ ] (idea) Make VOICES_ENABLE_... options editable inside Landscape
+- [ ] When VOICES_ENABLE_RECORDING is False the entire API for whisper must be disabled
