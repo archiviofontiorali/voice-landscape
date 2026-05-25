@@ -26,7 +26,7 @@ class LeafletProviderAdmin(admin.ModelAdmin):
 
 @admin.register(models.Share)
 class ShareAdmin(LocationGISModel):
-    list_display = ("timestamp", *LocationGISModel.list_display, "message")
+    list_display = ("timestamp", "message", "place", *LocationGISModel.list_display)
 
 
 @admin.register(models.Place)
