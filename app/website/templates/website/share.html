@@ -51,6 +51,7 @@
         {% endfor %}
       </div>
 
+      {% if enable_recording %}
       <a
         id="record-button"
         type="button"
@@ -58,6 +59,8 @@
       >
         <i data-feather="mic" class="w2 h2"></i>
       </a>
+      {% endif %}
+
       <a
         id="reset-button"
         type="button"

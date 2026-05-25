@@ -298,7 +298,7 @@ WHISPER_MODEL = env("WHISPER_MODEL", default="base")
 VOICES_ENABLE_GEODJANGO = env("VOICES_ENABLE_GEODJANGO", True, cast=_bool)
 VOICES_ENABLE_SHARING = env("VOICES_ENABLE_SHARING", True, cast=_bool)
 VOICES_ENABLE_GPS = env("VOICES_ENABLE_GPS", True, cast=_bool)
-
+VOICES_ENABLE_RECORDING = env("VOICES_ENABLE_RECORDING", True, cast=_bool)
 
 # --- DEMO Configuration --- #
 # DEMO_PLACES_REFERENCE = env("DEMO_REFERENCE", default="sso_2023")

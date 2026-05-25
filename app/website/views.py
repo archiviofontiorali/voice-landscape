@@ -127,6 +127,7 @@ class Share(LandscapeTemplateView):
         context.setdefault("places", places := context["landscape"].places.all())
         context.setdefault("selected", places.filter(slug=slug).first())
 
+        context.setdefault("enable_recording", settings.VOICES_ENABLE_RECORDING)
         context.setdefault("enable_sharing", settings.VOICES_ENABLE_SHARING)
         context.setdefault("enable_gps", settings.VOICES_ENABLE_GPS)
 
