@@ -79,3 +79,11 @@ As this project uses a non standard Django Structure some additional care are ne
 - [ ] WC canvas (and a sort of filter on frequency) must scale with zoom (maybe not by factor of 2, but a value lesser like 1.1)
 - [ ] Map, Overlay and WordCloud settings must be set in django admin page (maybe with a json fields?) and passed to frontend either via axios o fetch()
 - [ ] Make options like minWidth for WC more obvious and settable from admin
+- [ ] Floor Menù with overflow-x-auto or change to a selector when in small screens
+- [ ] Add Shares.loaded to indicate wheter words were been loaded in WordFrequency
+- [ ] (idea) Report Screen (with auth) to show tables and metrics with download button for tables' CSV files and figure's PNG files
+- [ ] Gamification: add command/script to add places' names with frequency 2/3 in such a way to not leaving places completely void and to challenge user to make it disappear
+- [ ] Report: tables/graphs with places with most contibutions/contributors
+- [ ] Report/Showcase: show the connections between words
+- [ ] Report/Map/Showcase: use attention and clustering mechanisms to associates words with common meanings, an alternative metric to frequencies can be developed from these concept
+- [ ] Gamification: QR-Code on showcase must redirect to the TV stand, a tutorial can be developed for this place or for a custom qr-code in showcase
