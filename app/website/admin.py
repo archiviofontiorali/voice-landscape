@@ -35,7 +35,6 @@ class PlaceAdmin(LocationGISModel):
     list_display = (
         "title",
         *LocationGISModel.list_display,
-        "description",
         "id",
         "slug",
         "description",
