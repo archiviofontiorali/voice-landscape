@@ -37,6 +37,8 @@ class PlaceAdmin(LocationGISModel):
         *LocationGISModel.list_display,
         "description",
         "id",
+        "slug",
+        "description",
     )
     ordering = ["title"]
 
@@ -85,6 +87,7 @@ class MapAdmin(LocationGISModel):
         "slug",
         *LocationGISModel.list_display,
         "default",
+        "enabled",
     )
     actions = ["set_centroid_as_location"]
 
