@@ -32,13 +32,14 @@ def _():
 
 @app.cell
 def _(pl):
-    from website.models import Share
+    from website.models import Share, Place
 
-    shares = list(Share.objects.values())
-    shares = pl.DataFrame(shares)
-    print(shares.columns)
+    fields = ["id", "timestamp", "place__slug", "place__title", "message"]
 
-    shares = shares.select(["id", "place_id", "timestamp", "message"])
+    shares = list(Share.objects.values(*fields))
+    shares = pl.DataFrame(shares).rename(
+        {"place__title": "place_title", "place__slug": "place_slug"}
+    )
     shares
     return (shares,)
 
