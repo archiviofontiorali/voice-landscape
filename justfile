@@ -17,6 +17,7 @@ alias upgrade := update
 update:
     @echo "Update dependencies"
     uv sync --upgrade
+    rm requirements.txt requirements.lab.txt requirements.dev.txt
     uv pip compile pyproject.toml -o requirements.txt
     uv pip compile pyproject.toml --group dev -o requirements.dev.txt
     uv pip compile pyproject.toml --group lab -o requirements.lab.txt
