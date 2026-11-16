@@ -80,7 +80,7 @@ django-stubs-ext==6.1.1
     # via django-stubs
 django-types==0.24.0
     # via voice-landscape (pyproject.toml:dev)
-djangorestframework==3.18.1
+djangorestframework==3.18.3
     # via voice-landscape (pyproject.toml)
 faster-whisper==1.2.1
     # via speechrecognition
