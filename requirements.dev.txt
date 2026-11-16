@@ -149,7 +149,7 @@ packaging==26.3
     #   spacy
     #   thinc
     #   weasel
-pillow==12.3.0
+pillow==13.0.0
     # via voice-landscape (pyproject.toml)
 pluggy==1.6.0
     # via pytest
